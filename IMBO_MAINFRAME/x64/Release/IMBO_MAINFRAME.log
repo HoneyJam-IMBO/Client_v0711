@@ -1,0 +1,372 @@
+﻿  compilation object save succeeded; see C:\Users\Shin\Desktop\ImBo_Projects\ImBo_Client2\x64\Release\GSNaviObject.cso
+C:\Users\Shin\Desktop\ImBo_Projects\ImBo_Client2\IMBO_MAINFRAME\PSBlend.hlsl(33,8-65): warning X3206: implicit truncation of vector type
+C:\Users\Shin\Desktop\ImBo_Projects\ImBo_Client2\IMBO_MAINFRAME\PSBlend.hlsl(34,8-71): warning X3206: implicit truncation of vector type
+C:\Users\Shin\Desktop\ImBo_Projects\ImBo_Client2\IMBO_MAINFRAME\PSBlend.hlsl(36,8-68): warning X3206: implicit truncation of vector type
+C:\Users\Shin\Desktop\ImBo_Projects\ImBo_Client2\IMBO_MAINFRAME\PSBlend.hlsl(25,18-56): warning X3576: semantics in type overridden by variable/function or enclosing type
+  
+  compilation object save succeeded; see C:\Users\Shin\Desktop\ImBo_Projects\ImBo_Client2\x64\Release\PSBlend.cso
+  compilation object save succeeded; see C:\Users\Shin\Desktop\ImBo_Projects\ImBo_Client2\x64\Release\PSFinalPass.cso
+  compilation object save succeeded; see C:\Users\Shin\Desktop\ImBo_Projects\ImBo_Client2\x64\Release\PSNaviObject.cso
+  compilation object save succeeded; see C:\Users\Shin\Desktop\ImBo_Projects\ImBo_Client2\x64\Release\VSBlend.cso
+  compilation object save succeeded; see C:\Users\Shin\Desktop\ImBo_Projects\ImBo_Client2\x64\Release\VSFinalPass.cso
+C:\Users\Shin\Desktop\ImBo_Projects\ImBo_Client2\IMBO_MAINFRAME\GSEffect.hlsl(53,3-37): warning X3206: implicit truncation of vector type
+  
+  compilation object save succeeded; see C:\Users\Shin\Desktop\ImBo_Projects\ImBo_Client2\x64\Release\GSEffect.cso
+C:\Users\Shin\Desktop\ImBo_Projects\ImBo_Client2\IMBO_MAINFRAME\PSEffect.hlsl(37,18-56): warning X3576: semantics in type overridden by variable/function or enclosing type
+  
+  compilation object save succeeded; see C:\Users\Shin\Desktop\ImBo_Projects\ImBo_Client2\x64\Release\PSEffect.cso
+  compilation object save succeeded; see C:\Users\Shin\Desktop\ImBo_Projects\ImBo_Client2\x64\Release\VSEffect.cso
+C:\Users\Shin\Desktop\ImBo_Projects\ImBo_Client2\IMBO_MAINFRAME\CSAONormalDepthDownScale.hlsl(51,11-61): warning X3206: implicit truncation of vector type
+C:\Users\Shin\Desktop\ImBo_Projects\ImBo_Client2\IMBO_MAINFRAME\CSAONormalDepthDownScale.hlsl(55,12-66): warning X3206: implicit truncation of vector type
+  
+  compilation object save succeeded; see C:\Users\Shin\Desktop\ImBo_Projects\ImBo_Client2\x64\Release\CSAONormalDepthDownScale.cso
+  compilation object save succeeded; see C:\Users\Shin\Desktop\ImBo_Projects\ImBo_Client2\x64\Release\CSBloom.cso
+  compilation object save succeeded; see C:\Users\Shin\Desktop\ImBo_Projects\ImBo_Client2\x64\Release\CSDownScaleFirstPass.cso
+  compilation object save succeeded; see C:\Users\Shin\Desktop\ImBo_Projects\ImBo_Client2\x64\Release\CSDownScaleSecondPass.cso
+  compilation object save succeeded; see C:\Users\Shin\Desktop\ImBo_Projects\ImBo_Client2\x64\Release\CSHorizontalBlur.cso
+  compilation object save succeeded; see C:\Users\Shin\Desktop\ImBo_Projects\ImBo_Client2\x64\Release\CSSSAOCompute.cso
+  compilation object save succeeded; see C:\Users\Shin\Desktop\ImBo_Projects\ImBo_Client2\x64\Release\CSVerticalBlur.cso
+  compilation object save succeeded; see C:\Users\Shin\Desktop\ImBo_Projects\ImBo_Client2\x64\Release\DSCapsuleLight.cso
+  compilation object save succeeded; see C:\Users\Shin\Desktop\ImBo_Projects\ImBo_Client2\x64\Release\DSPointLight.cso
+  compilation object save succeeded; see C:\Users\Shin\Desktop\ImBo_Projects\ImBo_Client2\x64\Release\DSSpotLight.cso
+  compilation object save succeeded; see C:\Users\Shin\Desktop\ImBo_Projects\ImBo_Client2\x64\Release\DSTerrain.cso
+  compilation object save succeeded; see C:\Users\Shin\Desktop\ImBo_Projects\ImBo_Client2\x64\Release\DSTessPlane.cso
+  compilation object save succeeded; see C:\Users\Shin\Desktop\ImBo_Projects\ImBo_Client2\x64\Release\GSBoundingBox.cso
+  compilation object save succeeded; see C:\Users\Shin\Desktop\ImBo_Projects\ImBo_Client2\x64\Release\GSDebugDepthTexture.cso
+  compilation object save succeeded; see C:\Users\Shin\Desktop\ImBo_Projects\ImBo_Client2\x64\Release\GSDebugTexture.cso
+  compilation object save succeeded; see C:\Users\Shin\Desktop\ImBo_Projects\ImBo_Client2\x64\Release\HSCapsuleLight.cso
+  compilation object save succeeded; see C:\Users\Shin\Desktop\ImBo_Projects\ImBo_Client2\x64\Release\HSPointLight.cso
+  compilation object save succeeded; see C:\Users\Shin\Desktop\ImBo_Projects\ImBo_Client2\x64\Release\HSSpotLight.cso
+  compilation object save succeeded; see C:\Users\Shin\Desktop\ImBo_Projects\ImBo_Client2\x64\Release\HSTerrain.cso
+  compilation object save succeeded; see C:\Users\Shin\Desktop\ImBo_Projects\ImBo_Client2\x64\Release\HSTessPlane.cso
+  compilation object save succeeded; see C:\Users\Shin\Desktop\ImBo_Projects\ImBo_Client2\x64\Release\Occlussion.cso
+  compilation object save succeeded; see C:\Users\Shin\Desktop\ImBo_Projects\ImBo_Client2\x64\Release\PSAnimationObject.cso
+  compilation object save succeeded; see C:\Users\Shin\Desktop\ImBo_Projects\ImBo_Client2\x64\Release\PSBoundingBox.cso
+C:\Users\Shin\Desktop\ImBo_Projects\ImBo_Client2\IMBO_MAINFRAME\UnpackGBuffer.hlsli(92,2-63): warning X3206: implicit truncation of vector type
+C:\Users\Shin\Desktop\ImBo_Projects\ImBo_Client2\IMBO_MAINFRAME\PSCapsuleLight.hlsl(79,2-32): warning X3206: implicit truncation of vector type
+  
+  compilation object save succeeded; see C:\Users\Shin\Desktop\ImBo_Projects\ImBo_Client2\x64\Release\PSCapsuleLight.cso
+  compilation object save succeeded; see C:\Users\Shin\Desktop\ImBo_Projects\ImBo_Client2\x64\Release\PSCombine.cso
+  compilation object save succeeded; see C:\Users\Shin\Desktop\ImBo_Projects\ImBo_Client2\x64\Release\PSCoordinateSys.cso
+C:\Users\Shin\Desktop\ImBo_Projects\ImBo_Client2\IMBO_MAINFRAME\UnpackGBuffer.hlsli(92,2-63): warning X3206: implicit truncation of vector type
+  
+  compilation object save succeeded; see C:\Users\Shin\Desktop\ImBo_Projects\ImBo_Client2\x64\Release\PSDebugDepthTexture.cso
+  compilation object save succeeded; see C:\Users\Shin\Desktop\ImBo_Projects\ImBo_Client2\x64\Release\PSDebugLight.cso
+C:\Users\Shin\Desktop\ImBo_Projects\ImBo_Client2\IMBO_MAINFRAME\UnpackGBuffer.hlsli(92,2-63): warning X3206: implicit truncation of vector type
+  
+  compilation object save succeeded; see C:\Users\Shin\Desktop\ImBo_Projects\ImBo_Client2\x64\Release\PSDebugTexture.cso
+  compilation object save succeeded; see C:\Users\Shin\Desktop\ImBo_Projects\ImBo_Client2\x64\Release\PSDefault.cso
+C:\Users\Shin\Desktop\ImBo_Projects\ImBo_Client2\IMBO_MAINFRAME\UnpackGBuffer.hlsli(92,2-63): warning X3206: implicit truncation of vector type
+C:\Users\Shin\Desktop\ImBo_Projects\ImBo_Client2\IMBO_MAINFRAME\CalcDirectionalShadow.hlsli(54,20-57): warning X3206: implicit truncation of vector type
+C:\Users\Shin\Desktop\ImBo_Projects\ImBo_Client2\IMBO_MAINFRAME\CalcDirectionalShadow.hlsli(97,20-57): warning X3206: implicit truncation of vector type
+C:\Users\Shin\Desktop\ImBo_Projects\ImBo_Client2\IMBO_MAINFRAME\PSDirectionalLight.hlsl(104,15-42): warning X3206: implicit truncation of vector type
+  
+  compilation object save succeeded; see C:\Users\Shin\Desktop\ImBo_Projects\ImBo_Client2\x64\Release\PSDirectionalLight.cso
+  compilation object save succeeded; see C:\Users\Shin\Desktop\ImBo_Projects\ImBo_Client2\x64\Release\PSInstancing.cso
+C:\Users\Shin\Desktop\ImBo_Projects\ImBo_Client2\IMBO_MAINFRAME\UnpackGBuffer.hlsli(92,2-63): warning X3206: implicit truncation of vector type
+C:\Users\Shin\Desktop\ImBo_Projects\ImBo_Client2\IMBO_MAINFRAME\PSPointLight.hlsl(70,2-32): warning X3206: implicit truncation of vector type
+  
+  compilation object save succeeded; see C:\Users\Shin\Desktop\ImBo_Projects\ImBo_Client2\x64\Release\PSPointLight.cso
+  compilation object save succeeded; see C:\Users\Shin\Desktop\ImBo_Projects\ImBo_Client2\x64\Release\PSPostProcessing.cso
+  compilation object save succeeded; see C:\Users\Shin\Desktop\ImBo_Projects\ImBo_Client2\x64\Release\PSRayTrace.cso
+  compilation object save succeeded; see C:\Users\Shin\Desktop\ImBo_Projects\ImBo_Client2\x64\Release\PSRefraction.cso
+  compilation object save succeeded; see C:\Users\Shin\Desktop\ImBo_Projects\ImBo_Client2\x64\Release\PSSkyBox.cso
+C:\Users\Shin\Desktop\ImBo_Projects\ImBo_Client2\IMBO_MAINFRAME\UnpackGBuffer.hlsli(92,2-63): warning X3206: implicit truncation of vector type
+C:\Users\Shin\Desktop\ImBo_Projects\ImBo_Client2\IMBO_MAINFRAME\PSSpotLight.hlsl(82,2-32): warning X3206: implicit truncation of vector type
+  
+  compilation object save succeeded; see C:\Users\Shin\Desktop\ImBo_Projects\ImBo_Client2\x64\Release\PSSpotLight.cso
+  compilation object save succeeded; see C:\Users\Shin\Desktop\ImBo_Projects\ImBo_Client2\x64\Release\PSSSRF.cso
+C:\Users\Shin\Desktop\ImBo_Projects\ImBo_Client2\IMBO_MAINFRAME\PSTerrain.hlsl(65,9-43): warning X3203: signed/unsigned mismatch, unsigned assumed
+  
+  compilation object save succeeded; see C:\Users\Shin\Desktop\ImBo_Projects\ImBo_Client2\x64\Release\PSTerrain.cso
+  compilation object save succeeded; see C:\Users\Shin\Desktop\ImBo_Projects\ImBo_Client2\x64\Release\PSTessPlane.cso
+  compilation object save succeeded; see C:\Users\Shin\Desktop\ImBo_Projects\ImBo_Client2\x64\Release\PSDeferred.cso
+C:\Users\Shin\Desktop\ImBo_Projects\ImBo_Client2\IMBO_MAINFRAME\PSUI.hlsl(25,11-40): warning X3576: semantics in type overridden by variable/function or enclosing type
+  
+  compilation object save succeeded; see C:\Users\Shin\Desktop\ImBo_Projects\ImBo_Client2\x64\Release\PSUI.cso
+C:\Users\Shin\Desktop\ImBo_Projects\ImBo_Client2\IMBO_MAINFRAME\PSWater.hlsl(32,19-53): warning X3576: semantics in type overridden by variable/function or enclosing type
+  
+  compilation object save succeeded; see C:\Users\Shin\Desktop\ImBo_Projects\ImBo_Client2\x64\Release\PSWater.cso
+  compilation object save succeeded; see C:\Users\Shin\Desktop\ImBo_Projects\ImBo_Client2\x64\Release\VSAnimationObject.cso
+  compilation object save succeeded; see C:\Users\Shin\Desktop\ImBo_Projects\ImBo_Client2\x64\Release\VSBoundingBox.cso
+  compilation object save succeeded; see C:\Users\Shin\Desktop\ImBo_Projects\ImBo_Client2\x64\Release\VSCapsuleLight.cso
+  compilation object save succeeded; see C:\Users\Shin\Desktop\ImBo_Projects\ImBo_Client2\x64\Release\VSCombine.cso
+  compilation object save succeeded; see C:\Users\Shin\Desktop\ImBo_Projects\ImBo_Client2\x64\Release\VSCoordinateSys.cso
+  compilation object save succeeded; see C:\Users\Shin\Desktop\ImBo_Projects\ImBo_Client2\x64\Release\VSDebugDepthTexture.cso
+  compilation object save succeeded; see C:\Users\Shin\Desktop\ImBo_Projects\ImBo_Client2\x64\Release\VSDebugTexture.cso
+  compilation object save succeeded; see C:\Users\Shin\Desktop\ImBo_Projects\ImBo_Client2\x64\Release\VSDefault.cso
+  compilation object save succeeded; see C:\Users\Shin\Desktop\ImBo_Projects\ImBo_Client2\x64\Release\VSDirectionalLight.cso
+  compilation object save succeeded; see C:\Users\Shin\Desktop\ImBo_Projects\ImBo_Client2\x64\Release\VSInctancing.cso
+  compilation object save succeeded; see C:\Users\Shin\Desktop\ImBo_Projects\ImBo_Client2\x64\Release\VSNaviObject.cso
+  compilation object save succeeded; see C:\Users\Shin\Desktop\ImBo_Projects\ImBo_Client2\x64\Release\VSPointLight.cso
+  compilation object save succeeded; see C:\Users\Shin\Desktop\ImBo_Projects\ImBo_Client2\x64\Release\VSPostProcessing.cso
+  compilation object save succeeded; see C:\Users\Shin\Desktop\ImBo_Projects\ImBo_Client2\x64\Release\VSRayTrace.cso
+  compilation object save succeeded; see C:\Users\Shin\Desktop\ImBo_Projects\ImBo_Client2\x64\Release\VSRefraction.cso
+  compilation object save succeeded; see C:\Users\Shin\Desktop\ImBo_Projects\ImBo_Client2\x64\Release\VSSkyBox.cso
+  compilation object save succeeded; see C:\Users\Shin\Desktop\ImBo_Projects\ImBo_Client2\x64\Release\VSSpotLight.cso
+  compilation object save succeeded; see C:\Users\Shin\Desktop\ImBo_Projects\ImBo_Client2\x64\Release\VSSSRF.cso
+  compilation object save succeeded; see C:\Users\Shin\Desktop\ImBo_Projects\ImBo_Client2\x64\Release\VSTerrain.cso
+  compilation object save succeeded; see C:\Users\Shin\Desktop\ImBo_Projects\ImBo_Client2\x64\Release\VSTessPlane.cso
+  compilation object save succeeded; see C:\Users\Shin\Desktop\ImBo_Projects\ImBo_Client2\x64\Release\VSDeferred.cso
+  compilation object save succeeded; see C:\Users\Shin\Desktop\ImBo_Projects\ImBo_Client2\x64\Release\VSUI.cso
+  compilation object save succeeded; see C:\Users\Shin\Desktop\ImBo_Projects\ImBo_Client2\x64\Release\VSWater.cso
+  stdafx.cpp
+C:\Program Files (x86)\Windows Kits\8.1\Include\um\dbghelp.h(1544): warning C4091: 'typedef ': 변수를 선언하지 않으면 '' 왼쪽은 무시됩니다.
+C:\Program Files (x86)\Windows Kits\8.1\Include\um\dbghelp.h(3190): warning C4091: 'typedef ': 변수를 선언하지 않으면 '' 왼쪽은 무시됩니다.
+c:\users\shin\desktop\imbo_projects\assets\import\lowlib\Log.h(18): warning C4996: 'vswprintf': function has been changed to conform with the ISO C standard, adding an extra character count parameter. To use the traditional Microsoft version, set _CRT_NON_CONFORMING_SWPRINTFS.
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\corecrt_wstdio.h(1835): note: 'vswprintf' 선언을 참조하십시오.
+c:\users\shin\desktop\imbo_projects\assets\import\lowlib\Log.h(22): warning C4996: '_snwprintf': This function or variable may be unsafe. Consider using _snwprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\corecrt_wstdio.h(1665): note: '_snwprintf' 선언을 참조하십시오.
+c:\users\shin\desktop\imbo_projects\assets\import\lowlib\Log.h(30): warning C4996: '_snwprintf': This function or variable may be unsafe. Consider using _snwprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\corecrt_wstdio.h(1665): note: '_snwprintf' 선언을 참조하십시오.
+c:\users\shin\desktop\imbo_projects\assets\import\lowlib\Log.h(36): warning C4996: '_wfopen': This function or variable may be unsafe. Consider using _wfopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\corecrt_wstdio.h(129): note: '_wfopen' 선언을 참조하십시오.
+c:\users\shin\desktop\imbo_projects\assets\import\lowlib\Log.h(41): warning C4996: '_snwprintf': This function or variable may be unsafe. Consider using _snwprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\corecrt_wstdio.h(1665): note: '_snwprintf' 선언을 참조하십시오.
+c:\users\shin\desktop\imbo_projects\assets\import\lowlib\Log.h(65): warning C4996: 'vswprintf': function has been changed to conform with the ISO C standard, adding an extra character count parameter. To use the traditional Microsoft version, set _CRT_NON_CONFORMING_SWPRINTFS.
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\corecrt_wstdio.h(1835): note: 'vswprintf' 선언을 참조하십시오.
+c:\users\shin\desktop\imbo_projects\assets\import\lowlib\Log.h(69): warning C4996: '_snwprintf': This function or variable may be unsafe. Consider using _snwprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\corecrt_wstdio.h(1665): note: '_snwprintf' 선언을 참조하십시오.
+c:\users\shin\desktop\imbo_projects\assets\import\lowlib\Log.h(77): warning C4996: '_snwprintf': This function or variable may be unsafe. Consider using _snwprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\corecrt_wstdio.h(1665): note: '_snwprintf' 선언을 참조하십시오.
+c:\users\shin\desktop\imbo_projects\assets\import\lowlib\Log.h(83): warning C4996: '_wfopen': This function or variable may be unsafe. Consider using _wfopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\corecrt_wstdio.h(129): note: '_wfopen' 선언을 참조하십시오.
+c:\users\shin\desktop\imbo_projects\assets\import\lowlib\Log.h(88): warning C4996: '_snwprintf': This function or variable may be unsafe. Consider using _snwprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\corecrt_wstdio.h(1665): note: '_snwprintf' 선언을 참조하십시오.
+c:\users\shin\desktop\imbo_projects\imbo_client2\imbo_mainframe\Function.h(32): warning C4554: '|': 연산자 우선 순위에 오류가 있는지 확인하십시오. 괄호를 사용하여 우선 순위를 명확하게 지정하십시오.
+c:\users\shin\desktop\imbo_projects\imbo_client2\imbo_mainframe\Function.h(48): warning C4996: 'wcstombs': This function or variable may be unsafe. Consider using wcstombs_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\stdlib.h(1008): note: 'wcstombs' 선언을 참조하십시오.
+c:\users\shin\desktop\imbo_projects\imbo_client2\imbo_mainframe\Function.h(62): warning C4996: 'mbstowcs': This function or variable may be unsafe. Consider using mbstowcs_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\stdlib.h(920): note: 'mbstowcs' 선언을 참조하십시오.
+c:\users\shin\desktop\imbo_projects\imbo_client2\imbo_mainframe\../../Server/Protocol.h(397): warning C4091: 'typedef ': 변수를 선언하지 않으면 '_PROTOCOL' 왼쪽은 무시됩니다.
+c:\users\shin\desktop\imbo_projects\imbo_client2\imbo_mainframe\../../Server/PT_WritePacket.h(400): warning C4244: '인수': 'FLOAT'에서 'DWORD_PTR'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\shin\desktop\imbo_projects\imbo_client2\imbo_mainframe\../../Server/PT_WritePacket.h(401): warning C4244: '인수': 'FLOAT'에서 'DWORD_PTR'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\shin\desktop\imbo_projects\imbo_client2\imbo_mainframe\../../Server/PT_WritePacket.h(402): warning C4244: '인수': 'FLOAT'에서 'DWORD_PTR'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\shin\desktop\imbo_projects\imbo_client2\imbo_mainframe\../../Server/PT_WritePacket.h(566): warning C4244: '인수': 'DWORD_PTR'에서 'INT'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\shin\desktop\imbo_projects\imbo_client2\imbo_mainframe\../../Server/PT_WritePacket.h(590): warning C4244: '인수': 'DWORD_PTR'에서 'INT'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\shin\desktop\imbo_projects\imbo_client2\imbo_mainframe\NaviVertex.h(11): warning C4267: 'return': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  SCLobby.cpp
+SCLobby.cpp(82): warning C4244: '초기화 중': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+SCLobby.cpp(83): warning C4267: '초기화 중': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+SCLobby.cpp(224): warning C4244: '초기화 중': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  NaviMesh.cpp
+  NaviObject.cpp
+  NaviObjectManager.cpp
+NaviObjectManager.cpp(102): warning C4267: '인수': 'size_t'에서 'UINT'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+NaviObjectManager.cpp(341): warning C4101: 'pMenuName' :참조되지 않은 지역 변수입니다.
+  NaviVertex.cpp
+  SCTitle.cpp
+  ElfSkillArrow.cpp
+  FinalRenderer.cpp
+  HpBar.cpp
+  LabClientSession.cpp
+  LesserGiant.cpp
+  EffectMgr.cpp
+  EffectRenderCont.cpp
+  MyEffect.cpp
+  PTProc.cpp
+  SelectObj.cpp
+  ClickButton.cpp
+  ImageUI.cpp
+  SCHeroSel.cpp
+SCHeroSel.cpp(191): warning C4800: 'int': 'true' 또는 'false'로 bool 값을 강제하고 있습니다(성능 경고).
+SCHeroSel.cpp(330): warning C4800: 'BOOL': 'true' 또는 'false'로 bool 값을 강제하고 있습니다(성능 경고).
+SCHeroSel.cpp(355): warning C4800: 'BOOL': 'true' 또는 'false'로 bool 값을 강제하고 있습니다(성능 경고).
+SCHeroSel.cpp(382): warning C4800: 'BOOL': 'true' 또는 'false'로 bool 값을 강제하고 있습니다(성능 경고).
+SCHeroSel.cpp(438): warning C4267: '=': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+SCHeroSel.cpp(463): warning C4800: 'BOOL': 'true' 또는 'false'로 bool 값을 강제하고 있습니다(성능 경고).
+  AnimateComponent.cpp
+  컴파일하고 있습니다...
+  Animater.cpp
+Animater.cpp(1): warning C4067: 전처리기 지시문 다음에 예기치 않은 토큰이 있습니다. 줄 바꿈 문자가 필요합니다.
+  AnimationData.cpp
+  AnimationInfo.cpp
+AnimationInfo.cpp(7): warning C4267: '=': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+AnimationInfo.cpp(72): warning C4244: '인수': 'float'에서 'size_t'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+AnimationInfo.cpp(95): warning C4244: '인수': 'float'에서 'size_t'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+AnimationInfo.cpp(116): warning C4244: '초기화 중': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+AnimationInfo.cpp(138): warning C4267: '인수': 'size_t'에서 'UINT'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  AORenderer.cpp
+  Bloom.cpp
+  BloomDownScale.cpp
+  Blur.cpp
+  BoundingBox.cpp
+BoundingBox.cpp(18): warning C4244: '인수': 'utag'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+BoundingBox.cpp(31): warning C4244: '인수': 'utag'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  BoundingBoxMesh.cpp
+  Buffer.cpp
+  Camera.cpp
+  CameraMgr.cpp
+  CapsuleLight.cpp
+  CapsuleLightMesh.cpp
+  Component.cpp
+  ComputeShader.cpp
+  CoordinateSys.cpp
+  CoordinateSysMesh.cpp
+  Debuger.cpp
+Debuger.cpp(237): warning C4996: 'vswprintf': function has been changed to conform with the ISO C standard, adding an extra character count parameter. To use the traditional Microsoft version, set _CRT_NON_CONFORMING_SWPRINTFS.
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\corecrt_wstdio.h(1835): note: 'vswprintf' 선언을 참조하십시오.
+Debuger.cpp(338): warning C4996: 'mbstowcs': This function or variable may be unsafe. Consider using mbstowcs_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\stdlib.h(920): note: 'mbstowcs' 선언을 참조하십시오.
+Debuger.cpp(343): warning C4996: 'mbstowcs': This function or variable may be unsafe. Consider using mbstowcs_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\stdlib.h(920): note: 'mbstowcs' 선언을 참조하십시오.
+Debuger.cpp(353): warning C4996: 'vswprintf': function has been changed to conform with the ISO C standard, adding an extra character count parameter. To use the traditional Microsoft version, set _CRT_NON_CONFORMING_SWPRINTFS.
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\corecrt_wstdio.h(1835): note: 'vswprintf' 선언을 참조하십시오.
+Debuger.cpp(373): warning C4244: '인수': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+Debuger.cpp(374): warning C4244: '인수': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+Debuger.cpp(370): warning C4996: '_swprintf': This function or variable may be unsafe. Consider using _swprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\corecrt_wstdio.h(1444): note: '_swprintf' 선언을 참조하십시오.
+Debuger.cpp(371): warning C4996: '_swprintf': This function or variable may be unsafe. Consider using _swprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\corecrt_wstdio.h(1444): note: '_swprintf' 선언을 참조하십시오.
+  DebugFontData.cpp
+  컴파일하고 있습니다...
+  DebugRenderContainer.cpp
+  DebugTexture.cpp
+  DebugTextureData.cpp
+  DebugTextureMesh.cpp
+  DirectionalLight.cpp
+  DirectionalLightMesh.cpp
+  DirectoryFinder.cpp
+DirectoryFinder.cpp(33): warning C4267: '인수': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+DirectoryFinder.cpp(54): warning C4267: '=': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  DirectXFramework.cpp
+  DXObject.cpp
+  FbxJointData.cpp
+  FileBasedMesh.cpp
+FileBasedMesh.cpp(168): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\stdio.h(1769): note: 'sprintf' 선언을 참조하십시오.
+FileBasedMesh.cpp(265): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\stdio.h(1769): note: 'sprintf' 선언을 참조하십시오.
+  FileImporter.cpp
+  FreeCamera.cpp
+  GameObject.cpp
+GameObject.cpp(316): warning C4267: '초기화 중': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+GameObject.cpp(317): warning C4267: '초기화 중': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+GameObject.cpp(399): warning C4267: '초기화 중': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+GameObject.cpp(460): warning C4267: '초기화 중': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  GlobalValueManager.cpp
+  IMBO_MAINFRAME.cpp
+  Importer.cpp
+Importer.cpp(93): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+  InputManager.cpp
+  KeyFrame.cpp
+  Light.cpp
+  컴파일하고 있습니다...
+  LightRenderer.cpp
+  Loading.cpp
+  LoadingBack.cpp
+  Material.cpp
+  Mesh.cpp
+Mesh.cpp(270): warning C4267: '=': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  NetworkMgr.cpp
+NetworkMgr.cpp(333): warning C4805: '==': 연산에 'BOOL' 형식과 'bool' 형식을 함께 사용하는 것은 안전하지 않습니다.
+  Object.cpp
+  ObjectRenderer.cpp
+  Pawn.cpp
+Pawn.cpp(230): warning C4800: 'BOOL': 'true' 또는 'false'로 bool 값을 강제하고 있습니다(성능 경고).
+  PointLight.cpp
+  PointLightMesh.cpp
+  PostProcessingFinalPass.cpp
+  RenderContainer.cpp
+RenderContainer.cpp(128): warning C4267: '인수': 'size_t'에서 'UINT'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  RenderContainerSeller.cpp
+  Renderer.cpp
+Renderer.cpp(395): warning C4244: '인수': 'LONG'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  RenderShader.cpp
+  ResourceManager.cpp
+ResourceManager.cpp(239): warning C4101: 'pConstantBuffer' :참조되지 않은 지역 변수입니다.
+ResourceManager.cpp(272): warning C4101: 'pMaterial' :참조되지 않은 지역 변수입니다.
+ResourceManager.cpp(458): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\stdio.h(1769): note: 'sprintf' 선언을 참조하십시오.
+ResourceManager.cpp(469): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\stdio.h(1769): note: 'sprintf' 선언을 참조하십시오.
+  RotateComponent.cpp
+  Sampler.cpp
+  Scene.cpp
+Scene.cpp(41): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\string.h(90): note: 'strcat' 선언을 참조하십시오.
+  컴파일하고 있습니다...
+  SCOriTown.cpp
+SCOriTown.cpp(21): warning C4267: '초기화 중': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+SCOriTown.cpp(36): warning C4244: '인수': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+SCOriTown.cpp(43): warning C4244: '인수': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+SCOriTown.cpp(50): warning C4244: '인수': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+SCOriTown.cpp(58): warning C4244: '인수': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+SCOriTown.cpp(67): warning C4244: '인수': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+SCOriTown.cpp(74): warning C4244: '인수': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+SCOriTown.cpp(82): warning C4244: '인수': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+SCOriTown.cpp(187): warning C4800: 'int': 'true' 또는 'false'로 bool 값을 강제하고 있습니다(성능 경고).
+SCOriTown.cpp(260): warning C4244: '인수': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+SCOriTown.cpp(261): warning C4244: '인수': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+SCOriTown.cpp(262): warning C4244: '인수': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  SceneMgr.cpp
+  Shader.cpp
+  Shadow.cpp
+Shadow.cpp(58): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+Shadow.cpp(59): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+Shadow.cpp(98): warning C4244: '초기화 중': 'UINT'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+Shadow.cpp(135): warning C4244: '초기화 중': 'UINT'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+Shadow.cpp(168): warning C4244: '초기화 중': 'UINT'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  SkeletonData.cpp
+  SkyBox.cpp
+  SkyBoxContainer.cpp
+  SkyBoxMesh.cpp
+  Space.cpp
+  SpaceContainer.cpp
+SpaceContainer.cpp(10): warning C4244: '=': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+SpaceContainer.cpp(19): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+SpaceContainer.cpp(19): warning C4244: '인수': 'float'에서 'UINT'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+SpaceContainer.cpp(164): warning C4244: '=': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+SpaceContainer.cpp(168): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+SpaceContainer.cpp(168): warning C4244: '인수': 'float'에서 'UINT'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+SpaceContainer.cpp(256): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+  SpaceMesh.cpp
+  SplattingInfo.cpp
+SplattingInfo.cpp(55): warning C4267: '인수': 'size_t'에서 'UINT'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  SplattingInfoManager.cpp
+SplattingInfoManager.cpp(71): warning C4267: '인수': 'size_t'에서 'UINT'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+SplattingInfoManager.cpp(87): warning C4267: '=': 'size_t'에서 'UINT'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+SplattingInfoManager.cpp(124): warning C4267: '=': 'size_t'에서 'UINT'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+SplattingInfoManager.cpp(157): warning C4267: '=': 'size_t'에서 'UINT'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  SpotLight.cpp
+  SpotLightMesh.cpp
+  SSLR.cpp
+SSLR.cpp(65): warning C4800: 'int': 'true' 또는 'false'로 bool 값을 강제하고 있습니다(성능 경고).
+  SSRF.cpp
+SSRF.cpp(119): warning C4838: 'LONG'에서 'UINT'(으)로의 변환에는 축소 변환이 필요합니다.
+SSRF.cpp(168): warning C4244: '=': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  Terrain.cpp
+Terrain.cpp(54): warning C4244: '인수': 'UINT'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  TerrainContainer.cpp
+TerrainContainer.cpp(241): warning C4101: 'path' :참조되지 않은 지역 변수입니다.
+TerrainContainer.cpp(368): warning C4244: '인수': 'UINT'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+TerrainContainer.cpp(375): warning C4244: '=': 'float'에서 'byte'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+TerrainContainer.cpp(376): warning C4244: '=': 'float'에서 'byte'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+TerrainContainer.cpp(377): warning C4244: '=': 'float'에서 'byte'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+TerrainContainer.cpp(470): warning C4101: 'width' :참조되지 않은 지역 변수입니다.
+TerrainContainer.cpp(530): warning C4244: '인수': 'UINT'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+TerrainContainer.cpp(557): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+TerrainContainer.cpp(558): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+TerrainContainer.cpp(570): warning C4244: '인수': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  TerrainMesh.cpp
+  컴파일하고 있습니다...
+  TessPlaneMesh.cpp
+  DeferredMesh.cpp
+  Texture.cpp
+Texture.cpp(243): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+  Timer.cpp
+  TxtImporter.cpp
+  UIObject.cpp
+  UIRenderer.cpp
+  Updater.cpp
+Updater.cpp(65): warning C4244: '인수': 'UINT'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+Updater.cpp(77): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  WaterMesh.cpp
+  WaterRenderer.cpp
+  코드를 생성하고 있습니다.
+c:\users\shin\desktop\imbo_projects\imbo_client2\imbo_mainframe\inputmanager.cpp(327): warning C4715: 'CInputManager::MouseLeftOnlyDown': 모든 제어 경로에서 값을 반환하지는 않습니다.
+c:\users\shin\desktop\imbo_projects\imbo_client2\imbo_mainframe\gameobject.cpp(229): warning C4715: 'CGameObject::IsCollision': 모든 제어 경로에서 값을 반환하지는 않습니다.
+c:\users\shin\desktop\imbo_projects\imbo_client2\imbo_mainframe\resourcemanager.cpp(447): warning C4715: 'CResourceManager::CreateMultiMesh': 모든 제어 경로에서 값을 반환하지는 않습니다.
+  All 7219 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  코드를 생성했습니다.
+  IMBO_MAINFRAME.vcxproj -> C:\Users\Shin\Desktop\ImBo_Projects\ImBo_Client2\x64\Release\IMBO_MAINFRAME.exe
