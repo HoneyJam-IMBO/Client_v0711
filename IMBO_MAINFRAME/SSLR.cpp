@@ -93,7 +93,7 @@ void CSSLR::Excute( CCamera*pCamera, ID3D11RenderTargetView* pLightAccumRTV, ID3
 			XMVECTOR vSunPos = fOffsetSunPos * xmvSunDir;
 			XMFLOAT3 xmf3Eye;
 			XMStoreFloat3(&xmf3Eye, pCamera->GetPosition());
-			XMVECTOR offset = XMVectorSet(xmf3Eye.x, 0.f, xmf3Eye.z, 0.f);
+			XMVECTOR offset = XMVectorSet(xmf3Eye.x, 0.f, xmf3Eye.y, xmf3Eye.z);
 			vSunPos += offset;
 			XMMATRIX mView = pCamera->GetViewMtx();
 			XMMATRIX mProj = pCamera->GetProjectionMtx();
@@ -104,14 +104,17 @@ void CSSLR::Excute( CCamera*pCamera, ID3D11RenderTargetView* pLightAccumRTV, ID3
 			// If the sun is too far out of view we just want to turn off the effect
 			XMFLOAT3 xmf3SunPossSS;
 			XMStoreFloat3(&xmf3SunPossSS, vSunPosSS);
-			float fMaxDist = max(abs(float(xmf3SunPossSS.x)), abs(float(xmf3SunPossSS.y)));
 
-			if (fMaxDist >= fMaxSunDist) {
+			if (abs(long(xmf3SunPossSS.x)) >= fMaxSunDist || abs(long(xmf3SunPossSS.y)) >= fMaxSunDist)
+			{
 				return;
 			}
+
+			float fMaxDist = max(abs(float(xmf3SunPossSS.x)), abs(float(xmf3SunPossSS.y)));
+	
 			XMFLOAT3 vSunColorAtt = xmf3Color;
 			//카메라 각도와 거리를 이용해 태양의 강도를 설정하는 것
-			fMaxSunDist = 1;
+			//fMaxSunDist = 1;
 
 			if (fMaxDist >= 1.0f)
 			{
@@ -160,7 +163,7 @@ void CSSLR::PrepareOcclusion(ID3D11ShaderResourceView * pMiniDepthSRV){
 	GLOBALVALUEMGR->GetDeviceContext()->CSSetShaderResources(0, 1, pClearSRVs);
 	ID3D11UnorderedAccessView* pClearUAV[] = { nullptr };
 	GLOBALVALUEMGR->GetDeviceContext()->CSSetUnorderedAccessViews(0, 1, pClearUAV, (UINT*)&pClearUAV);
-	//DEBUGER->AddTexture(XMFLOAT2(100, 250), XMFLOAT2(250, 400), m_pOcclusionSRV);
+	DEBUGER->AddTexture(XMFLOAT2(100, 250), XMFLOAT2(250, 400), m_pOcclusionSRV);
 }
 
 void CSSLR::RayTrace( CCamera*pCamera, const XMFLOAT2 & vSunPosSS, const XMFLOAT3 & vSunColor, float fInitDecay, float fDistDecay, float fMaxDeltaLen){

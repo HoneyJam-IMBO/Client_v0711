@@ -545,7 +545,8 @@ XMVECTOR CGameObject::GetLook() {
 	xmvPos.y = m_xmf4x4World._32;
 	xmvPos.z = m_xmf4x4World._33;
 
-	return XMLoadFloat3(&xmvPos);
+	
+	return XMVector3Normalize(XMVectorSet(xmvPos.x, xmvPos.y, xmvPos.z, 1.f));
 }
 XMVECTOR CGameObject::GetPosition() {
 	XMFLOAT3 xmvPos;

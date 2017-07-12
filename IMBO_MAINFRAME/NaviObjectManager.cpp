@@ -303,7 +303,7 @@ void CNaviObjectManager::CreateNaviObject(){
 	//012 가 보이는 index라면!
 	//
 	XMVECTOR v = XMVector3Normalize(XMVector3Cross(p1-p0, p2-p0));
-	XMVECTOR look = XMVector3Normalize(UPDATER->GetCamera()->GetLook());
+	XMVECTOR look = XMVectorSet(0, 1, 0, 1);
 	XMFLOAT4 xmf4DotResult;
 	XMStoreFloat4(&xmf4DotResult, XMVector3Dot(v, look));
 	if (xmf4DotResult.x >= 0) {

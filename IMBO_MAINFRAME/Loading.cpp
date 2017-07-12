@@ -241,7 +241,7 @@ void CLoading::LoadScene_ORITOWN()
 
 	CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/hum3_sk1.dat", L"hum3_sk1");
 
-	LoadScene("../../Assets/SceneResource/FirstTown/FirstTown.scn");
+	LoadScene("../../Assets/SceneResource/test/test.scn");
 
 	RESOURCEMGR->CreateTexture("Bar", _T("../../Assets/Game_UI/HpBar.png"), PS_TEXTURE, BIND_PS);
 	RESOURCEMGR->CreateTexture("Bar_Fill", _T("../../Assets/Game_UI/HpPoint.png"), PS_TEXTURE, BIND_PS);

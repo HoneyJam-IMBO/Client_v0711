@@ -77,6 +77,6 @@ void main(uint3 groupId : SV_GroupID, uint3 groupThreadId : SV_GroupThreadID, ui
 		//AverageLum[0] = max(fFinalLumValue, 0.0001);
 		//float preAvgLum = max(PrevAvgLum[0], 0.0001);
 		float fAdaptedAverageLum = lerp(PrevAvgLum[0], fFinalLumValue, Adaptation);
-		AverageLum[0] = saturate(max(fAdaptedAverageLum, 0.0001));
+		AverageLum[0] = max(fAdaptedAverageLum, 0.0001); //AverageLum[0] = saturate(max(fAdaptedAverageLum, 0.0001));
 	}
 }
