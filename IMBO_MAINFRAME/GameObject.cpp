@@ -56,14 +56,16 @@ void CGameObject::Animate(float fTimeElapsed) {
 void CGameObject::Move(XMVECTOR xmvDir, float fDistance) {
 
 	XMVECTOR pos;
-	pos = GetPosition() + XMVector3Normalize(xmvDir)*fDistance;
+	XMVECTOR dir = XMVector3Normalize(xmvDir)*fDistance;
+	pos = GetPosition() + dir;
 
+	XMVECTOR edgeNormal;
 	//추가 
 	if (m_indexNaviMesh != -1) {
 		XMFLOAT3 xmf3Pos;
 		XMStoreFloat3(&xmf3Pos, pos);
 		//미리 가봐서 
-		if (CNaviObjectManager::IsIntersection(xmf3Pos.x, xmf3Pos.z, m_indexNaviMesh)) {
+		if (CNaviObjectManager::IsIntersection(xmf3Pos.x, xmf3Pos.z, m_indexNaviMesh, edgeNormal)) {
 			//그 자리가 아직 내 navi mesh안이라면
 			xmf3Pos.y = CNaviObjectManager::GetHeight(XMFLOAT2(xmf3Pos.x, xmf3Pos.z), m_indexNaviMesh);
 		}
@@ -79,7 +81,29 @@ void CGameObject::Move(XMVECTOR xmvDir, float fDistance) {
 			else {
 				//만약 내가 navi mesh위에 있지 않다면
 				//나는 이동하지 않는다.
-				pos = GetPosition();
+				XMVECTOR xmvLook = GetLook();
+				XMVECTOR n = edgeNormal;
+				XMVECTOR Sliding = dir - n * XMVector3Dot(dir, edgeNormal);
+				pos = GetPosition() + Sliding;
+				XMStoreFloat3(&xmf3Pos, pos);
+				//미리 가봐서 
+				if (CNaviObjectManager::IsIntersection(xmf3Pos.x, xmf3Pos.z, m_indexNaviMesh, edgeNormal)) {
+					//그 자리가 아직 내 navi mesh안이라면
+					xmf3Pos.y = CNaviObjectManager::GetHeight(XMFLOAT2(xmf3Pos.x, xmf3Pos.z), m_indexNaviMesh);
+				}
+				else {
+					//아니면 index를 새로 구하는데 만약 navi mesh위가 아니라면
+					int new_index = CNaviObjectManager::GetIndex(xmf3Pos.x, xmf3Pos.z, m_indexNaviMesh);
+					if (new_index != -1) {
+						//만약 다른 navi mesh위에 내가 위치하게 됬다면.
+						//navi mesh index를 갱신하고 내 높이도 갱신
+						m_indexNaviMesh = new_index;
+						xmf3Pos.y = CNaviObjectManager::GetHeight(XMFLOAT2(xmf3Pos.x, xmf3Pos.z), m_indexNaviMesh);
+					}
+					else {
+						pos = GetPosition();
+					}
+				}
 			}
 		}
 	}

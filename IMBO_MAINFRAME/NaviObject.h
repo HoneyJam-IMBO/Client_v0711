@@ -27,15 +27,19 @@ public:
 	void DeleteNaviObject(int index);
 
 	float GetHeight(float x, float z);
-	bool IsIntersection(float x, float z);
+	bool IsIntersection(float x, float z, XMVECTOR& edgeNormal);
 
+	vector<XMVECTOR>& GetEdges() { return m_vEdges; }
+	bool GetInterSectEdge(float x, float z, XMVECTOR& out);
 private:
+	void AddEdge(XMVECTOR edge) { m_vEdges.push_back(edge); }
+
 	static int m_NaviObjectIDCount;
 	int m_NaviObjectID{ 0 };
 
 	vector<CNaviVertex*> m_vpNaviVertex;
 	vector<CNaviObject*> m_vBorderNaviObject;
-
+	vector<XMVECTOR> m_vEdges;
 	XMFLOAT4 m_xmf4Plane;
 public:
 	CNaviObject();

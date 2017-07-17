@@ -220,22 +220,23 @@ int CNaviObjectManager::GetValiableIndex(XMVECTOR pos){
 	XMFLOAT3 xmf3Pos;
 	XMStoreFloat3(&xmf3Pos, pos);
 	for (auto pNaviObject : m_vNaviObject) {
-		if (pNaviObject->IsIntersection(xmf3Pos.x, xmf3Pos.z))
+		if (pNaviObject->IsIntersection(xmf3Pos.x, xmf3Pos.z, XMVECTOR()))
 			return pNaviObject->GetNaviObjectID();
 	}
 
 	return -1;
 }
-bool CNaviObjectManager::IsIntersection(float x, float z, int index){
+bool CNaviObjectManager::IsIntersection(float x, float z, int index, XMVECTOR& edgeNormal){
 	if (false == IsValiableIndex(index)) return false;
 
-	return m_vNaviObject[index]->IsIntersection(x, z);
+	return m_vNaviObject[index]->IsIntersection(x, z, edgeNormal);
 }
+
 int CNaviObjectManager::GetIndex(float x, float z, int index){
 	if (false == IsValiableIndex(index)) return -1;
 
 	for (auto pNaviObject : m_vNaviObject[index]->GetBorderNaviObjects()) {
-		if (pNaviObject->IsIntersection(x, z)) return pNaviObject->GetNaviObjectID();
+		if (pNaviObject->IsIntersection(x, z, XMVECTOR())) return pNaviObject->GetNaviObjectID();
 	}
 	return -1;
 }

@@ -65,6 +65,14 @@ CNaviObject * CNaviObject::CreateNaviObject(CNaviVertex* idx0, CNaviVertex* idx1
 	XMStoreFloat4(&xmf4Plane, XMPlaneFromPoints(xmvPos0, xmvPos1, xmvPos2));
 	pNaviObejct->SetPlane(xmf4Plane);
 
+	XMVECTOR vEdge;
+	vEdge = xmvPos1 - xmvPos0;
+	pNaviObejct->AddEdge(vEdge);
+	vEdge = xmvPos2 - xmvPos1;
+	pNaviObejct->AddEdge(vEdge);
+	vEdge = xmvPos0 - xmvPos2;
+	pNaviObejct->AddEdge(vEdge);
+	
 	return pNaviObejct;
 }
 void CNaviObject::DeleteVertexCallback(CNaviVertex* pDeleteVertex){
@@ -116,7 +124,7 @@ float CNaviObject::GetHeight(float x, float z){
 	return (-a*x -c*z - d)/b;
 }
 
-bool CNaviObject::IsIntersection(float x, float z){
+bool CNaviObject::IsIntersection(float x, float z, XMVECTOR& edgeNormal){
 
 	float y = GetHeight(x, z);
 	XMVECTOR vPoint = XMVectorSet(x, y, z, 1.0f);
@@ -132,19 +140,65 @@ bool CNaviObject::IsIntersection(float x, float z){
 	XMVECTOR vEdge, vEN, vDir;
 	XMFLOAT4 vResult;
 
-	vEdge = v1 - v0;
+	vEdge = m_vEdges[0];
+	vEN = XMVector3Cross(vEdge, n);
+	vDir = v0 - vPoint;
+	XMStoreFloat4(&vResult, XMVector3Dot(vDir, vEN));
+	if (vResult.x < 0.f) {
+		edgeNormal = XMVector3Normalize(vEN);
+		return false;
+	}
+
+	vEdge = m_vEdges[1];
+	vEN = XMVector3Cross(vEdge, n);
+	vDir = v1 - vPoint;
+	XMStoreFloat4(&vResult, XMVector3Dot(vDir, vEN));
+	if (vResult.x < 0.f) {
+		edgeNormal = XMVector3Normalize(vEN);
+		return false;
+	}
+
+	vEdge = m_vEdges[2];
+	vEN = XMVector3Cross(vEdge, n);
+	vDir = v2 - vPoint;
+	XMStoreFloat4(&vResult, XMVector3Dot(vDir, vEN));
+	if (vResult.x < 0.f) {
+		edgeNormal = XMVector3Normalize(vEN);
+		return false;
+	}
+
+	return true;
+}
+
+bool CNaviObject::GetInterSectEdge(float x, float z, XMVECTOR& out){
+
+	float y = GetHeight(x, z);
+	XMVECTOR vPoint = XMVectorSet(x, y, z, 1.0f);
+
+	XMVECTOR v0, v1, v2;
+	v0 = XMLoadFloat3(&m_vpNaviVertex[0]->GetPosition());
+	v1 = XMLoadFloat3(&m_vpNaviVertex[1]->GetPosition());
+	v2 = XMLoadFloat3(&m_vpNaviVertex[2]->GetPosition());
+
+	XMVECTOR n = XMLoadFloat4(&m_xmf4Plane);
+	XMVector3Normalize(n);
+
+	XMVECTOR vEdge, vEN, vDir;
+	XMFLOAT4 vResult;
+
+	vEdge = m_vEdges[0];
 	vEN = XMVector3Cross(vEdge, n);
 	vDir = v0 - vPoint;
 	XMStoreFloat4(&vResult, XMVector3Dot(vDir, vEN));
 	if (vResult.x < 0.f) return false;
 
-	vEdge = v2 - v1;
+	vEdge = m_vEdges[1];
 	vEN = XMVector3Cross(vEdge, n);
 	vDir = v1 - vPoint;
 	XMStoreFloat4(&vResult, XMVector3Dot(vDir, vEN));
 	if (vResult.x < 0.f)return false;
 
-	vEdge = v0 - v2;
+	vEdge = m_vEdges[2];
 	vEN = XMVector3Cross(vEdge, n);
 	vDir = v2 - vPoint;
 	XMStoreFloat4(&vResult, XMVector3Dot(vDir, vEN));

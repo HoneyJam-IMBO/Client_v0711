@@ -35,7 +35,8 @@ public:
 	static bool IsValiableIndex(int index);
 	static XMVECTOR GetNaviMeshPosition(int index);
 	static int GetValiableIndex(XMVECTOR pos);
-	static bool IsIntersection(float x, float z, int index);
+	static bool IsIntersection(float x, float z, int index, XMVECTOR& edgeNormal);
+	//static bool GetIntersectEdge(float x, float z, int index, XMVECTOR& edge);
 	static int GetIndex(float x, float z, int index);
 
 	static void LoadData();
