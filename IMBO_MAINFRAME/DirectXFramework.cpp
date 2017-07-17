@@ -133,6 +133,7 @@ void CDirectXFramework::InitSingleton(HINSTANCE hInstance, HWND hWnd)
 
 #ifdef NO_SERVER
 	SCENEMGR->ChangeScene(SCN_ORITOWN);
+	//SCENEMGR->ChangeScene(SCN_HEROSEL);
 	return;
 #endif
 
@@ -149,7 +150,7 @@ void CDirectXFramework::Make_Camera()
 		, float(GLOBALVALUEMGR->GetrcClient().right) / float(GLOBALVALUEMGR->GetrcClient().bottom)// 종횡비
 		, NEAR_PLANE, FAR_PLANE);// 최대 거리
 
-	XMVECTOR eye = { 0.0f, 2.5f, 3.0f, 0.0f };
+	XMVECTOR eye = { 0.0f, 12.5f, 13.0f, 0.0f };
 	XMVECTOR at = { 0.0f, 2.30f, 0.0f, 0.0f };
 	XMVECTOR up = { 0.0f, 1.0f, 0.0f, 0.0f };
 	m_pCamera->SetLookAt(eye, at, up);

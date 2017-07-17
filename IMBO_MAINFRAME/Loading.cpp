@@ -204,9 +204,16 @@ void CLoading::LoadScene_HEROSEL()
 	RESOURCEMGR->CreateMultiMesh("../../Assets/Scene_HeroSel/SelectElf01F.gjm", "SelectElf01F");
 	RESOURCEMGR->CreateMultiMesh("../../Assets/Scene_HeroSel/SelectHum01M.gjm", "SelectHum01M");
 	RESOURCEMGR->CreateMultiMesh("../../Assets/Scene_HeroSel/SelectHum02F.gjm", "SelectHum02F");
+
+	RESOURCEMGR->CreateMultiMesh("../../Assets/Scene_HeroSel/SelectHum03M.gjm", "SelectHum03M");
+	RESOURCEMGR->CreateMultiMesh("../../Assets/Scene_HeroSel/SelectHum04F.gjm", "SelectHum04F");
+	RESOURCEMGR->CreateMultiMesh("../../Assets/Scene_HeroSel/SelectLup01M.gjm", "SelectLup01M");
 }
 void CLoading::LoadScene_ORITOWN()
 {
+	//4
+	//gjm mesh load
+
 	RESOURCEMGR->CreateTexture("Char_Select_0", _T("../../Assets/Scene_HeroSel/Char_Select_1.jpg"), PS_TEXTURE, BIND_PS);
 	RESOURCEMGR->CreateTexture("Char_Select_1", _T("../../Assets/Scene_HeroSel/Char_Select_2.jpg"), PS_TEXTURE, BIND_PS);
 	RESOURCEMGR->CreateTexture("Char_Select_2", _T("../../Assets/Scene_HeroSel/Char_Select_3.jpg"), PS_TEXTURE, BIND_PS);

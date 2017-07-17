@@ -6,14 +6,11 @@
 bool CPawn::Begin()
 {
 	CGameObject::Begin();
-
-
 	return false;
 }
 
 void CPawn::Animate(float fTimeElapsed)
 {
-
 	if (true == m_bSprit && false == m_bDamaged)
 		KeyInput(fTimeElapsed); //KeyInput(fTimeElapsed);
 	else {

@@ -58,5 +58,10 @@ private:
 private:
 	void	KeyInput();
 	void	CheckCollisionButton();
+
+	void	MouseMoveForCamera();
+private:
+	POINT	m_ptOldCursorPos;
+	float	m_cxDelta{ 0 };
 };
 

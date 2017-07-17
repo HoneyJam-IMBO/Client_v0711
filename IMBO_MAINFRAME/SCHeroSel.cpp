@@ -6,6 +6,8 @@
 #include "LoadingBack.h"
 #include "SelectObj.h"
 
+#include "CameraMgr.h"
+
 
 
 CSCHeroSel::CSCHeroSel(SCENE_ID eID, CDirectXFramework* pFrameWork) : CScene(eID) {
@@ -47,13 +49,13 @@ bool CSCHeroSel::Begin()
 	for (int i = 0; i < 4; ++i)
 	{
 		strName = "Ready_0";
-		pUI = CImageUI::Create(XMLoadFloat2(&XMFLOAT2(WINSIZEX * 0.5f - 150.f + i * 100.f, WINSIZEY * 0.55f)),
+		pUI = CImageUI::Create(XMLoadFloat2(&XMFLOAT2(WINSIZEX * 0.2f, WINSIZEY * 0.5f - 150.f + i * 70.f)),
 			XMLoadFloat2(&XMFLOAT2(20.f, 20.f)), strName, 2.f);
 		m_vecReadyUI.push_back(pUI);
 
 		strName = "Char_Select_N";
-		pUI = CImageUI::Create(XMLoadFloat2(&XMFLOAT2(WINSIZEX * 0.5f - 150.f + i * 100.f, WINSIZEY * 0.5f)),
-			XMLoadFloat2(&XMFLOAT2(20.f, 20.f)), strName, 2.f);
+		pUI = CImageUI::Create(XMLoadFloat2(&XMFLOAT2(WINSIZEX * 0.15f, WINSIZEY * 0.5f - 150.f + i * 70.f)),
+			XMLoadFloat2(&XMFLOAT2(27.f, 27.f)), strName, 2.f);
 		m_vecSelCharUI.push_back(pUI);
 	}
 
@@ -67,7 +69,6 @@ bool CSCHeroSel::Begin()
 	m_pObject->SetActive(false);
 
 	BYTE Packet[MAX_BUFFER_LENGTH] = { 0, };
-
 	INT NETWORK_ID = NETWORKMGR->GetNETWORK_ID();
 
 	return CScene::Begin();
@@ -105,8 +106,10 @@ bool CSCHeroSel::End()
 
 void CSCHeroSel::Animate(float fTimeElapsed)
 {
+	MouseMoveForCamera();
 	UIProc();
 	NetworkProc();
+
 
 	if (m_bSceneChange) {
 		SCENEMGR->ChangeScene(SCN_ORITOWN);
@@ -234,13 +237,19 @@ void CSCHeroSel::SetSelSceneInfo(int slot_id, int input_slot_id, bool is_ready, 
 			m_pObject->Begin();
 			break;
 		case 2:
-			m_pObject->SetActive(false);
+			m_pObject->SetActive(true);
+			m_pObject->SetName("SelectHum03M");
+			m_pObject->Begin();
 			break;
 		case 3:
-			m_pObject->SetActive(false);
+			m_pObject->SetActive(true);
+			m_pObject->SetName("SelectLup01M");
+			m_pObject->Begin();
 			break;
 		case 4:
-			m_pObject->SetActive(false);
+			m_pObject->SetActive(true);
+			m_pObject->SetName("SelectHum04F");
+			m_pObject->Begin();
 			break;
 		case 5:
 			m_pObject->SetActive(true);
@@ -479,4 +488,18 @@ void CSCHeroSel::CheckCollisionButton()
 			//SetSelSceneInfo(SLOT_ID, SLOT_ID, READY, CHARACTER);
 		}
 	}
+}
+
+void CSCHeroSel::MouseMoveForCamera()
+{
+	CCamera* pCam = CCameraMgr::GetInstance()->GetCamera(CAM_FREE);
+
+	//pCam->SetPosition(XMVectorSet(0.f, 1.f, 6.f, 1.f));
+	pCam->SetLookAt(XMVectorSet(0.f, 2.5f, 6.f, 1.f), XMVectorSet(0.f, 1.7f, 0.f, 1.f), XMVectorSet(0.f, 1.f, 0.f, 1.f));
+	//pCam->seta
+
+	/*if (INPUTMGR->MouseLeftDown())
+	{
+		int k = 0;
+	}*/
 }
