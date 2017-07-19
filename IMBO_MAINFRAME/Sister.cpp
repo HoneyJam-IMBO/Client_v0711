@@ -306,29 +306,28 @@ void CSister::RegistToContainer()
 	if (m_pWeapon) m_pWeapon->RegistToContainer();
 }
 
-void CSister::PhisicsLogic(CAtlMap<utag, CAtlArray<CGameObject*>*>* pUtagObjectAtlMap, float fDeltaTime)
+void CSister::PhisicsLogic(map<utag, list<CGameObject*>>& mlpObject, float fDeltaTime)
 {
-	CAtlArray<CGameObject*>* lpCollsion;
-	pUtagObjectAtlMap->Lookup(utag::UTAG_COLLISION, lpCollsion);
-	// move player to mapmesh
-
-	pUtagObjectAtlMap->Lookup(utag::UTAG_BOSS1, lpCollsion);
-	size_t iSize = lpCollsion->GetCount();
-	if (false == m_bDamaged) {
-		for (size_t i = 0; i < iSize; ++i)
+	for (auto pBoss : mlpObject[UTAG_BOSS1]) {
+		if (true == IsCollision(pBoss))
 		{
-			//if (false == (*lpCollsion)[i]->GetActive()) continue;
-			if (true == IsCollision((*lpCollsion)[i]))
-			{
-				m_bDamaged = true;
-				CEffectMgr::GetInstance()->Play_Effect(L"TestBlood", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y + 2.f, m_xmf3Position.z, 1.f),
-					XMVectorSet(0.f, 0.f, 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
+			m_bDamaged = true;
+			CEffectMgr::GetInstance()->Play_Effect(L"TestBlood", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y + 2.f, m_xmf3Position.z, 1.f),
+				XMVectorSet(0.f, 0.f, 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
 
-				m_nAnimNum = ANIM_HIT_F;
-				m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
+			m_nAnimNum = ANIM_HIT_F;
+			m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
 
-				break;
-			}
+			break;
+		}
+	}
+	for (auto pObj : mlpObject[UTAG_COLLISION]) {
+		if (true == IsCollision(pObj))
+		{
+			CEffectMgr::GetInstance()->Play_Effect(L"TestBlood", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y + 2.f, m_xmf3Position.z, 1.f),
+				XMVectorSet(0.f, 0.f, 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
+
+			break;
 		}
 	}
 }

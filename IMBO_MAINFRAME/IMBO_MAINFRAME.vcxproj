@@ -172,11 +172,11 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\..\..\..\0. JH%27s Folder\Study\IBClient\ImBo\Client_v0711\IMBO_MAINFRAME\Bard.h" />
-    <ClInclude Include="..\..\..\..\..\..\0. JH%27s Folder\Study\IBClient\ImBo\Client_v0711\IMBO_MAINFRAME\Dementor.h" />
-    <ClInclude Include="..\..\..\..\..\..\0. JH%27s Folder\Study\IBClient\ImBo\Client_v0711\IMBO_MAINFRAME\Knight.h" />
-    <ClInclude Include="..\..\..\..\..\..\0. JH%27s Folder\Study\IBClient\ImBo\Client_v0711\IMBO_MAINFRAME\Sister.h" />
-    <ClInclude Include="..\..\..\..\..\..\0. JH%27s Folder\Study\IBClient\ImBo\Client_v0711\IMBO_MAINFRAME\Wizard.h" />
+    <ClInclude Include="Bard.h" />
+    <ClInclude Include="Dementor.h" />
+    <ClInclude Include="Knight.h" />
+    <ClInclude Include="Sister.h" />
+    <ClInclude Include="Wizard.h" />
     <ClInclude Include="SCLobby.h" />
     <ClInclude Include="NaviMesh.h" />
     <ClInclude Include="NaviObject.h" />
@@ -295,11 +295,11 @@
     <ClInclude Include="WaterRenderer.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\..\..\..\0. JH%27s Folder\Study\IBClient\ImBo\Client_v0711\IMBO_MAINFRAME\Bard.cpp" />
-    <ClCompile Include="..\..\..\..\..\..\0. JH%27s Folder\Study\IBClient\ImBo\Client_v0711\IMBO_MAINFRAME\Dementor.cpp" />
-    <ClCompile Include="..\..\..\..\..\..\0. JH%27s Folder\Study\IBClient\ImBo\Client_v0711\IMBO_MAINFRAME\Knight.cpp" />
-    <ClCompile Include="..\..\..\..\..\..\0. JH%27s Folder\Study\IBClient\ImBo\Client_v0711\IMBO_MAINFRAME\Sister.cpp" />
-    <ClCompile Include="..\..\..\..\..\..\0. JH%27s Folder\Study\IBClient\ImBo\Client_v0711\IMBO_MAINFRAME\Wizard.cpp" />
+    <ClCompile Include="Bard.cpp" />
+    <ClCompile Include="Dementor.cpp" />
+    <ClCompile Include="Knight.cpp" />
+    <ClCompile Include="Sister.cpp" />
+    <ClCompile Include="Wizard.cpp" />
     <ClCompile Include="SCLobby.cpp" />
     <ClCompile Include="NaviMesh.cpp" />
     <ClCompile Include="NaviObject.cpp" />

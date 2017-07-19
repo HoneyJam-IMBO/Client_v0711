@@ -314,7 +314,7 @@ bool CGameObject::IsCollisionMeshToMesh(CGameObject * pOther){
 	}
 	return val;
 }
-bool CGameObject::IsCollisionAnimToAnim(CGameObject * pOther){
+bool CGameObject::IsCollisionAnimToAnim(CGameObject * pOther) {
 	//animation - animation
 	CAnimater* pOtherAnimater = pOther->GetAnimater();
 	BoundingBox Myaabb = m_pAnimater->GetMainAABB()->GetAABB();
@@ -328,13 +328,13 @@ bool CGameObject::IsCollisionAnimToAnim(CGameObject * pOther){
 		CAnimationInfo* pMyAnimationInfo = m_pAnimater->GetCurAnimationInfo();
 		CAnimationInfo* pOtherAnimationInfo = pOtherAnimater->GetCurAnimationInfo();
 
-		int MynObb = pMyAnimationInfo->GetvActiveOBBs().size();
-		int OthernObb = pOtherAnimationInfo->GetvActiveOBBs().size();
+		int MynObb = pMyAnimationInfo->GetvActiveOBBs().size() + m_pAnimater->GetAnimaterActiveOBBs().size();
+		int OthernObb = pOtherAnimationInfo->GetvActiveOBBs().size() + pOtherAnimater->GetAnimaterActiveOBBs().size();
 		//int nCollisio{ 0 };
 
-		if (MynObb > 0 && OthernObb > 0) {//animater - animater
+		if (MynObb > 0 && OthernObb > 0) {
 			val = false;
-
+			//info - info
 			for (auto pMyOBB : pMyAnimationInfo->GetvActiveOBBs()) {
 				for (auto pOtherOBB : pOtherAnimationInfo->GetvActiveOBBs()) {
 					BoundingOrientedBox Myobb = pMyOBB->GetOBB();
@@ -350,17 +350,87 @@ bool CGameObject::IsCollisionAnimToAnim(CGameObject * pOther){
 					DEBUGER->RegistOBB(Otherobb, pOther->GetUTag());
 
 					if (Myobb.Intersects(Otherobb)) return true;
-						//nCollisio++;
+					//nCollisio++;
 				}
 			}
-			//if (nCollisio > 0)
-			//	val = true;
+			//info - animater
+			for (auto pMyOBB : pMyAnimationInfo->GetvActiveOBBs()) {
+				for (auto pOtherOBB : pOtherAnimater->GetAnimaterActiveOBBs()) {
+					BoundingOrientedBox Myobb = pMyOBB->GetOBB();
+					XMMATRIX xmmtxOffset = m_pAnimater->GetMeshOffsetMtx();
+					XMMATRIX xmmtxFrame = pMyAnimationInfo->GetCurFrameMtx(pMyOBB->GetMyJointIndex());
+					Myobb.Transform(Myobb, xmmtxFrame * xmmtxOffset * GetWorldMtx());
+					DEBUGER->RegistOBB(Myobb, GetUTag());
+
+					BoundingOrientedBox Otherobb = pOtherOBB->GetOBB();
+					xmmtxOffset = pOtherAnimater->GetMeshOffsetMtx();
+					xmmtxFrame = pOtherAnimationInfo->GetCurFrameMtx(pOtherOBB->GetMyJointIndex());
+					Otherobb.Transform(Otherobb, xmmtxFrame * xmmtxOffset * pOther->GetWorldMtx());
+					DEBUGER->RegistOBB(Otherobb, pOther->GetUTag());
+
+					if (Myobb.Intersects(Otherobb)) return true;
+					//nCollisio++;
+				}
+			}
+
+			//animater - info
+			for (auto pMyOBB : m_pAnimater->GetAnimaterActiveOBBs()) {
+				for (auto pOtherOBB : pOtherAnimationInfo->GetvActiveOBBs()) {
+					BoundingOrientedBox Myobb = pMyOBB->GetOBB();
+					XMMATRIX xmmtxOffset = m_pAnimater->GetMeshOffsetMtx();
+					XMMATRIX xmmtxFrame = pMyAnimationInfo->GetCurFrameMtx(pMyOBB->GetMyJointIndex());
+					Myobb.Transform(Myobb, xmmtxFrame * xmmtxOffset * GetWorldMtx());
+					DEBUGER->RegistOBB(Myobb, GetUTag());
+
+					BoundingOrientedBox Otherobb = pOtherOBB->GetOBB();
+					xmmtxOffset = pOtherAnimater->GetMeshOffsetMtx();
+					xmmtxFrame = pOtherAnimationInfo->GetCurFrameMtx(pOtherOBB->GetMyJointIndex());
+					Otherobb.Transform(Otherobb, xmmtxFrame * xmmtxOffset * pOther->GetWorldMtx());
+					DEBUGER->RegistOBB(Otherobb, pOther->GetUTag());
+
+					if (Myobb.Intersects(Otherobb)) return true;
+					//nCollisio++;
+				}
+			}
+			//animater - animater
+			for (auto pMyOBB : m_pAnimater->GetAnimaterActiveOBBs()) {
+				for (auto pOtherOBB : pOtherAnimater->GetAnimaterActiveOBBs()) {
+					BoundingOrientedBox Myobb = pMyOBB->GetOBB();
+					XMMATRIX xmmtxOffset = m_pAnimater->GetMeshOffsetMtx();
+					XMMATRIX xmmtxFrame = pMyAnimationInfo->GetCurFrameMtx(pMyOBB->GetMyJointIndex());
+					Myobb.Transform(Myobb, xmmtxFrame * xmmtxOffset * GetWorldMtx());
+					DEBUGER->RegistOBB(Myobb, GetUTag());
+
+					BoundingOrientedBox Otherobb = pOtherOBB->GetOBB();
+					xmmtxOffset = pOtherAnimater->GetMeshOffsetMtx();
+					xmmtxFrame = pOtherAnimationInfo->GetCurFrameMtx(pOtherOBB->GetMyJointIndex());
+					Otherobb.Transform(Otherobb, xmmtxFrame * xmmtxOffset * pOther->GetWorldMtx());
+					DEBUGER->RegistOBB(Otherobb, pOther->GetUTag());
+
+					if (Myobb.Intersects(Otherobb)) return true;
+					//nCollisio++;
+				}
+			}
+
+
 		}
-		else if (MynObb > 0) {//animater - aabb
+		else if (MynObb > 0) {
 			val = false;
 			//int nCollisio{ 0 };
+			//info - aabb
 			CAnimationInfo* pMyAnimationInfo = m_pAnimater->GetCurAnimationInfo();
-			for (auto pMyOBB : m_pAnimater->GetCurAnimationInfo()->GetvActiveOBBs()) {
+			for (auto pMyOBB : pMyAnimationInfo->GetvActiveOBBs()) {
+
+				BoundingOrientedBox Myobb = pMyOBB->GetOBB();
+				XMMATRIX xmmtxOffset = m_pAnimater->GetMeshOffsetMtx();
+				XMMATRIX xmmtxFrame = pMyAnimationInfo->GetCurFrameMtx(pMyOBB->GetMyJointIndex());
+				Myobb.Transform(Myobb, xmmtxFrame * xmmtxOffset * GetWorldMtx());
+				DEBUGER->RegistOBB(Myobb, GetUTag());
+				if (Otheraabb.Intersects(Myobb)) return true;
+				//	nCollisio++;
+			}
+			//aniamter - aabb
+			for (auto pMyOBB : m_pAnimater->GetAnimaterActiveOBBs()) {
 
 				BoundingOrientedBox Myobb = pMyOBB->GetOBB();
 				XMMATRIX xmmtxOffset = m_pAnimater->GetMeshOffsetMtx();
@@ -373,11 +443,24 @@ bool CGameObject::IsCollisionAnimToAnim(CGameObject * pOther){
 			//if (nCollisio > 0)
 			//	val = true;
 		}
-		else if (OthernObb > 0) {//aabb - animater
+		else if (OthernObb > 0) {
 			val = false;
 			int nCollisio{ 0 };
+			//aabb - info
 			CAnimationInfo* pOtherAnimationInfo = pOtherAnimater->GetCurAnimationInfo();
-			for (auto pOtherOBB : pOtherAnimater->GetCurAnimationInfo()->GetvActiveOBBs()) {
+			for (auto pOtherOBB : pOtherAnimationInfo->GetvActiveOBBs()) {
+
+				BoundingOrientedBox Otherobb = pOtherOBB->GetOBB();
+				XMMATRIX xmmtxOffset = pOtherAnimater->GetMeshOffsetMtx();
+				XMMATRIX xmmtxFrame = pOtherAnimationInfo->GetCurFrameMtx(pOtherOBB->GetMyJointIndex());
+				Otherobb.Transform(Otherobb, xmmtxFrame * xmmtxOffset * pOther->GetWorldMtx());
+				DEBUGER->RegistOBB(Otherobb, pOther->GetUTag());
+
+				if (Myaabb.Intersects(Otherobb)) return true;
+				//	nCollisio++;
+			}
+			//aabb - animater
+			for (auto pOtherOBB : pOtherAnimater->GetAnimaterActiveOBBs()) {
 
 				BoundingOrientedBox Otherobb = pOtherOBB->GetOBB();
 				XMMATRIX xmmtxOffset = pOtherAnimater->GetMeshOffsetMtx();
@@ -395,7 +478,7 @@ bool CGameObject::IsCollisionAnimToAnim(CGameObject * pOther){
 	}
 	return val;
 }
-bool CGameObject::IsCollisionAnimToMesh(CGameObject * pOther){
+bool CGameObject::IsCollisionAnimToMesh(CGameObject * pOther) {
 
 	CMesh* pOtherMesh = pOther->GetRenderContainer()->GetMesh(0);
 	CAnimationInfo* pMyAnimationInfo = m_pAnimater->GetCurAnimationInfo();
@@ -411,11 +494,12 @@ bool CGameObject::IsCollisionAnimToMesh(CGameObject * pOther){
 
 		//animation - mesh
 		if (m_pAnimater) {
-			int MynObb = pMyAnimationInfo->GetvActiveOBBs().size();
+			int MynObb = pMyAnimationInfo->GetvActiveOBBs().size() + m_pAnimater->GetAnimaterActiveOBBs().size();
 			int OthernObb = pOtherMesh->GetOBBCnt();
 			//int nCollisio{ 0 };
 
-			if (MynObb > 0 && OthernObb > 0) {//animater - mesh
+			if (MynObb > 0 && OthernObb > 0) {
+				//info - mesh
 				val = false;
 				size_t nOtherObb = pOtherMesh->GetvOBBObject().size();
 				for (auto pOBB : pMyAnimationInfo->GetvActiveOBBs()) {
@@ -434,10 +518,28 @@ bool CGameObject::IsCollisionAnimToMesh(CGameObject * pOther){
 						//	nCollisio++;
 					}
 				}
-				//if (nCollisio > 0)
-				//	val = true;
+				//animater - mesh
+				for (auto pOBB : m_pAnimater->GetAnimaterActiveOBBs()) {
+					for (size_t j = 0; j < nOtherObb; ++j) {
+						BoundingOrientedBox Myobb = pOBB->GetOBB();
+						XMMATRIX xmmtxOffset = m_pAnimater->GetMeshOffsetMtx();
+						XMMATRIX xmmtxFrame = pMyAnimationInfo->GetCurFrameMtx(pOBB->GetMyJointIndex());
+						Myobb.Transform(Myobb, xmmtxFrame * xmmtxOffset * GetWorldMtx());
+						DEBUGER->RegistOBB(Myobb, UTAG_COLLISION);
+
+						BoundingOrientedBox Otherobb = pOtherMesh->GetvOBBObject()[j].GetOBB();
+						Otherobb.Transform(Otherobb, pOther->GetWorldMtx());
+						DEBUGER->RegistOBB(Otherobb, UTAG_COLLISION);
+
+						if (Myobb.Intersects(Otherobb)) return true;
+						//	nCollisio++;
+					}
+				}
+
+				//
 			}
-			else if (MynObb > 0) {//animater - aabb
+			else if (MynObb > 0) {
+				//info - aabb
 				val = false;
 				//int nCollisio{ 0 };
 				for (auto pOBB : pMyAnimationInfo->GetvActiveOBBs()) {
@@ -448,7 +550,18 @@ bool CGameObject::IsCollisionAnimToMesh(CGameObject * pOther){
 					Myobb.Transform(Myobb, xmmtxFrame * xmmtxOffset * GetWorldMtx());
 					DEBUGER->RegistOBB(Myobb, UTAG_COLLISION);
 					if (Otheraabb.Intersects(Myobb)) return true;
-						//nCollisio++;
+					//nCollisio++;
+				}
+				//animater - aabb
+				for (auto pOBB : m_pAnimater->GetAnimaterActiveOBBs()) {
+
+					BoundingOrientedBox Myobb = pOBB->GetOBB();
+					XMMATRIX xmmtxOffset = m_pAnimater->GetMeshOffsetMtx();
+					XMMATRIX xmmtxFrame = pMyAnimationInfo->GetCurFrameMtx(pOBB->GetMyJointIndex());
+					Myobb.Transform(Myobb, xmmtxFrame * xmmtxOffset * GetWorldMtx());
+					DEBUGER->RegistOBB(Myobb, UTAG_COLLISION);
+					if (Otheraabb.Intersects(Myobb)) return true;
+					//nCollisio++;
 				}
 				//if (nCollisio > 0)
 				//	val = true;
@@ -471,14 +584,32 @@ bool CGameObject::IsCollisionAnimToMesh(CGameObject * pOther){
 		//mesh - animation
 		else if (pOther->GetAnimater()) {
 			CAnimater* pOtherAniamter = pOther->GetAnimater();
-			int MynObb = GetRenderContainer()->GetMesh(0)->GetOBBCnt();
-			int OthernObb = pOtherAniamter->GetCurAnimationInfo()->GetvActiveOBBs().size();
-			//int nCollisio{ 0 };
 			CAnimationInfo* pOtherAnimationInfo = pOtherAniamter->GetCurAnimationInfo();
+			int MynObb = GetRenderContainer()->GetMesh(0)->GetOBBCnt();
+			int OthernObb = pOtherAnimationInfo->GetvActiveOBBs().size() + pOtherAniamter->GetAnimaterActiveOBBs().size();
+			//int nCollisio{ 0 };
 
-			if (MynObb > 0 && OthernObb > 0) {//mesh - animater
+			if (MynObb > 0 && OthernObb > 0) {
 				val = false;
-				for (auto pOtherOBB : pOtherAniamter->GetCurAnimationInfo()->GetvActiveOBBs()) {
+				//mesh - info
+				for (auto pOtherOBB : pOtherAnimationInfo->GetvActiveOBBs()) {
+					for (int j = 0; j < MynObb; ++j) {
+						BoundingOrientedBox Otherobb = pOtherOBB->GetOBB();
+						XMMATRIX xmmtxOffset = pOtherAniamter->GetMeshOffsetMtx();
+						XMMATRIX xmmtxFrame = pOtherAnimationInfo->GetCurFrameMtx(pOtherOBB->GetMyJointIndex());
+						Otherobb.Transform(Otherobb, xmmtxFrame * xmmtxOffset * pOther->GetWorldMtx());
+						DEBUGER->RegistOBB(Otherobb, UTAG_COLLISION);
+
+						BoundingOrientedBox Myobb = GetRenderContainer()->GetMesh(0)->GetOBBObject(j).GetOBB();
+						Myobb.Transform(Myobb, GetWorldMtx());
+						DEBUGER->RegistOBB(Myobb, UTAG_COLLISION);
+
+						if (Myobb.Intersects(Otherobb)) return true;
+						//	nCollisio++;
+					}
+				}
+				//mesh - animater
+				for (auto pOtherOBB : pOtherAniamter->GetAnimaterActiveOBBs()) {
 					for (int j = 0; j < MynObb; ++j) {
 						BoundingOrientedBox Otherobb = pOtherOBB->GetOBB();
 						XMMATRIX xmmtxOffset = pOtherAniamter->GetMeshOffsetMtx();
@@ -512,18 +643,29 @@ bool CGameObject::IsCollisionAnimToMesh(CGameObject * pOther){
 				//	val = true;
 
 			}
-			else if (OthernObb > 0) {//aabb - mesh
-
+			else if (OthernObb > 0) {
+				//aabb - info
 				val = false;
 				//int nCollisio{ 0 };
-				for (auto pOBB : m_pAnimater->GetCurAnimationInfo()->GetvActiveOBBs()) {
+				for (auto pOBB : pOtherAnimationInfo->GetvActiveOBBs()) {
 
 					BoundingOrientedBox Myobb = pOBB->GetOBB();
 					XMMATRIX xmmtxOffset = m_pAnimater->GetMeshOffsetMtx();
 					XMMATRIX xmmtxFrame = pOtherAnimationInfo->GetCurFrameMtx(pOBB->GetMyJointIndex());
 					Myobb.Transform(Myobb, xmmtxFrame * xmmtxOffset * GetWorldMtx());
 					DEBUGER->RegistOBB(Myobb, UTAG_COLLISION);
-					if (Otheraabb.Intersects(Myobb)) return true;
+					if (Myaabb.Intersects(Myobb)) return true;
+					//	nCollisio++;
+				}
+				//aabb - animater
+				for (auto pOBB : pOtherAniamter->GetAnimaterActiveOBBs()) {
+
+					BoundingOrientedBox Myobb = pOBB->GetOBB();
+					XMMATRIX xmmtxOffset = m_pAnimater->GetMeshOffsetMtx();
+					XMMATRIX xmmtxFrame = pOtherAnimationInfo->GetCurFrameMtx(pOBB->GetMyJointIndex());
+					Myobb.Transform(Myobb, xmmtxFrame * xmmtxOffset * GetWorldMtx());
+					DEBUGER->RegistOBB(Myobb, UTAG_COLLISION);
+					if (Myaabb.Intersects(Myobb)) return true;
 					//	nCollisio++;
 				}
 				//if (nCollisio > 0)
@@ -717,8 +859,11 @@ CGameObject* CGameObject::CreateObject(string name, tag t, XMMATRIX xmmtxWorld){
 
 void CGameObject::SetNaviMeshIndex(int index) {
 	if (CNaviObjectManager::IsValiableIndex(index)) {
-		m_indexNaviMesh = index;
-		SetPosition(CNaviObjectManager::GetNaviMeshPosition(index));
+		if (m_indexNaviMesh == -1) {
+			m_indexNaviMesh = index;
+			SetPosition(CNaviObjectManager::GetNaviMeshPosition(index));
+		}
+		else m_indexNaviMesh = index;
 	}
 }
 

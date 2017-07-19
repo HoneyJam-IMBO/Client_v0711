@@ -259,6 +259,7 @@ void CLoading::LoadScene_ORITOWN()
 	RESOURCEMGR->CreateMultiMesh("../../Assets/SceneResource/GJM/Boss01L.gjm", "Boss01L");
 
 	LoadScene("../../Assets/SceneResource/test/test.scn");
+	//LoadScene("../../Assets/SceneResource/FirstTown/FirstTown.scn");
 
 	RESOURCEMGR->CreateTexture("Bar", _T("../../Assets/Game_UI/HpBar.png"), PS_TEXTURE, BIND_PS);
 	RESOURCEMGR->CreateTexture("Bar_Fill", _T("../../Assets/Game_UI/HpPoint.png"), PS_TEXTURE, BIND_PS);

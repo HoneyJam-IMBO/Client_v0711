@@ -9,6 +9,11 @@ bool CAnimater::Begin() {
 }
 
 bool CAnimater::End() {
+	for (auto pOBB : m_lActiveBoundingBox){
+		pOBB->End();
+		delete pOBB;
+	}
+	m_lActiveBoundingBox.clear();
 
 	size_t iVecSize = m_vpAnimationInfos.size();
 	for (size_t i = 0; i < iVecSize; ++i) {
@@ -199,7 +204,39 @@ UINT CAnimater::GetAnimaterJointCnt() {
 		CBoundingBox* pMainBoundingBox = new CBoundingBox();
 		pMainBoundingBox->Begin(XMLoadFloat3(&xmf3Position), XMLoadFloat4(&xmf4Scale));
 		pAnimater->SetpMainAABB(pMainBoundingBox);
+		//animater obb
+		//obb info
+		int obbCnt = IMPORTER->ReadInt();
+		for (int j = 0; j < obbCnt; ++j) {
+			CBoundingBox* pBoundingBox = new CBoundingBox();
+			int myJointIndex = IMPORTER->ReadInt();
 
+			XMFLOAT4 xmf4Pos;
+			xmf4Pos.x = IMPORTER->ReadFloat();
+			xmf4Pos.y = IMPORTER->ReadFloat();
+			xmf4Pos.z = IMPORTER->ReadFloat();
+			xmf4Pos.w = 1.0f;
+
+			XMFLOAT4 xmf4Scale;
+			xmf4Scale.x = IMPORTER->ReadFloat();
+			xmf4Scale.y = IMPORTER->ReadFloat();
+			xmf4Scale.z = IMPORTER->ReadFloat();
+			xmf4Scale.w = 1.0f;
+
+			XMFLOAT4 xmf4Quaternion;
+			xmf4Quaternion.x = IMPORTER->ReadFloat();
+			xmf4Quaternion.y = IMPORTER->ReadFloat();
+			xmf4Quaternion.z = IMPORTER->ReadFloat();
+			xmf4Quaternion.w = IMPORTER->ReadFloat();
+			pBoundingBox->Begin(XMLoadFloat4(&xmf4Pos), XMLoadFloat4(&xmf4Scale), XMLoadFloat4(&xmf4Quaternion));
+			//pBoundingBox->SetPosition(XMLoadFloat3(&xmf3Pos));
+
+			pBoundingBox->SetMin(0);
+			pBoundingBox->SetMax(999);
+			pBoundingBox->SetMyJointIndex(myJointIndex);
+			pAnimater->GetAnimaterActiveOBBs().push_back(pBoundingBox);
+		}//obb for end
+		 //animater obb
 		 CBuffer* pAnimBuffer = CBuffer::CreateConstantBuffer(256, sizeof(XMMATRIX), 10, BIND_VS);
 		pAnimater->SetpAnimBuffer(pAnimBuffer);
 

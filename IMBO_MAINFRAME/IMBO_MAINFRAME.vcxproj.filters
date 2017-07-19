@@ -833,20 +833,20 @@
     <ClInclude Include="Ranger.h">
       <Filter>1. 소스 파일\05. GameObject\-05. Player\0. Ranger</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\..\..\..\0. JH%27s Folder\Study\IBClient\ImBo\Client_v0711\IMBO_MAINFRAME\Knight.h">
-      <Filter>1. 소스 파일\05. GameObject\-05. Player\1. Knight</Filter>
+    <ClInclude Include="Bard.h">
+      <Filter>1. 소스 파일\05. GameObject\-05. Player\5. Bard</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\..\..\..\0. JH%27s Folder\Study\IBClient\ImBo\Client_v0711\IMBO_MAINFRAME\Dementor.h">
-      <Filter>1. 소스 파일\05. GameObject\-05. Player\2. Dementor</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\..\..\0. JH%27s Folder\Study\IBClient\ImBo\Client_v0711\IMBO_MAINFRAME\Sister.h">
-      <Filter>1. 소스 파일\05. GameObject\-05. Player\3. Sister</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\..\..\0. JH%27s Folder\Study\IBClient\ImBo\Client_v0711\IMBO_MAINFRAME\Wizard.h">
+    <ClInclude Include="Wizard.h">
       <Filter>1. 소스 파일\05. GameObject\-05. Player\4. Wizard</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\..\..\..\0. JH%27s Folder\Study\IBClient\ImBo\Client_v0711\IMBO_MAINFRAME\Bard.h">
-      <Filter>1. 소스 파일\05. GameObject\-05. Player\5. Bard</Filter>
+    <ClInclude Include="Sister.h">
+      <Filter>1. 소스 파일\05. GameObject\-05. Player\3. Sister</Filter>
+    </ClInclude>
+    <ClInclude Include="Dementor.h">
+      <Filter>1. 소스 파일\05. GameObject\-05. Player\2. Dementor</Filter>
+    </ClInclude>
+    <ClInclude Include="Knight.h">
+      <Filter>1. 소스 파일\05. GameObject\-05. Player\1. Knight</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1183,20 +1183,20 @@
     <ClCompile Include="Ranger.cpp">
       <Filter>1. 소스 파일\05. GameObject\-05. Player\0. Ranger</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\..\..\0. JH%27s Folder\Study\IBClient\ImBo\Client_v0711\IMBO_MAINFRAME\Knight.cpp">
-      <Filter>1. 소스 파일\05. GameObject\-05. Player\1. Knight</Filter>
+    <ClCompile Include="Bard.cpp">
+      <Filter>1. 소스 파일\05. GameObject\-05. Player\5. Bard</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\..\..\0. JH%27s Folder\Study\IBClient\ImBo\Client_v0711\IMBO_MAINFRAME\Dementor.cpp">
-      <Filter>1. 소스 파일\05. GameObject\-05. Player\2. Dementor</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\..\..\0. JH%27s Folder\Study\IBClient\ImBo\Client_v0711\IMBO_MAINFRAME\Sister.cpp">
-      <Filter>1. 소스 파일\05. GameObject\-05. Player\3. Sister</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\..\..\0. JH%27s Folder\Study\IBClient\ImBo\Client_v0711\IMBO_MAINFRAME\Wizard.cpp">
+    <ClCompile Include="Wizard.cpp">
       <Filter>1. 소스 파일\05. GameObject\-05. Player\4. Wizard</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\..\..\0. JH%27s Folder\Study\IBClient\ImBo\Client_v0711\IMBO_MAINFRAME\Bard.cpp">
-      <Filter>1. 소스 파일\05. GameObject\-05. Player\5. Bard</Filter>
+    <ClCompile Include="Sister.cpp">
+      <Filter>1. 소스 파일\05. GameObject\-05. Player\3. Sister</Filter>
+    </ClCompile>
+    <ClCompile Include="Dementor.cpp">
+      <Filter>1. 소스 파일\05. GameObject\-05. Player\2. Dementor</Filter>
+    </ClCompile>
+    <ClCompile Include="Knight.cpp">
+      <Filter>1. 소스 파일\05. GameObject\-05. Player\1. Knight</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
