@@ -13,6 +13,10 @@ cbuffer gMaterialInfo : register(b3) {
 	float gSpecIntensity : packoffset(c1.y);
 }
 
+cbuffer cbPsCameraDynamic : register(b12) {
+	float4x4 ViewInv : packoffset(c0);
+	float4 EyePosition : packoffset(c4);
+}
 
 //texture
 Texture2D    gtxtDefault : register(t0);
@@ -43,7 +47,10 @@ PS_GBUFFER_OUT main(PixelShaderInput input)
 	float4 cCPColor = gtxtCP.Sample(gssWRAP_LINEAR, input.uv);
 	clip(cCPColor.g < 0.05f ? -1 : 1);
 
-	float4 cColor = gtxtDefault.Sample(gssWRAP_LINEAR, input.uv) * gMaterialColor;
+	float4	vLook = float4(normalize(EyePosition.xyz - input.positionW.xyz), 1.f);
+	float	fRimLight = smoothstep(0.96f, 1.f, 1 - max(0, dot(input.normalW, vLook)));
+
+	float4 cColor = gtxtDefault.Sample(gssWRAP_LINEAR, input.uv) * gMaterialColor + (fRimLight * 0.5f);
 	float4 cSpec = gtxtSpec.Sample(gssWRAP_LINEAR, input.uv);
 
 	float3 T = normalize(input.tangentW);

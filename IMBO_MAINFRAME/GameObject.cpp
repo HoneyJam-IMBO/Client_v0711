@@ -36,15 +36,6 @@ bool CGameObject::End() {
 }
 
 void CGameObject::Animate(float fTimeElapsed) {
-	//if (m_pAnimater) {
-	//	//obb animate
-	//	m_vObjectActiveOBBs.clear();
-	//	for (auto OBB : m_pAnimater->GetActiveOBBs()) {
-	//		OBB.Transform(OBB, m_pAnimater->GetMeshOffsetMtx()*GetWorldMtx());
-	//		m_vObjectActiveOBBs.push_back(OBB);
-	//		DEBUGER->RegistOBB(OBB);
-	//	}
-	//}
 
 	DEBUGER->RegistCoordinateSys(GetWorldMtx());
 

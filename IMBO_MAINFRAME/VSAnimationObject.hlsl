@@ -5,6 +5,7 @@ cbuffer cbSkinned : register(b10){
 
 cbuffer cbVS_CAMERA : register(b11){
 	matrix gmtxViewProjection;
+
 };
 cbuffer DefaultCB : register(b1) {
 	matrix mtxWorld[1000];

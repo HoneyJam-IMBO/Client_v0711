@@ -172,6 +172,11 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\..\..\..\0. JH%27s Folder\Study\IBClient\ImBo\Client_v0711\IMBO_MAINFRAME\Bard.h" />
+    <ClInclude Include="..\..\..\..\..\..\0. JH%27s Folder\Study\IBClient\ImBo\Client_v0711\IMBO_MAINFRAME\Dementor.h" />
+    <ClInclude Include="..\..\..\..\..\..\0. JH%27s Folder\Study\IBClient\ImBo\Client_v0711\IMBO_MAINFRAME\Knight.h" />
+    <ClInclude Include="..\..\..\..\..\..\0. JH%27s Folder\Study\IBClient\ImBo\Client_v0711\IMBO_MAINFRAME\Sister.h" />
+    <ClInclude Include="..\..\..\..\..\..\0. JH%27s Folder\Study\IBClient\ImBo\Client_v0711\IMBO_MAINFRAME\Wizard.h" />
     <ClInclude Include="SCLobby.h" />
     <ClInclude Include="NaviMesh.h" />
     <ClInclude Include="NaviObject.h" />
@@ -242,7 +247,7 @@
     <ClInclude Include="NetworkMgr.h" />
     <ClInclude Include="Object.h" />
     <ClInclude Include="ObjectRenderer.h" />
-    <ClInclude Include="Pawn.h" />
+    <ClInclude Include="Ranger.h" />
     <ClInclude Include="PointLight.h" />
     <ClInclude Include="PointLightMesh.h" />
     <ClInclude Include="PostProcessingFinalPass.h" />
@@ -290,6 +295,11 @@
     <ClInclude Include="WaterRenderer.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\..\..\..\0. JH%27s Folder\Study\IBClient\ImBo\Client_v0711\IMBO_MAINFRAME\Bard.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\0. JH%27s Folder\Study\IBClient\ImBo\Client_v0711\IMBO_MAINFRAME\Dementor.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\0. JH%27s Folder\Study\IBClient\ImBo\Client_v0711\IMBO_MAINFRAME\Knight.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\0. JH%27s Folder\Study\IBClient\ImBo\Client_v0711\IMBO_MAINFRAME\Sister.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\0. JH%27s Folder\Study\IBClient\ImBo\Client_v0711\IMBO_MAINFRAME\Wizard.cpp" />
     <ClCompile Include="SCLobby.cpp" />
     <ClCompile Include="NaviMesh.cpp" />
     <ClCompile Include="NaviObject.cpp" />
@@ -358,7 +368,7 @@
     <ClCompile Include="NetworkMgr.cpp" />
     <ClCompile Include="Object.cpp" />
     <ClCompile Include="ObjectRenderer.cpp" />
-    <ClCompile Include="Pawn.cpp" />
+    <ClCompile Include="Ranger.cpp" />
     <ClCompile Include="PointLight.cpp" />
     <ClCompile Include="PointLightMesh.cpp" />
     <ClCompile Include="PostProcessingFinalPass.cpp" />

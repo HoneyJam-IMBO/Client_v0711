@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "NetworkMgr.h"
-#include "Pawn.h"
+#include "Ranger.h"
 
 VOID CNetworkManager::PROC_PT_ENTER_SPACE(CScene* pScene, DWORD dwProtocol, BYTE* Packet, DWORD dwPacketLength) {
 	//test

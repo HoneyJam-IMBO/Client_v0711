@@ -347,9 +347,6 @@
     <Filter Include="1. 소스 파일\05. GameObject\-05. Player">
       <UniqueIdentifier>{6cd9e0b8-b032-4005-a48d-2f3a66169516}</UniqueIdentifier>
     </Filter>
-    <Filter Include="1. 소스 파일\05. GameObject\-05. Player\0. Pawn">
-      <UniqueIdentifier>{34d05e8f-01e6-40f5-8df7-313f60912693}</UniqueIdentifier>
-    </Filter>
     <Filter Include="1. 소스 파일\05. GameObject\-06. Monster">
       <UniqueIdentifier>{97c20e0f-c678-4bae-9b8a-fa0d1bd69ee2}</UniqueIdentifier>
     </Filter>
@@ -467,6 +464,24 @@
     </Filter>
     <Filter Include="0. HLSL\16. NaviObject">
       <UniqueIdentifier>{a285637f-b439-4697-8644-0c435b54d39c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="1. 소스 파일\05. GameObject\-05. Player\1. Knight">
+      <UniqueIdentifier>{ca452431-a251-47db-9871-6b5fd27280a5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="1. 소스 파일\05. GameObject\-05. Player\2. Dementor">
+      <UniqueIdentifier>{48e63531-d9b7-428f-a7e4-7b19383ec18b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="1. 소스 파일\05. GameObject\-05. Player\3. Sister">
+      <UniqueIdentifier>{b4384cda-2eb6-42c2-9346-4f2180d8decb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="1. 소스 파일\05. GameObject\-05. Player\5. Bard">
+      <UniqueIdentifier>{f98ed6c3-7e57-46f0-991a-aac2fd0704bb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="1. 소스 파일\05. GameObject\-05. Player\4. Wizard">
+      <UniqueIdentifier>{980e9553-d4f3-41c2-9537-8cd2f0fdd887}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="1. 소스 파일\05. GameObject\-05. Player\0. Ranger">
+      <UniqueIdentifier>{34d05e8f-01e6-40f5-8df7-313f60912693}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -704,9 +719,6 @@
     <ClInclude Include="Terrain.h">
       <Filter>1. 소스 파일\05. GameObject\-04. Terrain</Filter>
     </ClInclude>
-    <ClInclude Include="Pawn.h">
-      <Filter>1. 소스 파일\05. GameObject\-05. Player\0. Pawn</Filter>
-    </ClInclude>
     <ClInclude Include="LoadingBack.h">
       <Filter>1. 소스 파일\05. GameObject\-08. UI\01. LoadingBack</Filter>
     </ClInclude>
@@ -817,6 +829,24 @@
     </ClInclude>
     <ClInclude Include="SCLobby.h">
       <Filter>1. 소스 파일\03. Scene\-02. SCLobby</Filter>
+    </ClInclude>
+    <ClInclude Include="Ranger.h">
+      <Filter>1. 소스 파일\05. GameObject\-05. Player\0. Ranger</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\0. JH%27s Folder\Study\IBClient\ImBo\Client_v0711\IMBO_MAINFRAME\Knight.h">
+      <Filter>1. 소스 파일\05. GameObject\-05. Player\1. Knight</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\0. JH%27s Folder\Study\IBClient\ImBo\Client_v0711\IMBO_MAINFRAME\Dementor.h">
+      <Filter>1. 소스 파일\05. GameObject\-05. Player\2. Dementor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\0. JH%27s Folder\Study\IBClient\ImBo\Client_v0711\IMBO_MAINFRAME\Sister.h">
+      <Filter>1. 소스 파일\05. GameObject\-05. Player\3. Sister</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\0. JH%27s Folder\Study\IBClient\ImBo\Client_v0711\IMBO_MAINFRAME\Wizard.h">
+      <Filter>1. 소스 파일\05. GameObject\-05. Player\4. Wizard</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\0. JH%27s Folder\Study\IBClient\ImBo\Client_v0711\IMBO_MAINFRAME\Bard.h">
+      <Filter>1. 소스 파일\05. GameObject\-05. Player\5. Bard</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1048,9 +1078,6 @@
     <ClCompile Include="Terrain.cpp">
       <Filter>1. 소스 파일\05. GameObject\-04. Terrain</Filter>
     </ClCompile>
-    <ClCompile Include="Pawn.cpp">
-      <Filter>1. 소스 파일\05. GameObject\-05. Player\0. Pawn</Filter>
-    </ClCompile>
     <ClCompile Include="LoadingBack.cpp">
       <Filter>1. 소스 파일\05. GameObject\-08. UI\01. LoadingBack</Filter>
     </ClCompile>
@@ -1152,6 +1179,24 @@
     </ClCompile>
     <ClCompile Include="SCLobby.cpp">
       <Filter>1. 소스 파일\03. Scene\-02. SCLobby</Filter>
+    </ClCompile>
+    <ClCompile Include="Ranger.cpp">
+      <Filter>1. 소스 파일\05. GameObject\-05. Player\0. Ranger</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\0. JH%27s Folder\Study\IBClient\ImBo\Client_v0711\IMBO_MAINFRAME\Knight.cpp">
+      <Filter>1. 소스 파일\05. GameObject\-05. Player\1. Knight</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\0. JH%27s Folder\Study\IBClient\ImBo\Client_v0711\IMBO_MAINFRAME\Dementor.cpp">
+      <Filter>1. 소스 파일\05. GameObject\-05. Player\2. Dementor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\0. JH%27s Folder\Study\IBClient\ImBo\Client_v0711\IMBO_MAINFRAME\Sister.cpp">
+      <Filter>1. 소스 파일\05. GameObject\-05. Player\3. Sister</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\0. JH%27s Folder\Study\IBClient\ImBo\Client_v0711\IMBO_MAINFRAME\Wizard.cpp">
+      <Filter>1. 소스 파일\05. GameObject\-05. Player\4. Wizard</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\0. JH%27s Folder\Study\IBClient\ImBo\Client_v0711\IMBO_MAINFRAME\Bard.cpp">
+      <Filter>1. 소스 파일\05. GameObject\-05. Player\5. Bard</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

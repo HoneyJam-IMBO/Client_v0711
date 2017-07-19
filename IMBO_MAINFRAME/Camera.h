@@ -106,6 +106,7 @@ protected:
 
 	bool			m_bFix{ false };
 public:
+	void SetFixCamera(bool bFix) { m_bFix = bFix; }
 	CGameObject* GetTarget() {return m_pTarget;}
 	void SetTarget(CGameObject* pTarget);
 	void SetMode(CAMERA_MODE eMode) { m_eMode = eMode; }

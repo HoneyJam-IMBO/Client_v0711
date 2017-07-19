@@ -1,12 +1,18 @@
 #include "stdafx.h"
 #include "SCOriTown.h"
-#include "Pawn.h"
+
 #include "ElfSkillArrow.h"
 #include "LesserGiant.h"
 #include "HpBar.h"
 #include "ImageUI.h"
 
-#include "Pawn.h"
+//#include "Pawn.h"
+#include "Ranger.h"
+#include "Knight.h"
+#include "Dementor.h"
+#include "Sister.h"
+#include "Wizard.h"
+#include "Bard.h"
 
 bool CSCOriTown::Begin() {
 #ifdef NO_SERVER
@@ -31,48 +37,54 @@ bool CSCOriTown::Begin() {
 			//궁수
 			pWeapon = new CGameObject("Bow1", TAG_DYNAMIC_OBJECT);
 			pWeapon->Begin();
-			m_ppPawn[i] = new CPawn("Elf01F", TAG_DYNAMIC_OBJECT, bSoul, pWeapon, i);
+			m_ppPawn[i] = new CRanger("Elf01F", TAG_DYNAMIC_OBJECT, bSoul, pWeapon, i);
 			m_ppPawn[i]->Begin();
 			m_ppPawn[i]->SetPosition(XMVectorSet(10 * i + 250, 0, 250, 0));//[10, 10]부터 [40, 10]까지 배치
 			m_ppPawn[i]->SetScale(XMVectorSet(1, 1, 1, 1));
 			break;
 		case 1:
 			//기사
-			m_ppPawn[i] = new CPawn("Hum01M", TAG_DYNAMIC_OBJECT, bSoul, pWeapon, i);
+			pWeapon = new CGameObject("Bow1", TAG_DYNAMIC_OBJECT);
+			pWeapon->Begin();
+			m_ppPawn[i] = new CRanger("Elf01F", TAG_DYNAMIC_OBJECT, bSoul, pWeapon, i);
 			m_ppPawn[i]->Begin();
 			m_ppPawn[i]->SetPosition(XMVectorSet(10 * i + 250, 0, 250, 0));//[10, 10]부터 [40, 10]까지 배치
 			m_ppPawn[i]->SetScale(XMVectorSet(1, 1, 1, 1));
+			//m_ppPawn[i] = new CPawn("Hum01M", TAG_DYNAMIC_OBJECT, bSoul, pWeapon, i);
+			//m_ppPawn[i]->Begin();
+			//m_ppPawn[i]->SetPosition(XMVectorSet(10 * i + 250, 0, 250, 0));//[10, 10]부터 [40, 10]까지 배치
+			//m_ppPawn[i]->SetScale(XMVectorSet(1, 1, 1, 1));
 			break;
 		case 2:
 			//공간술사
-			m_ppPawn[i] = new CPawn("Hum03M", TAG_DYNAMIC_OBJECT, bSoul, pWeapon, i);
-			m_ppPawn[i]->Begin();
-			m_ppPawn[i]->SetPosition(XMVectorSet(10 * i + 250, 0, 250, 0));//[10, 10]부터 [40, 10]까지 배치
-			m_ppPawn[i]->SetScale(XMVectorSet(1, 1, 1, 1));
+			//m_ppPawn[i] = new CPawn("Hum03M", TAG_DYNAMIC_OBJECT, bSoul, pWeapon, i);
+			//m_ppPawn[i]->Begin();
+			//m_ppPawn[i]->SetPosition(XMVectorSet(10 * i + 250, 0, 250, 0));//[10, 10]부터 [40, 10]까지 배치
+			//m_ppPawn[i]->SetScale(XMVectorSet(1, 1, 1, 1));
 			break;
 		case 3:
-			pWeapon = new CGameObject("Bow1", TAG_DYNAMIC_OBJECT);
-			pWeapon->Begin();
-			m_ppPawn[i] = new CPawn("Elf01F", TAG_DYNAMIC_OBJECT, bSoul, pWeapon, i);
-			m_ppPawn[i]->Begin();
-			m_ppPawn[i]->SetPosition(XMVectorSet(10 * i + 250, 0, 250, 0));//[10, 10]부터 [40, 10]까지 배치
-			m_ppPawn[i]->SetScale(XMVectorSet(1, 1, 1, 1));
+			//pWeapon = new CGameObject("Bow1", TAG_DYNAMIC_OBJECT);
+			//pWeapon->Begin();
+			//m_ppPawn[i] = new CPawn("Elf01F", TAG_DYNAMIC_OBJECT, bSoul, pWeapon, i);
+			//m_ppPawn[i]->Begin();
+			//m_ppPawn[i]->SetPosition(XMVectorSet(10 * i + 250, 0, 250, 0));//[10, 10]부터 [40, 10]까지 배치
+			//m_ppPawn[i]->SetScale(XMVectorSet(1, 1, 1, 1));
 			break;
 		case 4:
 			//
-			pWeapon = new CGameObject("Bow1", TAG_DYNAMIC_OBJECT);
-			pWeapon->Begin();
-			m_ppPawn[i] = new CPawn("Elf01F", TAG_DYNAMIC_OBJECT, bSoul, pWeapon, i);
-			m_ppPawn[i]->Begin();
-			m_ppPawn[i]->SetPosition(XMVectorSet(10 * i + 250, 0, 250, 0));//[10, 10]부터 [40, 10]까지 배치
-			m_ppPawn[i]->SetScale(XMVectorSet(1, 1, 1, 1));
+			//pWeapon = new CGameObject("Bow1", TAG_DYNAMIC_OBJECT);
+			//pWeapon->Begin();
+			//m_ppPawn[i] = new CPawn("Elf01F", TAG_DYNAMIC_OBJECT, bSoul, pWeapon, i);
+			//m_ppPawn[i]->Begin();
+			//m_ppPawn[i]->SetPosition(XMVectorSet(10 * i + 250, 0, 250, 0));//[10, 10]부터 [40, 10]까지 배치
+			//m_ppPawn[i]->SetScale(XMVectorSet(1, 1, 1, 1));
 			break;
 		case 5:
 			//법사
-			m_ppPawn[i] = new CPawn("Hum02F", TAG_DYNAMIC_OBJECT, bSoul, pWeapon, i);
-			m_ppPawn[i]->Begin();
-			m_ppPawn[i]->SetPosition(XMVectorSet(10 * i + 250, 0, 250, 0));//[10, 10]부터 [40, 10]까지 배치
-			m_ppPawn[i]->SetScale(XMVectorSet(1, 1, 1, 1));
+			//m_ppPawn[i] = new CPawn("Hum02F", TAG_DYNAMIC_OBJECT, bSoul, pWeapon, i);
+			//m_ppPawn[i]->Begin();
+			//m_ppPawn[i]->SetPosition(XMVectorSet(10 * i + 250, 0, 250, 0));//[10, 10]부터 [40, 10]까지 배치
+			//m_ppPawn[i]->SetScale(XMVectorSet(1, 1, 1, 1));
 			break;
 		}
 
@@ -99,11 +111,12 @@ bool CSCOriTown::Begin() {
 
 	
 	//보스 제작
-	CGameObject*	pBoss = new CLesserGiant("Boss01", TAG_DYNAMIC_OBJECT);
+	CGameObject*	pBoss = new CLesserGiant("Boss01L", TAG_DYNAMIC_OBJECT, m_ppPawn[0]);
 	pBoss->SetUTag(utag::UTAG_BOSS1);
 	pBoss->Begin();
 	pBoss->SetTerrainContainer(UPDATER->GetTerrainContainer());
-	pBoss->SetPosition(XMVectorSet(230, 0, 230, 0));
+	pBoss->SetPosition(XMVectorSet(200, 0, 250, 0));
+	pBoss->SetNaviMeshIndex();
 	pBoss->SetScale(XMVectorSet(1, 1, 1, 1));
 	UPDATER->GetSpaceContainer()->AddObject(pBoss);
 	pBoss->GetAnimater()->SetCurAnimationIndex(0);

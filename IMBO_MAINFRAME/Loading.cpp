@@ -248,10 +248,21 @@ void CLoading::LoadScene_ORITOWN()
 
 	CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/hum3_sk1.dat", L"hum3_sk1");
 
+	// Player
+	RESOURCEMGR->CreateMultiMesh("../../Assets/SceneResource/GJM/Elf01F.gjm", "Elf01F");
+	//RESOURCEMGR->CreateMultiMesh("../../Assets/SceneResource/GJM/Hum01M.gjm", "Hum01M");
+	//RESOURCEMGR->CreateMultiMesh("../../Assets/SceneResource/GJM/Hum02F.gjm", "Hum02F");
+	//RESOURCEMGR->CreateMultiMesh("../../Assets/SceneResource/GJM/Hum03M.gjm", "Hum03M");
+	//RESOURCEMGR->CreateMultiMesh("../../Assets/SceneResource/GJM/Hum04F.gjm", "Hum04F");
+	//RESOURCEMGR->CreateMultiMesh("../../Assets/SceneResource/GJM/Lup01M.gjm", "Lup01M");
+
+	RESOURCEMGR->CreateMultiMesh("../../Assets/SceneResource/GJM/Boss01L.gjm", "Boss01L");
+
 	LoadScene("../../Assets/SceneResource/test/test.scn");
 
 	RESOURCEMGR->CreateTexture("Bar", _T("../../Assets/Game_UI/HpBar.png"), PS_TEXTURE, BIND_PS);
 	RESOURCEMGR->CreateTexture("Bar_Fill", _T("../../Assets/Game_UI/HpPoint.png"), PS_TEXTURE, BIND_PS);
+
 }
 
 void CLoading::LoadScene_REPAIRTOWN()
