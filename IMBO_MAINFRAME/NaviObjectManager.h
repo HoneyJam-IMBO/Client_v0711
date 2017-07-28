@@ -20,8 +20,20 @@ public:
 
 	static void AddNaviObject(CNaviObject* pNaviObject) { m_vNaviObject.push_back(pNaviObject); }
 	static void AddNaviVertex(CNaviVertex* pNaviVertex) { m_vpNaviVertex.push_back(pNaviVertex); }
-	static void ClearNaviObject() { m_vNaviObject.clear(); }
-	static void ClearNaviVertex() { m_vpNaviVertex.clear(); }
+	static void ClearNaviObject() { 
+		for (auto pObject : m_vNaviObject) {
+			pObject->End();
+			delete pObject;
+		}
+		m_vNaviObject.clear(); 
+	}
+	static void ClearNaviVertex() {
+		for (auto pVertex : m_vpNaviVertex) {
+			pVertex->End();//아무거도 안하는 애지만 그냥
+			delete pVertex;
+		}
+		m_vpNaviVertex.clear(); 	
+	}
 
 	//navi vertex의 index는 이녀석이 부여한다.
 	static void ResetVertexIndex();

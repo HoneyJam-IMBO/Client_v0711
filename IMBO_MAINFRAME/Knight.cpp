@@ -4,6 +4,8 @@
 bool CKnight::Begin()
 {
 	CGameObject::Begin();
+
+
 	return false;
 }
 
@@ -18,11 +20,11 @@ void CKnight::Animate(float fTimeElapsed)
 
 
 	// 점프 끝나면 IDLE로
-	if (ANIM_JUMP_END == m_nAnimNum
+	if (KNIGHT_ANIM_JUMP_END == m_nAnimNum
 		|| m_bSkill == true) {
 		if (true == m_pAnimater->GetCurAnimationInfo()->GetLoopDone()) {
 			if (ANIM_HIT_F == m_nAnimNum) m_bDamaged = false;
-			m_nAnimNum = ANIM_IDLE;
+			m_nAnimNum = KNIGHT_ANIM_IDLE;
 			m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
 			m_bSkill = false;
 		}
@@ -38,6 +40,15 @@ bool CKnight::End()
 	if (m_pWeapon) {
 		delete m_pWeapon;
 		m_pWeapon = nullptr;
+	}
+
+	if (m_pLeftWeapon) {
+		delete m_pLeftWeapon;
+		m_pLeftWeapon = nullptr;
+	}
+	if (m_pRightWeapon) {
+		delete m_pRightWeapon;
+		m_pRightWeapon = nullptr;
 	}
 	return true;
 }
@@ -59,27 +70,27 @@ void CKnight::KeyInput(float fDeltaTime)
 	{
 		if (INPUTMGR->MouseLeftDown()) {					// 기본공격 ----------------------
 			m_bSkill = true;
-			m_nAnimNum = ANIM_ATTACK;
+			m_nAnimNum = KNIGHT_ANIM_ATTACK;
 			m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
 		}
 		else if (INPUTMGR->KeyDown(VK_1)) {				// 스킬 1 ------------------------
 			m_bSkill = true;
-			m_nAnimNum = ANIM_SKILL1_FIRE;
+			m_nAnimNum = KNIGHT_ANIM_SKILL1_FIRE;
 			m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
 		}
 		else if (INPUTMGR->KeyDown(VK_2)) {				// 스킬 2 ------------------------
 			m_bSkill = true;
-			m_nAnimNum = ANIM_SKILL2_FIRE;
+			m_nAnimNum = KNIGHT_ANIM_SKILL2_FIRE;
 			m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
 		}
 		else if (INPUTMGR->KeyDown(VK_3)) {				// 스킬 3 ------------------------
 			m_bSkill = true;
-			m_nAnimNum = ANIM_SKILL3_FIRE;
+			m_nAnimNum = KNIGHT_ANIM_SKILL3_FIRE;
 			m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
 		}
 		else if (INPUTMGR->KeyDown(VK_4)) {				// 스킬 3 ------------------------
 			m_bSkill = true;
-			m_nAnimNum = ANIM_SKILL4_FIRE;
+			m_nAnimNum = KNIGHT_ANIM_SKILL4_FIRE;
 			m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
 		}
 	}
@@ -126,7 +137,7 @@ void CKnight::KeyInput(float fDeltaTime)
 	}
 	else {
 		if (false == m_bJump) {
-			if (ANIM_JUMP_END != m_nAnimNum) {
+			if (KNIGHT_ANIM_JUMP_END != m_nAnimNum) {
 				m_nAnimNum = ANIM_IDLE;
 				m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
 			}
@@ -172,7 +183,7 @@ void CKnight::GetServerData(float fTimeElapsed)
 	//////
 
 	if (m_bJump == true && data.bJump == false) {
-		m_nAnimNum = ANIM_JUMP_END;
+		m_nAnimNum = KNIGHT_ANIM_JUMP_END;
 		m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
 	}
 	m_bJump = data.bJump;
@@ -205,7 +216,7 @@ void CKnight::GetServerData(float fTimeElapsed)
 	else {
 		if (false == m_bJump) {
 			if (ANIM_JUMP_END != m_nAnimNum) {
-				m_nAnimNum = ANIM_IDLE;
+				m_nAnimNum = KNIGHT_ANIM_IDLE;
 				m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
 			}
 		}
@@ -216,35 +227,39 @@ void CKnight::SetupAnimation(DWORD dwDirection)
 {
 	if (false == m_bJump)
 	{
-		if (dwDirection & DIR_FORWARD)		if (m_nAnimNum != ANIM_RUN_F) m_nAnimNum = ANIM_RUN_F;
-		if (dwDirection & DIR_BACKWARD)		if (m_nAnimNum != ANIM_RUN_B) m_nAnimNum = ANIM_RUN_B;
-		if (dwDirection & DIR_LEFT)			if (m_nAnimNum != ANIM_RUN_L) m_nAnimNum = ANIM_RUN_L;
-		if (dwDirection & DIR_RIGHT)		if (m_nAnimNum != ANIM_RUN_R) m_nAnimNum = ANIM_RUN_R;
+		if (dwDirection & DIR_FORWARD)		if (m_nAnimNum != KNIGHT_ANIM_RUN_F) m_nAnimNum = KNIGHT_ANIM_RUN_F;
+		if (dwDirection & DIR_BACKWARD)		if (m_nAnimNum != KNIGHT_ANIM_RUN_B) m_nAnimNum = KNIGHT_ANIM_RUN_B;
+		if (dwDirection & DIR_LEFT)			if (m_nAnimNum != KNIGHT_ANIM_RUN_L) m_nAnimNum = KNIGHT_ANIM_RUN_L;
+		if (dwDirection & DIR_RIGHT)		if (m_nAnimNum != KNIGHT_ANIM_RUN_R) m_nAnimNum = KNIGHT_ANIM_RUN_R;
 
-		if (dwDirection & DIR_FORWARD && dwDirection & DIR_LEFT)
-			if (m_nAnimNum != ANIM_RUN_FL) m_nAnimNum = ANIM_RUN_FL;
-			else if (dwDirection & DIR_FORWARD && dwDirection & DIR_RIGHT)
-				if (m_nAnimNum != ANIM_RUN_FR) m_nAnimNum = ANIM_RUN_FR;
-				else if (dwDirection & DIR_BACKWARD && dwDirection & DIR_LEFT)
-					if (m_nAnimNum != ANIM_RUN_BL) m_nAnimNum = ANIM_RUN_BL;
-					else if (dwDirection & DIR_BACKWARD && dwDirection & DIR_RIGHT)
-						if (m_nAnimNum != ANIM_RUN_BR) m_nAnimNum = ANIM_RUN_BR;
+		if (dwDirection & DIR_FORWARD && dwDirection & DIR_LEFT) {
+			if (m_nAnimNum != KNIGHT_ANIM_RUN_FL) m_nAnimNum = KNIGHT_ANIM_RUN_FL;
+		}
+		else if (dwDirection & DIR_FORWARD && dwDirection & DIR_RIGHT) {
+			if (m_nAnimNum != KNIGHT_ANIM_RUN_FR) m_nAnimNum = KNIGHT_ANIM_RUN_FR;
+		}
+		else if (dwDirection & DIR_BACKWARD && dwDirection & DIR_LEFT) {
+			if (m_nAnimNum != KNIGHT_ANIM_RUN_BL) m_nAnimNum = KNIGHT_ANIM_RUN_BL;
+		}
+		else if (dwDirection & DIR_BACKWARD && dwDirection & DIR_RIGHT) {
+			if (m_nAnimNum != KNIGHT_ANIM_RUN_BR) m_nAnimNum = KNIGHT_ANIM_RUN_BR;
+		}
 
 		if (0 != dwDirection)
 			m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
 	}
 	else {
-		if (m_nAnimNum != ANIM_JUMP_START
-			&& m_nAnimNum != ANIM_JUMP_LOOP)
+		if (m_nAnimNum != KNIGHT_ANIM_JUMP_START
+			&& m_nAnimNum != KNIGHT_ANIM_JUMP_LOOP)
 		{
-			m_nAnimNum = ANIM_JUMP_START;
+			m_nAnimNum = KNIGHT_ANIM_JUMP_START;
 			m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
 		}
 
-		if (m_nAnimNum == ANIM_JUMP_START
+		if (m_nAnimNum == KNIGHT_ANIM_JUMP_START
 			&& true == m_pAnimater->GetCurAnimationInfo()->GetLoopDone())
 		{
-			m_nAnimNum = ANIM_JUMP_LOOP;
+			m_nAnimNum = KNIGHT_ANIM_JUMP_LOOP;
 			m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
 		}
 	}
@@ -267,24 +282,40 @@ void CKnight::Jumping(float fDeltaTime)
 		m_xmf4x4World._42 = GetTerrainHeight();
 		m_xmf3Position.y = GetTerrainHeight();
 
-		m_nAnimNum = ANIM_JUMP_END;
+		m_nAnimNum = KNIGHT_ANIM_JUMP_END;
 		m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
 	}
 }
 
 void CKnight::SetWeapon()
 {
-	if (m_pWeapon)
+	if (m_pLeftWeapon)
+	{
+		XMMATRIX xmmtxFrame = this->GetAnimater()->GetCurAnimationInfo()->GetCurFrameMtx(this->GetAnimater()->GetLHand());
+		XMMATRIX xmmtxFinal = xmmtxFrame * this->GetAnimater()->GetMeshOffsetMtx() * this->GetWorldMtx();
+
+		XMMATRIX xmmtxRotX = XMMatrixRotationX(90.f);
+		XMMATRIX xmmtxRotZ = XMMatrixRotationZ(0.f);
+		XMMATRIX xmmtxScale = XMMatrixScaling(15.f, 15.f, 15.f);
+
+		m_pLeftWeapon->SetWorldMtx(xmmtxScale* xmmtxRotX * xmmtxRotZ * xmmtxFinal);
+	}
+
+	if (m_pRightWeapon)
 	{
 		XMMATRIX xmmtxFrame = this->GetAnimater()->GetCurAnimationInfo()->GetCurFrameMtx(this->GetAnimater()->GetRHand());
 		XMMATRIX xmmtxFinal = xmmtxFrame * this->GetAnimater()->GetMeshOffsetMtx() * this->GetWorldMtx();
 
-		XMMATRIX xmmtxRotX = XMMatrixRotationX(90.f);
-		XMMATRIX xmmtxRotZ = XMMatrixRotationZ(90.f);
-		XMMATRIX xmmtxScale = XMMatrixScaling(10.f, 10.f, 10.f);
+		XMMATRIX xmmtxRotX = XMMatrixRotationX(0.f);
+		XMMATRIX xmmtxRotZ = XMMatrixRotationZ(0.f);
+		XMMATRIX xmmtxScale = XMMatrixScaling(15.f, 15.f, 15.f);
 
-		m_pWeapon->SetWorldMtx(xmmtxScale* xmmtxRotX * xmmtxRotZ * xmmtxFinal);
+		m_pRightWeapon->SetWorldMtx(xmmtxScale* xmmtxRotX * xmmtxRotZ * xmmtxFinal);
 	}
+}
+
+void CKnight::UpdateSkill()
+{
 }
 
 CKnight::CKnight(string name, tag t, bool bSprit, CGameObject * pWeapon, INT slot_id)
@@ -294,6 +325,11 @@ CKnight::CKnight(string name, tag t, bool bSprit, CGameObject * pWeapon, INT slo
 	, m_SLOT_ID(slot_id)
 {
 	m_fSpeed = 14.f;
+	m_pLeftWeapon = new CGameObject("OSW", TAG_DYNAMIC_OBJECT);
+	m_pLeftWeapon->Begin();
+
+	m_pRightWeapon = new CGameObject("OSW", TAG_DYNAMIC_OBJECT);
+	m_pRightWeapon->Begin();
 }
 
 CKnight::~CKnight()
@@ -304,6 +340,8 @@ void CKnight::RegistToContainer()
 {
 	CGameObject::RegistToContainer();
 	if (m_pWeapon) m_pWeapon->RegistToContainer();
+	if (m_pLeftWeapon) m_pLeftWeapon->RegistToContainer();
+	if (m_pRightWeapon) m_pRightWeapon->RegistToContainer();
 }
 
 void CKnight::PhisicsLogic(map<utag, list<CGameObject*>>& mlpObject, float fDeltaTime)
@@ -315,7 +353,7 @@ void CKnight::PhisicsLogic(map<utag, list<CGameObject*>>& mlpObject, float fDelt
 			CEffectMgr::GetInstance()->Play_Effect(L"TestBlood", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y + 2.f, m_xmf3Position.z, 1.f),
 				XMVectorSet(0.f, 0.f, 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
 
-			m_nAnimNum = ANIM_HIT_F;
+			m_nAnimNum = KNIGHT_ANIM_HIT_F;
 			m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
 
 			break;

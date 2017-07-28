@@ -108,6 +108,9 @@ void CResourceManager::CreateRenderShaders() {
 	CreateRenderShader("Water", L"Water",
 		IE_POSITION | IE_NORMAL | IE_TEXCOORD);
 
+	CreateRenderShader("Trail", L"Trail",
+		IE_POSITION | IE_NORMAL | IE_TEXCOORD);
+
 	//coordinatesys render shader
 	CreateRenderShader("CoordinateSys", L"CoordinateSys",
 		IE_POSITION | IE_INSWORLDMTX);
@@ -230,6 +233,10 @@ void CResourceManager::CreateMeshs() {
 	pMesh->Begin();
 	m_mvMesh["NaviMesh"].push_back(pMesh);
 
+	//mesh
+	pMesh = new CTrailMesh();// new CNaviMesh;
+	pMesh->Begin();
+	m_mvMesh["TrailMesh"].push_back(pMesh);
 }
 void CResourceManager::CreateStempMeshs() {
 	

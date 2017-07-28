@@ -145,6 +145,8 @@ protected:
 	UINT*								m_pnConnectingVertexOffsets{ 0 };
 	UINT*								m_pnConnectingVertexStrides{ 0 };
 	ID3D11Buffer**						m_ppd3dConnectingVertexBuffers{ nullptr };
+	ID3D11Buffer**	GetConnectingVtxBuffer() { return m_ppd3dConnectingVertexBuffers; }
+
 	//---------------------------connecting vertex buffer------------------------
 
 	//---------------------------------index buffer-------------------------

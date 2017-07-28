@@ -34,8 +34,7 @@ public:
 private:
 	void ReadMapData();
 
-	void RoadSkillObjects();
-
+	void LoadSkillObjects();
 	void CreateUI();
 
 	bool m_bGameStart{ false };

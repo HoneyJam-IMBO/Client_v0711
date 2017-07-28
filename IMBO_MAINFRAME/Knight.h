@@ -15,7 +15,10 @@ private:
 	void	SetupAnimation(DWORD dwDirection);
 	void	Jumping(float fDeltaTime);
 	void	SetWeapon();
+
+	void	UpdateSkill();
 private:
+	bool	m_bSelRangeMode{ false };
 
 private:
 	float	m_fTranslateTime{ 0.f };
@@ -33,10 +36,12 @@ private:
 
 	CGameObject*	m_pWeapon{ nullptr };
 
-private:	//스킬
-	map<string, vector<CGameObject*>>	m_mapSkill;
+private:	//무기
+	CGameObject*	m_pLeftWeapon{ nullptr };
+	CGameObject*	m_pRightWeapon{ nullptr };
 
-	//bool	m_bSkill[SKM_END];
+
+private:	//스킬
 	bool	m_bSkill{ false };
 
 private:

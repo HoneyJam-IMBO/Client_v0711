@@ -54,6 +54,19 @@ void CRanger::KeyInput(float fDeltaTime)
 			m_bSkill = true;
 			m_nAnimNum = ANIM_ATTACK;
 			m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
+
+			size_t iArraySize = m_mapSkill["Arrow1"].size();
+			for (size_t i = 0; i < iArraySize; ++i) {
+				if (false == m_mapSkill["Arrow1"][i]->GetActive()) {
+					m_mapSkill["Arrow1"][i]->SetActive(true);
+					m_mapSkill["Arrow1"][i]->SetPosition(XMVectorSet(m_xmf3Position.x, m_xmf3Position.y + 3.f, m_xmf3Position.z, 1.f));
+					m_mapSkill["Arrow1"][i]->Rotate(XMMatrixRotationY(m_fAngleY));
+					m_mapSkill["Arrow1"][i]->SetScale(XMVectorSet(2.f, 2.f, 2.f, 1.f));
+					
+					((CElfSkillArrow*)m_mapSkill["Arrow1"][i])->GetTrail()->SetPosition(XMVectorSet(m_xmf3Position.x, m_xmf3Position.y + 3.f, m_xmf3Position.z, 1.f));
+					break;
+				}
+			}
 		}
 		else if (INPUTMGR->KeyDown(VK_1)){				// ½ºÅ³ 1 ------------------------
 			m_bSkill = true;
@@ -401,16 +414,16 @@ CRanger::CRanger(string name, tag t, bool bSprit, CGameObject* pWeapon, INT slot
 	vector<CGameObject*> vecSkill;
 	for (int i = 0; i < 10; ++i)
 	{
-		CGameObject* pObject = new CElfSkillArrow("Arrow", TAG_DYNAMIC_OBJECT);
+		CGameObject* pObject = new CElfSkillArrow("Arrow1", TAG_DYNAMIC_OBJECT);
 		pObject->SetActive(false);
 		pObject->SetUTag(utag::UTAG_ARROW);
 		pObject->Begin();
 		pObject->SetPosition(XMVectorSet(0, 0, 0, 1));
-		pObject->SetScale(XMVectorSet(1, 1, 1, 1));
+		pObject->SetScale(XMVectorSet(5, 5, 5, 1));
 		UPDATER->GetSpaceContainer()->AddObject(pObject);
 		vecSkill.push_back(pObject);
 	}
-	m_mapSkill["Arrow"] = vecSkill;
+	m_mapSkill["Arrow1"] = vecSkill;
 }
 
 CRanger::~CRanger()

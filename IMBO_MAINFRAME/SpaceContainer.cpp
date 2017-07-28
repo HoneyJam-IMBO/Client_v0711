@@ -206,8 +206,11 @@ void CSpaceContainer::ClearAllObjects(){
 	for (int i = 0; i < m_nSpace; ++i) {//모든 공간의
 		for (auto v : m_ppSpace[i]->GetmlpObject()) {//모든 map의
 			for (auto pObject : v.second) {//모든 vector
-				pObject->End();
-				delete pObject;
+				if (pObject != nullptr)
+				{
+					pObject->End();
+					delete pObject;
+				}				
 			}
 			v.second.clear();
 		}

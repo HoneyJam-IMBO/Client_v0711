@@ -15,7 +15,10 @@ private:
 	void	SetupAnimation(DWORD dwDirection);
 	void	Jumping(float fDeltaTime);
 	void	SetWeapon();
+
+	void	UpdateSkill();
 private:
+	bool	m_bSelRangeMode{ false };
 
 private:
 	float	m_fTranslateTime{ 0.f };

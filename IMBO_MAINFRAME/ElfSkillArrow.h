@@ -23,5 +23,10 @@ public:
 
 
 	void RegistToContainer();
+
+private:
+	CGameObject* m_pArrowTrail{ nullptr };
+public:
+	CGameObject* GetTrail() { return m_pArrowTrail; }
 };
 

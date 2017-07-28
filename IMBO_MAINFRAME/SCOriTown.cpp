@@ -15,13 +15,13 @@
 #include "Bard.h"
 
 bool CSCOriTown::Begin() {
-#ifdef NO_SERVER
-	NETWORKMGR->AddServerPlayerInfo(0);
-#endif
+//#ifdef NO_SERVER
+//	NETWORKMGR->AddServerPlayerInfo(0);
+//#endif
 	//----------------------------------camera-------------------------------------
 	m_pCamera = m_pFrameWork->GetCamera();
 	ReadMapData();
-	RoadSkillObjects();
+	LoadSkillObjects();
 	CreateUI();
 
 	int nPawn = NETWORKMGR->GetServerPlayerInfos().size();//pawn의 전체 수
@@ -111,7 +111,7 @@ bool CSCOriTown::Begin() {
 
 	
 	//보스 제작
-	CGameObject*	pBoss = new CLesserGiant("Boss01L", TAG_DYNAMIC_OBJECT, m_ppPawn[0]);
+	/*CGameObject*	pBoss = new CLesserGiant("Boss01L", TAG_DYNAMIC_OBJECT, m_ppPawn[0]);
 	pBoss->SetUTag(utag::UTAG_BOSS1);
 	pBoss->Begin();
 	pBoss->SetTerrainContainer(UPDATER->GetTerrainContainer());
@@ -119,7 +119,9 @@ bool CSCOriTown::Begin() {
 	pBoss->SetNaviMeshIndex();
 	pBoss->SetScale(XMVectorSet(1, 1, 1, 1));
 	UPDATER->GetSpaceContainer()->AddObject(pBoss);
-	pBoss->GetAnimater()->SetCurAnimationIndex(0);
+	pBoss->GetAnimater()->SetCurAnimationIndex(0);*/
+
+	
 
 #ifdef NO_SERVER
 	return CScene::Begin();
@@ -135,7 +137,16 @@ bool CSCOriTown::Begin() {
 }
 
 bool CSCOriTown::End() {	
-	delete m_ppPawn;
+	int nPawn = NETWORKMGR->GetServerPlayerInfos().size();
+	for (int i = 0; i < nPawn; ++i)
+	{
+		if (m_ppPawn[i] == nullptr)
+		{
+			m_ppPawn[i]->End();
+			delete m_ppPawn[i];
+			m_ppPawn[i] = nullptr;
+		}
+	}
 	//카메라는 Framework에 존재하는 것이기에 End()작업을 진행하지 않는다.
 	//Safe_EndDelete(m_pObject);
 	return CScene::End();
@@ -150,6 +161,10 @@ void CSCOriTown::Animate(float fTimeElapsed) {
 	for (size_t i = 0; i < iVecSize; ++i)
 	{
 		m_vecUI[i]->Update(fTimeElapsed);
+	}
+	if (INPUTMGR->KeyBoardDown(VK_T))
+	{
+		SCENEMGR->ChangeScene(SCN_ALDENAD);
 	}
 }
 
@@ -301,6 +316,7 @@ void CSCOriTown::ReadMapData()
 {
 	IMPORTER->Begin("../../Assets/SceneResource/test/test.scn");
 	//IMPORTER->Begin("../../Assets/SceneResource/FirstTown/FirstTown.scn");
+	//IMPORTER->Begin("../../Assets/SceneResource/Aldenard/Aldenard.scn");
 	//output path
 	wstring wsOutputPath = IMPORTER->ReadWstring();
 	//scene name
@@ -316,7 +332,7 @@ void CSCOriTown::ReadMapData()
 	IMPORTER->End();
 }
 
-void CSCOriTown::RoadSkillObjects()
+void CSCOriTown::LoadSkillObjects()
 {
 	//RCSELLER->TestingRCAdd();
 	

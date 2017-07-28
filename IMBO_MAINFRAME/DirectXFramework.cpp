@@ -116,7 +116,9 @@ void CDirectXFramework::InitSingleton(HINSTANCE hInstance, HWND hWnd)
 {
 	//singleton Init 
 	GLOBALVALUEMGR->Begin(hInstance, hWnd);
-
+#ifdef NO_SERVER
+	NETWORKMGR->AddServerPlayerInfo(0);
+#endif
 	Make_Camera();
 
 	RESOURCEMGR->Begin();

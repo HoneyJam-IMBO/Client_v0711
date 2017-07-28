@@ -48,7 +48,7 @@ PS_GBUFFER_OUT main(PixelShaderInput input)
 	clip(cCPColor.g < 0.05f ? -1 : 1);
 
 	float4	vLook = float4(normalize(EyePosition.xyz - input.positionW.xyz), 1.f);
-	float	fRimLight = smoothstep(0.96f, 1.f, 1 - max(0, dot(input.normalW, vLook)));
+	float	fRimLight = smoothstep(0.94f, 1.f, 1 - max(0, dot(input.normalW, vLook)));
 
 	float4 cColor = gtxtDefault.Sample(gssWRAP_LINEAR, input.uv) * gMaterialColor + (fRimLight * 0.5f);
 	float4 cSpec = gtxtSpec.Sample(gssWRAP_LINEAR, input.uv);

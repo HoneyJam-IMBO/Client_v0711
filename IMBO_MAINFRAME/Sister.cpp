@@ -17,16 +17,7 @@ void CSister::Animate(float fTimeElapsed)
 	if (m_pAnimater) m_pAnimater->Update(TIMEMGR->GetTimeElapsed());
 
 
-	// 점프 끝나면 IDLE로
-	if (ANIM_JUMP_END == m_nAnimNum
-		|| m_bSkill == true) {
-		if (true == m_pAnimater->GetCurAnimationInfo()->GetLoopDone()) {
-			if (ANIM_HIT_F == m_nAnimNum) m_bDamaged = false;
-			m_nAnimNum = ANIM_IDLE;
-			m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
-			m_bSkill = false;
-		}
-	}
+	UpdateSkill();
 	CGameObject::Animate(fTimeElapsed);
 
 	SetWeapon();
@@ -59,27 +50,27 @@ void CSister::KeyInput(float fDeltaTime)
 	{
 		if (INPUTMGR->MouseLeftDown()) {					// 기본공격 ----------------------
 			m_bSkill = true;
-			m_nAnimNum = ANIM_ATTACK;
+			m_nAnimNum = SISTER_ANIM_ATTACK;
 			m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
 		}
 		else if (INPUTMGR->KeyDown(VK_1)) {				// 스킬 1 ------------------------
 			m_bSkill = true;
-			m_nAnimNum = ANIM_SKILL1_FIRE;
+			m_nAnimNum = SISTER_ANIM_SKILL1_FIRE;
 			m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
 		}
 		else if (INPUTMGR->KeyDown(VK_2)) {				// 스킬 2 ------------------------
 			m_bSkill = true;
-			m_nAnimNum = ANIM_SKILL2_FIRE;
+			m_nAnimNum = SISTER_ANIM_SKILL2_FIRE;
 			m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
 		}
 		else if (INPUTMGR->KeyDown(VK_3)) {				// 스킬 3 ------------------------
 			m_bSkill = true;
-			m_nAnimNum = ANIM_SKILL3_FIRE;
+			m_nAnimNum = SISTER_ANIM_SKILL3_CHARGING;
 			m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
 		}
 		else if (INPUTMGR->KeyDown(VK_4)) {				// 스킬 3 ------------------------
 			m_bSkill = true;
-			m_nAnimNum = ANIM_SKILL4_FIRE;
+			m_nAnimNum = SISTER_ANIM_SKILL4_FIRE;
 			m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
 		}
 	}
@@ -126,8 +117,8 @@ void CSister::KeyInput(float fDeltaTime)
 	}
 	else {
 		if (false == m_bJump) {
-			if (ANIM_JUMP_END != m_nAnimNum) {
-				m_nAnimNum = ANIM_IDLE;
+			if (SISTER_ANIM_JUMP_END != m_nAnimNum) {
+				m_nAnimNum = SISTER_ANIM_IDLE;
 				m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
 			}
 		}
@@ -172,7 +163,7 @@ void CSister::GetServerData(float fTimeElapsed)
 	//////
 
 	if (m_bJump == true && data.bJump == false) {
-		m_nAnimNum = ANIM_JUMP_END;
+		m_nAnimNum = SISTER_ANIM_JUMP_END;
 		m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
 	}
 	m_bJump = data.bJump;
@@ -204,8 +195,8 @@ void CSister::GetServerData(float fTimeElapsed)
 	}
 	else {
 		if (false == m_bJump) {
-			if (ANIM_JUMP_END != m_nAnimNum) {
-				m_nAnimNum = ANIM_IDLE;
+			if (SISTER_ANIM_JUMP_END != m_nAnimNum) {
+				m_nAnimNum = SISTER_ANIM_IDLE;
 				m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
 			}
 		}
@@ -216,35 +207,40 @@ void CSister::SetupAnimation(DWORD dwDirection)
 {
 	if (false == m_bJump)
 	{
-		if (dwDirection & DIR_FORWARD)		if (m_nAnimNum != ANIM_RUN_F) m_nAnimNum = ANIM_RUN_F;
-		if (dwDirection & DIR_BACKWARD)		if (m_nAnimNum != ANIM_RUN_B) m_nAnimNum = ANIM_RUN_B;
-		if (dwDirection & DIR_LEFT)			if (m_nAnimNum != ANIM_RUN_L) m_nAnimNum = ANIM_RUN_L;
-		if (dwDirection & DIR_RIGHT)		if (m_nAnimNum != ANIM_RUN_R) m_nAnimNum = ANIM_RUN_R;
+		if (dwDirection & DIR_FORWARD)		if (m_nAnimNum != SISTER_ANIM_RUN_F) m_nAnimNum = SISTER_ANIM_RUN_F;
+		if (dwDirection & DIR_BACKWARD)		if (m_nAnimNum != SISTER_ANIM_RUN_B) m_nAnimNum = SISTER_ANIM_RUN_B;
+		if (dwDirection & DIR_LEFT)			if (m_nAnimNum != SISTER_ANIM_RUN_L) m_nAnimNum = SISTER_ANIM_RUN_L;
+		if (dwDirection & DIR_RIGHT)		if (m_nAnimNum != SISTER_ANIM_RUN_R) m_nAnimNum = SISTER_ANIM_RUN_R;
 
-		if (dwDirection & DIR_FORWARD && dwDirection & DIR_LEFT)
-			if (m_nAnimNum != ANIM_RUN_FL) m_nAnimNum = ANIM_RUN_FL;
-			else if (dwDirection & DIR_FORWARD && dwDirection & DIR_RIGHT)
-				if (m_nAnimNum != ANIM_RUN_FR) m_nAnimNum = ANIM_RUN_FR;
-				else if (dwDirection & DIR_BACKWARD && dwDirection & DIR_LEFT)
-					if (m_nAnimNum != ANIM_RUN_BL) m_nAnimNum = ANIM_RUN_BL;
-					else if (dwDirection & DIR_BACKWARD && dwDirection & DIR_RIGHT)
-						if (m_nAnimNum != ANIM_RUN_BR) m_nAnimNum = ANIM_RUN_BR;
+		if (dwDirection & DIR_FORWARD && dwDirection & DIR_LEFT) {
+			if (m_nAnimNum != SISTER_ANIM_RUN_FL) m_nAnimNum = SISTER_ANIM_RUN_FL;
+		}
+		else if (dwDirection & DIR_FORWARD && dwDirection & DIR_RIGHT) {
+			if (m_nAnimNum != SISTER_ANIM_RUN_FR) m_nAnimNum = SISTER_ANIM_RUN_FR;
+		}
+		else if (dwDirection & DIR_BACKWARD && dwDirection & DIR_LEFT) {
+			if (m_nAnimNum != SISTER_ANIM_RUN_BL) m_nAnimNum = SISTER_ANIM_RUN_BL;
+		}
+		else if (dwDirection & DIR_BACKWARD && dwDirection & DIR_RIGHT) {
+			if (m_nAnimNum != SISTER_ANIM_RUN_BR) m_nAnimNum = SISTER_ANIM_RUN_BR;
+		}
+
 
 		if (0 != dwDirection)
 			m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
 	}
 	else {
-		if (m_nAnimNum != ANIM_JUMP_START
-			&& m_nAnimNum != ANIM_JUMP_LOOP)
+		if (m_nAnimNum != SISTER_ANIM_JUMP_START
+			&& m_nAnimNum != SISTER_ANIM_JUMP_LOOP)
 		{
-			m_nAnimNum = ANIM_JUMP_START;
+			m_nAnimNum = SISTER_ANIM_JUMP_START;
 			m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
 		}
 
-		if (m_nAnimNum == ANIM_JUMP_START
+		if (m_nAnimNum == SISTER_ANIM_JUMP_START
 			&& true == m_pAnimater->GetCurAnimationInfo()->GetLoopDone())
 		{
-			m_nAnimNum = ANIM_JUMP_LOOP;
+			m_nAnimNum = SISTER_ANIM_JUMP_LOOP;
 			m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
 		}
 	}
@@ -267,7 +263,7 @@ void CSister::Jumping(float fDeltaTime)
 		m_xmf4x4World._42 = GetTerrainHeight();
 		m_xmf3Position.y = GetTerrainHeight();
 
-		m_nAnimNum = ANIM_JUMP_END;
+		m_nAnimNum = SISTER_ANIM_JUMP_END;
 		m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
 	}
 }
@@ -284,6 +280,29 @@ void CSister::SetWeapon()
 		XMMATRIX xmmtxScale = XMMatrixScaling(10.f, 10.f, 10.f);
 
 		m_pWeapon->SetWorldMtx(xmmtxScale* xmmtxRotX * xmmtxRotZ * xmmtxFinal);
+	}
+}
+
+void CSister::UpdateSkill()
+{
+	// 3번스킬
+	if (SISTER_ANIM_SKILL3_CHARGING == m_nAnimNum) {
+		if (true == m_pAnimater->GetCurAnimationInfo()->GetLoopDone()) {
+			m_nAnimNum = SISTER_ANIM_SKILL3_FIRE;
+			m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
+		}
+		return;
+	}
+
+	// 점프 끝나면 IDLE로
+	if (SISTER_ANIM_JUMP_END == m_nAnimNum
+		|| m_bSkill == true) {
+		if (true == m_pAnimater->GetCurAnimationInfo()->GetLoopDone()) {
+			if (SISTER_ANIM_HIT_F == m_nAnimNum) m_bDamaged = false;
+			m_nAnimNum = SISTER_ANIM_IDLE;
+			m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
+			m_bSkill = false;
+		}
 	}
 }
 
@@ -315,7 +334,7 @@ void CSister::PhisicsLogic(map<utag, list<CGameObject*>>& mlpObject, float fDelt
 			CEffectMgr::GetInstance()->Play_Effect(L"TestBlood", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y + 2.f, m_xmf3Position.z, 1.f),
 				XMVectorSet(0.f, 0.f, 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
 
-			m_nAnimNum = ANIM_HIT_F;
+			m_nAnimNum = SISTER_ANIM_HIT_F;
 			m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
 
 			break;

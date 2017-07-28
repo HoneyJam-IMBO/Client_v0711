@@ -40,6 +40,7 @@ public: //LoadFunc
 	void LoadScene_ALDENAD();
 	void LoadScene_BOSS();
 
-
+public:
+	void LoadUI_Skill(int cn1, int cn2, int cn3, int cn4);
 };
 

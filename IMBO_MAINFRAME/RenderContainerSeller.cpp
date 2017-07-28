@@ -175,6 +175,15 @@ bool CRenderContainerSeller::Begin(){
 	m_mTagRenderContainer[t][ (object_name.c_str())]->SetShader(RESOURCEMGR->GetRenderShader("SSRF"));
 	m_mTagRenderContainer[t][ (object_name.c_str())]->Begin();
 	
+
+	t = tag::TAG_DYNAMIC_OBJECT;
+	object_name = "Trail";
+	m_mTagRenderContainer[t][(object_name.c_str())] = new CRenderContainer();
+	m_mTagRenderContainer[t][(object_name.c_str())]->AddMesh(RESOURCEMGR->GetMesh("TrailMesh", 0));
+	m_mTagRenderContainer[t][(object_name.c_str())]->SetShader(RESOURCEMGR->GetRenderShader("Trail"));
+	m_mTagRenderContainer[t][(object_name.c_str())]->AddBuffer(RESOURCEMGR->GetBuffer("DEFAULTCB"));
+	m_mTagRenderContainer[t][(object_name.c_str())]->Begin();
+
 	//CreateStempRenderContainer();
 
 

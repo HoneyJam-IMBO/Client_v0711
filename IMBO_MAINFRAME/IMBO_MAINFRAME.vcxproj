@@ -172,6 +172,9 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\..\..\..\0. JH%27s Folder\Study\IBClient\ImBo\Client_v0711\IMBO_MAINFRAME\ArrowTrail.h" />
+    <ClInclude Include="..\..\..\..\..\..\0. JH%27s Folder\Study\IBClient\ImBo\Client_v0711\IMBO_MAINFRAME\SCAldenard.h" />
+    <ClInclude Include="..\..\..\..\..\..\0. JH%27s Folder\Study\IBClient\ImBo\Client_v0711\IMBO_MAINFRAME\TrailMesh.h" />
     <ClInclude Include="Bard.h" />
     <ClInclude Include="Dementor.h" />
     <ClInclude Include="Knight.h" />
@@ -295,6 +298,9 @@
     <ClInclude Include="WaterRenderer.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\..\..\..\0. JH%27s Folder\Study\IBClient\ImBo\Client_v0711\IMBO_MAINFRAME\ArrowTrail.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\0. JH%27s Folder\Study\IBClient\ImBo\Client_v0711\IMBO_MAINFRAME\SCAldenard.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\0. JH%27s Folder\Study\IBClient\ImBo\Client_v0711\IMBO_MAINFRAME\TrailMesh.cpp" />
     <ClCompile Include="Bard.cpp" />
     <ClCompile Include="Dementor.cpp" />
     <ClCompile Include="Knight.cpp" />
@@ -425,6 +431,18 @@
     <Image Include="small.ico" />
   </ItemGroup>
   <ItemGroup>
+    <FxCompile Include="..\..\..\..\..\..\0. JH%27s Folder\Study\IBClient\ImBo\Client_v0711\IMBO_MAINFRAME\PSTrail.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+    </FxCompile>
+    <FxCompile Include="..\..\..\..\..\..\0. JH%27s Folder\Study\IBClient\ImBo\Client_v0711\IMBO_MAINFRAME\VSTrail.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+    </FxCompile>
     <FxCompile Include="GSNaviObject.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Geometry</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Geometry</ShaderType>

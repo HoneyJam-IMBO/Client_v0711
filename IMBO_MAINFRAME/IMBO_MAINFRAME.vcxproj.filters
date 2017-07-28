@@ -420,9 +420,6 @@
     <Filter Include="1. 소스 파일\00. Singleton\-06. RENDERER\13. EffectRenderer">
       <UniqueIdentifier>{9b7b2725-15b1-4db4-b630-a787b20cdb48}</UniqueIdentifier>
     </Filter>
-    <Filter Include="1. 소스 파일\05. GameObject\-07. Skill/Effect\1. Elf_Arrow">
-      <UniqueIdentifier>{053e244a-7fa3-4479-9a42-4c1d6aee856f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="1. 소스 파일\05. GameObject\-06. Monster\0. Boss01">
       <UniqueIdentifier>{d85fdde8-6ac5-4b2f-9496-7ab8371d8d8a}</UniqueIdentifier>
     </Filter>
@@ -446,9 +443,6 @@
     </Filter>
     <Filter Include="1. 소스 파일\03. Scene\-04. SCOriTown">
       <UniqueIdentifier>{29089177-4d99-4d18-bbf7-e57f06c8c9a8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="1. 소스 파일\03. Scene\-01. Title">
-      <UniqueIdentifier>{49196597-eb69-49cf-a173-5d35aef3b1ff}</UniqueIdentifier>
     </Filter>
     <Filter Include="1. 소스 파일\05. GameObject\-04. Terrain\NaviObject">
       <UniqueIdentifier>{8c33a27d-0811-4aa1-8a4c-b9978c87cbe6}</UniqueIdentifier>
@@ -482,6 +476,30 @@
     </Filter>
     <Filter Include="1. 소스 파일\05. GameObject\-05. Player\0. Ranger">
       <UniqueIdentifier>{34d05e8f-01e6-40f5-8df7-313f60912693}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="1. 소스 파일\03. Scene\-05. SCAldenard">
+      <UniqueIdentifier>{140799df-d230-4273-a11a-73d061066840}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="1. 소스 파일\03. Scene\-06. SCSarasen">
+      <UniqueIdentifier>{e261fc1c-54c6-4727-b6ed-7b23b592349c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="1. 소스 파일\03. Scene\-01. SCTitle">
+      <UniqueIdentifier>{49196597-eb69-49cf-a173-5d35aef3b1ff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="1. 소스 파일\04. DXObject\-02. Mesh\Trail">
+      <UniqueIdentifier>{90e8edd3-4c0f-4909-b691-5ac051ea49f7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="0. HLSL\17. Trail">
+      <UniqueIdentifier>{4d9ce42b-7cbf-4a5d-894e-c09f00a51391}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="1. 소스 파일\05. GameObject\-07. Skill/Effect\1. Ranger">
+      <UniqueIdentifier>{02361e0f-b498-4d7b-a6d7-187044fc97c6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="1. 소스 파일\05. GameObject\-07. Skill/Effect\1. Ranger\1. r_Arrow">
+      <UniqueIdentifier>{053e244a-7fa3-4479-9a42-4c1d6aee856f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="1. 소스 파일\05. GameObject\-07. Skill/Effect\1. Ranger\2. r_ArrowTrail">
+      <UniqueIdentifier>{833c041b-3d2a-4709-82c5-ecdff532aee3}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -801,7 +819,7 @@
       <Filter>1. 소스 파일\05. GameObject\-08. UI\03. HpBar</Filter>
     </ClInclude>
     <ClInclude Include="ElfSkillArrow.h">
-      <Filter>1. 소스 파일\05. GameObject\-07. Skill/Effect\1. Elf_Arrow</Filter>
+      <Filter>1. 소스 파일\05. GameObject\-07. Skill/Effect\1. Ranger\1. r_Arrow</Filter>
     </ClInclude>
     <ClInclude Include="LesserGiant.h">
       <Filter>1. 소스 파일\05. GameObject\-06. Monster\0. Boss01</Filter>
@@ -813,7 +831,7 @@
       <Filter>1. 소스 파일\00. Singleton\-12. NetworkMGR\-1 LabClientSession</Filter>
     </ClInclude>
     <ClInclude Include="SCTitle.h">
-      <Filter>1. 소스 파일\03. Scene\-01. Title</Filter>
+      <Filter>1. 소스 파일\03. Scene\-01. SCTitle</Filter>
     </ClInclude>
     <ClInclude Include="NaviObject.h">
       <Filter>1. 소스 파일\05. GameObject\-04. Terrain\NaviObject</Filter>
@@ -847,6 +865,15 @@
     </ClInclude>
     <ClInclude Include="Knight.h">
       <Filter>1. 소스 파일\05. GameObject\-05. Player\1. Knight</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\0. JH%27s Folder\Study\IBClient\ImBo\Client_v0711\IMBO_MAINFRAME\SCAldenard.h">
+      <Filter>1. 소스 파일\03. Scene\-05. SCAldenard</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\0. JH%27s Folder\Study\IBClient\ImBo\Client_v0711\IMBO_MAINFRAME\TrailMesh.h">
+      <Filter>1. 소스 파일\04. DXObject\-02. Mesh\Trail</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\0. JH%27s Folder\Study\IBClient\ImBo\Client_v0711\IMBO_MAINFRAME\ArrowTrail.h">
+      <Filter>1. 소스 파일\05. GameObject\-07. Skill/Effect\1. Ranger\2. r_ArrowTrail</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1145,7 +1172,7 @@
       <Filter>1. 소스 파일\05. GameObject\-08. UI\03. HpBar</Filter>
     </ClCompile>
     <ClCompile Include="ElfSkillArrow.cpp">
-      <Filter>1. 소스 파일\05. GameObject\-07. Skill/Effect\1. Elf_Arrow</Filter>
+      <Filter>1. 소스 파일\05. GameObject\-07. Skill/Effect\1. Ranger\1. r_Arrow</Filter>
     </ClCompile>
     <ClCompile Include="LesserGiant.cpp">
       <Filter>1. 소스 파일\05. GameObject\-06. Monster\0. Boss01</Filter>
@@ -1163,7 +1190,7 @@
       <Filter>1. 소스 파일\03. Scene\-00. Loading</Filter>
     </ClCompile>
     <ClCompile Include="SCTitle.cpp">
-      <Filter>1. 소스 파일\03. Scene\-01. Title</Filter>
+      <Filter>1. 소스 파일\03. Scene\-01. SCTitle</Filter>
     </ClCompile>
     <ClCompile Include="NaviObject.cpp">
       <Filter>1. 소스 파일\05. GameObject\-04. Terrain\NaviObject</Filter>
@@ -1197,6 +1224,15 @@
     </ClCompile>
     <ClCompile Include="Knight.cpp">
       <Filter>1. 소스 파일\05. GameObject\-05. Player\1. Knight</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\0. JH%27s Folder\Study\IBClient\ImBo\Client_v0711\IMBO_MAINFRAME\SCAldenard.cpp">
+      <Filter>1. 소스 파일\03. Scene\-05. SCAldenard</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\0. JH%27s Folder\Study\IBClient\ImBo\Client_v0711\IMBO_MAINFRAME\TrailMesh.cpp">
+      <Filter>1. 소스 파일\04. DXObject\-02. Mesh\Trail</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\0. JH%27s Folder\Study\IBClient\ImBo\Client_v0711\IMBO_MAINFRAME\ArrowTrail.cpp">
+      <Filter>1. 소스 파일\05. GameObject\-07. Skill/Effect\1. Ranger\2. r_ArrowTrail</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1435,6 +1471,12 @@
     </FxCompile>
     <FxCompile Include="GSNaviObject.hlsl">
       <Filter>0. HLSL\16. NaviObject</Filter>
+    </FxCompile>
+    <FxCompile Include="..\..\..\..\..\..\0. JH%27s Folder\Study\IBClient\ImBo\Client_v0711\IMBO_MAINFRAME\VSTrail.hlsl">
+      <Filter>0. HLSL\17. Trail</Filter>
+    </FxCompile>
+    <FxCompile Include="..\..\..\..\..\..\0. JH%27s Folder\Study\IBClient\ImBo\Client_v0711\IMBO_MAINFRAME\PSTrail.hlsl">
+      <Filter>0. HLSL\17. Trail</Filter>
     </FxCompile>
   </ItemGroup>
   <ItemGroup>

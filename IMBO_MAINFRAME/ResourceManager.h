@@ -22,6 +22,7 @@
 #include "WaterMesh.h"
 #include "TessPlaneMesh.h"//water tess
 #include "NaviMesh.h"//navi mesh
+#include "TrailMesh.h"
 
 #include "Light.h"
 #include "DirectionalLight.h"

@@ -41,17 +41,9 @@ bool CNaviObjectManager::Begin(){
 
 bool CNaviObjectManager::End(){
 	//navi vertex와 navi object가 서로 엮이게 되어 서로가 서로를 delete하면 분명 꼬인다. manager가 책임지고 delete하도록 하자
-	for (auto pObject : m_vNaviObject) {
-		pObject->End();
-		delete pObject;
-	}
-	m_vNaviObject.clear();
+	ClearNaviObject();
+	ClearNaviVertex();
 
-	for (auto pVertex : m_vpNaviVertex) {
-		pVertex->End();//아무거도 안하는 애지만 그냥
-		delete pVertex;
-	}
-	m_vpNaviVertex.clear();
 	//navi vertex와 navi object가 서로 엮이게 되어 서로가 서로를 delete하면 분명 꼬인다. manager가 책임지고 delete하도록 하자
 
 	m_pGSNaviMeshVertexBuffer = nullptr;
@@ -242,6 +234,7 @@ int CNaviObjectManager::GetIndex(float x, float z, int index){
 }
 void CNaviObjectManager::LoadData(){
 	m_ControlVertexCount = 0;
+	CNaviObject::m_NaviObjectIDCount = 0;
 
 	//기존의 객체를 지운다. 
 	for (auto pVertex : m_vpNaviVertex) {

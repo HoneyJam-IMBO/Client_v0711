@@ -16,6 +16,10 @@ bool CScene::End(){
 		m_vecUI[i] = nullptr;
 	}
 	m_vecUI.clear();
+
+	CNaviObjectManager::ClearNaviObject();
+	CNaviObjectManager::ClearNaviVertex();
+
 	return true;
 }
 

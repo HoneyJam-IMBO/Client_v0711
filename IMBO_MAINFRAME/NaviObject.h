@@ -31,10 +31,12 @@ public:
 
 	vector<XMVECTOR>& GetEdges() { return m_vEdges; }
 	bool GetInterSectEdge(float x, float z, XMVECTOR& out);
+
+
+	static int m_NaviObjectIDCount;
 private:
 	void AddEdge(XMVECTOR edge) { m_vEdges.push_back(edge); }
 
-	static int m_NaviObjectIDCount;
 	int m_NaviObjectID{ 0 };
 
 	vector<CNaviVertex*> m_vpNaviVertex;

@@ -6,6 +6,7 @@
 #include "SCOriTown.h"
 #include "SCTitle.h"
 #include "SCLobby.h"
+#include "SCAldenard.h"
 
 #include "LoadingBack.h"
 #include "ImageUI.h"
@@ -80,6 +81,7 @@ void CLoading::Animate(float fTimeElapsed)
 		case SCN_LOBBY:			pScene = new CSCLobby(m_eSceneID, m_pFrameWork);			break;
 		case SCN_HEROSEL:		pScene = new CSCHeroSel(m_eSceneID, m_pFrameWork);			break;
 		case SCN_ORITOWN:		pScene = new CSCOriTown(m_eSceneID, m_pFrameWork);			break;
+		case SCN_ALDENAD:		pScene = new CSCAldenard(m_eSceneID, m_pFrameWork);			break;
 		}
 
 		m_bIsLoading = false;
@@ -211,59 +213,26 @@ void CLoading::LoadScene_HEROSEL()
 }
 void CLoading::LoadScene_ORITOWN()
 {
-	//4
-	//gjm mesh load
+	RESOURCEMGR->CreateTexture("SkillBack", _T("../../Assets/Game_UI/SkillBack.png"), PS_TEXTURE, BIND_PS);
+	RESOURCEMGR->CreateTexture("Bar", _T("../../Assets/Game_UI/HpBar.png"), PS_TEXTURE, BIND_PS);
+	RESOURCEMGR->CreateTexture("Bar_Fill", _T("../../Assets/Game_UI/HpPoint.png"), PS_TEXTURE, BIND_PS);
 
 	RESOURCEMGR->CreateTexture("Char_Select_0", _T("../../Assets/Scene_HeroSel/Char_Select_1.jpg"), PS_TEXTURE, BIND_PS);
-	RESOURCEMGR->CreateTexture("Char_Select_1", _T("../../Assets/Scene_HeroSel/Char_Select_2.jpg"), PS_TEXTURE, BIND_PS);
-	RESOURCEMGR->CreateTexture("Char_Select_2", _T("../../Assets/Scene_HeroSel/Char_Select_3.jpg"), PS_TEXTURE, BIND_PS);
-	RESOURCEMGR->CreateTexture("Char_Select_3", _T("../../Assets/Scene_HeroSel/Char_Select_4.jpg"), PS_TEXTURE, BIND_PS);
-	RESOURCEMGR->CreateTexture("Char_Select_4", _T("../../Assets/Scene_HeroSel/Char_Select_5.jpg"), PS_TEXTURE, BIND_PS);
-	RESOURCEMGR->CreateTexture("Char_Select_5", _T("../../Assets/Scene_HeroSel/Char_Select_6.jpg"), PS_TEXTURE, BIND_PS);
-
-	RESOURCEMGR->CreateTexture("SkillBack", _T("../../Assets/Game_UI/SkillBack.png"), PS_TEXTURE, BIND_PS);
-
 	RESOURCEMGR->CreateTexture("skicon1", _T("../../Assets/Game_UI/skicon1.tga"), PS_TEXTURE, BIND_PS);
 	RESOURCEMGR->CreateTexture("skicon2", _T("../../Assets/Game_UI/skicon2.tga"), PS_TEXTURE, BIND_PS);
 	RESOURCEMGR->CreateTexture("skicon3", _T("../../Assets/Game_UI/skicon3.tga"), PS_TEXTURE, BIND_PS);
 	RESOURCEMGR->CreateTexture("skicon4", _T("../../Assets/Game_UI/skicon4.tga"), PS_TEXTURE, BIND_PS);
 
-	CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/Arrow_Skill1Shot.dat", L"Arrow_Skill1Shot");
-	CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/ShotArrow.dat", L"ShotArrow");
-	CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/Test2.dat", L"Test2");
-
-	CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/elf_sk1.dat", L"elf_sk1");
-	CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/elf_sk2.dat", L"elf_sk2");
-	CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/elf_sk3.dat", L"elf_sk3");
-	CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/elf_sk3-1.dat", L"elf_sk3-1");
-	CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/elf_sk4.dat", L"elf_sk4");
-
-	CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/hum2_sk1.dat", L"hum2_sk1");
-	CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/hum2_sk2.dat", L"hum2_sk2");
-	CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/hum2_sk3.dat", L"hum2_sk3");
-	CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/hum2_sk4.dat", L"hum2_sk4");
-
+	LoadUI_Skill(1, 0, 0, 0);
+	
 	CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/TestBlood.dat", L"TestBlood");
 	CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/SparkTest.dat", L"SparkTest");
 
-	CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/hum3_sk1.dat", L"hum3_sk1");
-
-	// Player
-	RESOURCEMGR->CreateMultiMesh("../../Assets/SceneResource/GJM/Elf01F.gjm", "Elf01F");
-	//RESOURCEMGR->CreateMultiMesh("../../Assets/SceneResource/GJM/Hum01M.gjm", "Hum01M");
-	//RESOURCEMGR->CreateMultiMesh("../../Assets/SceneResource/GJM/Hum02F.gjm", "Hum02F");
-	//RESOURCEMGR->CreateMultiMesh("../../Assets/SceneResource/GJM/Hum03M.gjm", "Hum03M");
-	//RESOURCEMGR->CreateMultiMesh("../../Assets/SceneResource/GJM/Hum04F.gjm", "Hum04F");
-	//RESOURCEMGR->CreateMultiMesh("../../Assets/SceneResource/GJM/Lup01M.gjm", "Lup01M");
-
+	// Boss
 	RESOURCEMGR->CreateMultiMesh("../../Assets/SceneResource/GJM/Boss01L.gjm", "Boss01L");
 
 	LoadScene("../../Assets/SceneResource/test/test.scn");
 	//LoadScene("../../Assets/SceneResource/FirstTown/FirstTown.scn");
-
-	RESOURCEMGR->CreateTexture("Bar", _T("../../Assets/Game_UI/HpBar.png"), PS_TEXTURE, BIND_PS);
-	RESOURCEMGR->CreateTexture("Bar_Fill", _T("../../Assets/Game_UI/HpPoint.png"), PS_TEXTURE, BIND_PS);
-
 }
 
 void CLoading::LoadScene_REPAIRTOWN()
@@ -272,8 +241,89 @@ void CLoading::LoadScene_REPAIRTOWN()
 
 void CLoading::LoadScene_ALDENAD()
 {
+	RESOURCEMGR->CreateTexture("SkillBack", _T("../../Assets/Game_UI/SkillBack.png"), PS_TEXTURE, BIND_PS);
+	RESOURCEMGR->CreateTexture("Bar", _T("../../Assets/Game_UI/HpBar.png"), PS_TEXTURE, BIND_PS);
+	RESOURCEMGR->CreateTexture("Bar_Fill", _T("../../Assets/Game_UI/HpPoint.png"), PS_TEXTURE, BIND_PS);
+
+	RESOURCEMGR->CreateTexture("Char_Select_0", _T("../../Assets/Scene_HeroSel/Char_Select_1.jpg"), PS_TEXTURE, BIND_PS);
+	RESOURCEMGR->CreateTexture("skicon1", _T("../../Assets/Game_UI/skicon1.tga"), PS_TEXTURE, BIND_PS);
+	RESOURCEMGR->CreateTexture("skicon2", _T("../../Assets/Game_UI/skicon2.tga"), PS_TEXTURE, BIND_PS);
+	RESOURCEMGR->CreateTexture("skicon3", _T("../../Assets/Game_UI/skicon3.tga"), PS_TEXTURE, BIND_PS);
+	RESOURCEMGR->CreateTexture("skicon4", _T("../../Assets/Game_UI/skicon4.tga"), PS_TEXTURE, BIND_PS);
+
+
+	LoadUI_Skill(6, 0, 0, 0);
+
+	CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/TestBlood.dat", L"TestBlood");
+	CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/SparkTest.dat", L"SparkTest");
+	
+	LoadScene("../../Assets/SceneResource/Aldenard/Aldenard.scn");
 }
 
 void CLoading::LoadScene_BOSS()
 {
+}
+
+void CLoading::LoadUI_Skill(int cn1, int cn2, int cn3, int cn4)
+{
+	int cn[4] = { cn1, cn2, cn3, cn4 };
+	int nCheckRepeat[4] = { 0, 0, 0, 0 };
+
+	enum CharNum { ranger = 1, knight, demantor, sister, wizard, bard };
+	// 1 - ranger || 2 - knight  || 3 - demantor || 4 - sister || 5 - wizard  || 6 - bard
+	for (int i = 0; i < 4; ++i)	{
+		if (i != 0 && nCheckRepeat[i - 1] == cn[i])	continue;
+		nCheckRepeat[i] = cn[i];
+		switch (cn[i]){
+		case ranger:
+			/*RESOURCEMGR->CreateTexture("Char_Select_0", _T("../../Assets/Scene_HeroSel/Char_Select_1.jpg"), PS_TEXTURE, BIND_PS);
+			RESOURCEMGR->CreateTexture("skicon1", _T("../../Assets/Game_UI/skicon1.tga"), PS_TEXTURE, BIND_PS);
+			RESOURCEMGR->CreateTexture("skicon2", _T("../../Assets/Game_UI/skicon2.tga"), PS_TEXTURE, BIND_PS);
+			RESOURCEMGR->CreateTexture("skicon3", _T("../../Assets/Game_UI/skicon3.tga"), PS_TEXTURE, BIND_PS);
+			RESOURCEMGR->CreateTexture("skicon4", _T("../../Assets/Game_UI/skicon4.tga"), PS_TEXTURE, BIND_PS);*/
+
+			CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/Arrow_Skill1Shot.dat", L"Arrow_Skill1Shot");
+			CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/ShotArrow.dat", L"ShotArrow");
+			CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/Test2.dat", L"Test2");
+			CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/elf_sk1.dat", L"elf_sk1");
+			CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/elf_sk2.dat", L"elf_sk2");
+			CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/elf_sk3.dat", L"elf_sk3");
+			CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/elf_sk3-1.dat", L"elf_sk3-1");
+			CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/elf_sk4.dat", L"elf_sk4");
+
+			RESOURCEMGR->CreateMultiMesh("../../Assets/SceneResource/GJM/Elf01F.gjm", "Elf01F");
+
+			RESOURCEMGR->CreateMultiMesh("../../Assets/SceneResource/GJM/Arrow1.gjm", "Arrow1");
+			break;
+		case knight:
+			RESOURCEMGR->CreateTexture("Char_Select_1", _T("../../Assets/Scene_HeroSel/Char_Select_2.jpg"), PS_TEXTURE, BIND_PS);
+
+			CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/hum2_sk1.dat", L"hum2_sk1");
+			CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/hum2_sk2.dat", L"hum2_sk2");
+			CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/hum2_sk3.dat", L"hum2_sk3");
+			CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/hum2_sk4.dat", L"hum2_sk4");
+
+			RESOURCEMGR->CreateMultiMesh("../../Assets/SceneResource/GJM/Hum01M.gjm", "Hum01M");
+
+			RESOURCEMGR->CreateMultiMesh("../../Assets/SceneResource/GJM/OSW.gjm", "OSW");
+			RESOURCEMGR->CreateMultiMesh("../../Assets/SceneResource/GJM/SLD.gjm", "SLD");
+			break;
+		case demantor:
+			RESOURCEMGR->CreateTexture("Char_Select_2", _T("../../Assets/Scene_HeroSel/Char_Select_3.jpg"), PS_TEXTURE, BIND_PS);
+			RESOURCEMGR->CreateMultiMesh("../../Assets/SceneResource/GJM/Hum03M.gjm", "Hum03M");
+			break;
+		case sister:
+			RESOURCEMGR->CreateTexture("Char_Select_3", _T("../../Assets/Scene_HeroSel/Char_Select_4.jpg"), PS_TEXTURE, BIND_PS);
+			RESOURCEMGR->CreateMultiMesh("../../Assets/SceneResource/GJM/Lup01M.gjm", "Lup01M");
+			break;
+		case wizard:
+			RESOURCEMGR->CreateTexture("Char_Select_4", _T("../../Assets/Scene_HeroSel/Char_Select_5.jpg"), PS_TEXTURE, BIND_PS);
+			RESOURCEMGR->CreateMultiMesh("../../Assets/SceneResource/GJM/Hum02F.gjm", "Hum02F");
+			break;
+		case bard:
+			RESOURCEMGR->CreateTexture("Char_Select_5", _T("../../Assets/Scene_HeroSel/Char_Select_6.jpg"), PS_TEXTURE, BIND_PS);
+			RESOURCEMGR->CreateMultiMesh("../../Assets/SceneResource/GJM/Hum04F.gjm", "Hum04F");
+			break;
+		}
+	}
 }
