@@ -108,9 +108,9 @@ void CResourceManager::CreateRenderShaders() {
 	CreateRenderShader("Water", L"Water",
 		IE_POSITION | IE_NORMAL | IE_TEXCOORD);
 
-	CreateRenderShader("Trail", L"Trail",
+	/*CreateRenderShader("Trail", L"Trail",
 		IE_POSITION | IE_NORMAL | IE_TEXCOORD);
-
+*/
 	//coordinatesys render shader
 	CreateRenderShader("CoordinateSys", L"CoordinateSys",
 		IE_POSITION | IE_INSWORLDMTX);
@@ -120,6 +120,10 @@ void CResourceManager::CreateRenderShaders() {
 	pShader = CRenderShader::CreateRenderShader(L"Effect", 0,
 		BIND_VS | BIND_GS | BIND_PS);
 	m_mRenderShader.insert( pairShader(("Effect"), pShader));
+
+	pShader = CRenderShader::CreateRenderShader(L"Trail", 0,
+		BIND_VS | BIND_GS | BIND_PS);
+	m_mRenderShader.insert(pairShader(("Trail"), pShader));
 
 	pShader = CRenderShader::CreateRenderShader(L"Blend", 0,
 		BIND_VS | BIND_PS);

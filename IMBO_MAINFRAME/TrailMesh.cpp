@@ -23,12 +23,12 @@ bool CTrailMesh::CreateVertexBuffer()
 	{
 		if (i < 40)
 		{
-			m_pVertices[i] = XMFLOAT3(i.f, 10.f, 0.f);
+			m_pVertices[i] = XMFLOAT3(0.f, 0.f, 0.f);
 			pxmf2TexCoords[i] = XMFLOAT2(1 - (i  * 0.025f), 1.f);
 		}
 		else
 		{
-			m_pVertices[i] = XMFLOAT3(0.f, -10.f, 0.f);
+			m_pVertices[i] = XMFLOAT3(0.f, 0.f, 0.f);
 			pxmf2TexCoords[i] = XMFLOAT2(1 - ((i - 40) * 0.025f), 0.f);
 		}
 	}

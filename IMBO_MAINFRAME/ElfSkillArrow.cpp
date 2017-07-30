@@ -2,18 +2,22 @@
 #include "ElfSkillArrow.h"
 #include "EffectMgr.h"
 
-#include "ArrowTrail.h"
+#include "Trail.h"
 
 CElfSkillArrow::CElfSkillArrow(string name, tag t)
 	:CGameObject(name, t)
 {
-	m_pArrowTrail = new CArrowTrail("Trail", tag::TAG_DYNAMIC_OBJECT);
-	m_pArrowTrail->Begin();
+	//m_pArrowTrail = new CTrail("Trail", tag::TAG_DYNAMIC_OBJECT);
+	//->Begin();
 
+	m_pArrowTrail = new CTrail();
+	m_pArrowTrail->Initialize();
 }
 
 CElfSkillArrow::~CElfSkillArrow()
 {
+	if (m_pArrowTrail)
+		delete m_pArrowTrail;
 }
 
 void CElfSkillArrow::InitData()
@@ -69,14 +73,24 @@ void CElfSkillArrow::Animate(float fTimeElapsed)
 
 	CGameObject::Animate(fTimeElapsed);
 
-	XMStoreFloat3(&m_xmf3Position, XMLoadFloat3(&m_xmf3Position) + ((XMVector3Normalize(GetLook()) * 40.f) * fTimeElapsed));
+	XMStoreFloat3(&m_xmf3Position, XMLoadFloat3(&m_xmf3Position) + ((XMVector3Normalize(GetLook()) * 10.f) * fTimeElapsed));
 	SetPosition(XMLoadFloat3(&m_xmf3Position));
 
 	m_bAlive = m_bActive;
+
+	if (m_pArrowTrail)
+	{
+		XMFLOAT3 xmStart, xmEnd;
+		XMStoreFloat3(&xmStart, XMVector3TransformCoord(XMLoadFloat3(&m_OriBoundingBox.Center), XMLoadFloat4x4(&m_xmf4x4World)));
+		XMStoreFloat3(&xmEnd, XMVector3TransformCoord(XMLoadFloat3(&m_OriBoundingBox.Extents), XMLoadFloat4x4(&m_xmf4x4World)));
+		m_pArrowTrail->SetStartPos(XMLoadFloat3(&xmStart), XMLoadFloat3(&xmEnd));
+		m_pArrowTrail->SetWorld(XMLoadFloat4x4(&m_xmf4x4World));
+		m_pArrowTrail->Update(fTimeElapsed);
+	}
 }
 
 void CElfSkillArrow::RegistToContainer()
 {
-	m_pArrowTrail->RegistToContainer();
-	CGameObject::RegistToContainer();
+	//m_pArrowTrail->RegistToContainer();
+	//CGameObject::RegistToContainer();
 }

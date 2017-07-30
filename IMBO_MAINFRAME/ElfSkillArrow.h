@@ -1,5 +1,7 @@
 #pragma once
 #include "GameObject.h"
+#include "Trail.h"
+
 class CElfSkillArrow :
 	public CGameObject
 {
@@ -25,8 +27,10 @@ public:
 	void RegistToContainer();
 
 private:
-	CGameObject* m_pArrowTrail{ nullptr };
+	//CGameObject* m_pArrowTrail{ nullptr };
+
+	CTrail*		m_pArrowTrail{ nullptr };
 public:
-	CGameObject* GetTrail() { return m_pArrowTrail; }
+	CTrail*		GetTrail() { return m_pArrowTrail; }
 };
 

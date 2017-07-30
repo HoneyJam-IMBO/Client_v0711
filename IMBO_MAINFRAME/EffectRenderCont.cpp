@@ -34,6 +34,7 @@ HRESULT CEffectRenderCont::Initialize()
 	ResizeBuffer();
 	m_pRenderShader = RESOURCEMGR->GetRenderShader("Effect");
 	m_pDistRShader = RESOURCEMGR->GetRenderShader("Blend");
+	m_pTrailShader = RESOURCEMGR->GetRenderShader("Trail");
 
 	D3D11_RASTERIZER_DESC	descRasterizer;
 	ZeroMemory(&descRasterizer, sizeof(D3D11_RASTERIZER_DESC));
@@ -76,7 +77,7 @@ void CEffectRenderCont::RenderEffect()
 	GLOBALVALUEMGR->GetDeviceContext()->ClearDepthStencilView(m_pd3ddsvEffectDepth, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 	GLOBALVALUEMGR->GetDeviceContext()->OMSetRenderTargets(2, pd3dRTVs, m_pd3ddsvEffectDepth);
 
-	if (m_mapEffect.empty()) return;
+	
 
 	ID3D11RasterizerState*	preRasterizerState;
 	GLOBALVALUEMGR->GetDeviceContext()->RSGetState(&preRasterizerState);
@@ -87,18 +88,33 @@ void CEffectRenderCont::RenderEffect()
 	GLOBALVALUEMGR->GetDeviceContext()->OMSetBlendState(m_pAlphaBlendState, nullptr, 0xffffffff);
 	//GLOBALVALUEMGR->GetDeviceContext()->PSSetShaderResources(6, 1, &pSRVDepth);
 
-	////공통 set
-	m_pRenderShader->UpdateShaderState();
-	m_pRenderShader->SetShaderState();
-	multimap<float, CMyEffect*>::iterator iter = m_mapEffect.begin();
-	multimap<float, CMyEffect*>::iterator iter_End = m_mapEffect.end();
-	for (; iter != iter_End; ++iter)
-	{
-		iter->second->Render();
+	if (false == m_mapEffect.empty()) {
+		////공통 set
+		m_pRenderShader->UpdateShaderState();
+		m_pRenderShader->SetShaderState();
+		multimap<float, CMyEffect*>::iterator iter = m_mapEffect.begin();
+		multimap<float, CMyEffect*>::iterator iter_End = m_mapEffect.end();
+		for (; iter != iter_End; ++iter)
+		{
+			iter->second->Render();
+		}
+		m_pRenderShader->CleanShaderState();
+		m_mapEffect.clear();		// 다그리고 제거e
 	}
-	m_pRenderShader->CleanShaderState();
-	m_mapEffect.clear();		// 다그리고 제거e
 
+	if (false == m_mapTrail.empty()) {
+
+		m_pTrailShader->UpdateShaderState();
+		m_pTrailShader->SetShaderState();
+		multimap<float, CTrail*>::iterator iter = m_mapTrail.begin();
+		multimap<float, CTrail*>::iterator iter_End = m_mapTrail.end();
+		for (; iter != iter_End; ++iter)
+		{
+			iter->second->Render();
+		}
+		m_pTrailShader->CleanShaderState();
+		m_mapTrail.clear();
+	}
 
 	GLOBALVALUEMGR->GetDeviceContext()->RSSetState(preRasterizerState);
 	GLOBALVALUEMGR->GetDeviceContext()->OMSetBlendState(m_pPreBlendState, nullptr, 0xffffffff);

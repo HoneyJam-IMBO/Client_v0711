@@ -498,7 +498,7 @@
     <Filter Include="1. 소스 파일\05. GameObject\-07. Skill/Effect\1. Ranger\1. r_Arrow">
       <UniqueIdentifier>{053e244a-7fa3-4479-9a42-4c1d6aee856f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="1. 소스 파일\05. GameObject\-07. Skill/Effect\1. Ranger\2. r_ArrowTrail">
+    <Filter Include="1. 소스 파일\05. GameObject\-07. Skill/Effect\0. Trail">
       <UniqueIdentifier>{833c041b-3d2a-4709-82c5-ecdff532aee3}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -872,8 +872,8 @@
     <ClInclude Include="..\..\..\..\..\..\0. JH%27s Folder\Study\IBClient\ImBo\Client_v0711\IMBO_MAINFRAME\TrailMesh.h">
       <Filter>1. 소스 파일\04. DXObject\-02. Mesh\Trail</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\..\..\..\0. JH%27s Folder\Study\IBClient\ImBo\Client_v0711\IMBO_MAINFRAME\ArrowTrail.h">
-      <Filter>1. 소스 파일\05. GameObject\-07. Skill/Effect\1. Ranger\2. r_ArrowTrail</Filter>
+    <ClInclude Include="Trail.h">
+      <Filter>1. 소스 파일\05. GameObject\-07. Skill/Effect\0. Trail</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1231,8 +1231,8 @@
     <ClCompile Include="..\..\..\..\..\..\0. JH%27s Folder\Study\IBClient\ImBo\Client_v0711\IMBO_MAINFRAME\TrailMesh.cpp">
       <Filter>1. 소스 파일\04. DXObject\-02. Mesh\Trail</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\..\..\0. JH%27s Folder\Study\IBClient\ImBo\Client_v0711\IMBO_MAINFRAME\ArrowTrail.cpp">
-      <Filter>1. 소스 파일\05. GameObject\-07. Skill/Effect\1. Ranger\2. r_ArrowTrail</Filter>
+    <ClCompile Include="Trail.cpp">
+      <Filter>1. 소스 파일\05. GameObject\-07. Skill/Effect\0. Trail</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1476,6 +1476,9 @@
       <Filter>0. HLSL\17. Trail</Filter>
     </FxCompile>
     <FxCompile Include="..\..\..\..\..\..\0. JH%27s Folder\Study\IBClient\ImBo\Client_v0711\IMBO_MAINFRAME\PSTrail.hlsl">
+      <Filter>0. HLSL\17. Trail</Filter>
+    </FxCompile>
+    <FxCompile Include="..\..\..\..\..\..\0. JH%27s Folder\Study\IBClient\ImBo\Client_v0711\IMBO_MAINFRAME\GSTrail.hlsl">
       <Filter>0. HLSL\17. Trail</Filter>
     </FxCompile>
   </ItemGroup>

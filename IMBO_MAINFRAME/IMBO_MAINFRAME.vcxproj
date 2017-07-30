@@ -172,7 +172,7 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\..\..\..\0. JH%27s Folder\Study\IBClient\ImBo\Client_v0711\IMBO_MAINFRAME\ArrowTrail.h" />
+    <ClInclude Include="Trail.h" />
     <ClInclude Include="..\..\..\..\..\..\0. JH%27s Folder\Study\IBClient\ImBo\Client_v0711\IMBO_MAINFRAME\SCAldenard.h" />
     <ClInclude Include="..\..\..\..\..\..\0. JH%27s Folder\Study\IBClient\ImBo\Client_v0711\IMBO_MAINFRAME\TrailMesh.h" />
     <ClInclude Include="Bard.h" />
@@ -298,7 +298,7 @@
     <ClInclude Include="WaterRenderer.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\..\..\..\0. JH%27s Folder\Study\IBClient\ImBo\Client_v0711\IMBO_MAINFRAME\ArrowTrail.cpp" />
+    <ClCompile Include="Trail.cpp" />
     <ClCompile Include="..\..\..\..\..\..\0. JH%27s Folder\Study\IBClient\ImBo\Client_v0711\IMBO_MAINFRAME\SCAldenard.cpp" />
     <ClCompile Include="..\..\..\..\..\..\0. JH%27s Folder\Study\IBClient\ImBo\Client_v0711\IMBO_MAINFRAME\TrailMesh.cpp" />
     <ClCompile Include="Bard.cpp" />
@@ -431,6 +431,16 @@
     <Image Include="small.ico" />
   </ItemGroup>
   <ItemGroup>
+    <FxCompile Include="..\..\..\..\..\..\0. JH%27s Folder\Study\IBClient\ImBo\Client_v0711\IMBO_MAINFRAME\GSTrail.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Geometry</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">4.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Geometry</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">4.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Geometry</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">4.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Geometry</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">4.0</ShaderModel>
+    </FxCompile>
     <FxCompile Include="..\..\..\..\..\..\0. JH%27s Folder\Study\IBClient\ImBo\Client_v0711\IMBO_MAINFRAME\PSTrail.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>

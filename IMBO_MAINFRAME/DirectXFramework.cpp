@@ -25,22 +25,22 @@ void CDirectXFramework::End() {
 	RENDERER->End();
 	CAMMGR->End();
 
-GLOBALVALUEMGR			->ReleseInstance();
-TIMEMGR					->ReleseInstance();
-RESOURCEMGR				->ReleseInstance();
-RCSELLER				->ReleseInstance();
-DEBUGER					->ReleseInstance();
-INPUTMGR				->ReleseInstance();
-DIRECTORYFINDER			->ReleseInstance();
-IMPORTER				->ReleseInstance();
-RENDERER				->ReleseInstance();
-UPDATER					->ReleseInstance();
-SCENEMGR				->ReleseInstance();
-CAMMGR					->ReleseInstance();
-NETWORKMGR				->ReleseInstance();
+	GLOBALVALUEMGR->ReleseInstance();
+	TIMEMGR->ReleseInstance();
+	RESOURCEMGR->ReleseInstance();
+	RCSELLER->ReleseInstance();
+	DEBUGER->ReleseInstance();
+	INPUTMGR->ReleseInstance();
+	DIRECTORYFINDER->ReleseInstance();
+	IMPORTER->ReleseInstance();
+	RENDERER->ReleseInstance();
+	UPDATER->ReleseInstance();
+	SCENEMGR->ReleseInstance();
+	CAMMGR->ReleseInstance();
+	NETWORKMGR->ReleseInstance();
 
-CEffectMgr::GetInstance()->End();
-CEffectMgr::GetInstance()->ReleseInstance();
+	CEffectMgr::GetInstance()->End();
+	CEffectMgr::GetInstance()->ReleseInstance();
 	CNaviObjectManager::End();
 }
 void CDirectXFramework::FrameAdvance()
@@ -63,18 +63,18 @@ void CDirectXFramework::Update(float fTimeElapsed) {
 			RENDERER->Update(fTimeElapsed);
 			ProcessInput(fTimeElapsed);
 			UPDATER->PreUpdate(fTimeElapsed);
-		}		
-	
+		}
+
 		SCENEMGR->GetPresentScene()->Animate(fTimeElapsed);
 		if (false == SCENEMGR->GetPresentScene()->GetIsLoading())
 		{
 			UPDATER->Update(fTimeElapsed);
 			UPDATER->PhisicsUpdate(fTimeElapsed);
-		}		
-	}	
+		}
+	}
 }
 
-		
+
 void CDirectXFramework::Render() {
 	//-----------------------------카메라 버퍼 set------------------------------------
 
@@ -90,8 +90,8 @@ void CDirectXFramework::Render() {
 		{
 			//m_pCamera->SetShaderState();
 			RENDERER->Render(m_pCamera);
-		}			
-	}	
+		}
+	}
 }
 
 
@@ -130,7 +130,7 @@ void CDirectXFramework::InitSingleton(HINSTANCE hInstance, HWND hWnd)
 	UPDATER->Begin();
 	SCENEMGR->Begin(this);
 	NETWORKMGR->Begin();
-	
+
 	CNaviObjectManager::Begin();
 
 #ifdef NO_SERVER
@@ -144,7 +144,7 @@ void CDirectXFramework::InitSingleton(HINSTANCE hInstance, HWND hWnd)
 
 void CDirectXFramework::Make_Camera()
 {
-	
+
 	//camera default
 	m_pCamera = new CFreeCamera();
 	m_pCamera->Begin();

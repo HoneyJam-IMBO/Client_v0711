@@ -63,7 +63,7 @@ void CRanger::KeyInput(float fDeltaTime)
 					m_mapSkill["Arrow1"][i]->Rotate(XMMatrixRotationY(m_fAngleY));
 					m_mapSkill["Arrow1"][i]->SetScale(XMVectorSet(2.f, 2.f, 2.f, 1.f));
 					
-					((CElfSkillArrow*)m_mapSkill["Arrow1"][i])->GetTrail()->SetPosition(XMVectorSet(m_xmf3Position.x, m_xmf3Position.y + 3.f, m_xmf3Position.z, 1.f));
+					//((CElfSkillArrow*)m_mapSkill["Arrow1"][i])->GetTrail()->SetPosition(XMVectorSet(m_xmf3Position.x, m_xmf3Position.y + 3.f, m_xmf3Position.z, 1.f));
 					break;
 				}
 			}

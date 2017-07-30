@@ -1,11 +1,13 @@
 #pragma once
 
 #include "MyEffect.h"
+#include "Trail.h"
 
 #include "RenderShader.h"
 #include "Texture.h"
 #include "Buffer.h"
 #include "Material.h"
+
 
 class CMyParticle;
 
@@ -22,6 +24,7 @@ public:
 		else m_mapDistortEffect.insert(make_pair(fZ, pEffect));
 	}
 	void SetParticleRenderContainer(float fZ, CMyParticle* pParticle) { m_mapParticle.insert(make_pair(fZ, pParticle)); }
+	void SetTrailRenderContainer(float fZ, CTrail* pTrail) { m_mapTrail.insert(make_pair(fZ, pTrail)); }
 	void RenderEffect();
 	void RenderParticle();
 	ID3D11ShaderResourceView* RenderDistortionEffect(ID3D11DepthStencilView* pDepthStencilView);
@@ -35,8 +38,10 @@ private:
 	multimap<float, CMyEffect*, greater<float>> m_mapEffect;
 	multimap<float, CMyEffect*, greater<float>> m_mapDistortEffect;
 	multimap<float, CMyParticle*, greater<float>> m_mapParticle;
+	multimap<float, CTrail*, greater<float>> m_mapTrail;
 
 	CRenderShader*	m_pRenderShader{ nullptr };
+	CRenderShader*	m_pTrailShader{ nullptr };
 	CRenderShader*	m_pDistRShader{ nullptr };
 	CMesh*			m_pMesh{ nullptr };
 	//CBuffer*		m_pBuffer{ nullptr };

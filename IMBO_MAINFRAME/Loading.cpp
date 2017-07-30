@@ -294,6 +294,10 @@ void CLoading::LoadUI_Skill(int cn1, int cn2, int cn3, int cn4)
 			RESOURCEMGR->CreateMultiMesh("../../Assets/SceneResource/GJM/Elf01F.gjm", "Elf01F");
 
 			RESOURCEMGR->CreateMultiMesh("../../Assets/SceneResource/GJM/Arrow1.gjm", "Arrow1");
+
+
+
+			RESOURCEMGR->CreateTexture("Trail01", _T("../../Assets/SceneResource/Trail/Trail01.tga"), PS_TEXTURE, BIND_PS);
 			break;
 		case knight:
 			RESOURCEMGR->CreateTexture("Char_Select_1", _T("../../Assets/Scene_HeroSel/Char_Select_2.jpg"), PS_TEXTURE, BIND_PS);
