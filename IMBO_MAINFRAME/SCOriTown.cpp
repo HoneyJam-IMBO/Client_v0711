@@ -316,7 +316,8 @@ void CSCOriTown::ReadMapData()
 {
 	//IMPORTER->Begin("../../Assets/SceneResource/test/test.scn");
 	//IMPORTER->Begin("../../Assets/SceneResource/FirstTown/FirstTown.scn");
-	IMPORTER->Begin("../../Assets/SceneResource/Aldenard/Aldenard.scn");
+	//IMPORTER->Begin("../../Assets/SceneResource/Aldenard/Aldenard.scn");
+	IMPORTER->Begin("../../Assets/SceneResource/Sarasen/Sarasen.scn");
 	//output path
 	wstring wsOutputPath = IMPORTER->ReadWstring();
 	//scene name

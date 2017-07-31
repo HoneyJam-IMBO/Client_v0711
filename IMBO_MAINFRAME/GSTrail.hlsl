@@ -28,8 +28,10 @@ void main(point VS_OUTPUT input[1],
 	GSOutput output[80];
 	//GSOutput output[4];
 
+	[unroll]
 	for (uint i = 0; i < 80; ++i)
 	{
+		output[i] = (GSOutput)0;
 		float4 localPos = g_xmf4Vtx[i];
 		output[i].position = mul(localPos, gmtxViewProjection);
 
@@ -42,6 +44,7 @@ void main(point VS_OUTPUT input[1],
 			output[i].texCoord = float2(1 - ((i - 40) * 0.025f), 0.f);
 		}
 	}
+	[unroll]
 	for (int i = 0; i < 40; ++i)
 	{
 		for (int j = 1; j >= 0; --j)

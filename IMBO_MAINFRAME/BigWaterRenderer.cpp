@@ -263,7 +263,7 @@ void CBigWaterRenderer::RenderWaterSurface(CCamera* pCamera) {
 	pCamera->SetShaderState();
 	
 	//그 카메라 이용해서 애들 랜더
-	UPDATER->GetSpaceContainer()->PrepareRender(pCamera, TAG_TERRAIN | TAG_STATIC_OBJECT | TAG_DYNAMIC_OBJECT | TAG_LIGHT);
+	UPDATER->GetSpaceContainer()->PrepareRender(pCamera, TAG_TERRAIN | TAG_STATIC_OBJECT | TAG_DYNAMIC_OBJECT);
 	//render
 	auto pObjectRenderer = RENDERER->GetObjectRenderer();
 	ID3D11RasterizerState* pPrv;

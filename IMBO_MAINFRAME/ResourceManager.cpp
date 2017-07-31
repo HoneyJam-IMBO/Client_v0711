@@ -465,7 +465,7 @@ UINT CResourceManager::CreateMultiMesh(string path, string name) {
 }
 UINT CResourceManager::CreateGJMResource(string path, string name) {
 	IMPORTER->Begin(path);
-	char pName[20];
+	char pName[64];
 
 	bool bHasAnimation = IMPORTER->ReadBool();
 
