@@ -25,7 +25,7 @@ bool CEffectMgr::End()
 	return false;
 }
 
-void CEffectMgr::Load_EffectData(TCHAR * pName, TCHAR * pKey)
+void CEffectMgr::Load_EffectData(TCHAR * pName, TCHAR * pKey, int iCreatNum)
 {
 	HANDLE		hFile = CreateFile(pName, GENERIC_READ, 0, NULL,
 		OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
@@ -104,7 +104,7 @@ void CEffectMgr::Load_EffectData(TCHAR * pName, TCHAR * pKey)
 		VecNewObject[i]->m_fEffectEndTime = fEffectLastTime;
 	}
 	m_mapProto.insert(map<const TCHAR*, vector<CMyEffect*>>::value_type(pKey, VecNewObject));
-	for (int i = 0; i < 5; ++i) {
+	for (int i = 0; i < iCreatNum; ++i) {
 		Create_Effect(pKey);
 	}
 	CloseHandle(hFile);

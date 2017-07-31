@@ -6,13 +6,14 @@ class CElfSkillArrow :
 	public CGameObject
 {
 public:
-	CElfSkillArrow(string name, tag t);
+	CElfSkillArrow(string name, tag t, bool bStrong = false);
 	~CElfSkillArrow();
 
 private:
-	bool m_bAlive{ false };
-	float m_fAccTime{ 0.f };
+	bool	m_bAlive{ false };
+	float	m_fAccTime{ 0.f };
 	
+	float	m_fTraceTime{ 0.f };
 public:
 	void InitData();
 	virtual void DisappearSkill();
@@ -30,6 +31,7 @@ private:
 	//CGameObject* m_pArrowTrail{ nullptr };
 
 	CTrail*		m_pArrowTrail{ nullptr };
+	bool		m_bStrong{ false };
 public:
 	CTrail*		GetTrail() { return m_pArrowTrail; }
 };
