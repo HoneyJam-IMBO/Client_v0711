@@ -71,8 +71,8 @@ public:
 	void SetViewport(DWORD xTopLeft, DWORD yTopLeft, DWORD nWidth, DWORD nHeight, float fMinZ, float fMaxZ);
 	
 	void UpdateViewMtx();				//viewmtx 갱신
-	void UpdateReflectionViewMtx();		//viewReflectionmtx 갱신
-	
+	//void UpdateReflectionViewMtx();		//viewReflectionmtx 갱신
+	void UpdateReflectionViewMtx(XMVECTOR xmvReflectePlane);
 	////player
 	//void SetPlayer(CPlayer* pPlayer) { m_pPlayer = pPlayer; }
 	//CPlayer* GetPlayer() { return m_pPlayer; }

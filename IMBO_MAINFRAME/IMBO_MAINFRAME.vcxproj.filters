@@ -501,6 +501,15 @@
     <Filter Include="1. 소스 파일\05. GameObject\-07. Skill/Effect\0. Trail">
       <UniqueIdentifier>{833c041b-3d2a-4709-82c5-ecdff532aee3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="1. 소스 파일\00. Singleton\-06. RENDERER\15. BIgWaterRenderer">
+      <UniqueIdentifier>{1d9d21b6-2b6d-4058-a2b6-a55d3042b7f3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="0. HLSL\11. Water\WaterPlane">
+      <UniqueIdentifier>{40d4fdf7-5585-44f3-85d0-c75856103455}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="0. HLSL\11. Water\WaterSurface">
+      <UniqueIdentifier>{4627a382-7205-4edf-95ac-4907c70fb9c7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Light.h">
@@ -866,14 +875,17 @@
     <ClInclude Include="Knight.h">
       <Filter>1. 소스 파일\05. GameObject\-05. Player\1. Knight</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\..\..\..\0. JH%27s Folder\Study\IBClient\ImBo\Client_v0711\IMBO_MAINFRAME\SCAldenard.h">
-      <Filter>1. 소스 파일\03. Scene\-05. SCAldenard</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\..\..\0. JH%27s Folder\Study\IBClient\ImBo\Client_v0711\IMBO_MAINFRAME\TrailMesh.h">
-      <Filter>1. 소스 파일\04. DXObject\-02. Mesh\Trail</Filter>
-    </ClInclude>
     <ClInclude Include="Trail.h">
       <Filter>1. 소스 파일\05. GameObject\-07. Skill/Effect\0. Trail</Filter>
+    </ClInclude>
+    <ClInclude Include="BigWaterRenderer.h">
+      <Filter>1. 소스 파일\00. Singleton\-06. RENDERER\15. BIgWaterRenderer</Filter>
+    </ClInclude>
+    <ClInclude Include="TrailMesh.h">
+      <Filter>1. 소스 파일\04. DXObject\-02. Mesh\Trail</Filter>
+    </ClInclude>
+    <ClInclude Include="SCAldenard.h">
+      <Filter>1. 소스 파일\03. Scene\-05. SCAldenard</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1225,14 +1237,17 @@
     <ClCompile Include="Knight.cpp">
       <Filter>1. 소스 파일\05. GameObject\-05. Player\1. Knight</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\..\..\0. JH%27s Folder\Study\IBClient\ImBo\Client_v0711\IMBO_MAINFRAME\SCAldenard.cpp">
-      <Filter>1. 소스 파일\03. Scene\-05. SCAldenard</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\..\..\0. JH%27s Folder\Study\IBClient\ImBo\Client_v0711\IMBO_MAINFRAME\TrailMesh.cpp">
-      <Filter>1. 소스 파일\04. DXObject\-02. Mesh\Trail</Filter>
-    </ClCompile>
     <ClCompile Include="Trail.cpp">
       <Filter>1. 소스 파일\05. GameObject\-07. Skill/Effect\0. Trail</Filter>
+    </ClCompile>
+    <ClCompile Include="BigWaterRenderer.cpp">
+      <Filter>1. 소스 파일\00. Singleton\-06. RENDERER\15. BIgWaterRenderer</Filter>
+    </ClCompile>
+    <ClCompile Include="TrailMesh.cpp">
+      <Filter>1. 소스 파일\04. DXObject\-02. Mesh\Trail</Filter>
+    </ClCompile>
+    <ClCompile Include="SCAldenard.cpp">
+      <Filter>1. 소스 파일\03. Scene\-05. SCAldenard</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1472,14 +1487,38 @@
     <FxCompile Include="GSNaviObject.hlsl">
       <Filter>0. HLSL\16. NaviObject</Filter>
     </FxCompile>
-    <FxCompile Include="..\..\..\..\..\..\0. JH%27s Folder\Study\IBClient\ImBo\Client_v0711\IMBO_MAINFRAME\VSTrail.hlsl">
+    <FxCompile Include="GSTrail.hlsl">
       <Filter>0. HLSL\17. Trail</Filter>
     </FxCompile>
-    <FxCompile Include="..\..\..\..\..\..\0. JH%27s Folder\Study\IBClient\ImBo\Client_v0711\IMBO_MAINFRAME\PSTrail.hlsl">
+    <FxCompile Include="PSTrail.hlsl">
       <Filter>0. HLSL\17. Trail</Filter>
     </FxCompile>
-    <FxCompile Include="..\..\..\..\..\..\0. JH%27s Folder\Study\IBClient\ImBo\Client_v0711\IMBO_MAINFRAME\GSTrail.hlsl">
+    <FxCompile Include="VSTrail.hlsl">
       <Filter>0. HLSL\17. Trail</Filter>
+    </FxCompile>
+    <FxCompile Include="VSWaterPlane.hlsl">
+      <Filter>0. HLSL\11. Water\WaterPlane</Filter>
+    </FxCompile>
+    <FxCompile Include="DSWaterPlane.hlsl">
+      <Filter>0. HLSL\11. Water\WaterPlane</Filter>
+    </FxCompile>
+    <FxCompile Include="PSWaterPlane.hlsl">
+      <Filter>0. HLSL\11. Water\WaterPlane</Filter>
+    </FxCompile>
+    <FxCompile Include="HSWaterPlane.hlsl">
+      <Filter>0. HLSL\11. Water\WaterPlane</Filter>
+    </FxCompile>
+    <FxCompile Include="VSWaterSurface.hlsl">
+      <Filter>0. HLSL\11. Water\WaterSurface</Filter>
+    </FxCompile>
+    <FxCompile Include="DSWaterSurface.hlsl">
+      <Filter>0. HLSL\11. Water\WaterSurface</Filter>
+    </FxCompile>
+    <FxCompile Include="HSWaterSurface.hlsl">
+      <Filter>0. HLSL\11. Water\WaterSurface</Filter>
+    </FxCompile>
+    <FxCompile Include="PSWaterSurface.hlsl">
+      <Filter>0. HLSL\11. Water\WaterSurface</Filter>
     </FxCompile>
   </ItemGroup>
   <ItemGroup>

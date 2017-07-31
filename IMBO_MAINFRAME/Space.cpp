@@ -43,7 +43,7 @@ void CSpace::Begin(CSpaceContainer * pSpaceContainer, UINT size, int lv, XMVECTO
 		float fy = static_cast<float>(m_pSpaceContainer->GetSpaceSize());
 		float fz = static_cast<float>(m_pSpaceContainer->GetOneSpaceSize());
 
-		BoundingBox::CreateFromPoints(m_OriBoundingBox, XMVectorSet(0.f, 0.f, 0.f, 0.f), XMVectorSet(fx, fy, fz, 0.f));
+		BoundingBox::CreateFromPoints(m_OriBoundingBox, XMVectorSet(0.f, -fy, 0.f, 0.f), XMVectorSet(fx, fy, fz, 0.f));
 
 		//SetRenderContainer(pSeller);//그림을 그릴 수도 있으니 RenderContainer set
 		return;
@@ -52,7 +52,8 @@ void CSpace::Begin(CSpaceContainer * pSpaceContainer, UINT size, int lv, XMVECTO
 	//자식 공간 할당
 	m_ppChildSpace = new CSpace*[4];
 	//aabb
-	BoundingBox::CreateFromPoints(m_OriBoundingBox, XMVectorSet(0.f, 0.f, 0.f, 0.f), XMVectorSet(static_cast<float>(size), static_cast<float>(m_pSpaceContainer->GetSize()), static_cast<float>(size), 0.f));
+	//BoundingBox::CreateFromPoints(m_OriBoundingBox, XMVectorSet(0.f, 0.f, 0.f, 0.f), XMVectorSet(static_cast<float>(size), static_cast<float>(m_pSpaceContainer->GetSize()), static_cast<float>(size), 0.f));
+	BoundingBox::CreateFromPoints(m_OriBoundingBox, XMVectorSet(0.f, -static_cast<float>(m_pSpaceContainer->GetSize()), 0.f, 0.f), XMVectorSet(static_cast<float>(size), static_cast<float>(m_pSpaceContainer->GetSize()), static_cast<float>(size), 0.f));
 
 
 	int k = 0;
@@ -187,6 +188,8 @@ void CSpace::PrepareRender( CCamera* pCamera, UINT renderFlag) {
 					OptimizePrepare(TAG_LIGHT, pCamera);
 				else if (vpObject.first == TAG_REFLECTION && (renderFlag & TAG_REFLECTION))
 					OptimizePrepare(TAG_REFLECTION, pCamera);
+				else if (vpObject.first == TAG_BIGWATER && (renderFlag & TAG_BIGWATER))
+					OptimizePrepare(TAG_BIGWATER, pCamera);
 			}
 			//}//end for
 		}//end if

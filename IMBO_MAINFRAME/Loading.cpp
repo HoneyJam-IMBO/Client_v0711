@@ -231,8 +231,9 @@ void CLoading::LoadScene_ORITOWN()
 	// Boss
 	RESOURCEMGR->CreateMultiMesh("../../Assets/SceneResource/GJM/Boss01L.gjm", "Boss01L");
 
-	LoadScene("../../Assets/SceneResource/test/test.scn");
+	//LoadScene("../../Assets/SceneResource/test/test.scn");
 	//LoadScene("../../Assets/SceneResource/FirstTown/FirstTown.scn");
+	LoadScene("../../Assets/SceneResource/Aldenard/Aldenard.scn");
 }
 
 void CLoading::LoadScene_REPAIRTOWN()

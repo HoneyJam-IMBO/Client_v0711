@@ -7,6 +7,7 @@
 #include "TerrainContainer.h"
 #include "SkyBoxContainer.h"
 #include "ObjectRenderer.h"
+#include "BigWaterRenderer.h"
 #include "AORenderer.h"
 #include "LightRenderer.h"
 #include "BloomDownScale.h"
@@ -115,6 +116,7 @@ private:
 	//--------------------------light render target----------------
 	//-------------------------layer-------------------------
 	CObjectRenderer*	m_pObjectRenderer{ nullptr };
+	CBigWaterRenderer* m_pBigWaterRenderer{ nullptr };
 	CAORenderer*		m_pAORenderer{ nullptr };
 	CLightRenderer*		m_pLightRenderer{ nullptr };
 	CSSRF*				m_pRefrectionRenderer{ nullptr };

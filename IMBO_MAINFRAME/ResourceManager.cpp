@@ -78,6 +78,13 @@ void CResourceManager::CreateRenderShaders() {
 	//terrain
 
 	//tessplane
+	CreateRenderShader("WaterPlane", L"WaterPlane",
+		IE_POSITION | IE_INSWORLDMTX,
+		BIND_VS | BIND_HS | BIND_DS | BIND_PS);
+	CreateRenderShader("WaterSurface", L"WaterSurface",
+		IE_POSITION | IE_INSWORLDMTX,
+		BIND_VS | BIND_HS | BIND_DS | BIND_PS);
+
 	CreateRenderShader("SSRF", L"SSRF",
 		0, BIND_VS | BIND_PS);
 	CreateRenderShader("WaterT", L"TessPlane", 

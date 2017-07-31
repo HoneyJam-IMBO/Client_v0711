@@ -18,7 +18,7 @@ bool CTerrain::Begin() {
 		float fx = static_cast<float>(m_pTerrainContainer->GetSpaceContainer()->GetOneSpaceSize());
 		float fy = static_cast<float>(m_pTerrainContainer->GetSpaceContainer()->GetSpaceSize());
 		float fz = static_cast<float>(m_pTerrainContainer->GetSpaceContainer()->GetOneSpaceSize());
-		BoundingBox::CreateFromPoints(m_OriBoundingBox, XMVectorSet(0.f, 0.f, 0.f, 0.f), XMVectorSet(fx, fy, fz, 0.f));
+		BoundingBox::CreateFromPoints(m_OriBoundingBox, XMVectorSet(0.f, -fy, 0.f, 0.f), XMVectorSet(fx, fy, fz, 0.f));
 
 		return true;
 	}

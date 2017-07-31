@@ -171,7 +171,7 @@ void CWaterRenderer::ReleaseBuffer()
 
 void CWaterRenderer::CalReflectionViewProj( CCamera* pCamera)
 {
-	pCamera->UpdateReflectionViewMtx();
+	//pCamera->UpdateReflectionViewMtx();
 	tWvsBuffer* pData = (tWvsBuffer*)m_pWaterVSBuffer->Map();
 
 	XMFLOAT4X4 mtxReflect;

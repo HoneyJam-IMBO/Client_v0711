@@ -32,6 +32,9 @@ bool CRenderer::Begin() {
 	//UIRenderer 
 	m_pUIRederer = new CUIRenderer();
 	m_pUIRederer->Initialize();
+	m_pBigWaterRenderer = new CBigWaterRenderer();
+	m_pBigWaterRenderer->Begin();
+
 	m_pWaterRenderer = new CWaterRenderer();
 	m_pWaterRenderer->Begin();
 
@@ -66,6 +69,7 @@ bool CRenderer::End() {
 
 	//layer
 	Safe_EndDelete(m_pObjectRenderer);
+	Safe_EndDelete(m_pBigWaterRenderer);
 	Safe_EndDelete(m_pAORenderer);
 	Safe_EndDelete(m_pLightRenderer);
 	Safe_EndDelete(m_pBloomDownScale);
@@ -175,6 +179,10 @@ void CRenderer::NoPostProcessRender( CCamera* pCamera)
 	for (size_t i = 0; i < iVecSize; ++i) {
 		m_vObjectLayerResultTexture[i]->CleanShaderState();
 	}
+
+	//water
+	m_pBigWaterRenderer->RenderBigWater(pCamera, m_pd3drtvLight, m_pd3ddsvReadOnlyDepthStencil, m_vObjectLayerResultTexture);
+	//water
 
 	m_pObjectRenderer->RenderSkyBox();
 	m_pObjectRenderer->ClearSkyBox();
@@ -305,6 +313,9 @@ void CRenderer::Render( CCamera* pCamera) {
 	for (size_t i = 0; i < iVecSize; ++i) {
 		m_vObjectLayerResultTexture[i]->CleanShaderState();
 	}
+	//water
+	m_pBigWaterRenderer->RenderBigWater(pCamera, m_pd3drtvLight, m_pd3ddsvReadOnlyDepthStencil, m_vObjectLayerResultTexture);
+	//water
 
 	//// water render
 	DEBUGER->start_Timemeasurement();
@@ -502,10 +513,13 @@ bool CRenderer::CreateRenderTargetView() {
 
 
 		//--------------------------------------Scene0 DSV Create-----------------------------------------//
-		d3dTexture2DDesc.Format = DXGI_FORMAT_R32_TYPELESS;
+		//d3dTexture2DDesc.Format = DXGI_FORMAT_R24G8_TYPELESS;
+		//d3dDepthStencilViewDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
+		//d3dSRVDesc.Format = DXGI_FORMAT_R24_UNORM_X8_TYPELESS;
+		d3dTexture2DDesc.Format = DXGI_FORMAT_R32G8X24_TYPELESS;
+		d3dDepthStencilViewDesc.Format = DXGI_FORMAT_D32_FLOAT_S8X24_UINT;
+		d3dSRVDesc.Format = DXGI_FORMAT_R32_FLOAT_X8X24_TYPELESS;
 
-		d3dDepthStencilViewDesc.Format = DXGI_FORMAT_D32_FLOAT;
-		d3dSRVDesc.Format = DXGI_FORMAT_R32_FLOAT;
 		d3dTexture2DDesc.BindFlags = D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_DEPTH_STENCIL;
 		GLOBALVALUEMGR->GetDevice()->CreateTexture2D(&d3dTexture2DDesc, nullptr, &m_pd3dtxtDepthStencil);
 		GLOBALVALUEMGR->GetDevice()->CreateDepthStencilView(m_pd3dtxtDepthStencil, &d3dDepthStencilViewDesc, &m_pd3ddsvDepthStencil);
@@ -589,6 +603,7 @@ bool CRenderer::CreateRenderTargetView() {
 		//light textureÁ¦ÀÛ
 	}
 	m_pAORenderer->ResizeBuffer();
+	m_pBigWaterRenderer->ResizeBuffer();
 	m_pRefrectionRenderer->ResizeBuffer();
 	m_pBloomDownScale->ResizeBuffer();
 	m_pBloom->ResizeBuffer();
@@ -745,6 +760,7 @@ void CRenderer::LoadEffectInfo(wstring wsOutputPath, wstring wsSceneName) {
 
 	m_pRefrectionRenderer->SetSSRFValues(fMinDepthBias, fMaxDepthBias, fEdgeDistThreshold, fReflectionScale, fViewAngleThreshold, fPixelScale, fNumStepScale);
 	m_pShadow->LoadShadow(wsOutputPath, wsSceneName);
+	m_pBigWaterRenderer->LoadBigWaterInfo();
 }
 
 CRenderer::CRenderer() :CSingleTonBase<CRenderer>("rendereringleton") {

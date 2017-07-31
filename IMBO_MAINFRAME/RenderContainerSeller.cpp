@@ -99,7 +99,24 @@ bool CRenderContainerSeller::Begin(){
 	m_mTagRenderContainer[t][ (object_name.c_str())]->SetMesh(RESOURCEMGR->GetMesh("DirectionalLight", 0));//mesh set과 동시에 instancing buffer 생성 및 se
 	m_mTagRenderContainer[t][ (object_name.c_str())]->SetShader(RESOURCEMGR->GetRenderShader("Combine"));
 	m_mTagRenderContainer[t][ (object_name.c_str())]->Begin();
-	
+
+	t = tag::TAG_BIGWATER;
+	object_name = "bigwater";
+	m_mTagRenderContainer[t][object_name] = new CRenderContainer();
+	m_mTagRenderContainer[t][object_name]->AddMesh(RESOURCEMGR->GetMesh("WaterT", 0));
+	m_mTagRenderContainer[t][object_name]->SetShader(RESOURCEMGR->GetRenderShader("WaterPlane"));
+	m_mTagRenderContainer[t][object_name]->AddMaterial(RESOURCEMGR->GetMaterial("Terrain"));
+	m_mTagRenderContainer[t][object_name]->AddInstanceBuffer(RESOURCEMGR->GetBuffer("DEFAULTIB"));
+	m_mTagRenderContainer[t][object_name]->Begin();
+
+	object_name = "bigwatersurface";
+	m_mTagRenderContainer[t][object_name] = new CRenderContainer();
+	m_mTagRenderContainer[t][object_name]->AddMesh(RESOURCEMGR->GetMesh("WaterT", 0));
+	m_mTagRenderContainer[t][object_name]->SetShader(RESOURCEMGR->GetRenderShader("WaterSurface"));
+	m_mTagRenderContainer[t][object_name]->AddMaterial(RESOURCEMGR->GetMaterial("Terrain"));
+	m_mTagRenderContainer[t][object_name]->AddInstanceBuffer(RESOURCEMGR->GetBuffer("DEFAULTIB"));
+	m_mTagRenderContainer[t][object_name]->Begin();
+
 	t = tag::TAG_DEBUG;
 	object_name = "aabb";
 	m_mTagRenderContainer[t][ (object_name.c_str())] = new CDebugRenderContainer();
