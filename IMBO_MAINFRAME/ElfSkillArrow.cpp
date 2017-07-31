@@ -10,8 +10,9 @@ CElfSkillArrow::CElfSkillArrow(string name, tag t)
 	//m_pArrowTrail = new CTrail("Trail", tag::TAG_DYNAMIC_OBJECT);
 	//->Begin();
 
-	m_pArrowTrail = new CTrail();
+	m_pArrowTrail = new CTrail(XMVectorSet(0.2f, 0.6f, 0.1f,1.f), 0, 0.1f);
 	m_pArrowTrail->Initialize();
+	m_pArrowTrail->SetTexName(CString("Trail01"));
 }
 
 CElfSkillArrow::~CElfSkillArrow()
@@ -73,24 +74,41 @@ void CElfSkillArrow::Animate(float fTimeElapsed)
 
 	CGameObject::Animate(fTimeElapsed);
 
-	XMStoreFloat3(&m_xmf3Position, XMLoadFloat3(&m_xmf3Position) + ((XMVector3Normalize(GetLook()) * 10.f) * fTimeElapsed));
-	SetPosition(XMLoadFloat3(&m_xmf3Position));
-
-	m_bAlive = m_bActive;
-
 	if (m_pArrowTrail)
 	{
-		XMFLOAT3 xmStart, xmEnd;
-		XMStoreFloat3(&xmStart, XMVector3TransformCoord(XMLoadFloat3(&m_OriBoundingBox.Center), XMLoadFloat4x4(&m_xmf4x4World)));
-		XMStoreFloat3(&xmEnd, XMVector3TransformCoord(XMLoadFloat3(&m_OriBoundingBox.Extents), XMLoadFloat4x4(&m_xmf4x4World)));
-		m_pArrowTrail->SetStartPos(XMLoadFloat3(&xmStart), XMLoadFloat3(&xmEnd));
-		m_pArrowTrail->SetWorld(XMLoadFloat4x4(&m_xmf4x4World));
-		m_pArrowTrail->Update(fTimeElapsed);
+		if (m_bAlive != m_bActive ||
+			(m_xmf3Position.x == 0 &&
+				m_xmf3Position.y == 0 &&
+				m_xmf3Position.z == 0))
+		{
+			XMFLOAT4 xmStart, xmEnd;
+			XMStoreFloat4(&xmStart, XMVector3TransformCoord(
+				XMVectorSet(m_OriBoundingBox.Center.x, m_OriBoundingBox.Extents.y, m_OriBoundingBox.Center.z, 1.f), XMLoadFloat4x4(&m_xmf4x4World)));
+			XMStoreFloat4(&xmEnd, XMVector3TransformCoord(
+				XMVectorSet(m_OriBoundingBox.Center.x, m_OriBoundingBox.Center.y - m_OriBoundingBox.Extents.y, m_OriBoundingBox.Center.z, 1.f), XMLoadFloat4x4(&m_xmf4x4World)));
+			m_pArrowTrail->SetInitPos(XMLoadFloat4(&xmStart), XMLoadFloat4(&xmEnd));
+		}
+		else
+		{
+			XMFLOAT4 xmStart, xmEnd;
+			XMStoreFloat4(&xmStart, XMVector3TransformCoord(
+				XMVectorSet(m_OriBoundingBox.Center.x, m_OriBoundingBox.Extents.y, m_OriBoundingBox.Center.z, 1.f), XMLoadFloat4x4(&m_xmf4x4World)));
+			XMStoreFloat4(&xmEnd, XMVector3TransformCoord(
+				XMVectorSet(m_OriBoundingBox.Center.x, m_OriBoundingBox.Center.y - m_OriBoundingBox.Extents.y, m_OriBoundingBox.Center.z, 1.f), XMLoadFloat4x4(&m_xmf4x4World)));
+			m_pArrowTrail->SetStartPos(XMLoadFloat4(&xmStart), XMLoadFloat4(&xmEnd));
+			//m_pArrowTrail->SetWorld(XMLoadFloat4x4(&m_xmf4x4World));
+			m_pArrowTrail->Update(fTimeElapsed);
+		}
 	}
+
+	XMStoreFloat3(&m_xmf3Position, XMLoadFloat3(&m_xmf3Position) + ((XMVector3Normalize(GetLook()) * 90.f) * fTimeElapsed));
+	SetPosition(XMLoadFloat3(&m_xmf3Position));
+	
+	m_bAlive = m_bActive;
 }
 
 void CElfSkillArrow::RegistToContainer()
 {
 	//m_pArrowTrail->RegistToContainer();
-	//CGameObject::RegistToContainer();
+	CGameObject::RegistToContainer();
 }

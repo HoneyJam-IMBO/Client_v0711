@@ -4,13 +4,12 @@
 bool CKnight::Begin()
 {
 	CGameObject::Begin();
-
-
 	return false;
 }
 
 void CKnight::Animate(float fTimeElapsed)
 {
+	m_fTime = fTimeElapsed;
 	if (true == m_bSprit && false == m_bDamaged)
 		KeyInput(fTimeElapsed); //KeyInput(fTimeElapsed);
 	else	GetServerData(fTimeElapsed);
@@ -19,16 +18,7 @@ void CKnight::Animate(float fTimeElapsed)
 	if (m_pAnimater) m_pAnimater->Update(TIMEMGR->GetTimeElapsed());
 
 
-	// 점프 끝나면 IDLE로
-	if (KNIGHT_ANIM_JUMP_END == m_nAnimNum
-		|| m_bSkill == true) {
-		if (true == m_pAnimater->GetCurAnimationInfo()->GetLoopDone()) {
-			if (ANIM_HIT_F == m_nAnimNum) m_bDamaged = false;
-			m_nAnimNum = KNIGHT_ANIM_IDLE;
-			m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
-			m_bSkill = false;
-		}
-	}
+	UpdateSkill();
 	CGameObject::Animate(fTimeElapsed);
 
 	SetWeapon();
@@ -72,6 +62,8 @@ void CKnight::KeyInput(float fDeltaTime)
 			m_bSkill = true;
 			m_nAnimNum = KNIGHT_ANIM_ATTACK;
 			m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
+
+			INPUTMGR->SetMouseLeft(false);
 		}
 		else if (INPUTMGR->KeyDown(VK_1)) {				// 스킬 1 ------------------------
 			m_bSkill = true;
@@ -297,8 +289,23 @@ void CKnight::SetWeapon()
 		XMMATRIX xmmtxRotX = XMMatrixRotationX(90.f);
 		XMMATRIX xmmtxRotZ = XMMatrixRotationZ(0.f);
 		XMMATRIX xmmtxScale = XMMatrixScaling(15.f, 15.f, 15.f);
+		XMMATRIX xmmtxWeaponWorld = xmmtxScale* xmmtxRotX * xmmtxRotZ * xmmtxFinal;
+		m_pLeftWeapon->SetWorldMtx(xmmtxWeaponWorld);
 
-		m_pLeftWeapon->SetWorldMtx(xmmtxScale* xmmtxRotX * xmmtxRotZ * xmmtxFinal);
+		//m_pWeaponTrail->Update
+
+
+		BoundingBox* pWBox = m_pLeftWeapon->GetBBox();
+		XMFLOAT4 xmStart, xmEnd;
+		XMStoreFloat4(&xmStart, XMVector3TransformCoord(
+			XMVectorSet(pWBox->Center.x, pWBox->Center.y - 1.f, pWBox->Center.z, 1.f), xmmtxWeaponWorld));
+		XMStoreFloat4(&xmEnd, XMVector3TransformCoord(
+			XMVectorSet(pWBox->Center.x, pWBox->Center.y + 2.f , pWBox->Center.z, 1.f), xmmtxWeaponWorld));
+		m_pWeaponTrail->SetStartPos(XMLoadFloat4(&xmStart), XMLoadFloat4(&xmEnd));
+		m_pWeaponTrail->Update(m_fTime);
+		m_pWeaponTrail->SetRenderSwitch(m_bSkill);
+
+		//void GetMainBoundingBox(BoundingBox& out);
 	}
 
 	if (m_pRightWeapon)
@@ -316,6 +323,36 @@ void CKnight::SetWeapon()
 
 void CKnight::UpdateSkill()
 {
+	if (KNIGHT_ANIM_ATTACK2 == m_nAnimNum)
+	{
+		if (false == m_bAttak && INPUTMGR->MouseLeftDown())
+			m_bAttak = true;
+	}
+	if (KNIGHT_ANIM_ATTACK == m_nAnimNum)
+	{
+		if (false == m_bAttak && INPUTMGR->MouseLeftDown())
+			m_bAttak = true;
+	}
+	
+	// 점프 끝나면 IDLE로
+	if (KNIGHT_ANIM_JUMP_END == m_nAnimNum
+		|| m_bSkill == true) {
+		if (true == m_pAnimater->GetCurAnimationInfo()->GetLoopDone()) {
+			if (ANIM_HIT_F == m_nAnimNum) m_bDamaged = false;
+
+			if(true ==  m_bAttak && KNIGHT_ANIM_ATTACK == m_nAnimNum)
+				m_nAnimNum = KNIGHT_ANIM_ATTACK2;
+			else if (true == m_bAttak && KNIGHT_ANIM_ATTACK2 == m_nAnimNum)
+				m_nAnimNum = KNIGHT_ANIM_ATTACK3;
+			else
+			{
+				m_nAnimNum = KNIGHT_ANIM_IDLE;
+				m_bSkill = false;
+			}
+			m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
+			m_bAttak = false;
+		}
+	}
 }
 
 CKnight::CKnight(string name, tag t, bool bSprit, CGameObject * pWeapon, INT slot_id)
@@ -328,12 +365,18 @@ CKnight::CKnight(string name, tag t, bool bSprit, CGameObject * pWeapon, INT slo
 	m_pLeftWeapon = new CGameObject("OSW", TAG_DYNAMIC_OBJECT);
 	m_pLeftWeapon->Begin();
 
-	m_pRightWeapon = new CGameObject("OSW", TAG_DYNAMIC_OBJECT);
-	m_pRightWeapon->Begin();
+	//m_pRightWeapon = new CGameObject("OSW", TAG_DYNAMIC_OBJECT);
+	//m_pRightWeapon->Begin();
+
+	m_pWeaponTrail = new CTrail(XMVectorSet(0.8f, 0.5f, 0.4f, 1.f), 1, 0.f);
+	m_pWeaponTrail->Initialize();
+	m_pWeaponTrail->SetTexName(CString("Trail02"));
 }
 
 CKnight::~CKnight()
 {
+	if (m_pWeaponTrail)
+		delete m_pWeaponTrail;
 }
 
 void CKnight::RegistToContainer()

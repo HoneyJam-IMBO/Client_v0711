@@ -75,7 +75,6 @@ PS_GBUFFER_OUT main(DS_OUT input){
 
 	//set splatting detail color
 	
-	
 	//get world normal
 	//float3 normalW = GetWorldNormal(input.tangentW, input.bitangentW, input.texCoord);
 	float3 normalW = gtxtNormal.Sample(gssWRAP_LINEAR, input.texCoord).rgb;

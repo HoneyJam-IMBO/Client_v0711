@@ -137,6 +137,10 @@ public:
 	//navi mesh index
 	void SetNaviMeshIndex(int index);
 	void SetNaviMeshIndex();
+
+public:
+	BoundingBox*	GetBBox() { return &m_OriBoundingBox; }
+
 protected:
 	//navi mesh index
 	int m_indexNaviMesh{ -1 };

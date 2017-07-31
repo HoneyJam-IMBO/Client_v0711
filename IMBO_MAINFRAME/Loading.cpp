@@ -311,6 +311,8 @@ void CLoading::LoadUI_Skill(int cn1, int cn2, int cn3, int cn4)
 
 			RESOURCEMGR->CreateMultiMesh("../../Assets/SceneResource/GJM/OSW.gjm", "OSW");
 			RESOURCEMGR->CreateMultiMesh("../../Assets/SceneResource/GJM/SLD.gjm", "SLD");
+
+			RESOURCEMGR->CreateTexture("Trail02", _T("../../Assets/SceneResource/Trail/Trail02.tga"), PS_TEXTURE, BIND_PS);
 			break;
 		case demantor:
 			RESOURCEMGR->CreateTexture("Char_Select_2", _T("../../Assets/Scene_HeroSel/Char_Select_3.jpg"), PS_TEXTURE, BIND_PS);

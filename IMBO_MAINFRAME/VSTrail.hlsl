@@ -8,6 +8,7 @@ cbuffer ViewProjectionConstantBuffer : register(b11)
 cbuffer TrailInfo : register(b5)
 {
 	float4		g_xmf4Vtx[80];	
+	float4		g_xmf4Color;
 };
 struct VS_OUTPUT
 {

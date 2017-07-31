@@ -40,13 +40,19 @@ private:	//무기
 	CGameObject*	m_pLeftWeapon{ nullptr };
 	CGameObject*	m_pRightWeapon{ nullptr };
 
+	CTrail*			m_pWeaponTrail{ nullptr };
 
 private:	//스킬
 	bool	m_bSkill{ false };
 
+	bool	m_bAttak{ false };
+	int		m_iAttakNum{ 0 };
+
 private:
 	XMMATRIX	m_xmatrixRotate;
 	XMVECTOR	m_xmvShift;
+
+	float		m_fTime{ 0.f };
 
 private:	//player data
 	float m_fSpeed{ 0.f };
