@@ -284,15 +284,28 @@ void CLoading::LoadUI_Skill(int cn1, int cn2, int cn3, int cn4)
 			RESOURCEMGR->CreateTexture("skicon3", _T("../../Assets/Game_UI/skicon3.tga"), PS_TEXTURE, BIND_PS);
 			RESOURCEMGR->CreateTexture("skicon4", _T("../../Assets/Game_UI/skicon4.tga"), PS_TEXTURE, BIND_PS);*/
 
-			CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/Arrow_Skill1Shot.dat", L"Arrow_Skill1Shot");
+			/*CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/Arrow_Skill1Shot.dat", L"Arrow_Skill1Shot");
 			CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/ShotArrow.dat", L"ShotArrow");
 			CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/Test2.dat", L"Test2");
 			CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/elf_sk1.dat", L"elf_sk1");
 			CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/elf_sk2.dat", L"elf_sk2");
 			CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/elf_sk3.dat", L"elf_sk3");
 			CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/elf_sk3-1.dat", L"elf_sk3-1");
-			CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/elf_sk4.dat", L"elf_sk4");
+			CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/elf_sk4.dat", L"elf_sk4");*/
 
+			CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/Ranger_sk3_wheelwind.dat", L"Ranger_sk3_wheelwind");
+			CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/Ranger_sk2_con.dat", L"Ranger_sk2_con");
+
+			CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/elf_sk1.dat", L"elf_sk1");
+			CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/elf_sk2.dat", L"elf_sk2");
+			CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/elf_sk3.dat", L"elf_sk3");
+
+			CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/Arrow_Trace.dat", L"Arrow_Trace", 50);
+
+
+			CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/Arrow_Skill1Shot.dat", L"Arrow_Skill1Shot");
+
+			
 			RESOURCEMGR->CreateMultiMesh("../../Assets/SceneResource/GJM/Elf01F.gjm", "Elf01F");
 
 			RESOURCEMGR->CreateMultiMesh("../../Assets/SceneResource/GJM/Arrow1.gjm", "Arrow1");

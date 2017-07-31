@@ -169,6 +169,7 @@ protected:
 	bool		m_bIdle{ false };
 	CCamera*	m_pCamera{ nullptr };
 	bool		m_bJump{ false };
+	
 public:
 	void SetIdleState(bool bIdle) { m_bIdle = bIdle; }
 	bool GetIdleState() { return m_bIdle; }

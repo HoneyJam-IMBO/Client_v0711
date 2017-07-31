@@ -4,15 +4,17 @@
 
 #include "Trail.h"
 
-CElfSkillArrow::CElfSkillArrow(string name, tag t)
+CElfSkillArrow::CElfSkillArrow(string name, tag t, bool bStrong)
 	:CGameObject(name, t)
 {
 	//m_pArrowTrail = new CTrail("Trail", tag::TAG_DYNAMIC_OBJECT);
 	//->Begin();
 
-	m_pArrowTrail = new CTrail(XMVectorSet(0.2f, 0.6f, 0.1f,1.f), 0, 0.1f);
+	m_pArrowTrail = new CTrail(XMVectorSet(0.3f, 0.6f, 0.3f,1.f), 0, 0.1f);
 	m_pArrowTrail->Initialize();
 	m_pArrowTrail->SetTexName(CString("Trail01"));
+
+	m_bStrong = bStrong;
 }
 
 CElfSkillArrow::~CElfSkillArrow()
@@ -27,6 +29,7 @@ void CElfSkillArrow::InitData()
 	m_xmf3Rotate = XMFLOAT3(0.f, 0.f, 0.f);
 	XMStoreFloat4x4(&m_xmf4x4World, XMMatrixIdentity());
 	m_fAccTime = 0.f;
+	m_fTraceTime = 0.f;
 }
 void CElfSkillArrow::DisappearSkill()
 {
@@ -66,6 +69,17 @@ void CElfSkillArrow::Animate(float fTimeElapsed)
 {
 	if (false == m_bActive) return;
 	m_fAccTime += fTimeElapsed;
+	if (true == m_bStrong)
+	{
+		m_fTraceTime += fTimeElapsed;
+		if (m_fTraceTime > 0.2f){
+			CEffectMgr::GetInstance()->Play_Effect(L"Arrow_Trace", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y, m_xmf3Position.z, 1.f),
+				XMVectorSet(0.f, 0.f, 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
+			m_fTraceTime = 0.f;
+		}
+	}
+	
+	
 	if (m_fAccTime > 3.f){
 		m_bActive = false;
 		InitData();
@@ -101,7 +115,7 @@ void CElfSkillArrow::Animate(float fTimeElapsed)
 		}
 	}
 
-	XMStoreFloat3(&m_xmf3Position, XMLoadFloat3(&m_xmf3Position) + ((XMVector3Normalize(GetLook()) * 90.f) * fTimeElapsed));
+	XMStoreFloat3(&m_xmf3Position, XMLoadFloat3(&m_xmf3Position) + ((XMVector3Normalize(GetLook()) * 60.f) * fTimeElapsed));
 	SetPosition(XMLoadFloat3(&m_xmf3Position));
 	
 	m_bAlive = m_bActive;
