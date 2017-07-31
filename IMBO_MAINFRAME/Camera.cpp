@@ -232,6 +232,8 @@ void CCamera::SetTarget(CGameObject * pTarget)
 	//XMStoreFloat3(&m_xmf3At, xvTargetDir * -1);
 }
 
+
+
 CCamera::CCamera() : DXObject("camera"){
 	XMStoreFloat4x4(&m_xmf4x4View, XMMatrixIdentity());
 	XMStoreFloat4x4(&m_xmf4x4Projection, XMMatrixIdentity());

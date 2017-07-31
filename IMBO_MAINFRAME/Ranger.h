@@ -27,6 +27,7 @@ private:
 	void	SetWeapon();
 
 	void	UpdateSkill();
+	void	ShootArrow();
 private:
 	bool	m_bSelRangeMode{ false };
 private:

@@ -41,8 +41,12 @@ void CFreeCamera::UpdateShaderState() {
 	float fTimeDelta = TIMEMGR->GetTimeElapsed();
 	CalcultateMouseMoveValue();
 	FixCamera();
-	if(nullptr != m_pTarget )
+	if (nullptr != m_pTarget)
+	{
+		AttackZoomInOut(fTimeDelta);
 		CameraInputProcess(fTimeDelta);
+		CameraVibration(fTimeDelta);
+	}
 
 	CCamera::UpdateShaderState();
 
@@ -174,6 +178,50 @@ void CFreeCamera::CalcultateMouseMoveValue()
 		m_cxDelta = 0.f;
 		m_cyDelta = 0.f;
 	}
+}
+
+void CFreeCamera::CameraStartVibration(float fVibeYvalue, float fVibeSpeed)
+{
+	m_bVibrationStart = true;		//카메라 Update에서 CameraVibration을 호출 하여 true일 때 진동을 하도록 함
+	m_fVibrationTime = 0.f;			//진동이 끝나기전에 CameraStartVibration을 호출 할때를 위해 초기화한다.
+	m_fVibrationYValue = fVibeYvalue;	//매개변수로 진동의 폭을 조절한다.
+	m_fVibrationSpeed = fVibeSpeed;		//매개변수로 진동시간(10/m_fVibrationSpeed)을 조절한다.
+}
+
+void CFreeCamera::CameraVibration(float fTime)
+{
+	if (m_bVibrationStart)
+	{
+		//시간의 흐름에 따라 m_fVibrationY의 값을 바꾼다.
+		m_fVibrationY = sin(m_fVibrationTime * 10.f) * pow(0.5f, m_fVibrationTime) * m_fVibrationYValue;
+		m_xmf3Pos.y += m_fVibrationY;	//매 프레임 마다 최종 m_vEye의 위치에 진동값을 더해준다.
+		m_fVibrationTime += fTime * m_fVibrationSpeed;
+	}
+
+	if (m_fVibrationTime >= m_fVibrationMaxTime) //최대진동시간은 10초인데 10초보다 크면
+	{
+		m_fVibrationTime = 0.f;		//다음 진동을 위해 초기화를 해주고
+		m_bVibrationStart = false;	//진동을 멈춘다.
+	}
+}
+
+void CFreeCamera::AttackZoomInOut(float fTime)
+{
+	if (m_bFovChange)
+	{
+		m_fFovY -= XMConvertToRadians(50.f * fTime * 3.f);
+		if (m_fFovY <= XMConvertToRadians(40.f))
+			m_fFovY = XMConvertToRadians(40.f);
+	}
+	else
+	{
+		m_fFovY += XMConvertToRadians(50.f * fTime);
+		if (m_fFovY >= XMConvertToRadians(55.f))
+			m_fFovY = XMConvertToRadians(55.f);
+	}
+	GenerateProjectionMatrix(m_fFovY	// FOV Y 값 : 클 수록 멀리까지 볼 수 있다.
+		, float(GLOBALVALUEMGR->GetrcClient().right) / float(GLOBALVALUEMGR->GetrcClient().bottom)// 종횡비
+		, NEAR_PLANE, FAR_PLANE);// 최대 거리
 }
 
 CFreeCamera::CFreeCamera() : CCamera() {

@@ -215,8 +215,23 @@ void CRenderer::NoPostProcessRender( CCamera* pCamera)
 
 
 void CRenderer::Render( CCamera* pCamera) {
-	bool bDebug = INPUTMGR->GetDebugMode();
 
+	if (true == m_bRadialBlur)
+	{
+		m_fRBlurAccTime += m_fTimeDelta;
+		//m_fBlurStart = 0.2f * (m_fRBlurAccTime / m_fRBlurMaxTime) + 0.8f;
+		m_fBlurStart = 1.f;
+		m_fBlurWitdh = 0.2f * (m_fRBlurAccTime / m_fRBlurMaxTime) - 0.2f;
+		if (m_fRBlurAccTime > m_fRBlurMaxTime)
+		{
+			m_bRadialBlur = false;
+			m_fRBlurAccTime = 0.f;
+			m_fBlurStart = 0.f;
+			m_fBlurWitdh = 0.f;
+		}
+	}
+
+	bool bDebug = INPUTMGR->GetDebugMode();
 	pCamera->SetShaderState();
 	RESOURCEMGR->GetSampler("WRAP_LINEAR")->SetShaderState();
 	RESOURCEMGR->GetSampler("WRAP_POINT")->SetShaderState();
@@ -324,7 +339,8 @@ void CRenderer::Render( CCamera* pCamera) {
 
 	// final
 	SetMainRenderTargetView();
-	m_pFinalRenderer->RenderFinalPass(m_pd3dsrvPostProcess, m_pEffectRenderer->GetAlphaSRV(), m_pd3dsrvSkyBox, srvDistortion);
+	m_pFinalRenderer->RenderFinalPass(m_pd3dsrvPostProcess, m_pEffectRenderer->GetAlphaSRV(), m_pd3dsrvSkyBox, srvDistortion,
+		m_bRadialBlur, m_fBlurStart, m_fBlurWitdh);
 
 	if (nullptr != m_pUIRederer) {
 		m_pUIRederer->RenderUI();
@@ -383,9 +399,9 @@ void CRenderer::Render( CCamera* pCamera) {
 }
 void CRenderer::Update(float fTimeElapsed) {
 	m_pBloomDownScale->SetAdaptation(fTimeElapsed);
+	m_fTimeDelta = fTimeElapsed;
 }
 void CRenderer::PostProcessing( CCamera* pCamera) {
-
 
 	m_pBloomDownScale->Excute();
 	ID3D11ShaderResourceView* pBloomImage = m_pBloom->Excute(pCamera);

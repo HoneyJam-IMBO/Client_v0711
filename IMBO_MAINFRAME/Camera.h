@@ -145,6 +145,27 @@ public:
 
 	float m_cxDelta{ 0.f };
 	float m_cyDelta{ 0.f };
+
+protected:
+	bool	m_bVibrationStart{ false };
+	float	m_fVibrationYValue{ 0.f };	// 진동수치
+	float	m_fVibrationSpeed{ 0.f };	// 진동 시간
+
+	float	m_fVibrationY{ 0.f };		// 현재 진동된 값
+	float	m_fVibrationTime{ 0.f };	// 카메라 현재 시간
+	float	m_fVibrationMaxTime{ 10.f };	// 카메라 최대 시간
+
+	bool	m_bFovChange{ false };
+	float	m_fFovY{ XMConvertToRadians(60.f) };
+
+public:
+	virtual void CameraStartVibration(float fVibeYvalue, float fVibeSpeed) {};
+	void AttackStartZoomInOut(bool bChange) { m_bFovChange = bChange; };
+	virtual void CameraVibration(float fTime) {};
+	virtual void AttackZoomInOut(float fTime) {};
+
+
+
 public:
 	CCamera();
 	virtual ~CCamera();

@@ -132,6 +132,20 @@ private:
 	CFinalRenderer*		m_pFinalRenderer{ nullptr };
 	//-------------------------layer-------------------------
 
+private:
+	bool	m_bRadialBlur{ false };
+	float	m_fRBlurMaxTime{ 0.f };
+	float	m_fRBlurAccTime{ 0.f };
+	float	m_fTimeDelta{ 0.f };
+	float	m_fBlurStart{ 0.f };
+	float	m_fBlurWitdh{ 0.f };
+
+public:
+	void	SetRadialBlurTime(bool bBlurSwitch, float fTime) { 
+		m_bRadialBlur = bBlurSwitch; m_fRBlurMaxTime = fTime;
+		m_fRBlurAccTime = 0.f;
+	}
+
 	//effects
 	//back  buffer color
 	float m_fBackBufferClearColor[4];

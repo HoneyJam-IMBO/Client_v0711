@@ -31,6 +31,10 @@ private:
 	void FixCamera();
 	void CalcultateMouseMoveValue();
 
+	virtual void CameraStartVibration(float fVibeYvalue, float fVibeSpeed) ;
+	virtual void CameraVibration(float fTime);
+	virtual void AttackZoomInOut(float fTime);
+
 
 	POINT m_ptOldMousePos;
 

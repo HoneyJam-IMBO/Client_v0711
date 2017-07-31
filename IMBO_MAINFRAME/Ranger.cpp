@@ -47,37 +47,35 @@ void CRanger::KeyInput(float fDeltaTime)
 	bool bAttack = true;
 	NETWORKMGR->WritePacket(PT_MOUSE_LEFT_ATTACK_CS, Packet, WRITE_PT_MOUSE_LEFT_ATTACK_CS(Packet, bAttack));
 #endif
+
+	if (m_bSkill)	m_pCamera->AttackStartZoomInOut(true);
+	else			m_pCamera->AttackStartZoomInOut(false);
 	// 스킬 및 공격
 	if (false == m_bJump && false == m_bSkill)
 	{
 		if (INPUTMGR->MouseLeftDown()){					// 기본공격 ----------------------
+			
 			m_bSkill = true;
 			m_nAnimNum = ANIM_ATTACK;
 			m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
 
-			size_t iArraySize = m_mapSkill["Arrow1"].size();
-			for (size_t i = 0; i < iArraySize; ++i) {
-				if (false == m_mapSkill["Arrow1"][i]->GetActive()) {
-					m_mapSkill["Arrow1"][i]->SetActive(true);
-					m_mapSkill["Arrow1"][i]->SetPosition(XMVectorSet(m_xmf3Position.x, m_xmf3Position.y + 3.f, m_xmf3Position.z, 1.f));
-					m_mapSkill["Arrow1"][i]->Rotate(XMMatrixRotationY(m_fAngleY));
-					m_mapSkill["Arrow1"][i]->SetScale(XMVectorSet(2.f, 2.f, 2.f, 1.f));
-					
-					//((CElfSkillArrow*)m_mapSkill["Arrow1"][i])->GetTrail()->SetPosition(XMVectorSet(m_xmf3Position.x, m_xmf3Position.y + 3.f, m_xmf3Position.z, 1.f));
-					break;
-				}
-			}
+			RENDERER->SetRadialBlurTime(true, 0.5f);
+			ShootArrow();
 		}
 		else if (INPUTMGR->KeyDown(VK_1)){				// 스킬 1 ------------------------
 			m_bSkill = true;
-			m_nAnimNum = ANIM_SKILL1_CHARGING;
+			//m_nAnimNum = ANIM_SKILL1_CHARGING;
+			m_nAnimNum = ANIM_SKILL1_FIRE;
 			m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
 		}
 		else if (INPUTMGR->KeyDown(VK_2)){				// 스킬 2 ------------------------
 			m_bSkill = true;
-			m_bSelRangeMode = true;
-			m_nAnimNum = /*ANIM_SKILL2_FIRE*/ANIM_IDLE;
+			//m_bSelRangeMode = true;
+			//m_nAnimNum = /*ANIM_SKILL2_FIRE*/ANIM_IDLE;
+			m_nAnimNum = ANIM_SKILL2_START;
 			m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
+
+			m_pCamera->CameraStartVibration(1.5f, 10.f);
 		}
 		else if (INPUTMGR->KeyDown(VK_3)){				// 스킬 3 ------------------------
 			m_bSkill = true;
@@ -86,7 +84,9 @@ void CRanger::KeyInput(float fDeltaTime)
 		}
 		else if (INPUTMGR->KeyDown(VK_4)){				// 스킬 3 ------------------------
 			m_bSkill = true;
-			m_nAnimNum = ANIM_SKILL4_START;
+			m_bSelRangeMode = true;
+			m_nAnimNum = /*ANIM_SKILL2_FIRE*/ANIM_IDLE;
+			//m_nAnimNum = ANIM_SKILL4_FIRE;
 			m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
 		}
 	}
@@ -294,25 +294,44 @@ void CRanger::SetWeapon()
 
 void CRanger::UpdateSkill()
 {
-	if (ANIM_SKILL1_CHARGING == m_nAnimNum)
-	{
-		if (true == m_pAnimater->GetCurAnimationInfo()->GetLoopDone())
-		{
-			m_nAnimNum = ANIM_SKILL1_FIRE;
-			m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
-		}
-		return;
-	}
-	if (ANIM_SKILL4_START == m_nAnimNum)
-	{
-		if (true == m_pAnimater->GetCurAnimationInfo()->GetLoopDone())
-		{
-			m_nAnimNum = ANIM_SKILL4_FIRE;
-			m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
-		}
-		return;
-	}
+	//if (ANIM_SKILL1_CHARGING == m_nAnimNum)
+	//{
+	//	if (true == m_pAnimater->GetCurAnimationInfo()->GetLoopDone())
+	//	{
+	//		m_nAnimNum = ANIM_SKILL1_FIRE;
+	//		m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
+	//	}
+	//	return;
+	//}
+	//if (ANIM_SKILL4_START == m_nAnimNum)
+	//{
+	//	if (true == m_pAnimater->GetCurAnimationInfo()->GetLoopDone())
+	//	{
+	//		m_nAnimNum = ANIM_SKILL4_FIRE;
+	//		m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
+	//	}
+	//	return;
+	//}
 
+	if (ANIM_SKILL2_START == m_nAnimNum)
+	{
+		if (true == m_pAnimater->GetCurAnimationInfo()->GetLoopDone())
+		{
+			m_nAnimNum = ANIM_SKILL2_CHARGING;
+			m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
+		}
+		return;
+	}
+	if (ANIM_SKILL2_CHARGING == m_nAnimNum)
+	{
+		if (true == m_pAnimater->GetCurAnimationInfo()->GetLoopDone())
+		{
+			m_nAnimNum = ANIM_SKILL2_FIRE;
+			m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
+			ShootArrow();
+		}
+		return;
+	}
 
 
 	// 점프 끝나면 IDLE로
@@ -333,9 +352,9 @@ void CRanger::UpdateSkill()
 
 		if (true == m_bSkill && INPUTMGR->MouseLeftDown())
 		{
-			m_nAnimNum = ANIM_SKILL2_FIRE;
+			m_nAnimNum = ANIM_SKILL4_FIRE;
 			m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
-			m_bSelRangeMode = false;
+			//m_bSelRangeMode = false;
 			pCam->SetFixCamera(true);
 		}
 		if (true == m_bSkill && INPUTMGR->MouseRightDown())
@@ -345,6 +364,22 @@ void CRanger::UpdateSkill()
 			m_bSkill = false;
 			m_bSelRangeMode = false;
 			pCam->SetFixCamera(true);
+		}
+	}
+}
+
+void CRanger::ShootArrow()
+{
+	size_t iArraySize = m_mapSkill["Arrow1"].size();
+	for (size_t i = 0; i < iArraySize; ++i) {
+		if (false == m_mapSkill["Arrow1"][i]->GetActive()) {
+			m_mapSkill["Arrow1"][i]->SetActive(true);
+			m_mapSkill["Arrow1"][i]->SetPosition(XMVectorSet(m_xmf3Position.x, m_xmf3Position.y + 3.f, m_xmf3Position.z, 1.f));
+			m_mapSkill["Arrow1"][i]->Rotate(XMMatrixRotationY(m_fAngleY));
+			m_mapSkill["Arrow1"][i]->SetScale(XMVectorSet(2.f, 2.f, 2.f, 1.f));
+
+			//((CElfSkillArrow*)m_mapSkill["Arrow1"][i])->GetTrail()->SetPosition(XMVectorSet(m_xmf3Position.x, m_xmf3Position.y + 3.f, m_xmf3Position.z, 1.f));
+			break;
 		}
 	}
 }
