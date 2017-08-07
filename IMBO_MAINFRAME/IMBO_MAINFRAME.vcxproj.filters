@@ -510,6 +510,9 @@
     <Filter Include="0. HLSL\11. Water\WaterSurface">
       <UniqueIdentifier>{4627a382-7205-4edf-95ac-4907c70fb9c7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="1. 소스 파일\05. GameObject\-06. Monster\1. Boss02">
+      <UniqueIdentifier>{af0bd76b-e77c-4497-a1c3-d0fed0e66e67}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Light.h">
@@ -887,6 +890,12 @@
     <ClInclude Include="SCAldenard.h">
       <Filter>1. 소스 파일\03. Scene\-05. SCAldenard</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\0. JH%27s Folder\Study\IBClient\ImBo\Client_v0711\IMBO_MAINFRAME\SCSarasen.h">
+      <Filter>1. 소스 파일\03. Scene\-06. SCSarasen</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\0. JH%27s Folder\Study\IBClient\ImBo\Client_v0711\IMBO_MAINFRAME\Roisa.h">
+      <Filter>1. 소스 파일\05. GameObject\-06. Monster\1. Boss02</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Light.cpp">
@@ -1248,6 +1257,12 @@
     </ClCompile>
     <ClCompile Include="SCAldenard.cpp">
       <Filter>1. 소스 파일\03. Scene\-05. SCAldenard</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\0. JH%27s Folder\Study\IBClient\ImBo\Client_v0711\IMBO_MAINFRAME\SCSarasen.cpp">
+      <Filter>1. 소스 파일\03. Scene\-06. SCSarasen</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\0. JH%27s Folder\Study\IBClient\ImBo\Client_v0711\IMBO_MAINFRAME\Roisa.cpp">
+      <Filter>1. 소스 파일\05. GameObject\-06. Monster\1. Boss02</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

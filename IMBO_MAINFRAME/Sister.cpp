@@ -9,6 +9,7 @@ bool CSister::Begin()
 
 void CSister::Animate(float fTimeElapsed)
 {
+	m_fTime = fTimeElapsed;
 	if (true == m_bSprit && false == m_bDamaged)
 		KeyInput(fTimeElapsed); //KeyInput(fTimeElapsed);
 	else	GetServerData(fTimeElapsed);
@@ -26,9 +27,9 @@ void CSister::Animate(float fTimeElapsed)
 
 bool CSister::End()
 {
-	if (m_pWeapon) {
-		delete m_pWeapon;
-		m_pWeapon = nullptr;
+	if (m_pLeftWeapon) {
+		delete m_pLeftWeapon;
+		m_pLeftWeapon = nullptr;
 	}
 	return true;
 }
@@ -44,7 +45,19 @@ void CSister::KeyInput(float fDeltaTime)
 	BYTE Packet[MAX_BUFFER_LENGTH] = { 0, };
 	bool bAttack = true;
 	NETWORKMGR->WritePacket(PT_MOUSE_LEFT_ATTACK_CS, Packet, WRITE_PT_MOUSE_LEFT_ATTACK_CS(Packet, bAttack));
-#endif
+#endif	
+	if (GetAsyncKeyState(VK_SHIFT))
+	{
+		m_fSpeed = 50.f;
+	}
+	else
+	{
+		m_fSpeed = 10.f;
+	}
+
+	if (m_bSkill)	m_pCamera->AttackStartZoomInOut(true);
+	else			m_pCamera->AttackStartZoomInOut(false);
+
 	// 스킬 및 공격
 	if (false == m_bJump && false == m_bSkill)
 	{
@@ -52,6 +65,7 @@ void CSister::KeyInput(float fDeltaTime)
 			m_bSkill = true;
 			m_nAnimNum = SISTER_ANIM_ATTACK;
 			m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
+			RENDERER->SetRadialBlurTime(true, 0.4f);
 		}
 		else if (INPUTMGR->KeyDown(VK_1)) {				// 스킬 1 ------------------------
 			m_bSkill = true;
@@ -270,16 +284,31 @@ void CSister::Jumping(float fDeltaTime)
 
 void CSister::SetWeapon()
 {
-	if (m_pWeapon)
+	if (m_pLeftWeapon)
 	{
-		XMMATRIX xmmtxFrame = this->GetAnimater()->GetCurAnimationInfo()->GetCurFrameMtx(this->GetAnimater()->GetRHand());
+		XMMATRIX xmmtxFrame = this->GetAnimater()->GetCurAnimationInfo()->GetCurFrameMtx(this->GetAnimater()->GetLHand());
 		XMMATRIX xmmtxFinal = xmmtxFrame * this->GetAnimater()->GetMeshOffsetMtx() * this->GetWorldMtx();
 
 		XMMATRIX xmmtxRotX = XMMatrixRotationX(90.f);
-		XMMATRIX xmmtxRotZ = XMMatrixRotationZ(90.f);
-		XMMATRIX xmmtxScale = XMMatrixScaling(10.f, 10.f, 10.f);
+		XMMATRIX xmmtxRotZ = XMMatrixRotationZ(0.f);
+		XMMATRIX xmmtxScale = XMMatrixScaling(40.f, 40.f, 40.f);
+		XMMATRIX xmmtxWeaponWorld = xmmtxScale* xmmtxRotX * xmmtxRotZ * xmmtxFinal;
+		m_pLeftWeapon->SetWorldMtx(xmmtxWeaponWorld);
 
-		m_pWeapon->SetWorldMtx(xmmtxScale* xmmtxRotX * xmmtxRotZ * xmmtxFinal);
+		//m_pWeaponTrail->Update
+
+
+		BoundingBox* pWBox = m_pLeftWeapon->GetBBox();
+		XMFLOAT4 xmStart, xmEnd;
+		XMStoreFloat4(&xmStart, XMVector3TransformCoord(
+			XMVectorSet(pWBox->Center.x, pWBox->Center.y - 1.f, pWBox->Center.z, 1.f), xmmtxWeaponWorld));
+		XMStoreFloat4(&xmEnd, XMVector3TransformCoord(
+			XMVectorSet(pWBox->Center.x, pWBox->Center.y + 2.f, pWBox->Center.z, 1.f), xmmtxWeaponWorld));
+		m_pWeaponTrail->SetStartPos(XMLoadFloat4(&xmStart), XMLoadFloat4(&xmEnd));
+		m_pWeaponTrail->Update(m_fTime);
+		m_pWeaponTrail->SetRenderSwitch(m_bSkill);
+
+		//void GetMainBoundingBox(BoundingBox& out);
 	}
 }
 
@@ -309,10 +338,16 @@ void CSister::UpdateSkill()
 CSister::CSister(string name, tag t, bool bSprit, CGameObject * pWeapon, INT slot_id)
 	: CGameObject(name, t)
 	, m_bSprit(bSprit)
-	, m_pWeapon(pWeapon)
+	//, m_pLeftWeapon(pWeapon)
 	, m_SLOT_ID(slot_id)
 {
-	m_fSpeed = 14.f;
+	m_fSpeed = 10.f;
+	m_pLeftWeapon = new CGameObject("HMR", TAG_DYNAMIC_OBJECT);
+	m_pLeftWeapon->Begin();
+
+	m_pWeaponTrail = new CTrail(XMVectorSet(1.f, 1.f, 1.f, 1.f), 1, 0.f);
+	m_pWeaponTrail->Initialize();
+	m_pWeaponTrail->SetTexName(CString("Trail03"));
 }
 
 CSister::~CSister()
@@ -322,7 +357,7 @@ CSister::~CSister()
 void CSister::RegistToContainer()
 {
 	CGameObject::RegistToContainer();
-	if (m_pWeapon) m_pWeapon->RegistToContainer();
+	if (m_pLeftWeapon) m_pLeftWeapon->RegistToContainer();
 }
 
 void CSister::PhisicsLogic(map<utag, list<CGameObject*>>& mlpObject, float fDeltaTime)

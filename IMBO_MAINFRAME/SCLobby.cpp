@@ -50,6 +50,12 @@ bool CSCLobby::End()
 
 void CSCLobby::Animate(float fTimeElapsed)
 {
+	//юс╫ц
+	if (INPUTMGR->KeyBoardDown(VK_T))
+	{
+		SCENEMGR->ChangeScene(SCN_HEROSEL);
+		return;
+	}
 	NetworkProc();
 	if (true == INPUTMGR->MouseLeftOnlyDown())
 	{

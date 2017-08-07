@@ -55,6 +55,17 @@ void CKnight::KeyInput(float fDeltaTime)
 	bool bAttack = true;
 	NETWORKMGR->WritePacket(PT_MOUSE_LEFT_ATTACK_CS, Packet, WRITE_PT_MOUSE_LEFT_ATTACK_CS(Packet, bAttack));
 #endif
+	if (GetAsyncKeyState(VK_SHIFT))
+	{
+		m_fSpeed = 50.f;
+	}
+	else
+	{
+		m_fSpeed = 10.f;
+	}
+
+	if (m_bSkill)	m_pCamera->AttackStartZoomInOut(true);
+	else			m_pCamera->AttackStartZoomInOut(false);
 	// 스킬 및 공격
 	if (false == m_bJump && false == m_bSkill)
 	{
@@ -64,11 +75,14 @@ void CKnight::KeyInput(float fDeltaTime)
 			m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
 
 			INPUTMGR->SetMouseLeft(false);
+			RENDERER->SetRadialBlurTime(true, 0.3f);
 		}
 		else if (INPUTMGR->KeyDown(VK_1)) {				// 스킬 1 ------------------------
 			m_bSkill = true;
 			m_nAnimNum = KNIGHT_ANIM_SKILL1_FIRE;
 			m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
+
+			m_pCamera->CameraStartVibration(1.5f, 10.f);
 		}
 		else if (INPUTMGR->KeyDown(VK_2)) {				// 스킬 2 ------------------------
 			m_bSkill = true;
@@ -340,10 +354,17 @@ void CKnight::UpdateSkill()
 		if (true == m_pAnimater->GetCurAnimationInfo()->GetLoopDone()) {
 			if (ANIM_HIT_F == m_nAnimNum) m_bDamaged = false;
 
-			if(true ==  m_bAttak && KNIGHT_ANIM_ATTACK == m_nAnimNum)
+			if (true == m_bAttak && KNIGHT_ANIM_ATTACK == m_nAnimNum)
+			{
 				m_nAnimNum = KNIGHT_ANIM_ATTACK2;
+				RENDERER->SetRadialBlurTime(true, 0.3f);
+			}
 			else if (true == m_bAttak && KNIGHT_ANIM_ATTACK2 == m_nAnimNum)
+			{
 				m_nAnimNum = KNIGHT_ANIM_ATTACK3;
+				RENDERER->SetRadialBlurTime(true, 0.4f);
+			}
+
 			else
 			{
 				m_nAnimNum = KNIGHT_ANIM_IDLE;
@@ -361,7 +382,7 @@ CKnight::CKnight(string name, tag t, bool bSprit, CGameObject * pWeapon, INT slo
 	, m_pWeapon(pWeapon)
 	, m_SLOT_ID(slot_id)
 {
-	m_fSpeed = 14.f;
+	m_fSpeed = 10.f;
 	m_pLeftWeapon = new CGameObject("OSW", TAG_DYNAMIC_OBJECT);
 	m_pLeftWeapon->Begin();
 

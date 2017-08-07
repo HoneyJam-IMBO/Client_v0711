@@ -135,7 +135,7 @@ void CDirectXFramework::InitSingleton(HINSTANCE hInstance, HWND hWnd)
 
 #ifdef NO_SERVER
 	SCENEMGR->ChangeScene(SCN_ORITOWN);
-	//SCENEMGR->ChangeScene(SCN_HEROSEL);
+	//SCENEMGR->ChangeScene(SCN_TITLE);
 	return;
 #endif
 

@@ -14,6 +14,8 @@ public:
 	mapTagRenderContainer& GetStempRenderContainer() { return m_mStempRenderContainer; }
 	CRenderContainer* GetRenderContainer(string name);
 	CRenderContainer* GetRenderContainer(tag t, string name);
+
+	void ClearTagRenderContainerObjects();
 public:
 	void	ClearStempRenderContainer();
 	void	CreateStempRenderContainer();

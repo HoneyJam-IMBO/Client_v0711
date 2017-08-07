@@ -108,6 +108,14 @@ void CRanger::KeyInput(float fDeltaTime)
 	bool bAttack = true;
 	NETWORKMGR->WritePacket(PT_MOUSE_LEFT_ATTACK_CS, Packet, WRITE_PT_MOUSE_LEFT_ATTACK_CS(Packet, bAttack));
 #endif
+	if (GetAsyncKeyState(VK_SHIFT))
+	{
+		m_fSpeed = 50.f;
+	}
+	else
+	{
+		m_fSpeed = 10.f;
+	}
 
 	if (m_bSkill)	m_pCamera->AttackStartZoomInOut(true);
 	else			m_pCamera->AttackStartZoomInOut(false);
@@ -205,7 +213,7 @@ void CRanger::KeyInput(float fDeltaTime)
 		if (dwDirection & DIR_RIGHT)		m_xmvShift += GetRight();
 		if (dwDirection & DIR_LEFT)			m_xmvShift -= GetRight();
 		if (dwDirection & DIR_FORWARD)		{ m_xmvShift += GetLook(); fSpdX = 1.f; }
-		if (dwDirection & DIR_BACKWARD)		{ m_xmvShift -= GetLook(); fSpdX = 0.8f; }
+		if (dwDirection & DIR_BACKWARD)		{ m_xmvShift -= GetLook(); fSpdX = 0.7f; }
 
 		Move(XMVector3Normalize(m_xmvShift), (m_fSpeed * fSpdX) * fDeltaTime);
 
@@ -453,7 +461,7 @@ CRanger::CRanger(string name, tag t, bool bSprit, CGameObject* pWeapon, INT slot
 	, m_pWeapon(pWeapon)
 	, m_SLOT_ID(slot_id)
 {
-	m_fSpeed = 14.f;
+	m_fSpeed = 10.f;
 
 	vector<CGameObject*> vecSkill;
 	for (int i = 0; i < 5; ++i)

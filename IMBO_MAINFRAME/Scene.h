@@ -45,7 +45,7 @@ protected:
 	CGameObject*	m_pPickingObject{ nullptr };
 
 	SCENE_ID		m_eSceneID{ SCN_END };
-	bool			m_bIsLoading{ false };
+	volatile bool			m_bIsLoading{ false };
 
 	vector<CUIObject*>	m_vecUI;
 public:

@@ -6,7 +6,8 @@ bool CRenderContainerSeller::Begin(){
 	string object_name;
 	CString cs(object_name.c_str());
 	tag t = tag::TAG_DYNAMIC_OBJECT;
-
+	m_mStempRenderContainer.clear();
+	m_mTagRenderContainer.clear();
 	/*object_name = "fbx";
 	m_mTagRenderContainer[t][object_name] = new CRenderContainer();
 	m_mTagRenderContainer[t][object_name]->AddMesh(RESOURCEMGR->GetMesh("Rect1", 0));
@@ -250,6 +251,14 @@ CRenderContainer * CRenderContainerSeller::GetRenderContainer(tag t, string name
 	return nullptr;
 }
 
+void CRenderContainerSeller::ClearTagRenderContainerObjects(){
+	for (auto pairTagRenderContainer : m_mTagRenderContainer) {
+		for (auto pairRenderContainer : pairTagRenderContainer.second) {
+			pairRenderContainer.second->ClearObjectList();
+		}
+	}
+}
+
 void CRenderContainerSeller::ClearStempRenderContainer()
 {
 	for (auto pairTagRenderContainer : m_mStempRenderContainer) {
@@ -260,6 +269,7 @@ void CRenderContainerSeller::ClearStempRenderContainer()
 		pairTagRenderContainer.second.clear();
 	}
 	m_mStempRenderContainer.clear();
+
 }
 void CRenderContainerSeller::CreateStempRenderContainer(){
 	//tag는 mesh에서 얻어와야 한다. 

@@ -35,7 +35,11 @@ private:
 	float	m_fAngleX{ 0.f };
 	int		m_iPawnNum{ -1 };
 
-	CGameObject*	m_pWeapon{ nullptr };
+	CGameObject*	m_pLeftWeapon{ nullptr };
+
+	CTrail*			m_pWeaponTrail{ nullptr };
+
+	float			m_fTime{ 0.f };
 
 private:	//½ºÅ³
 	map<string, vector<CGameObject*>>	m_mapSkill;

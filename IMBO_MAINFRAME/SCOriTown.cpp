@@ -91,7 +91,7 @@ bool CSCOriTown::Begin() {
 		if (bSoul) {//player에게 camera 붙혀주기
 			m_ppPawn[i]->SetTerrainContainer(UPDATER->GetTerrainContainer());
 			m_ppPawn[i]->SetUTag(utag::UTAG_PLAYER);
-			m_ppPawn[i]->SetPosition(XMVectorSet(10 * i + 250, 0, 250, 0));//[10, 10]부터 [40, 10]까지 배치
+			//m_ppPawn[i]->SetPosition(XMVectorSet(10 * i + 250, 0, 250, 0));//[10, 10]부터 [40, 10]까지 배치
 			UPDATER->GetSpaceContainer()->AddObject(m_ppPawn[i]);
 			m_ppPawn[i]->GetAnimater()->SetCurAnimationIndex(0);
 			CAMMGR->SetTarget(CAM_FREE, m_ppPawn[i]);
@@ -111,7 +111,7 @@ bool CSCOriTown::Begin() {
 
 	
 	//보스 제작
-	/*CGameObject*	pBoss = new CLesserGiant("Boss01L", TAG_DYNAMIC_OBJECT, m_ppPawn[0]);
+	CGameObject*	pBoss = new CLesserGiant("Boss01L", TAG_DYNAMIC_OBJECT, m_ppPawn[0]);
 	pBoss->SetUTag(utag::UTAG_BOSS1);
 	pBoss->Begin();
 	pBoss->SetTerrainContainer(UPDATER->GetTerrainContainer());
@@ -119,7 +119,7 @@ bool CSCOriTown::Begin() {
 	pBoss->SetNaviMeshIndex();
 	pBoss->SetScale(XMVectorSet(1, 1, 1, 1));
 	UPDATER->GetSpaceContainer()->AddObject(pBoss);
-	pBoss->GetAnimater()->SetCurAnimationIndex(0);*/
+	pBoss->GetAnimater()->SetCurAnimationIndex(0);
 
 	
 
@@ -314,10 +314,10 @@ VOID CSCOriTown::PROC_PT_MOUSE_LEFT_ATTACK_SC(DWORD dwProtocol, BYTE * Packet, D
 
 void CSCOriTown::ReadMapData()
 {
-	//IMPORTER->Begin("../../Assets/SceneResource/test/test.scn");
+	IMPORTER->Begin("../../Assets/SceneResource/test/test.scn");
 	//IMPORTER->Begin("../../Assets/SceneResource/FirstTown/FirstTown.scn");
 	//IMPORTER->Begin("../../Assets/SceneResource/Aldenard/Aldenard.scn");
-	IMPORTER->Begin("../../Assets/SceneResource/Sarasen/Sarasen.scn");
+	//IMPORTER->Begin("../../Assets/SceneResource/Sarasen/Sarasen.scn");
 	//output path
 	wstring wsOutputPath = IMPORTER->ReadWstring();
 	//scene name

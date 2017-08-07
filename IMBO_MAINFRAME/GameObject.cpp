@@ -871,7 +871,13 @@ void CGameObject::SetNaviMeshIndex() {
 	m_indexNaviMesh = CNaviObjectManager::GetValiableIndex(GetPosition());
 
 	if (m_indexNaviMesh == -1) SetNaviMeshIndex(0);
-	else SetNaviMeshIndex(m_indexNaviMesh);
+	else {
+		SetNaviMeshIndex(m_indexNaviMesh);
+		m_xmf3Position.y = CNaviObjectManager::GetHeight(XMFLOAT2(m_xmf3Position.x, m_xmf3Position.z), m_indexNaviMesh);
+		m_xmf4x4World._41 = m_xmf3Position.x;
+		m_xmf4x4World._42 = m_xmf3Position.y;
+		m_xmf4x4World._43 = m_xmf3Position.z;
+	}
 }
 
 //생성자는 위에서부터 

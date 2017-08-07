@@ -276,6 +276,8 @@ void CRenderer::Render( CCamera* pCamera) {
 	m_pObjectRenderer->Excute(pCamera);
 	m_pObjectRenderer->CleanShaderState();
 
+	//m_pEffectRenderer->RenderEffect();
+
 	//naviobject render
 	if (true == bDebug) DEBUGER->end_Timemeasurement(L"object_render");
 	//GLOBALVALUEMGR->GetDeviceContext()->OMSetDepthStencilState(m_pd3dDSSEarlyZWrite, 1);

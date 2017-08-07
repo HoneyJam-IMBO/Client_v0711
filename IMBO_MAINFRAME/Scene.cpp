@@ -71,7 +71,8 @@ void CScene::LoadResource(wstring wsMeshRoot){
 		RESOURCEMGR->CreateMultiMesh(sPath, name);
 		//sprintf(name, "StempMesh%d", i++);
 	}
-
+	RCSELLER->ClearTagRenderContainerObjects();
+	RCSELLER->ClearStempRenderContainer();
 	//RCSELLER->TestingRCAdd();
 	RCSELLER->CreateStempRenderContainer();
 }

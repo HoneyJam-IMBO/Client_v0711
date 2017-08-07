@@ -13,7 +13,6 @@ CSCTitle::~CSCTitle()
 
 bool CSCTitle::Begin()
 {
-
 	UPDATER->GetSkyBoxContainer()->SetActive(false);
 	UPDATER->GetTerrainContainer()->SetActive(false);
 

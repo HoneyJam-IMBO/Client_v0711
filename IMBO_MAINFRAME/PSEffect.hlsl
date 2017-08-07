@@ -37,38 +37,38 @@ struct PS_EFFECT_OUT {
 PS_EFFECT_OUT main(VS_TEXTURED_OUTPUT input) : SV_TARGET
 {
 	PS_EFFECT_OUT output = (PS_EFFECT_OUT)0;
-float4 cBaseTexColor = gtexture.Sample(gSampler, input.texCoord);
+	float4 cBaseTexColor = gtexture.Sample(gSampler, input.texCoord);
 
-/*float fDepth = gDepthtexture.Sample(gSampler, input.texCoord).x;
-return float4(fDepth, 0.f, 0.f, 1.f);*/
+	/*float fDepth = gDepthtexture.Sample(gSampler, input.texCoord).x;
+	return float4(fDepth, 0.f, 0.f, 1.f);*/
 
-if (g_iTexOpt == 1)
-{
-	cBaseTexColor.a = (cBaseTexColor.r + cBaseTexColor.g + cBaseTexColor.b);
-	clip(all(cBaseTexColor.rgb) < 0.3 ? -1 : 1);
-}
-else
-{
-	clip(cBaseTexColor.a < 0.1 ? -1 : 1);
-}
+	if (g_iTexOpt == 1)
+	{
+		cBaseTexColor.a = (cBaseTexColor.r + cBaseTexColor.g + cBaseTexColor.b);
+		clip(all(cBaseTexColor.rgb) < 0.3 ? -1 : 1);
+	}
+	else
+	{
+		clip(cBaseTexColor.a < 0.1 ? -1 : 1);
+	}
 
-cBaseTexColor.a = saturate(cBaseTexColor.a);
-cBaseTexColor *= g_xmColor;
-cBaseTexColor = saturate(cBaseTexColor);
-//float4 pxlPos = mul(float4(input.WPos.xyz /*- EyePosition.xyz*/, 1.f), ViewProj);
-//float2 f2uv = pxlPos.xy / pxlPos.w;
-//f2uv.xy = 0.5 * f2uv + 0.5;
-//f2uv.y = 1 - f2uv.y;
+	cBaseTexColor.a = saturate(cBaseTexColor.a);
+	cBaseTexColor *= g_xmColor;
+	cBaseTexColor = saturate(cBaseTexColor);
+	//float4 pxlPos = mul(float4(input.WPos.xyz /*- EyePosition.xyz*/, 1.f), ViewProj);
+	//float2 f2uv = pxlPos.xy / pxlPos.w;
+	//f2uv.xy = 0.5 * f2uv + 0.5;
+	//f2uv.y = 1 - f2uv.y;
 
-//float fDepth = gDepthtexture.Sample(gSampler, f2uv).x;
-////return float4(fDepth, 0.f, 0.f, 1.f);
-//if (fDepth > 0.999)
-//{
-//	float4 cSkyBoxColor = gSkyBoxtexture.Sample(gSampler, f2uv);
-//	cBaseTexColor.rgb = cBaseTexColor.rgb * cBaseTexColor.a + cSkyBoxColor.rgb * (1 - cBaseTexColor.a);
-//	cBaseTexColor.a = 1.f;
-//}
-output.Color = cBaseTexColor;
-output.Alpha = float4(cBaseTexColor.a, 0.f, 0.f, 1.f);
-return output;
+	//float fDepth = gDepthtexture.Sample(gSampler, f2uv).x;
+	////return float4(fDepth, 0.f, 0.f, 1.f);
+	//if (fDepth > 0.999)
+	//{
+	//	float4 cSkyBoxColor = gSkyBoxtexture.Sample(gSampler, f2uv);
+	//	cBaseTexColor.rgb = cBaseTexColor.rgb * cBaseTexColor.a + cSkyBoxColor.rgb * (1 - cBaseTexColor.a);
+	//	cBaseTexColor.a = 1.f;
+	//}
+	output.Color = cBaseTexColor;
+	output.Alpha = float4(cBaseTexColor.a, 0.f, 0.f, 1.f);
+	return output;
 }

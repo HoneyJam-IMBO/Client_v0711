@@ -24,7 +24,7 @@ bool CSCHeroSel::Begin()
 	//NETWORKMGR->Connect("192.168.10.101");
 	//NETWORKMGR->SendPacket();
 
-	UPDATER->GetSkyBoxContainer()->SetActive(true);
+	UPDATER->GetSkyBoxContainer()->SetActive(false);
 	UPDATER->GetTerrainContainer()->SetActive(false);
 
 	string strName = "Back";
@@ -110,7 +110,10 @@ void CSCHeroSel::Animate(float fTimeElapsed)
 	UIProc();
 	NetworkProc();
 
-
+	if (INPUTMGR->KeyBoardDown(VK_T))
+	{
+		SCENEMGR->ChangeScene(SCN_ORITOWN);
+	}
 	if (m_bSceneChange) {
 		SCENEMGR->ChangeScene(SCN_ORITOWN);
 		return;
@@ -135,8 +138,6 @@ void CSCHeroSel::Animate(float fTimeElapsed)
 	KeyInput();
 
 	//m_vecReadyUI[0]->SetImageName()
-
-
 	//if (-1 != m_iHeroSelNum)
 	//{
 	//	m_vecCharUI[m_iHeroSelNum]->Update(fTimeElapsed);
@@ -478,12 +479,16 @@ void CSCHeroSel::CheckCollisionButton()
 			INT CHARACTER = m_iHeroSelNum;
 			BOOL READY = m_pHEROSEL_INFO[NETWORKMGR->GetSLOT_ID()].READY;
 			BYTE Packet[MAX_BUFFER_LENGTH] = { 0, };
-			NETWORKMGR->WritePacket(PT_ROOM_DATA_CHANGE_CS, Packet, WRITE_PT_ROOM_DATA_CHANGE_CS(Packet,
-				ROOM_ID, SLOT_ID, READY, CHARACTER));
 
 #ifdef NO_SERVER
 			SetSelSceneInfo(SLOT_ID, SLOT_ID, READY, CHARACTER);
+			return;
 #endif
+
+			NETWORKMGR->WritePacket(PT_ROOM_DATA_CHANGE_CS, Packet, WRITE_PT_ROOM_DATA_CHANGE_CS(Packet,
+				ROOM_ID, SLOT_ID, READY, CHARACTER));
+
+
 			//³»Á¤º¸
 			//SetSelSceneInfo(SLOT_ID, SLOT_ID, READY, CHARACTER);
 		}
