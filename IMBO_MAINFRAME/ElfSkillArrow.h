@@ -26,6 +26,8 @@ public:
 
 
 	void RegistToContainer();
+public:
+//	virtual void SetActive(bool b);
 
 private:
 	//CGameObject* m_pArrowTrail{ nullptr };

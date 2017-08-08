@@ -34,7 +34,7 @@ public:
 
 	//object_id GetObjectID() { return m_objectID; }
 
-	void SetActive(bool b) { m_bActive = b; }
+	virtual void SetActive(bool b) { m_bActive = b; }
 	bool& GetActive() { return m_bActive; }
 	virtual void DisappearSkill() {};
 

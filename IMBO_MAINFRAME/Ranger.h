@@ -37,6 +37,8 @@ private:
 	float	m_fJumpTime{ 0.f };
 
 	bool	m_bDamaged{ false };
+
+	float	m_fWalkEffectTime{ 0.f };
 private:
 
 	UINT	m_nAnimNum{ 0 };

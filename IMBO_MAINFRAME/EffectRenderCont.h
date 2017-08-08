@@ -39,6 +39,7 @@ private:
 	multimap<float, CMyEffect*, greater<float>> m_mapDistortEffect;
 	multimap<float, CMyParticle*, greater<float>> m_mapParticle;
 	multimap<float, CTrail*, greater<float>> m_mapTrail;
+	multimap<float, CGameObject*, greater<float>> m_mapSkill;
 
 	CRenderShader*	m_pRenderShader{ nullptr };
 	CRenderShader*	m_pTrailShader{ nullptr };

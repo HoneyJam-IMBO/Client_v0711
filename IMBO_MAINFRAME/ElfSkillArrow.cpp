@@ -30,6 +30,7 @@ void CElfSkillArrow::InitData()
 	XMStoreFloat4x4(&m_xmf4x4World, XMMatrixIdentity());
 	m_fAccTime = 0.f;
 	m_fTraceTime = 0.f;
+
 }
 void CElfSkillArrow::DisappearSkill()
 {
@@ -47,6 +48,13 @@ void CElfSkillArrow::SetActive(bool b)
 	{
 		DisappearSkill();
 	}*/
+	m_bActive = b; 
+	XMFLOAT4 xmStart, xmEnd;
+	XMStoreFloat4(&xmStart, XMVector3TransformCoord(
+		XMVectorSet(m_OriBoundingBox.Center.x, m_OriBoundingBox.Extents.y, m_OriBoundingBox.Center.z, 1.f), XMLoadFloat4x4(&m_xmf4x4World)));
+	XMStoreFloat4(&xmEnd, XMVector3TransformCoord(
+		XMVectorSet(m_OriBoundingBox.Center.x, m_OriBoundingBox.Center.y - m_OriBoundingBox.Extents.y, m_OriBoundingBox.Center.z, 1.f), XMLoadFloat4x4(&m_xmf4x4World)));
+	m_pArrowTrail->SetInitPos(XMLoadFloat4(&xmStart), XMLoadFloat4(&xmEnd));
 }
 
 bool CElfSkillArrow::Begin()

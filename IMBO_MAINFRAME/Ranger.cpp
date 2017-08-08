@@ -2,6 +2,7 @@
 #include "Ranger.h"
 #include "EffectMgr.h"
 #include "ElfSkillArrow.h"
+#include "ElfSkill1Efc.h"
 
 bool CRanger::Begin()
 {
@@ -145,8 +146,20 @@ void CRanger::KeyInput(float fDeltaTime)
 			m_nAnimNum = ANIM_SKILL1_FIRE;
 			m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
 
-			CEffectMgr::GetInstance()->Play_Effect(L"elf_sk1", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y + 1.f, m_xmf3Position.z, 1.f),
-				XMVectorSet(0.f, XMConvertToDegrees(m_fAngleY), 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
+			
+			string strName = "RangerSK1";
+			size_t iArraySize = m_mapSkill[strName].size();
+			for (size_t i = 0; i < iArraySize; ++i) {
+				if (false == m_mapSkill[strName][i]->GetActive()) 
+				{
+					m_mapSkill[strName][i]->SetPosition(XMVectorSet(m_xmf3Position.x, m_xmf3Position.y, m_xmf3Position.z, 1.f));
+					//m_mapSkill[strName][i]->Rotate(XMMatrixRotationY(m_fAngleY));
+					m_mapSkill[strName][i]->SetActive(true);
+					break;
+				}
+			}
+			CEffectMgr::GetInstance()->Play_Effect(L"Ranger_sk1_efc", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y, m_xmf3Position.z, 1.f),
+				XMVectorSet(0.f, 0.f, 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
 		}
 		else if (INPUTMGR->KeyDown(VK_2)){				// ½ºÅ³ 2 ------------------------
 			m_bSkill = true;
@@ -218,6 +231,16 @@ void CRanger::KeyInput(float fDeltaTime)
 		Move(XMVector3Normalize(m_xmvShift), (m_fSpeed * fSpdX) * fDeltaTime);
 
 		m_bIdle = false;
+
+		//walk effect
+		if (!m_bJump) {
+			m_fWalkEffectTime += fDeltaTime;
+			if (m_fWalkEffectTime > 0.15f) {
+				CEffectMgr::GetInstance()->Play_Effect(L"walk_dust", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y + 0.3f, m_xmf3Position.z, 1.f),
+					XMVectorSet(0.f, 0.f, 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
+				m_fWalkEffectTime = 0.f;
+			}
+		}		
 	}
 	else {
 		if (false == m_bJump) {
@@ -390,10 +413,10 @@ void CRanger::ShootArrow(bool bStrong)
 	size_t iArraySize = m_mapSkill[strName].size();
 	for (size_t i = 0; i < iArraySize; ++i) {
 		if (false == m_mapSkill[strName][i]->GetActive()) {
-			m_mapSkill[strName][i]->SetActive(true);
 			m_mapSkill[strName][i]->SetPosition(XMVectorSet(m_xmf3Position.x, m_xmf3Position.y + 3.f, m_xmf3Position.z, 1.f));
 			m_mapSkill[strName][i]->Rotate(XMMatrixRotationY(m_fAngleY));
 			m_mapSkill[strName][i]->SetScale(XMVectorSet(2.f, 2.f, 2.f, 1.f));
+			m_mapSkill[strName][i]->SetActive(true);
 
 			//((CElfSkillArrow*)m_mapSkill["Arrow1"][i])->GetTrail()->SetPosition(XMVectorSet(m_xmf3Position.x, m_xmf3Position.y + 3.f, m_xmf3Position.z, 1.f));
 			break;
@@ -490,6 +513,18 @@ CRanger::CRanger(string name, tag t, bool bSprit, CGameObject* pWeapon, INT slot
 		vecSkill2.push_back(pObject);
 	}
 	m_mapSkill["StrongArrow"] = vecSkill2;
+
+
+	vector<CGameObject*> vecSkill3;
+	CGameObject* pObject = new CElfSkill1Efc("RangerSK1", TAG_STATIC_OBJECT);
+	pObject->SetActive(false);
+	pObject->SetUTag(utag::UTAG_DEFAULT);
+	pObject->Begin();
+	pObject->SetPosition(XMVectorSet(0, 0, 0, 1));
+	pObject->SetScale(XMVectorSet(1, 1, 1, 1));
+	UPDATER->GetSpaceContainer()->AddObject(pObject);
+	vecSkill3.push_back(pObject);
+	m_mapSkill["RangerSK1"] = vecSkill3;
 }
 
 CRanger::~CRanger()

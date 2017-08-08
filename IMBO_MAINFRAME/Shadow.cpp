@@ -88,7 +88,7 @@ ID3D11ShaderResourceView * CShadow::RenderShadowMap( CCamera* pCamera) {
 	if (true == bStartScene)
 	{
 		float offset = UPDATER->GetDirectionalLight()->GetOffsetLength();
-		offset = -2000.f;
+		offset = -1500.f;
 		XMVECTOR xmvDirectionalLightDir = UPDATER->GetDirectionalLight()->GetLook();
 
 		UINT nSpace = UPDATER->GetSpaceContainer()->GetSpaceNum();

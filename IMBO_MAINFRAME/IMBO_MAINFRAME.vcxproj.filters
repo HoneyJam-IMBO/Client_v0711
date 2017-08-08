@@ -85,6 +85,36 @@
     <Filter Include="0. HLSL\06. SSLR\-1. RayTrace">
       <UniqueIdentifier>{6edb252f-d822-4ccb-87a2-ef6d420feddd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="0. HLSL\12. SSRF">
+      <UniqueIdentifier>{13fc30cf-4923-405f-b0d5-7c8fc1107278}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="0. HLSL\12. SSRF\-0 SSRF">
+      <UniqueIdentifier>{b1f70d77-cd74-4710-86be-868bfa3b4653}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="0. HLSL\12. SSRF\-1 TessPlane">
+      <UniqueIdentifier>{319831cc-f3c1-4833-b324-6cdea7bd1a98}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="0. HLSL\13. Effect">
+      <UniqueIdentifier>{244c5df1-9041-4ad2-a1d0-1c30fe196d47}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="0. HLSL\14. Blend">
+      <UniqueIdentifier>{45cb210f-a4e0-4109-8dd2-fa31493a0f35}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="0. HLSL\15. FinalPass">
+      <UniqueIdentifier>{69706cee-5f2a-43a3-95eb-222a249f6a04}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="0. HLSL\16. NaviObject">
+      <UniqueIdentifier>{a285637f-b439-4697-8644-0c435b54d39c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="0. HLSL\17. Trail">
+      <UniqueIdentifier>{4d9ce42b-7cbf-4a5d-894e-c09f00a51391}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="0. HLSL\11. Water\WaterPlane">
+      <UniqueIdentifier>{40d4fdf7-5585-44f3-85d0-c75856103455}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="0. HLSL\11. Water\WaterSurface">
+      <UniqueIdentifier>{4627a382-7205-4edf-95ac-4907c70fb9c7}</UniqueIdentifier>
+    </Filter>
     <Filter Include="1. 소스 파일">
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
       <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
@@ -173,6 +203,18 @@
     <Filter Include="1. 소스 파일\00. Singleton\-06. RENDERER\11. WaterRenderer">
       <UniqueIdentifier>{7615d184-f630-40c5-933a-41b4736c8207}</UniqueIdentifier>
     </Filter>
+    <Filter Include="1. 소스 파일\00. Singleton\-06. RENDERER\12. SSRF">
+      <UniqueIdentifier>{d864f76b-eb04-4da1-a409-1ee813502a95}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="1. 소스 파일\00. Singleton\-06. RENDERER\14. FinalRenderer">
+      <UniqueIdentifier>{844739b2-dfe4-43e3-9920-33b4e71c1424}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="1. 소스 파일\00. Singleton\-06. RENDERER\13. EffectRenderer">
+      <UniqueIdentifier>{9b7b2725-15b1-4db4-b630-a787b20cdb48}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="1. 소스 파일\00. Singleton\-06. RENDERER\15. BIgWaterRenderer">
+      <UniqueIdentifier>{1d9d21b6-2b6d-4058-a2b6-a55d3042b7f3}</UniqueIdentifier>
+    </Filter>
     <Filter Include="1. 소스 파일\00. Singleton\-07. ResourceMGR">
       <UniqueIdentifier>{74c52d3f-51a2-4242-874a-372b8bacdee2}</UniqueIdentifier>
     </Filter>
@@ -191,6 +233,15 @@
     <Filter Include="1. 소스 파일\00. Singleton\-12. NetworkMGR">
       <UniqueIdentifier>{55a146f0-4e76-4782-85fd-e528cd585c65}</UniqueIdentifier>
     </Filter>
+    <Filter Include="1. 소스 파일\00. Singleton\-12. NetworkMGR\-0 Protocol">
+      <UniqueIdentifier>{236df04f-d6a5-4322-89a5-90c827c02d9d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="1. 소스 파일\00. Singleton\-12. NetworkMGR\-1 LabClientSession">
+      <UniqueIdentifier>{9c1cdf69-668a-4c94-ae9f-9788f2f82b92}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="1. 소스 파일\00. Singleton\-13. EffectMGR">
+      <UniqueIdentifier>{66fb663e-5d12-4c10-8265-e8f288bf3093}</UniqueIdentifier>
+    </Filter>
     <Filter Include="1. 소스 파일\01. Object">
       <UniqueIdentifier>{856a1b28-8708-47f2-88f7-66d4317f024d}</UniqueIdentifier>
     </Filter>
@@ -202,6 +253,27 @@
     </Filter>
     <Filter Include="1. 소스 파일\03. Scene\-00. Loading">
       <UniqueIdentifier>{79872ec1-93b7-4cc0-99c7-498a0d7be990}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="1. 소스 파일\03. Scene\-02. SCLobby">
+      <UniqueIdentifier>{d7aeaee4-1509-4422-9d15-6434f287cd90}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="1. 소스 파일\03. Scene\-03. SCHeroSel">
+      <UniqueIdentifier>{6f0df958-0a3a-44c7-ae84-8e7179fa8f33}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="1. 소스 파일\03. Scene\-03. SCHeroSel\Charactors">
+      <UniqueIdentifier>{13b35f16-1723-4a88-b3f9-df6ff593567b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="1. 소스 파일\03. Scene\-04. SCOriTown">
+      <UniqueIdentifier>{29089177-4d99-4d18-bbf7-e57f06c8c9a8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="1. 소스 파일\03. Scene\-05. SCAldenard">
+      <UniqueIdentifier>{140799df-d230-4273-a11a-73d061066840}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="1. 소스 파일\03. Scene\-06. SCSarasen">
+      <UniqueIdentifier>{e261fc1c-54c6-4727-b6ed-7b23b592349c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="1. 소스 파일\03. Scene\-01. SCTitle">
+      <UniqueIdentifier>{49196597-eb69-49cf-a173-5d35aef3b1ff}</UniqueIdentifier>
     </Filter>
     <Filter Include="1. 소스 파일\04. DXObject">
       <UniqueIdentifier>{d4f6b329-5476-4281-87fe-edb6b238a388}</UniqueIdentifier>
@@ -257,8 +329,20 @@
     <Filter Include="1. 소스 파일\04. DXObject\-02. Mesh\OBJECT\TerrainMesh">
       <UniqueIdentifier>{bde9620c-859f-479c-a049-e4f649fc62e4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="1. 소스 파일\04. DXObject\-02. Mesh\OBJECT\NaviMesh">
+      <UniqueIdentifier>{ef379594-3f78-4cd5-9c0a-19beb429691a}</UniqueIdentifier>
+    </Filter>
     <Filter Include="1. 소스 파일\04. DXObject\-02. Mesh\Water">
       <UniqueIdentifier>{60e8f8a2-aee5-4ed9-a3a2-ece09d00aa68}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="1. 소스 파일\04. DXObject\-02. Mesh\Water\WaterPlane">
+      <UniqueIdentifier>{22333d01-fcfc-41fd-a7b6-ce83408146d2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="1. 소스 파일\04. DXObject\-02. Mesh\Water\TessPlaneMesh">
+      <UniqueIdentifier>{05f29cd7-80f8-4434-8ab0-3c7325fd1567}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="1. 소스 파일\04. DXObject\-02. Mesh\Trail">
+      <UniqueIdentifier>{90e8edd3-4c0f-4909-b691-5ac051ea49f7}</UniqueIdentifier>
     </Filter>
     <Filter Include="1. 소스 파일\04. DXObject\-03. Shader">
       <UniqueIdentifier>{c0bc6ce2-258d-449b-9c6e-9fad9a465931}</UniqueIdentifier>
@@ -344,106 +428,6 @@
     <Filter Include="1. 소스 파일\05. GameObject\-04. Terrain\TerrainContainer">
       <UniqueIdentifier>{486818b8-6313-4d0b-94c4-62032723ed41}</UniqueIdentifier>
     </Filter>
-    <Filter Include="1. 소스 파일\05. GameObject\-05. Player">
-      <UniqueIdentifier>{6cd9e0b8-b032-4005-a48d-2f3a66169516}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="1. 소스 파일\05. GameObject\-06. Monster">
-      <UniqueIdentifier>{97c20e0f-c678-4bae-9b8a-fa0d1bd69ee2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="1. 소스 파일\05. GameObject\-07. Skill/Effect">
-      <UniqueIdentifier>{790583d1-2896-4de2-8604-e362c014e870}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="1. 소스 파일\05. GameObject\-08. UI">
-      <UniqueIdentifier>{bac129dc-a18d-4f5e-9a30-c195be69ead6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="1. 소스 파일\05. GameObject\-08. UI\01. LoadingBack">
-      <UniqueIdentifier>{6482b439-28f6-4b51-928d-9f47e7550eda}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="1. 소스 파일\05. GameObject\-08. UI\00. ImageUI">
-      <UniqueIdentifier>{aa34746c-673f-445c-b7bb-013667a1398e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="1. 소스 파일\05. GameObject\-08. UI\02. ClickButton">
-      <UniqueIdentifier>{637ece6b-1d97-4453-b94f-c4aee2230cc8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="1. 소스 파일\06. Component">
-      <UniqueIdentifier>{0c9ae41c-f497-49b2-8986-c86cee32e973}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="1. 소스 파일\06. Component\AnimateComponent">
-      <UniqueIdentifier>{b067d882-03af-4255-836f-3546e86b51f3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="1. 소스 파일\98. Header">
-      <UniqueIdentifier>{2dd1158e-354e-41f0-8e10-e24ec1c725c7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="1. 소스 파일\99. Default">
-      <UniqueIdentifier>{73b3b726-b80d-4cd0-b380-47b954ad7c94}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="1. 소스 파일\99. Default\리소스 파일">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
-    <Filter Include="1. 소스 파일\00. Singleton\-06. RENDERER\12. SSRF">
-      <UniqueIdentifier>{d864f76b-eb04-4da1-a409-1ee813502a95}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="1. 소스 파일\04. DXObject\-02. Mesh\Water\WaterPlane">
-      <UniqueIdentifier>{22333d01-fcfc-41fd-a7b6-ce83408146d2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="1. 소스 파일\04. DXObject\-02. Mesh\Water\TessPlaneMesh">
-      <UniqueIdentifier>{05f29cd7-80f8-4434-8ab0-3c7325fd1567}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="0. HLSL\12. SSRF">
-      <UniqueIdentifier>{13fc30cf-4923-405f-b0d5-7c8fc1107278}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="0. HLSL\12. SSRF\-0 SSRF">
-      <UniqueIdentifier>{b1f70d77-cd74-4710-86be-868bfa3b4653}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="0. HLSL\12. SSRF\-1 TessPlane">
-      <UniqueIdentifier>{319831cc-f3c1-4833-b324-6cdea7bd1a98}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="1. 소스 파일\00. Singleton\-13. EffectMGR">
-      <UniqueIdentifier>{66fb663e-5d12-4c10-8265-e8f288bf3093}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="1. 소스 파일\05. GameObject\-07. Skill/Effect\0. Effect">
-      <UniqueIdentifier>{5005b63f-ccc8-4eab-8990-c815e8f8dbab}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="0. HLSL\13. Effect">
-      <UniqueIdentifier>{244c5df1-9041-4ad2-a1d0-1c30fe196d47}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="0. HLSL\14. Blend">
-      <UniqueIdentifier>{45cb210f-a4e0-4109-8dd2-fa31493a0f35}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="0. HLSL\15. FinalPass">
-      <UniqueIdentifier>{69706cee-5f2a-43a3-95eb-222a249f6a04}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="1. 소스 파일\00. Singleton\-06. RENDERER\14. FinalRenderer">
-      <UniqueIdentifier>{844739b2-dfe4-43e3-9920-33b4e71c1424}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="1. 소스 파일\00. Singleton\-06. RENDERER\13. EffectRenderer">
-      <UniqueIdentifier>{9b7b2725-15b1-4db4-b630-a787b20cdb48}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="1. 소스 파일\05. GameObject\-06. Monster\0. Boss01">
-      <UniqueIdentifier>{d85fdde8-6ac5-4b2f-9496-7ab8371d8d8a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="1. 소스 파일\05. GameObject\-08. UI\03. HpBar">
-      <UniqueIdentifier>{d1de8643-8835-4eb0-832a-35e70a29c906}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="1. 소스 파일\00. Singleton\-12. NetworkMGR\-0 Protocol">
-      <UniqueIdentifier>{236df04f-d6a5-4322-89a5-90c827c02d9d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="1. 소스 파일\00. Singleton\-12. NetworkMGR\-1 LabClientSession">
-      <UniqueIdentifier>{9c1cdf69-668a-4c94-ae9f-9788f2f82b92}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="1. 소스 파일\03. Scene\-02. SCLobby">
-      <UniqueIdentifier>{d7aeaee4-1509-4422-9d15-6434f287cd90}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="1. 소스 파일\03. Scene\-03. SCHeroSel">
-      <UniqueIdentifier>{6f0df958-0a3a-44c7-ae84-8e7179fa8f33}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="1. 소스 파일\03. Scene\-03. SCHeroSel\Charactors">
-      <UniqueIdentifier>{13b35f16-1723-4a88-b3f9-df6ff593567b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="1. 소스 파일\03. Scene\-04. SCOriTown">
-      <UniqueIdentifier>{29089177-4d99-4d18-bbf7-e57f06c8c9a8}</UniqueIdentifier>
-    </Filter>
     <Filter Include="1. 소스 파일\05. GameObject\-04. Terrain\NaviObject">
       <UniqueIdentifier>{8c33a27d-0811-4aa1-8a4c-b9978c87cbe6}</UniqueIdentifier>
     </Filter>
@@ -453,11 +437,8 @@
     <Filter Include="1. 소스 파일\05. GameObject\-04. Terrain\NaviObject\NaviObjectManager">
       <UniqueIdentifier>{fac77996-861a-4533-9085-952d27fb079b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="1. 소스 파일\04. DXObject\-02. Mesh\OBJECT\NaviMesh">
-      <UniqueIdentifier>{ef379594-3f78-4cd5-9c0a-19beb429691a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="0. HLSL\16. NaviObject">
-      <UniqueIdentifier>{a285637f-b439-4697-8644-0c435b54d39c}</UniqueIdentifier>
+    <Filter Include="1. 소스 파일\05. GameObject\-05. Player">
+      <UniqueIdentifier>{6cd9e0b8-b032-4005-a48d-2f3a66169516}</UniqueIdentifier>
     </Filter>
     <Filter Include="1. 소스 파일\05. GameObject\-05. Player\1. Knight">
       <UniqueIdentifier>{ca452431-a251-47db-9871-6b5fd27280a5}</UniqueIdentifier>
@@ -477,20 +458,20 @@
     <Filter Include="1. 소스 파일\05. GameObject\-05. Player\0. Ranger">
       <UniqueIdentifier>{34d05e8f-01e6-40f5-8df7-313f60912693}</UniqueIdentifier>
     </Filter>
-    <Filter Include="1. 소스 파일\03. Scene\-05. SCAldenard">
-      <UniqueIdentifier>{140799df-d230-4273-a11a-73d061066840}</UniqueIdentifier>
+    <Filter Include="1. 소스 파일\05. GameObject\-06. Monster">
+      <UniqueIdentifier>{97c20e0f-c678-4bae-9b8a-fa0d1bd69ee2}</UniqueIdentifier>
     </Filter>
-    <Filter Include="1. 소스 파일\03. Scene\-06. SCSarasen">
-      <UniqueIdentifier>{e261fc1c-54c6-4727-b6ed-7b23b592349c}</UniqueIdentifier>
+    <Filter Include="1. 소스 파일\05. GameObject\-06. Monster\0. Boss01">
+      <UniqueIdentifier>{d85fdde8-6ac5-4b2f-9496-7ab8371d8d8a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="1. 소스 파일\03. Scene\-01. SCTitle">
-      <UniqueIdentifier>{49196597-eb69-49cf-a173-5d35aef3b1ff}</UniqueIdentifier>
+    <Filter Include="1. 소스 파일\05. GameObject\-06. Monster\1. Boss02">
+      <UniqueIdentifier>{af0bd76b-e77c-4497-a1c3-d0fed0e66e67}</UniqueIdentifier>
     </Filter>
-    <Filter Include="1. 소스 파일\04. DXObject\-02. Mesh\Trail">
-      <UniqueIdentifier>{90e8edd3-4c0f-4909-b691-5ac051ea49f7}</UniqueIdentifier>
+    <Filter Include="1. 소스 파일\05. GameObject\-07. Skill/Effect">
+      <UniqueIdentifier>{790583d1-2896-4de2-8604-e362c014e870}</UniqueIdentifier>
     </Filter>
-    <Filter Include="0. HLSL\17. Trail">
-      <UniqueIdentifier>{4d9ce42b-7cbf-4a5d-894e-c09f00a51391}</UniqueIdentifier>
+    <Filter Include="1. 소스 파일\05. GameObject\-07. Skill/Effect\0. Effect">
+      <UniqueIdentifier>{5005b63f-ccc8-4eab-8990-c815e8f8dbab}</UniqueIdentifier>
     </Filter>
     <Filter Include="1. 소스 파일\05. GameObject\-07. Skill/Effect\1. Ranger">
       <UniqueIdentifier>{02361e0f-b498-4d7b-a6d7-187044fc97c6}</UniqueIdentifier>
@@ -501,17 +482,39 @@
     <Filter Include="1. 소스 파일\05. GameObject\-07. Skill/Effect\0. Trail">
       <UniqueIdentifier>{833c041b-3d2a-4709-82c5-ecdff532aee3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="1. 소스 파일\00. Singleton\-06. RENDERER\15. BIgWaterRenderer">
-      <UniqueIdentifier>{1d9d21b6-2b6d-4058-a2b6-a55d3042b7f3}</UniqueIdentifier>
+    <Filter Include="1. 소스 파일\05. GameObject\-08. UI">
+      <UniqueIdentifier>{bac129dc-a18d-4f5e-9a30-c195be69ead6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="0. HLSL\11. Water\WaterPlane">
-      <UniqueIdentifier>{40d4fdf7-5585-44f3-85d0-c75856103455}</UniqueIdentifier>
+    <Filter Include="1. 소스 파일\05. GameObject\-08. UI\01. LoadingBack">
+      <UniqueIdentifier>{6482b439-28f6-4b51-928d-9f47e7550eda}</UniqueIdentifier>
     </Filter>
-    <Filter Include="0. HLSL\11. Water\WaterSurface">
-      <UniqueIdentifier>{4627a382-7205-4edf-95ac-4907c70fb9c7}</UniqueIdentifier>
+    <Filter Include="1. 소스 파일\05. GameObject\-08. UI\00. ImageUI">
+      <UniqueIdentifier>{aa34746c-673f-445c-b7bb-013667a1398e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="1. 소스 파일\05. GameObject\-06. Monster\1. Boss02">
-      <UniqueIdentifier>{af0bd76b-e77c-4497-a1c3-d0fed0e66e67}</UniqueIdentifier>
+    <Filter Include="1. 소스 파일\05. GameObject\-08. UI\02. ClickButton">
+      <UniqueIdentifier>{637ece6b-1d97-4453-b94f-c4aee2230cc8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="1. 소스 파일\05. GameObject\-08. UI\03. HpBar">
+      <UniqueIdentifier>{d1de8643-8835-4eb0-832a-35e70a29c906}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="1. 소스 파일\06. Component">
+      <UniqueIdentifier>{0c9ae41c-f497-49b2-8986-c86cee32e973}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="1. 소스 파일\06. Component\AnimateComponent">
+      <UniqueIdentifier>{b067d882-03af-4255-836f-3546e86b51f3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="1. 소스 파일\98. Header">
+      <UniqueIdentifier>{2dd1158e-354e-41f0-8e10-e24ec1c725c7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="1. 소스 파일\99. Default">
+      <UniqueIdentifier>{73b3b726-b80d-4cd0-b380-47b954ad7c94}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="1. 소스 파일\99. Default\리소스 파일">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="1. 소스 파일\05. GameObject\-07. Skill/Effect\1. Ranger\2. r_sk1_Efc">
+      <UniqueIdentifier>{4ab205d0-7273-4f9c-b96d-069a4bbb32fc}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -896,6 +899,12 @@
     <ClInclude Include="..\..\..\..\..\..\0. JH%27s Folder\Study\IBClient\ImBo\Client_v0711\IMBO_MAINFRAME\Roisa.h">
       <Filter>1. 소스 파일\05. GameObject\-06. Monster\1. Boss02</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\0. JH%27s Folder\Study\IBClient\ImBo\Client_v0711\IMBO_MAINFRAME\ElfSkill1Efc.h">
+      <Filter>1. 소스 파일\05. GameObject\-07. Skill/Effect\1. Ranger\2. r_sk1_Efc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\0. JH%27s Folder\Study\IBClient\ImBo\Client_v0711\IMBO_MAINFRAME\SkillObj.h">
+      <Filter>1. 소스 파일\05. GameObject\-07. Skill/Effect</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Light.cpp">
@@ -1263,6 +1272,12 @@
     </ClCompile>
     <ClCompile Include="..\..\..\..\..\..\0. JH%27s Folder\Study\IBClient\ImBo\Client_v0711\IMBO_MAINFRAME\Roisa.cpp">
       <Filter>1. 소스 파일\05. GameObject\-06. Monster\1. Boss02</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\0. JH%27s Folder\Study\IBClient\ImBo\Client_v0711\IMBO_MAINFRAME\ElfSkill1Efc.cpp">
+      <Filter>1. 소스 파일\05. GameObject\-07. Skill/Effect\1. Ranger\2. r_sk1_Efc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\0. JH%27s Folder\Study\IBClient\ImBo\Client_v0711\IMBO_MAINFRAME\SkillObj.cpp">
+      <Filter>1. 소스 파일\05. GameObject\-07. Skill/Effect</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

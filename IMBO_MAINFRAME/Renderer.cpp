@@ -223,7 +223,6 @@ void CRenderer::NoPostProcessRender( CCamera* pCamera)
 
 
 void CRenderer::Render( CCamera* pCamera) {
-
 	if (true == m_bRadialBlur)
 	{
 		m_fRBlurAccTime += m_fTimeDelta;
@@ -304,7 +303,7 @@ void CRenderer::Render( CCamera* pCamera) {
 	m_pLightRenderer->Excute(pCamera, m_pShadow);
 	if (true == bDebug) DEBUGER->end_Timemeasurement(L"light_render");
 
-	// Effect render
+	//// Effect render
 	m_pEffectRenderer->RenderEffect();
 
 	ID3D11ShaderResourceView* srvDistortion = m_pEffectRenderer->RenderDistortionEffect(m_pd3ddsvReadOnlyDepthStencil);

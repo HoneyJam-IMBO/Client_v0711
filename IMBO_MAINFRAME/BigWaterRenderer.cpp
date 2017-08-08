@@ -273,6 +273,7 @@ void CBigWaterRenderer::RenderWaterSurface(CCamera* pCamera) {
 	GLOBALVALUEMGR->GetDeviceContext()->RSSetState(pPrv);
 	UPDATER->GetSkyBoxContainer()->GetSkyBox()->RegistToContainer();
 	pObjectRenderer->RenderSkyBox();
+	pObjectRenderer->ClearSkyBox();
 	//UPDATER->GetSkyBoxContainer()->GetSkyBox()->RegistToContainer();
 	//clear
 	//그 카메라 이용해서 애들 랜더

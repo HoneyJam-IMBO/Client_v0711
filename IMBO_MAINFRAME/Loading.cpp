@@ -299,21 +299,19 @@ void CLoading::LoadUI_Skill(int cn1, int cn2, int cn3, int cn4)
 		switch (cn[i]){
 		case ranger:
 
+			CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/Ranger_sk1_efc.dat", L"Ranger_sk1_efc");
 			CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/Ranger_sk3_wheelwind.dat", L"Ranger_sk3_wheelwind");
 			CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/Ranger_sk2_con.dat", L"Ranger_sk2_con");
-
 			CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/elf_sk1.dat", L"elf_sk1");
 			CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/elf_sk2.dat", L"elf_sk2");
 			CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/elf_sk3.dat", L"elf_sk3");
-
 			CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/Arrow_Trace.dat", L"Arrow_Trace", 50);
-
-
 			CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/Arrow_Skill1Shot.dat", L"Arrow_Skill1Shot");
 
-			
 			RESOURCEMGR->CreateMultiMesh("../../Assets/SceneResource/GJM/Elf01F.gjm", "Elf01F");
+
 			RESOURCEMGR->CreateMultiMesh("../../Assets/SceneResource/GJM/Arrow1.gjm", "Arrow1");
+			RESOURCEMGR->CreateMultiMesh("../../Assets/SceneResource/GJM/Rskill/sk1.gjm", "RangerSK1");
 
 			RESOURCEMGR->CreateTexture("Trail01", _T("../../Assets/SceneResource/Trail/Trail01.tga"), PS_TEXTURE, BIND_PS);
 			break;
@@ -355,4 +353,8 @@ void CLoading::LoadUI_Skill(int cn1, int cn2, int cn3, int cn4)
 			break;
 		}
 	}
+
+	// °ø¿ë
+
+	CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/walk_dust.dat", L"walk_dust", 100);
 }

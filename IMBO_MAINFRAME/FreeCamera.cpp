@@ -32,6 +32,7 @@ void CFreeCamera::Rotate(float x, float y, float z) {
 void CFreeCamera::Update(float fTimeElapsed) {
 
 	UpdateShaderState();
+
 }
 
 //상수버퍼 갱신

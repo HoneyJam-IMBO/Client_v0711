@@ -70,5 +70,7 @@ PS_EFFECT_OUT main(VS_TEXTURED_OUTPUT input) : SV_TARGET
 	//}
 	output.Color = cBaseTexColor;
 	output.Alpha = float4(cBaseTexColor.a, 0.f, 0.f, 1.f);
+
+
 	return output;
 }

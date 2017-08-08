@@ -142,6 +142,27 @@ void CSpace::Animate(float fTimeElapsed) {
 			nObject++;
 		}
 
+		iter = m_mlpObject[tag::TAG_STATIC_OBJECT].begin();
+		for (; iter != m_mlpObject[tag::TAG_STATIC_OBJECT].end(); )
+		{
+			(*iter)->Animate(fTimeElapsed);
+			int current_index = m_pSpaceContainer->SearchSpace((*iter)->GetPosition());
+			if ((*iter)->GetSpaceIndex() != current_index)//이전 공간 index와 현재 index가 다르다면
+			{
+				utag ut = (*iter)->GetUTag();
+				m_pSpaceContainer->AddBlockObjectList((*iter));//block Object list에 등록
+
+				m_mlpCollisionObject[ut].remove_if([&iter](CGameObject* pObject) {
+					return (pObject == (*iter));
+				});
+
+				iter = m_mlpObject[tag::TAG_STATIC_OBJECT].erase(iter);
+
+			}
+			else
+				++iter;
+		}
+
 		if (INPUTMGR->GetDebugMode())
 			DEBUGER->AddText(20.0f, 800.0f, static_cast<float>(m_index * 15.f), YT_Color(255, 255, 255), L"space %d object_num : %d", m_index, nObject);
 		m_bRender = false;
@@ -190,6 +211,9 @@ void CSpace::PrepareRender( CCamera* pCamera, UINT renderFlag) {
 					OptimizePrepare(TAG_REFLECTION, pCamera);
 				else if (vpObject.first == TAG_BIGWATER && (renderFlag & TAG_BIGWATER))
 					OptimizePrepare(TAG_BIGWATER, pCamera);
+				else if (vpObject.first == TAG_DYNAMIC_SKILL && (renderFlag & TAG_DYNAMIC_SKILL))
+					OptimizePrepare(TAG_DYNAMIC_SKILL, pCamera);
+
 			}
 			//}//end for
 		}//end if

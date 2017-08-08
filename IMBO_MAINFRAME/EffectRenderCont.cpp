@@ -45,14 +45,14 @@ HRESULT CEffectRenderCont::Initialize()
 
 	D3D11_BLEND_DESC descBlend;
 	ZeroMemory(&descBlend, sizeof(D3D11_BLEND_DESC));
-	descBlend.AlphaToCoverageEnable = FALSE;
+	descBlend.AlphaToCoverageEnable = TRUE;
 	descBlend.IndependentBlendEnable = FALSE;
 	descBlend.RenderTarget[0].BlendEnable = TRUE;
 	descBlend.RenderTarget[0].SrcBlend = D3D11_BLEND_SRC_ALPHA;
 	descBlend.RenderTarget[0].DestBlend = D3D11_BLEND_INV_SRC_ALPHA;
 	descBlend.RenderTarget[0].BlendOp = D3D11_BLEND_OP_ADD;
 
-	descBlend.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_ZERO;
+	descBlend.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_ONE;
 	descBlend.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_ZERO;
 	descBlend.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_ADD;
 	descBlend.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
@@ -87,6 +87,18 @@ void CEffectRenderCont::RenderEffect()
 	GLOBALVALUEMGR->GetDeviceContext()->OMGetBlendState(&m_pPreBlendState, m_pPreBlendFactor, &m_PreSampleMask);
 	GLOBALVALUEMGR->GetDeviceContext()->OMSetBlendState(m_pAlphaBlendState, nullptr, 0xffffffff);
 	//GLOBALVALUEMGR->GetDeviceContext()->PSSetShaderResources(6, 1, &pSRVDepth);
+
+	if (false == m_mapSkill.empty()) {
+		////공통 set
+		multimap<float, CGameObject*>::iterator iter = m_mapSkill.begin();
+		multimap<float, CGameObject*>::iterator iter_End = m_mapSkill.end();
+		for (; iter != iter_End; ++iter)
+		{
+			//iter->second->r
+		}
+		m_mapSkill.clear();		// 다그리고 제거e
+	}
+	
 
 	if (false == m_mapEffect.empty()) {
 		////공통 set
