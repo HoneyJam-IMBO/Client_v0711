@@ -174,7 +174,7 @@ void CSpaceContainer::ChangeSpaceData(){
 	m_vTempObjects.clear();
 }
 
-CGameObject * CSpaceContainer::PickObject(XMVECTOR xmvWorldCameraStartPos, XMVECTOR xmvRayDir, float& distanse){
+CGameObject * CSpaceContainer::PickObject(XMVECTOR xmvWorldCameraStartPos, XMVECTOR xmvRayDir, float& distanse) {
 	float fHitDistance = FLT_MAX;
 	float fNearHitDistance = FLT_MAX;
 	CGameObject* pHitObj = nullptr;
@@ -190,7 +190,7 @@ CGameObject * CSpaceContainer::PickObject(XMVECTOR xmvWorldCameraStartPos, XMVEC
 			}
 		}
 	}
-
+	distanse = fNearHitDistance;
 	return pNearObj;
 }
 

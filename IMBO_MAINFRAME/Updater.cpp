@@ -159,18 +159,20 @@ void CUpdater::LoadObjectsInfo(){
 	m_pSpaceContainer->LoadObjectInfos();
 }
 
-CGameObject * CUpdater::PickObject(XMVECTOR xmvWorldCameraStartPos, XMVECTOR xmvRayDir, float & distanse){
+CGameObject * CUpdater::PickObject(XMVECTOR xmvWorldCameraStartPos, XMVECTOR xmvRayDir, float & distanse) {
 	float fHitDistance = FLT_MAX;
 	float fNearHitDistance = FLT_MAX;
 	CGameObject* pNearObj = nullptr;
 
 	pNearObj = m_pSpaceContainer->PickObject(xmvWorldCameraStartPos, xmvRayDir, fNearHitDistance);
-	
+
 	if (m_pDirectionalLight->CheckPickObject(xmvWorldCameraStartPos, xmvRayDir, fHitDistance)) {
 		if (fNearHitDistance > fHitDistance) {
 			pNearObj = m_pDirectionalLight;
+			fNearHitDistance = fHitDistance;
 		}
 	}
+	distanse = fNearHitDistance;
 
 	return pNearObj;
 }

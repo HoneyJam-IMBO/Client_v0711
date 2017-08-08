@@ -110,16 +110,16 @@ bool CSCOriTown::Begin() {
 	}
 
 	
-	//보스 제작
-	CGameObject*	pBoss = new CLesserGiant("Boss01L", TAG_DYNAMIC_OBJECT, m_ppPawn[0]);
-	pBoss->SetUTag(utag::UTAG_BOSS1);
-	pBoss->Begin();
-	pBoss->SetTerrainContainer(UPDATER->GetTerrainContainer());
-	pBoss->SetPosition(XMVectorSet(200, 0, 250, 0));
-	pBoss->SetNaviMeshIndex();
-	pBoss->SetScale(XMVectorSet(1, 1, 1, 1));
-	UPDATER->GetSpaceContainer()->AddObject(pBoss);
-	pBoss->GetAnimater()->SetCurAnimationIndex(0);
+	////보스 제작
+	//CGameObject*	pBoss = new CLesserGiant("Boss01L", TAG_DYNAMIC_OBJECT, m_ppPawn[0]);
+	//pBoss->SetUTag(utag::UTAG_BOSS1);
+	//pBoss->Begin();
+	//pBoss->SetTerrainContainer(UPDATER->GetTerrainContainer());
+	//pBoss->SetPosition(XMVectorSet(200, 0, 250, 0));
+	//pBoss->SetNaviMeshIndex();
+	//pBoss->SetScale(XMVectorSet(1, 1, 1, 1));
+	//UPDATER->GetSpaceContainer()->AddObject(pBoss);
+	//pBoss->GetAnimater()->SetCurAnimationIndex(0);
 
 	
 
@@ -214,6 +214,24 @@ void CSCOriTown::ProcessInput(float fTimeElapsed) {
 	if (INPUTMGR->KeyDown(VK_P)) {
 		INPUTMGR->SetDebugMode(static_cast<bool>((INPUTMGR->GetDebugMode() + 1) % 2));
 	}
+	////test
+	//if (INPUTMGR->MouseLeftDown()) {
+	//	int xClient = INPUTMGR->GetMousePoint().x;
+	//	int yClient = INPUTMGR->GetMousePoint().y;
+	//	XMFLOAT3 pickPos;
+	//	if (GetPickPositionByCursor(xClient, yClient, pickPos)) {
+	//		m_vPickPos.push_back(pickPos);
+	//	}
+	//}
+	//for (auto Vertex : m_vPickPos) {
+	//
+	//	BoundingOrientedBox obb;
+	//	obb.Center = Vertex;
+	//	obb.Extents = XMFLOAT3(1.f, 1.f, 1.f);
+	//	DEBUGER->RegistOBB(obb, UTAG_PLAYER);
+	//}
+	////test
+
 	m_pCamera->ProcessInput(fTimeElapsed);
 	//if (INPUTMGR->KeyDown(VK_1))
 	//{

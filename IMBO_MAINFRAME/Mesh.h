@@ -104,6 +104,9 @@ public:
 	//instancing buffer set
 	void AddInstancingBuffer(CBuffer* pBuffer);
 	vector<CBuffer*>&	 GetvInstancingBuffer() { return m_vInstancingBuffer; }
+
+	//picking
+	bool CheckPickMesh(XMVECTOR xmvModelCameraStartPos, XMVECTOR xmvModelRayDir, float & distance);
 protected:
 	//CBoundingBox m_tmpBOUNDINGBOX;
 	//aabb

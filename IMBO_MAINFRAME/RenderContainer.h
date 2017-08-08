@@ -73,6 +73,9 @@ public:
 	//material
 	vector< CMaterial*>& GetMaterialList() { return m_vpMaterial; }
 	void ClearTextures() { m_vpTexture.clear(); }
+
+	//pick
+	bool CheckPickMesh(XMVECTOR xmvModelCameraStartPos, XMVECTOR xmvModelRayDir, float & distance);
 	//--------------------------container---------------------------------
 protected:
 	//--------------------------관리 대상------------------------------

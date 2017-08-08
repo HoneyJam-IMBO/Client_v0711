@@ -31,6 +31,8 @@ public:
 	VOID PROC_PT_MOUSE_LEFT_ATTACK_SC(DWORD dwProtocol, BYTE * Packet, DWORD dwPacketLength);
 
 	CGameObject* GetPlayer() { return m_ppPawn ? m_ppPawn[NETWORKMGR->GetSLOT_ID()] : nullptr; }
+	//test
+	//vector<XMFLOAT3> m_vPickPos;
 private:
 	void ReadMapData();
 

@@ -277,11 +277,11 @@ CGameObject * CSpace::PickObject(XMVECTOR xmvWorldCameraStartPos, XMVECTOR xmvRa
 	float fNearHitDistance = FLT_MAX;
 	CGameObject* pObj = nullptr;
 	//자신의 모든 객체에 대해서 검사
-
 	for (auto Objects : m_mlpObject) {
 		for (auto pObject : Objects.second) {
 			if (pObject->CheckPickObject(xmvWorldCameraStartPos, xmvRayDir, fHitDistance)) {//ray와 충돌했다면
 				if (fNearHitDistance > fHitDistance) {//이전의 가장 가까운 녀석과 비교
+					fNearHitDistance = fHitDistance;
 					distance = fHitDistance;//더 가까우면 가장 가까운 객체 변경
 					pObj = pObject;
 				}
@@ -290,6 +290,7 @@ CGameObject * CSpace::PickObject(XMVECTOR xmvWorldCameraStartPos, XMVECTOR xmvRa
 	}
 	return pObj;//해당 객체 return
 }
+
 
 
 

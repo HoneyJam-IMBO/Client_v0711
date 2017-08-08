@@ -123,6 +123,24 @@ void CRenderContainer::ClearVolatileResources() {
 	m_vpVolatileBuffer.clear();
 }
 
+bool CRenderContainer::CheckPickMesh(XMVECTOR xmvModelCameraStartPos, XMVECTOR xmvModelRayDir, float & distance) {
+	bool bResult = false;
+	float fHitDistance = FLT_MAX;
+	//	distance = fHitDistance;
+	float fNearHitDistance = FLT_MAX;
+
+	for (auto pMesh : m_vpMesh) {
+		if (pMesh->CheckPickMesh(xmvModelCameraStartPos, xmvModelRayDir, fHitDistance)) {
+			if (fNearHitDistance > fHitDistance) {
+				fNearHitDistance = fHitDistance;
+			}
+			bResult = true;
+			//break;
+		}
+	}
+	distance = fNearHitDistance;
+	return bResult;
+}
 void CRenderContainer::RenderExcute() {
 	for (auto p : m_vpMesh) {
 		p->Render(m_lpObjects.size());

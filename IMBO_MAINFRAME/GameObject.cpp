@@ -6,6 +6,71 @@
 #include "FileBasedMesh.h"
 #include "TerrainContainer.h"
 #include "Animater.h"
+#include "PositionInfoManager.h"
+
+
+void CGameObject::ActionMoveStart(string sName)
+{
+	if (m_pTerrainContainer) {
+		m_pTerrainContainer = nullptr;
+	}
+	CPositionInfoManager::LoadData(sName);
+	m_bActionMove = true;
+	m_CurPositionInfoIndex = 0;
+	m_fProgress = 0.f;
+}
+void CGameObject::ActionMoveEnd()
+{
+	m_pTerrainContainer = UPDATER->GetTerrainContainer();
+	if (m_pTerrainContainer) {
+		m_bJump = false;
+ 		SetPosition(XMVectorSet(m_xmf4x4World._41, m_xmf4x4World._42, m_xmf4x4World._43, 1.f));
+		SetNaviMeshIndex();
+	}
+	CPositionInfoManager::End();
+	m_bActionMove = false;
+	m_CurPositionInfoIndex = 0;
+	m_fProgress = 0.f;
+}
+void CGameObject::ActionMoveProc()
+{
+	if (m_bActionMove) {
+		//action cam이 true라면 PositionInfo에서 
+		int max_index = CPositionInfoManager::GetInfoCnt() - 1;
+		XMVECTOR xmvPos;
+		XMVECTOR xmvQua;
+		if (m_CurPositionInfoIndex != max_index && max_index > 0) {
+
+			XMVECTOR xmvPos1 = CPositionInfoManager::GetAllPositionInfo()[m_CurPositionInfoIndex].GetPosition();
+			XMVECTOR xmvPos2 = CPositionInfoManager::GetAllPositionInfo()[m_CurPositionInfoIndex + 1].GetPosition();
+			xmvPos = XMVectorLerp(xmvPos1, xmvPos2, m_fProgress);
+			XMVECTOR xmvQua1 = CPositionInfoManager::GetAllPositionInfo()[m_CurPositionInfoIndex].GetQuaternion();
+			XMVECTOR xmvQua2 = CPositionInfoManager::GetAllPositionInfo()[m_CurPositionInfoIndex + 1].GetQuaternion();
+			xmvQua = XMQuaternionSlerp(xmvQua1, xmvQua2, m_fProgress);
+			m_fProgress += TIMEMGR->GetTimeElapsed() * CPositionInfoManager::GetActionSpeed();
+			if (m_fProgress > 1.f) {
+				m_fProgress = 0.f;
+				m_CurPositionInfoIndex++;
+			}
+		}
+		else {
+			if (max_index > 0) {
+				xmvPos = CPositionInfoManager::GetAllPositionInfo()[m_CurPositionInfoIndex].GetPosition();
+				xmvQua = CPositionInfoManager::GetAllPositionInfo()[m_CurPositionInfoIndex].GetQuaternion();
+				ActionMoveEnd();
+			}
+			else {
+				ActionMoveEnd();
+				return;
+			}
+		}
+
+		//world mtx
+		XMMATRIX xmMtx = XMMatrixAffineTransformation(XMVectorSet(1, 1, 1, 1), XMQuaternionIdentity(), xmvQua, xmvPos);
+		SetWorldMtx(xmMtx);
+	}
+}
+
 bool CGameObject::Begin() {
 
 	XMStoreFloat4x4(&m_xmf4x4World, XMMatrixIdentity());
@@ -37,12 +102,14 @@ bool CGameObject::End() {
 
 void CGameObject::Animate(float fTimeElapsed) {
 
-	DEBUGER->RegistCoordinateSys(GetWorldMtx());
+	ActionMoveProc();
 
 	//모든 컴포넌트를 돌면서 Update실행
 	for (auto i : m_mapComponents) {
 		i.second->Update(fTimeElapsed);
 	}
+
+	DEBUGER->RegistCoordinateSys(GetWorldMtx());
 }
 void CGameObject::Move(XMVECTOR xmvDir, float fDistance) {
 
@@ -826,10 +893,67 @@ void CGameObject::GetMainBoundingBox(BoundingBox& out){
 	out.Transform(out, GetWorldMtx());
 }
 
-bool CGameObject::CheckPickObject(XMVECTOR xmvWorldCameraStartPos, XMVECTOR xmvRayDir, float & distance){
-	BoundingBox BoundingBox;
-	GetMainBoundingBox(BoundingBox);
-	return BoundingBox.Intersects(xmvWorldCameraStartPos, xmvRayDir, distance);
+bool CGameObject::CheckPickObject(XMVECTOR xmvProjPickPos, XMVECTOR xmvProjRayDir, float & distance) {
+	//XMMATRIX xmMtxViewInverse = UPDATER->GetCamera()->GetWorldMtx();
+	//XMVECTOR xmvWorldCameraStartPos = UPDATER->GetCamera()->GetPosition();
+	//XMVECTOR xmvWorldPickPos = XMVector3TransformCoord(xmvProjPickPos, xmMtxViewInverse);
+	//XMVECTOR xmvWorldRayDir = XMVector3Normalize(xmvWorldPickPos - xmvWorldCameraStartPos);
+	//BoundingBox BoundingBox;
+	//GetMainBoundingBox(BoundingBox);
+	//return BoundingBox.Intersects(xmvWorldCameraStartPos, xmvWorldRayDir, distance);
+
+	//BoundingBox BoundingBox;// = m_OriBoundingBox;
+	//GetMainBoundingBox(BoundingBox);
+	//return BoundingBox.Intersects(xmvWorldCameraStartPos, xmvWorldPickPos, distance);
+	//위의 두 벡터 start pos, ray dir는 proj공간의 녀석들이다. 여기에 view mtx의 inverce를 곱하면 world가 나온다
+
+	//들어온건 world ray, world pos다.
+	if (m_pAnimater || m_pRenderContainer->GetMesh(0)->GetVertexCnt() < 5) {
+		XMVECTOR xmvWorldCameraStartPos = UPDATER->GetCamera()->GetPosition();
+		XMVECTOR xmvWorldPickPos = XMVector3TransformCoord(xmvProjPickPos, UPDATER->GetCamera()->GetWorldMtx());
+		XMVECTOR xmvWorldRayDir = XMVector3Normalize(xmvWorldPickPos - xmvWorldCameraStartPos);
+
+		BoundingBox BoundingBox;// = m_OriBoundingBox;
+		GetMainBoundingBox(BoundingBox);
+		return BoundingBox.Intersects(xmvWorldCameraStartPos, xmvWorldRayDir, distance);
+	}
+
+	XMMATRIX xmmtxViewWorldInverce = UPDATER->GetCamera()->GetWorldMtx();
+	xmmtxViewWorldInverce = xmmtxViewWorldInverce * XMMatrixInverse(nullptr, XMLoadFloat4x4(&m_xmf4x4World));
+	XMVECTOR xmvModelRayStartPos = XMVector3TransformCoord(XMVectorSet(0, 0, 0, 1), xmmtxViewWorldInverce);
+	XMVECTOR xmvModelPickPos = XMVector3TransformCoord(xmvProjPickPos, xmmtxViewWorldInverce);
+
+	XMVECTOR xmvModelRayDir = XMVector3Normalize(xmvModelPickPos - xmvModelRayStartPos);
+	//XMVector3Normalize(XMVector3TransformCoord(xmvRayDir, xmmtxWorldInverce));
+	//XMVECTOR xmvModelCameraStartPos = XMVector3TransformCoord(xmvWorldCameraStartPos, xmmtxWorldInverce);
+
+	if (m_pRenderContainer->CheckPickMesh(xmvModelRayStartPos, xmvModelRayDir, distance)) {
+		XMVECTOR xmvModelPickResultPos = xmvModelRayStartPos + xmvModelRayDir*distance;
+		XMVECTOR xmvWorldPickResultPos = XMVector3TransformCoord(xmvModelPickResultPos, GetWorldMtx());
+		XMVECTOR xmvPickResult = XMVector3Length(xmvWorldPickResultPos - UPDATER->GetCamera()->GetPosition());
+		XMFLOAT4 xmf4Result;
+		XMStoreFloat4(&xmf4Result, xmvPickResult);
+		distance = xmf4Result.x;
+		return true;
+	};
+
+	//xmvWorldCameraStartPos는 view space의 picking pos다.
+
+
+	//XMMATRIX xmmtxViewInverse = XMMatrixInverse(nullptr, UPDATER->GetCamera()->GetViewMtx());
+	//XMVECTOR xmvPickPosition = XMVector3TransformCoord(xmvWorldCameraStartPos, xmmtxViewInverse);
+	//XMVECTOR xmvwRayDir = XMVector3Normalize(xmvPickPosition - UPDATER->GetCamera()->GetPosition());
+	//
+	////veiw camera pos -> world camera pos
+	//XMVECTOR xmvWorldStartPos = XMVector3TransformCoord(XMVectorSet(0, 0, 0, 1), xmmtxViewInverse);
+	//XMVECTOR xmvCameraWorld = UPDATER->GetCamera()->GetPosition();
+	////view ray -> world ray
+	//XMVECTOR xmvWorldPickingPos = XMVector3TransformCoord(xmvWorldCameraStartPos, xmmtxViewInverse);
+	//XMVECTOR xmvWorldRayDir = XMVector3Normalize(xmvWorldPickingPos - xmvCameraWorld);
+
+	//	BoundingBox BoundingBox;
+	//	GetMainBoundingBox(BoundingBox);
+	//	return BoundingBox.Intersects(xmvWorldCameraStartPos, xmvRayDir, distance);
 }
 
 void CGameObject::PickingProc(){

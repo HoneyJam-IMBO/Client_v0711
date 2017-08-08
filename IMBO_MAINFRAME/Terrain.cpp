@@ -34,13 +34,15 @@ void CTerrain::SetTerrainContainer(CTerrainContainer * pTerrainContainer){
 
 
 #define OFFSET 5
-bool CTerrain::CheckPickObject(XMVECTOR xmvWorldCameraStartPos, XMVECTOR xmvRayDir, float & distance) {
+
+bool CTerrain::CheckPickObject(XMVECTOR xmvProjCameraStartPos, XMVECTOR xmvProjRayDir, float & distance) {
 	float fHitDistance = FLT_MAX;
 	float fNearHitDistance = FLT_MAX;
 	bool bIntersection = false;
 
 	XMMATRIX xmMtxViewInverse = UPDATER->GetCamera()->GetWorldMtx();
-	XMVECTOR xmvWorldRayDir = xmvRayDir;
+	XMVECTOR xmvWorldCameraStartPos = UPDATER->GetCamera()->GetPosition();
+	XMVECTOR xmvWorldRayDir = XMVector3Normalize(XMVector3TransformCoord(xmvProjCameraStartPos, xmMtxViewInverse) - xmvWorldCameraStartPos);
 	float start_x = m_xmf3Position.x;
 	float start_z = m_xmf3Position.z;
 	auto pSpaceContainer = m_pTerrainContainer->GetSpaceContainer();
@@ -75,7 +77,74 @@ bool CTerrain::CheckPickObject(XMVECTOR xmvWorldCameraStartPos, XMVECTOR xmvRayD
 			}
 		}
 	}
+	XMFLOAT4 xmf3TerrainPickPos;
+	if (bIntersection) {
+		XMVECTOR xmvWorldRayStart = UPDATER->GetCamera()->GetPosition();
+		XMVECTOR xmvPickPosition = XMVector3TransformCoord(xmvProjCameraStartPos, xmMtxViewInverse);
+		XMVECTOR xmvRayDir = XMVector3Normalize(xmvPickPosition - xmvWorldRayStart);
+		XMStoreFloat4(&xmf3TerrainPickPos, xmvWorldRayStart + xmvRayDir * distance);
+		//xmf3TerrainPickPos.y = m_pTerrainContainer->GetHeight(XMFLOAT2(xmf3TerrainPickPos.x, xmf3TerrainPickPos.z));
+		//XMVECTOR xmvTerrainPickPos = XMLoadFloat4(&xmf3TerrainPickPos);
+		//XMFLOAT4 result;
+
+		//XMStoreFloat4(&result, XMVector3Length(xmvTerrainPickPos - xmvWorldRayStart));
+		//distance = result.x;
+	}
+	else {
+
+	}
 	return bIntersection;
+
+	//XMVECTOR xmvWorldPickPos = XMVector3TransformCoord(xmvProjCameraStartPos, xmMtxViewInverse);
+	//XMVECTOR xmvWorldRayDir = XMVector3Normalize(xmvWorldPickPos - xmvWorldCameraStartPos);
+	//BoundingBox BoundingBox;
+	//GetMainBoundingBox(BoundingBox);
+	//bool b = BoundingBox.Intersects(xmvWorldCameraStartPos, xmvWorldRayDir, distance);
+	//
+	//
+	//if (b) {
+	//	XMVECTOR xmvWorldRayStart = UPDATER->GetCamera()->GetPosition();
+	//	XMVECTOR xmvPickPosition = XMVector3TransformCoord(xmvProjCameraStartPos, xmMtxViewInverse);
+	//	XMVECTOR xmvRayDir = XMVector3Normalize(xmvPickPosition - xmvWorldRayStart);
+	//	XMStoreFloat4(&xmf3TerrainPickPos, xmvWorldRayStart + xmvRayDir * distance);
+	//	//xmf3TerrainPickPos.y = m_pTerrainContainer->GetHeight(XMFLOAT2(xmf3TerrainPickPos.x, xmf3TerrainPickPos.z));
+	//	//XMVECTOR xmvTerrainPickPos = XMLoadFloat4(&xmf3TerrainPickPos);
+	//	//XMFLOAT4 result;
+	//	
+	//	//XMStoreFloat4(&result, XMVector3Length(xmvTerrainPickPos - xmvWorldRayStart));
+	//	//distance = result.x;
+	//
+	//	m_pTerrainContainer->SetPicpos(xmf3TerrainPickPos.x, xmf3TerrainPickPos.z);
+	//}
+	//else {
+	//
+	//}
+	//return b;
+
+	//XMMATRIX xmmtxViewInverse = XMMatrixInverse(nullptr, UPDATER->GetCamera()->GetViewMtx());
+	//
+	////veiw camera pos -> world camera pos
+	//XMVECTOR xmvWorldStartPos = XMVector3TransformCoord(XMVectorSet(0, 0, 0, 1), xmmtxViewInverse);
+	//XMVECTOR xmvCameraWorld = UPDATER->GetCamera()->GetPosition();
+	////view ray -> world ray
+	//XMVECTOR xmvWorldPickingPos = XMVector3TransformCoord(xmvWorldCameraStartPos, xmmtxViewInverse);
+	//XMVECTOR xmvWorldRayDir = XMVector3Normalize(xmvWorldPickingPos - xmvWorldStartPos);
+	//BoundingBox BoundingBox;
+	//GetMainBoundingBox(BoundingBox);
+	//return BoundingBox.Intersects(xmvWorldStartPos, xmvRayDir, distance);
+
+	//BoundingBox BoundingBox;
+	//GetMainBoundingBox(BoundingBox);
+	//bool b = BoundingBox.Intersects(xmvWorldCameraStartPos, xmvRayDir, distance);
+	//XMFLOAT4 xmf3TerrainPickPos;
+	//if (b) {
+	//	XMStoreFloat4(&xmf3TerrainPickPos, xmvWorldCameraStartPos + xmvRayDir * distance);
+	//	m_pTerrainContainer->SetPicpos(xmf3TerrainPickPos.x, xmf3TerrainPickPos.z);
+	//}
+	//else {
+	//
+	//}
+	//return b;
 }
 
 CTerrain* CTerrain::CreateTerrain(CTerrainContainer * pTerrainContainer, int x, int y){

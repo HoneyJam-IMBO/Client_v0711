@@ -516,6 +516,12 @@
     <Filter Include="1. 소스 파일\05. GameObject\-07. Skill/Effect\1. Ranger\2. r_sk1_Efc">
       <UniqueIdentifier>{4ab205d0-7273-4f9c-b96d-069a4bbb32fc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="1. 소스 파일\00. Singleton\-02. FileIO\PositionInfoManager">
+      <UniqueIdentifier>{8f3f3487-e81e-44a4-8c2a-20bc0a215af7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="1. 소스 파일\00. Singleton\-02. FileIO\PositionInfoManager\PositionInfoData">
+      <UniqueIdentifier>{115fb219-8d02-4e0b-acc1-ff9dcf161071}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Light.h">
@@ -893,17 +899,23 @@
     <ClInclude Include="SCAldenard.h">
       <Filter>1. 소스 파일\03. Scene\-05. SCAldenard</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\..\..\..\0. JH%27s Folder\Study\IBClient\ImBo\Client_v0711\IMBO_MAINFRAME\SCSarasen.h">
-      <Filter>1. 소스 파일\03. Scene\-06. SCSarasen</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\..\..\0. JH%27s Folder\Study\IBClient\ImBo\Client_v0711\IMBO_MAINFRAME\Roisa.h">
-      <Filter>1. 소스 파일\05. GameObject\-06. Monster\1. Boss02</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\..\..\0. JH%27s Folder\Study\IBClient\ImBo\Client_v0711\IMBO_MAINFRAME\ElfSkill1Efc.h">
+    <ClInclude Include="ElfSkill1Efc.h">
       <Filter>1. 소스 파일\05. GameObject\-07. Skill/Effect\1. Ranger\2. r_sk1_Efc</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\..\..\..\0. JH%27s Folder\Study\IBClient\ImBo\Client_v0711\IMBO_MAINFRAME\SkillObj.h">
+    <ClInclude Include="Roisa.h">
+      <Filter>1. 소스 파일\05. GameObject\-06. Monster\1. Boss02</Filter>
+    </ClInclude>
+    <ClInclude Include="SkillObj.h">
       <Filter>1. 소스 파일\05. GameObject\-07. Skill/Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="SCSarasen.h">
+      <Filter>1. 소스 파일\03. Scene\-06. SCSarasen</Filter>
+    </ClInclude>
+    <ClInclude Include="PositionInfoData.h">
+      <Filter>1. 소스 파일\00. Singleton\-02. FileIO\PositionInfoManager\PositionInfoData</Filter>
+    </ClInclude>
+    <ClInclude Include="PositionInfoManager.h">
+      <Filter>1. 소스 파일\00. Singleton\-02. FileIO\PositionInfoManager</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1267,17 +1279,23 @@
     <ClCompile Include="SCAldenard.cpp">
       <Filter>1. 소스 파일\03. Scene\-05. SCAldenard</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\..\..\0. JH%27s Folder\Study\IBClient\ImBo\Client_v0711\IMBO_MAINFRAME\SCSarasen.cpp">
-      <Filter>1. 소스 파일\03. Scene\-06. SCSarasen</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\..\..\0. JH%27s Folder\Study\IBClient\ImBo\Client_v0711\IMBO_MAINFRAME\Roisa.cpp">
-      <Filter>1. 소스 파일\05. GameObject\-06. Monster\1. Boss02</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\..\..\0. JH%27s Folder\Study\IBClient\ImBo\Client_v0711\IMBO_MAINFRAME\ElfSkill1Efc.cpp">
+    <ClCompile Include="ElfSkill1Efc.cpp">
       <Filter>1. 소스 파일\05. GameObject\-07. Skill/Effect\1. Ranger\2. r_sk1_Efc</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\..\..\0. JH%27s Folder\Study\IBClient\ImBo\Client_v0711\IMBO_MAINFRAME\SkillObj.cpp">
+    <ClCompile Include="Roisa.cpp">
+      <Filter>1. 소스 파일\05. GameObject\-06. Monster\1. Boss02</Filter>
+    </ClCompile>
+    <ClCompile Include="SkillObj.cpp">
       <Filter>1. 소스 파일\05. GameObject\-07. Skill/Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="SCSarasen.cpp">
+      <Filter>1. 소스 파일\03. Scene\-06. SCSarasen</Filter>
+    </ClCompile>
+    <ClCompile Include="PositionInfoData.cpp">
+      <Filter>1. 소스 파일\00. Singleton\-02. FileIO\PositionInfoManager\PositionInfoData</Filter>
+    </ClCompile>
+    <ClCompile Include="PositionInfoManager.cpp">
+      <Filter>1. 소스 파일\00. Singleton\-02. FileIO\PositionInfoManager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

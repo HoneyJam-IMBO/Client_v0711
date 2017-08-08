@@ -78,6 +78,9 @@ void CRanger::UpdateSkill()
 
 		if (true == m_bSkill && INPUTMGR->MouseLeftDown())
 		{
+			/*
+			d
+			*/
 			m_nAnimNum = ANIM_SKILL4_FIRE;
 			m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
 			m_bSelRangeMode = false;
