@@ -224,13 +224,13 @@ void CLoading::LoadScene_ORITOWN()
 	RESOURCEMGR->CreateTexture("skicon3", _T("../../Assets/Game_UI/skicon3.tga"), PS_TEXTURE, BIND_PS);
 	RESOURCEMGR->CreateTexture("skicon4", _T("../../Assets/Game_UI/skicon4.tga"), PS_TEXTURE, BIND_PS);
 
-	LoadUI_Skill(1, 0, 0, 0);
+	LoadUI_Skill(3, 0, 0, 0);
 	
 	CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/TestBlood.dat", L"TestBlood");
 	CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/SparkTest.dat", L"SparkTest");
 
 	// Boss
-	RESOURCEMGR->CreateMultiMesh("../../Assets/SceneResource/GJM/Boss01L.gjm", "Boss01L");
+	//RESOURCEMGR->CreateMultiMesh("../../Assets/SceneResource/GJM/Boss01L.gjm", "Boss01L");
 
 	LoadScene("../../Assets/SceneResource/test/test.scn");
 	//LoadScene("../../Assets/SceneResource/FirstTown/FirstTown.scn");
@@ -304,7 +304,8 @@ void CLoading::LoadUI_Skill(int cn1, int cn2, int cn3, int cn4)
 			CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/Ranger_sk2_con.dat", L"Ranger_sk2_con");
 			CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/elf_sk1.dat", L"elf_sk1");
 			CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/elf_sk2.dat", L"elf_sk2");
-			CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/elf_sk3.dat", L"elf_sk3");
+			CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/Ranger_sk4_con.dat", L"Ranger_sk4_con");
+			CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/Ranger_sk4_Shoot_m.dat", L"Ranger_sk4_Shoot");
 			CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/Arrow_Trace.dat", L"Arrow_Trace", 50);
 			CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/Arrow_Skill1Shot.dat", L"Arrow_Skill1Shot");
 
@@ -317,6 +318,14 @@ void CLoading::LoadUI_Skill(int cn1, int cn2, int cn3, int cn4)
 			break;
 		case knight:
 			RESOURCEMGR->CreateTexture("Char_Select_1", _T("../../Assets/Scene_HeroSel/Char_Select_2.jpg"), PS_TEXTURE, BIND_PS);
+			
+			CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/Knight_sk1_con.dat", L"Knight_sk1_con");
+			CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/Knight_sk1_fire.dat", L"Knight_sk1_fire", 50);
+			CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/Knight_sk1_fire2.dat", L"Knight_sk1_fire2", 50);
+			CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/Knight_sk1_fire3.dat", L"Knight_sk1_fire3", 50);
+			CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/Knight_sk2_Shield.dat", L"Knight_sk2_Shield");
+			CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/Knight_sk3_con.dat", L"Knight_sk3_con");
+			CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/Knight_sk4_con.dat", L"Knight_sk4_con");
 
 			CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/hum2_sk1.dat", L"hum2_sk1");
 			CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/hum2_sk2.dat", L"hum2_sk2");
@@ -329,8 +338,14 @@ void CLoading::LoadUI_Skill(int cn1, int cn2, int cn3, int cn4)
 			RESOURCEMGR->CreateMultiMesh("../../Assets/SceneResource/GJM/SLD.gjm", "SLD");
 
 			RESOURCEMGR->CreateTexture("Trail02", _T("../../Assets/SceneResource/Trail/Trail02.tga"), PS_TEXTURE, BIND_PS);
+			RESOURCEMGR->CreateTexture("Trail04", _T("../../Assets/SceneResource/Trail/Trail04.tga"), PS_TEXTURE, BIND_PS);
 			break;
 		case demantor:
+			CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/hum3_sk1.dat", L"hum3_sk1");
+			CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/hum3_sk2.dat", L"hum3_sk2");
+			//CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/hum2_sk3.dat", L"hum2_sk3");
+			//CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/hum2_sk4.dat", L"hum2_sk4");
+
 			RESOURCEMGR->CreateTexture("Char_Select_2", _T("../../Assets/Scene_HeroSel/Char_Select_3.jpg"), PS_TEXTURE, BIND_PS);
 			RESOURCEMGR->CreateMultiMesh("../../Assets/SceneResource/GJM/Hum03M.gjm", "Hum03M");
 			break;

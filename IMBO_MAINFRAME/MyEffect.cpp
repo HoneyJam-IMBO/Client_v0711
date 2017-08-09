@@ -68,7 +68,18 @@ int CMyEffect::Update(float fTimeElapsed)
 		XMLoadFloat4(&m_f4Quaternion),
 		XMLoadFloat3(&m_f3Pos)));
 
-	if (m_szTexture == CString("Parents")) return -1;
+	if (m_szTexture == CString("Parents"))
+	{
+		if (m_pmParent)
+		{
+			
+			XMMATRIX matPos = XMMatrixTranslation(m_pmParent->GetPositionX(), m_pmParent->GetPositionY() + m_pmParent->GetBBox()->Extents.y, m_pmParent->GetPositionZ());
+			XMStoreFloat4x4(&m_tEffectInfo.m_matWorld, XMMatrixMultiply(XMLoadFloat4x4(&m_tEffectInfo.m_matWorld),
+				matPos));
+		}
+
+		return -1;
+	}
 
 
 	//XMStoreFloat4x4(&matResult, XMMatrixRotationQuaternion(XMLoadFloat4(&m_f4Quaternion)));
@@ -80,6 +91,7 @@ int CMyEffect::Update(float fTimeElapsed)
 
 	XMStoreFloat4x4(&m_tEffectInfo.m_matWorld, XMMatrixMultiply(XMLoadFloat4x4(&m_tEffectInfo.m_matWorld),
 		XMLoadFloat4x4(&m_pParent->m_tEffectInfo.m_matWorld)));
+
 
 	// 뷰변환 행렬의 z값 얻기
 
@@ -251,10 +263,16 @@ void CMyEffect::Modify_Point(XMVECTOR xmPos, XMVECTOR xmRot, XMVECTOR xmScl)
 	}
 }
 
+void CMyEffect::Modify_Point(CGameObject * pParent)
+{
+	m_pmParent = pParent;
+}
+
 void CMyEffect::InitData()
 {
 	Copy_Point(m_pOriEffect);
 	StopEffectAniamtion();
+	m_pmParent = nullptr;
 }
 
 void CMyEffect::PlayEffectAnimation(float fDeltaTime)

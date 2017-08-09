@@ -24,7 +24,7 @@ float4 main(VS_TEXTURED_OUTPUT input) : SV_TARGET
 
 	float2		Trans = input.texCoord;
 	float4		Noise = gDistTexture.Sample(gSampler, Trans);
-	float2		UV = input.texCoord + Noise.xy * 0.05f;		// 0.05 -> 왜곡의 정도
+	float2		UV = input.texCoord + Noise.xy * 0.02f;		// 0.05 -> 왜곡의 정도
 
 	float Alpha = gAlphaTexture.Sample(gSampler, UV).r;
 

@@ -57,8 +57,50 @@ int CTrail::Update(float fTimeElapsed)
 
 		XMStoreFloat3(&xmf3NearPos, XMVector3TransformCoord(XMLoadFloat3(&xmf3NearPos), matView * matProj));
 		
+		if (m_bSkill1)
+		{
+			m_fSkill1AccTime += fTimeElapsed;
+			SetTexName(CString("Trail04"));
+			XMStoreFloat4(&m_tTrailInfo.m_xmf4Color, XMVectorSet(1.f, 0.2f, 0.2f, 1.f));
+			if (m_fSkill1AccTime > 10.f)
+			{
+				SetTexName(CString("Trail02"));
+				XMStoreFloat4(&m_tTrailInfo.m_xmf4Color, XMVectorSet(0.8f, 0.5f, 0.4f, 1.f));
+				m_bSkill1 = false;
+				m_fSkill1AccTime = 0.f;
+			}
+			m_fFireAccTime += fTimeElapsed;
+			if (m_fFireAccTime > 0.001f)
+			{
+				float fa = float(rand() % 10 + 1);
+
+				float fx = (m_xmf4Pos2.x - m_xmf4Pos1.x) / fa + m_xmf4Pos1.x + (m_xmf4Pos2.x - m_xmf4Pos1.x) / 3.f;
+				float fy = (m_xmf4Pos2.y - m_xmf4Pos1.y) / fa + m_xmf4Pos1.y + (m_xmf4Pos2.y - m_xmf4Pos1.y) / 3.f;
+				float fz = (m_xmf4Pos2.z - m_xmf4Pos1.z) / fa + m_xmf4Pos1.z + (m_xmf4Pos2.z - m_xmf4Pos1.z) / 3.f;
+
+				int iRand = rand() % 3;
+				switch (iRand) {
+				case 0:
+					CEffectMgr::GetInstance()->Play_Effect(L"Knight_sk1_fire", XMVectorSet(fx, fy, fz, 1.f),
+						XMVectorSet(0.f, 0.f, 0.f, 0.f), XMVectorSet(0.5f, 0.5f, 0.f, 1.f));
+					break;
+				case 1:
+					CEffectMgr::GetInstance()->Play_Effect(L"Knight_sk1_fire2", XMVectorSet(fx, fy, fz, 1.f),
+						XMVectorSet(0.f, 0.f, 0.f, 0.f), XMVectorSet(0.5f, 0.5f, 0.f, 1.f));
+					break;
+				case 2:
+					CEffectMgr::GetInstance()->Play_Effect(L"Knight_sk1_fire3", XMVectorSet(fx, fy, fz, 1.f),
+						XMVectorSet(0.f, 0.f, 0.f, 0.f), XMVectorSet(0.5f, 0.5f, 0.f, 1.f));
+					break;
+				}
+				m_fFireAccTime = 0.f;
+			}
+		}
+
 		if (m_bRender)
 			m_pEffectRenderCont->SetTrailRenderContainer(xmf3NearPos.z, this);
+
+
 	}
 	return 0;
 }

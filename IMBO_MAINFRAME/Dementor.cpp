@@ -32,6 +32,67 @@ bool CDementor::End()
 	return true;
 }
 
+void CDementor::UpdateSkill()
+{
+	// 1번스킬
+	if (DEMENTOR_ANIM_SKILL1_START == m_nAnimNum) {
+		if (true == m_pAnimater->GetCurAnimationInfo()->GetLoopDone()) {
+			m_nAnimNum = DEMENTOR_ANIM_SKILL1_CHARGING;
+			m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
+		}
+		return;
+	}
+	if (DEMENTOR_ANIM_SKILL1_CHARGING == m_nAnimNum) {
+		if (true == m_pAnimater->GetCurAnimationInfo()->GetLoopDone()) {
+			m_nAnimNum = DEMENTOR_ANIM_SKILL1_FIRE;
+			m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
+		}
+		return;
+	}
+	// 2번스킬
+	if (DEMENTOR_ANIM_SKILL2_START == m_nAnimNum) {
+		if (true == m_pAnimater->GetCurAnimationInfo()->GetLoopDone()) {
+			m_nAnimNum = DEMENTOR_ANIM_SKILL2_CHARGING;
+			m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
+		}
+		return;
+	}
+	if (DEMENTOR_ANIM_SKILL2_CHARGING == m_nAnimNum) {
+		if (true == m_pAnimater->GetCurAnimationInfo()->GetLoopDone()) {
+			m_nAnimNum = DEMENTOR_ANIM_SKILL2_FIRE;
+			m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
+		}
+		return;
+	}
+	// 4번스킬
+	if (DEMENTOR_ANIM_SKILL4_START == m_nAnimNum) {
+		if (true == m_pAnimater->GetCurAnimationInfo()->GetLoopDone()) {
+			m_nAnimNum = DEMENTOR_ANIM_SKILL4_CHARGING;
+			m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
+		}
+		return;
+	}
+	if (DEMENTOR_ANIM_SKILL4_CHARGING == m_nAnimNum) {
+		if (true == m_pAnimater->GetCurAnimationInfo()->GetLoopDone()) {
+			m_nAnimNum = DEMENTOR_ANIM_SKILL4_FIRE;
+			m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
+		}
+		return;
+	}
+
+
+	// 점프 끝나면 IDLE로
+	if (ANIM_JUMP_END == m_nAnimNum
+		|| m_bSkill == true) {
+		if (true == m_pAnimater->GetCurAnimationInfo()->GetLoopDone()) {
+			if (DEMENTOR_ANIM_HIT_F == m_nAnimNum) m_bDamaged = false;
+			m_nAnimNum = DEMENTOR_ANIM_IDLE;
+			m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
+			m_bSkill = false;
+		}
+	}
+}
+
 void CDementor::KeyInput(float fDeltaTime)
 {
 	DWORD dwDirection = 0;
@@ -57,11 +118,17 @@ void CDementor::KeyInput(float fDeltaTime)
 			//m_nAnimNum = DEMENTOR_ANIM_SKILL1_FIRE;
 			m_nAnimNum = DEMENTOR_ANIM_SKILL1_START;
 			m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
+
+			CEffectMgr::GetInstance()->Play_Effect(L"hum3_sk1", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y + 1.f, m_xmf3Position.z, 1.f),
+				XMVectorSet(0.f, 0.f, 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
 		}
 		else if (INPUTMGR->KeyDown(VK_2)) {				// 스킬 2 ------------------------
 			m_bSkill = true;
 			m_nAnimNum = DEMENTOR_ANIM_SKILL2_START;
 			m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
+
+			CEffectMgr::GetInstance()->Play_Effect(L"hum3_sk2", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y + 1.f, m_xmf3Position.z, 1.f),
+				XMVectorSet(0.f, 0.f, 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
 		}
 		else if (INPUTMGR->KeyDown(VK_3)) {				// 스킬 3 ------------------------
 			m_bSkill = true;
@@ -279,67 +346,6 @@ void CDementor::SetWeapon()
 		XMMATRIX xmmtxScale = XMMatrixScaling(10.f, 10.f, 10.f);
 
 		m_pWeapon->SetWorldMtx(xmmtxScale* xmmtxRotX * xmmtxRotZ * xmmtxFinal);
-	}
-}
-
-void CDementor::UpdateSkill()
-{
-	// 1번스킬
-	if (DEMENTOR_ANIM_SKILL1_START == m_nAnimNum){
-		if (true == m_pAnimater->GetCurAnimationInfo()->GetLoopDone()){
-			m_nAnimNum = DEMENTOR_ANIM_SKILL1_CHARGING;
-			m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
-		}
-		return;
-	}
-	if (DEMENTOR_ANIM_SKILL1_CHARGING == m_nAnimNum){
-		if (true == m_pAnimater->GetCurAnimationInfo()->GetLoopDone()){
-			m_nAnimNum = DEMENTOR_ANIM_SKILL1_FIRE;
-			m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
-		}
-		return;
-	}
-	// 2번스킬
-	if (DEMENTOR_ANIM_SKILL2_START == m_nAnimNum) {
-		if (true == m_pAnimater->GetCurAnimationInfo()->GetLoopDone()) {
-			m_nAnimNum = DEMENTOR_ANIM_SKILL2_CHARGING;
-			m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
-		}
-		return;
-	}
-	if (DEMENTOR_ANIM_SKILL2_CHARGING == m_nAnimNum) {
-		if (true == m_pAnimater->GetCurAnimationInfo()->GetLoopDone()) {
-			m_nAnimNum = DEMENTOR_ANIM_SKILL2_FIRE;
-			m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
-		}
-		return;
-	}
-	// 4번스킬
-	if (DEMENTOR_ANIM_SKILL4_START == m_nAnimNum) {
-		if (true == m_pAnimater->GetCurAnimationInfo()->GetLoopDone()) {
-			m_nAnimNum = DEMENTOR_ANIM_SKILL4_CHARGING;
-			m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
-		}
-		return;
-	}
-	if (DEMENTOR_ANIM_SKILL4_CHARGING == m_nAnimNum) {
-		if (true == m_pAnimater->GetCurAnimationInfo()->GetLoopDone()) {
-			m_nAnimNum = DEMENTOR_ANIM_SKILL4_FIRE;
-			m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
-		}
-		return;
-	}
-
-
-	// 점프 끝나면 IDLE로
-	if (ANIM_JUMP_END == m_nAnimNum
-		|| m_bSkill == true) {
-		if (true == m_pAnimater->GetCurAnimationInfo()->GetLoopDone()) {
-			if (DEMENTOR_ANIM_HIT_F == m_nAnimNum) m_bDamaged = false;
-			m_nAnimNum = DEMENTOR_ANIM_IDLE;
-			m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
-			m_bSkill = false;
-		}
 	}
 }
 

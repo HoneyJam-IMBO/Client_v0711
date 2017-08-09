@@ -219,6 +219,33 @@ void CEffectMgr::Play_Effect(TCHAR * pKey, XMVECTOR xmvPos, XMVECTOR xmvRot, XMV
 	}
 }
 
+void CEffectMgr::Play_Effect(TCHAR * pKey, CGameObject* pParent)
+{
+	vector<CMyEffect*>* pOriVecEffect = Find_ProtoEffectList(pKey);		// 원본을 가져온다.
+	vector<CMyEffect*>* pVecEffect = Find_EffectList(pKey);		// 원본을 가져온다.
+	if (pVecEffect == nullptr) return;
+	size_t iVecEffectSize = pVecEffect->size();
+	size_t iVecProtoSize = pOriVecEffect->size();
+	for (size_t i = 0; i < iVecEffectSize; )
+	{
+		if ((*pVecEffect)[i]->m_bAlive == true)
+		{
+			i += iVecProtoSize;
+			continue;
+		}
+		for (size_t j = 0; j < iVecProtoSize; ++j)
+		{
+			if (j == 0)
+				(*pVecEffect)[i]->Modify_Point(pParent);
+			(*pVecEffect)[j + i]->m_bAlive = true;
+			(*pVecEffect)[j + i]->m_fAccTime = 0.f;
+			m_vecPlayEffect.push_back((*pVecEffect)[j + i]);
+
+		}
+		return;
+	}
+}
+
 CEffectMgr::CEffectMgr() : CSingleTonBase<CEffectMgr>("EffectMgrsingleton")
 {
 }

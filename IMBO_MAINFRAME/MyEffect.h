@@ -47,7 +47,8 @@ public:
 	bool		m_bRepeat{ false };
 
 public:
-	bool		m_bAlive{ false };
+	bool			m_bAlive{ false };
+	CGameObject*	m_pmParent{ nullptr };
 
 public:
 	list<POINTLERP*>*	GetVectorLinear() { return &m_PointList; }
@@ -59,6 +60,7 @@ public:
 	void		Copy_Point(CMyEffect* pCopy);
 	void		Delete_PointAll();
 	void		Modify_Point(XMVECTOR xmPos, XMVECTOR xmRot, XMVECTOR xmScl);
+	void		Modify_Point(CGameObject * pParent);
 	void		InitData();
 private:
 	XMFLOAT4	m_f4Color;

@@ -29,6 +29,7 @@ public:
 	void Load_EffectData(TCHAR* pName, TCHAR* pKey, int iCreatNum = 5);
 	void Create_Effect(TCHAR* pKey);
 	void Play_Effect(TCHAR* pKey, XMVECTOR xmvPos, XMVECTOR xmvRot, XMVECTOR xmvScl = XMVectorSet(1,1,1,1));
+	void Play_Effect(TCHAR* pKey, CGameObject* pParent);
 
 public:
 	CEffectMgr();

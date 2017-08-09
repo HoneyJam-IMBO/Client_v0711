@@ -83,21 +83,34 @@ void CKnight::KeyInput(float fDeltaTime)
 			m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
 
 			m_pCamera->CameraStartVibration(1.5f, 10.f);
+
+			m_pWeaponTrail->PlayOnSkill1();
+
+			CEffectMgr::GetInstance()->Play_Effect(L"Knight_sk1_con", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y + 1.f, m_xmf3Position.z, 1.f),
+				XMVectorSet(0.f, 0.f, 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
 		}
 		else if (INPUTMGR->KeyDown(VK_2)) {				// 스킬 2 ------------------------
 			m_bSkill = true;
 			m_nAnimNum = KNIGHT_ANIM_SKILL2_FIRE;
 			m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
+
+			CEffectMgr::GetInstance()->Play_Effect(L"Knight_sk2_Shield", this);
 		}
 		else if (INPUTMGR->KeyDown(VK_3)) {				// 스킬 3 ------------------------
 			m_bSkill = true;
 			m_nAnimNum = KNIGHT_ANIM_SKILL3_FIRE;
 			m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
+
+			CEffectMgr::GetInstance()->Play_Effect(L"Knight_sk3_con", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y + 1.f, m_xmf3Position.z, 1.f),
+				XMVectorSet(0.f, 0.f, 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
 		}
 		else if (INPUTMGR->KeyDown(VK_4)) {				// 스킬 3 ------------------------
 			m_bSkill = true;
 			m_nAnimNum = KNIGHT_ANIM_SKILL4_FIRE;
 			m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
+
+			CEffectMgr::GetInstance()->Play_Effect(L"Knight_sk4_con", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y + 1.f, m_xmf3Position.z, 1.f),
+				XMVectorSet(0.f, 0.f, 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
 		}
 	}
 
@@ -392,6 +405,7 @@ CKnight::CKnight(string name, tag t, bool bSprit, CGameObject * pWeapon, INT slo
 	m_pWeaponTrail = new CTrail(XMVectorSet(0.8f, 0.5f, 0.4f, 1.f), 1, 0.f);
 	m_pWeaponTrail->Initialize();
 	m_pWeaponTrail->SetTexName(CString("Trail02"));
+	m_pWeaponTrail->SetParent(this);
 }
 
 CKnight::~CKnight()

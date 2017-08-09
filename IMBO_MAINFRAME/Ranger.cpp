@@ -86,8 +86,11 @@ void CRanger::UpdateSkill()
 			m_bSelRangeMode = false;
 			pCam->SetFixCamera(true);
 
-			CEffectMgr::GetInstance()->Play_Effect(L"elf_sk3", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y + 1.f, m_xmf3Position.z, 1.f),
-				XMVectorSet(0.f, XMConvertToDegrees(m_fAngleY), 0.f, 0.f), XMVectorSet(2.f, 2.f, 0.f, 1.f));
+			//CEffectMgr::GetInstance()->Play_Effect(L"Ranger_sk4_con", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y + 1.f, m_xmf3Position.z, 1.f),
+//				XMVectorSet(0.f, XMConvertToDegrees(m_fAngleY), 0.f, 0.f), XMVectorSet(2.f, 2.f, 0.f, 1.f));
+
+			CEffectMgr::GetInstance()->Play_Effect(L"Ranger_sk4_Shoot", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y, m_xmf3Position.z + 3.f, 1.f),
+				XMVectorSet(0.f, 0.f, 0.f, 0.f), XMVectorSet(1.f, 1.f, 1.f, 1.f));
 		}
 		if (true == m_bSkill && INPUTMGR->MouseRightDown())
 		{
