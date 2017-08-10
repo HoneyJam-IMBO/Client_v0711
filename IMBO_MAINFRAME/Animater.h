@@ -18,7 +18,7 @@ public:
 	//void ChangeAllAnimationInfoJointData();
 	//void DeleteAnimationInfo(UINT AnimationIndex);
 
-	void SetCurAnimationIndex(UINT AnimationIndex);
+	bool SetCurAnimationIndex(UINT AnimationIndex);
 	UINT GetCurAnimationIndex() { return m_CurAnimationIndex; }
 
 	CAnimationInfo* GetCurAnimationInfo() { return m_vpAnimationInfos[m_CurAnimationIndex]; }

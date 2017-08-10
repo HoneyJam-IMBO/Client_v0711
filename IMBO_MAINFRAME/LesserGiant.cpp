@@ -51,6 +51,34 @@ void CLesserGiant::PhisicsLogic(map<utag, list<CGameObject*>>& mlpObject, float 
 			break;
 		}
 	}
+	if (false == m_bCollision) {
+		for (auto pPlayer : mlpObject[utag::UTAG_PLAYER]) {
+			//pPlayer->Demaged();
+			switch (m_nAnimNum) {
+			case BOSS1_ANI_SKILL1:
+				if (SkillCollision(pPlayer)) {
+					pPlayer->GetDemaged(100.f);
+					m_bCollision = true;
+				}
+				break;
+			case BOSS1_ANI_SKILL2:
+				if (SkillCollision(pPlayer)) {
+					pPlayer->GetDemaged(100.f);
+					m_bCollision = true;
+				}
+				break;
+			case BOSS1_ANI_SKILL3:
+				if (SkillCollision(pPlayer)) {
+					pPlayer->GetDemaged(100.f);
+					m_bCollision = true;
+				}
+				break;
+			default:
+				break;
+			}
+		}
+	}
+	m_fAnimTime += fDeltaTime;
 }
 
 void CLesserGiant::UpdatePattern(float fTimeElapsed)
@@ -98,6 +126,7 @@ void CLesserGiant::UpdatePattern(float fTimeElapsed)
 			{
 				m_nAnimNum = BOSS1_ANI_WALK;
 				m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
+				ResetCollisionValue(XMFLOAT3(0, 0, 0), 0, 0, 0);
 				m_bSkill = false;
 				m_fSk2Time = 0.f;
 			}
@@ -113,11 +142,12 @@ void CLesserGiant::UpdatePattern(float fTimeElapsed)
 			switch (m_nPatternNum) {
 			case 0:
 				m_nAnimNum = BOSS1_ANI_SKILL2;
-				m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
+				if (m_pAnimater->SetCurAnimationIndex(m_nAnimNum)) ResetCollisionValue(XMFLOAT3(0, 1, 5), 4.1, 4.6, 5);
 				break;
 			case 1:
 				m_nAnimNum = BOSS1_ANI_SKILL3;
-				m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
+				if (m_pAnimater->SetCurAnimationIndex(m_nAnimNum)) ResetCollisionValue(XMFLOAT3(0, 1, 5), 3.4, 4.5, 5);
+				
 				m_fSk2Speed = xmf3Distance.x;
 				XMStoreFloat3(&m_xmf3Sk2Dir, XMLoadFloat3(&m_f3Diraction));
 				break;
@@ -130,10 +160,11 @@ void CLesserGiant::UpdatePattern(float fTimeElapsed)
 		if (xmf3Distance.x < 7.f){
 			if (true == m_pAnimater->GetCurAnimationInfo()->GetLoopDone()){		// 스킬1 할때마다 위치 찾기.
 				SetRotation(DirectX::XMMatrixRotationY(fDirAngle));
+				ResetCollisionValue(XMFLOAT3(0, 1, 5), 0, 10, 5);
 			}
 			m_f3Diraction = XMFLOAT3(0.f, 0.f, 0.f);
 			m_nAnimNum = BOSS1_ANI_SKILL1;
-			m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
+			if(m_pAnimater->SetCurAnimationIndex(m_nAnimNum))ResetCollisionValue(XMFLOAT3(0,1,5), 1, 1.7, 5);
 			m_bAttack = true;
 		}
 		else {
@@ -157,5 +188,31 @@ void CLesserGiant::UpdatePattern(float fTimeElapsed)
 	//	m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
 	//	m_bAttack = false;
 	//}
+}
+
+bool CLesserGiant::SkillCollision(CGameObject * pPlayer)
+{
+	if (m_fMaxCollisionOffsetTime > m_fAnimTime && m_fAnimTime > m_fMinCollisionOffsetTime) {//충돌체가 활동하는 시간동안
+
+		
+		XMVECTOR xmvRight = XMVector3Normalize(GetRight()) * m_xmf3CollisionOffset.x;
+		XMVECTOR xmvUp = XMVector3Normalize(GetUp()) * m_xmf3CollisionOffset.y;
+		XMVECTOR xmvLook = XMVector3Normalize(GetLook()) * m_xmf3CollisionOffset.z;
+
+		XMVECTOR xmvPos = GetPosition();
+		xmvPos = xmvPos + xmvRight + xmvUp + xmvLook;
+
+		BoundingOrientedBox obb;
+		XMStoreFloat3(&obb.Center, xmvPos);
+		obb.Extents = XMFLOAT3(m_fRadius, m_fRadius, m_fRadius);
+		DEBUGER->RegistOBB(obb, UTAG_PLAYER);
+
+		XMVECTOR xmvPlayerPos = pPlayer->GetPosition();
+
+		XMFLOAT4 xmf4Result;
+		XMStoreFloat4(&xmf4Result, XMVector3Length(xmvPlayerPos - xmvPos));
+		if (xmf4Result.x < m_fRadius) return true;
+	}
+	return false;
 }
 

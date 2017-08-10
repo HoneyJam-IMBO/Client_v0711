@@ -147,6 +147,8 @@ public:
 	void SetNaviMeshIndex(int index);
 	void SetNaviMeshIndex();
 
+	//demage proc
+	virtual bool GetDemaged(float fDemage) { return true; };
 public:
 	BoundingBox*	GetBBox() { return &m_OriBoundingBox; }
 

@@ -525,6 +525,9 @@
     <Filter Include="1. 소스 파일\00. Singleton\-14. SoundManager">
       <UniqueIdentifier>{42799d93-9a76-4ab2-bba2-5f5b5b9061d9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="1. 소스 파일\05. GameObject\-09. Collision">
+      <UniqueIdentifier>{2deb2c8a-b75e-46c0-926c-20401c8cfa6d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Light.h">

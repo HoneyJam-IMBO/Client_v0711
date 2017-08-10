@@ -129,10 +129,11 @@ void CAnimater::AddAnimationInfo(CAnimationInfo * pAnimationInfo) {
 //	}
 //}
 
-void CAnimater::SetCurAnimationIndex(UINT AnimationIndex) {
-	if (m_CurAnimationIndex == AnimationIndex) return;
+bool CAnimater::SetCurAnimationIndex(UINT AnimationIndex) {
+	if (m_CurAnimationIndex == AnimationIndex) return false;
 	m_CurAnimationIndex = AnimationIndex;
 	ResetAnimationInfos();
+	return true;
 }
 
 void CAnimater::ResetAnimationInfos() {

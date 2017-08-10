@@ -285,7 +285,7 @@ void CBigWaterRenderer::RenderWaterSurface(CCamera* pCamera) {
 	pCamera->SetShaderState();
 
 	//debug
-	DEBUGER->AddTexture(XMFLOAT2(500, 250), XMFLOAT2(750, 500), m_pSRVReflection);
+	DEBUGER->AddTexture(XMFLOAT2(200, 200), XMFLOAT2(400, 400), m_pSRVReflection);
 }
 
 void CBigWaterRenderer::RenderRefractions(CCamera* pCamera) {
