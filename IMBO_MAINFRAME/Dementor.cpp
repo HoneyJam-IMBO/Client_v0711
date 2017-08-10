@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "Dementor.h"
+#include "DemSkillArrow.h"
 
 bool CDementor::Begin()
 {
@@ -41,6 +42,7 @@ bool CDementor::End()
 
 void CDementor::UpdateSkill()
 {
+	CCamera* pCam = CCameraMgr::GetInstance()->GetCamera(CAM_FREE);
 	// 1번스킬
 	if (DEMENTOR_ANIM_SKILL1_START == m_nAnimNum) {
 		if (true == m_pAnimater->GetCurAnimationInfo()->GetLoopDone()) {
@@ -61,6 +63,9 @@ void CDementor::UpdateSkill()
 		if (true == m_pAnimater->GetCurAnimationInfo()->GetLoopDone()) {
 			m_nAnimNum = DEMENTOR_ANIM_SKILL2_CHARGING;
 			m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
+
+			CEffectMgr::GetInstance()->Play_Effect(L"hum3_sk2", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y + 1.f, m_xmf3Position.z, 1.f),
+				XMVectorSet(0.f, 0.f, 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
 		}
 		return;
 	}
@@ -68,6 +73,12 @@ void CDementor::UpdateSkill()
 		if (true == m_pAnimater->GetCurAnimationInfo()->GetLoopDone()) {
 			m_nAnimNum = DEMENTOR_ANIM_SKILL2_FIRE;
 			m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
+
+			CEffectMgr::GetInstance()->Play_Effect(L"Dementor_sk2_Shoot", XMVectorSet(m_xmf3ClickPos.x, m_xmf3ClickPos.y , m_xmf3ClickPos.z, 1.f),
+				XMVectorSet(0.f, XMConvertToDegrees(m_fAngleY), 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
+
+			m_bSelRangeMode = false;
+			pCam->SetFixCamera(true);
 		}
 		return;
 	}
@@ -98,6 +109,49 @@ void CDementor::UpdateSkill()
 			m_bSkill = false;
 		}
 	}
+
+	if (true == m_bSelRangeMode)
+	{
+		pCam->SetFixCamera(false);
+		if (true == m_bSkill && INPUTMGR->MouseLeftDown())
+		{
+			CSceneMgr::GetInstance()->GetPresentScene()->GetPickPositionByCursor(INPUTMGR->GetMousePoint().x, INPUTMGR->GetMousePoint().y, m_xmf3ClickPos);
+
+			m_nAnimNum = DEMENTOR_ANIM_SKILL2_START;
+			m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
+
+		}
+		if (true == m_bSkill && INPUTMGR->MouseRightDown())
+		{
+			m_nAnimNum = DEMENTOR_ANIM_IDLE;
+			m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
+			m_bSkill = false;
+			m_bSelRangeMode = false;
+			pCam->SetFixCamera(true);
+		}
+	}
+}
+
+void CDementor::ShootArrow(bool bStrong, float fAngle)
+{
+	string strName;
+	if (false == bStrong)
+		strName = "Dementor_Arrow";
+	else
+		strName = "StrongArrow";
+
+	size_t iArraySize = m_mapSkill[strName].size();
+	for (size_t i = 0; i < iArraySize; ++i) {
+		if (false == m_mapSkill[strName][i]->GetActive()) {
+			m_mapSkill[strName][i]->SetPosition(XMVectorSet(m_xmf3Position.x, m_xmf3Position.y + 3.f, m_xmf3Position.z, 1.f));
+			m_mapSkill[strName][i]->Rotate(XMMatrixRotationY(m_fAngleY + fAngle));
+			m_mapSkill[strName][i]->SetScale(XMVectorSet(2.f, 1.f, 2.f, 1.f));
+			m_mapSkill[strName][i]->SetActive(true);
+
+			//((CElfSkillArrow*)m_mapSkill["Arrow1"][i])->GetTrail()->SetPosition(XMVectorSet(m_xmf3Position.x, m_xmf3Position.y + 3.f, m_xmf3Position.z, 1.f));
+			break;
+		}
+	}
 }
 
 void CDementor::KeyInput(float fDeltaTime)
@@ -119,6 +173,13 @@ void CDementor::KeyInput(float fDeltaTime)
 			m_bSkill = true;
 			m_nAnimNum = DEMENTOR_ANIM_ATTACK;
 			m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
+
+			if (m_bSelRangeMode == false) {
+				CEffectMgr::GetInstance()->Play_Effect(L"Dementor_Shot", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y + 2.f, m_xmf3Position.z, 1.f),
+					XMVectorSet(0.f, XMConvertToDegrees(m_fAngleY), 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
+
+				ShootArrow(false);
+			}
 		}
 		else if (INPUTMGR->KeyDown(VK_1)) {				// 스킬 1 ------------------------
 			m_bSkill = true;
@@ -126,26 +187,55 @@ void CDementor::KeyInput(float fDeltaTime)
 			m_nAnimNum = DEMENTOR_ANIM_SKILL1_START;
 			m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
 
-			CEffectMgr::GetInstance()->Play_Effect(L"hum3_sk1", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y + 1.f, m_xmf3Position.z, 1.f),
-				XMVectorSet(0.f, 0.f, 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
+			CEffectMgr::GetInstance()->Play_Effect(L"Dementor_sk1_Shield", this);
 		}
 		else if (INPUTMGR->KeyDown(VK_2)) {				// 스킬 2 ------------------------
 			m_bSkill = true;
-			m_nAnimNum = DEMENTOR_ANIM_SKILL2_START;
+			m_nAnimNum = DEMENTOR_ANIM_IDLE;
+			//m_nAnimNum = DEMENTOR_ANIM_SKILL2_START;
 			m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
 
-			CEffectMgr::GetInstance()->Play_Effect(L"hum3_sk2", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y + 1.f, m_xmf3Position.z, 1.f),
-				XMVectorSet(0.f, 0.f, 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
+			m_bSelRangeMode = true;			
 		}
 		else if (INPUTMGR->KeyDown(VK_3)) {				// 스킬 3 ------------------------
 			m_bSkill = true;
 			m_nAnimNum = DEMENTOR_ANIM_SKILL3_FIRE;
 			m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
+
+			CEffectMgr::GetInstance()->Play_Effect(L"Dementor_sk3_con", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y + 1.f, m_xmf3Position.z, 1.f),
+				XMVectorSet(0.f, XMConvertToDegrees(m_fAngleY), 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
 		}
-		else if (INPUTMGR->KeyDown(VK_4)) {				// 스킬 3 ------------------------
+		else if (INPUTMGR->KeyDown(VK_4)) {				// 스킬 4 ------------------------
 			m_bSkill = true;
 			m_nAnimNum = DEMENTOR_ANIM_SKILL4_START;
 			m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
+
+
+			XMVECTOR xmEfcPos = XMLoadFloat3(&m_xmf3Position);
+			XMFLOAT3 xmf3EfcPos;
+//			xmEfcPos += GetLook() * 2.f;
+			
+
+			ShootArrow(false);
+			ShootArrow(false, XM_PI * 0.5f);
+			ShootArrow(false, XM_PI);
+			ShootArrow(false, XM_PI * 1.5f);
+
+			XMStoreFloat3(&xmf3EfcPos, xmEfcPos + XMVector4Normalize(GetLook()) * 4.f);
+			CEffectMgr::GetInstance()->Play_Effect(L"Dementor_sk4_shoot", XMVectorSet(xmf3EfcPos.x, xmf3EfcPos.y, xmf3EfcPos.z, 1.f),
+				XMVectorSet(0.f, XMConvertToDegrees(m_fAngleY), 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
+
+			XMStoreFloat3(&xmf3EfcPos, xmEfcPos + (XMVector4Normalize(GetRight())) * 4.f);
+			CEffectMgr::GetInstance()->Play_Effect(L"Dementor_sk4_shoot", XMVectorSet(xmf3EfcPos.x, xmf3EfcPos.y , xmf3EfcPos.z, 1.f),
+				XMVectorSet(0.f, XMConvertToDegrees(m_fAngleY) + 90.f, 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
+
+			XMStoreFloat3(&xmf3EfcPos, xmEfcPos + ((XMVector4Normalize(GetRight()) * -1.f)) * 4.f);
+			CEffectMgr::GetInstance()->Play_Effect(L"Dementor_sk4_shoot", XMVectorSet(xmf3EfcPos.x, xmf3EfcPos.y , xmf3EfcPos.z, 1.f),
+				XMVectorSet(0.f, XMConvertToDegrees(m_fAngleY) - 90.f, 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
+
+			XMStoreFloat3(&xmf3EfcPos, xmEfcPos + ((XMVector4Normalize(GetLook()) * -1.f)) * 4.f);
+			CEffectMgr::GetInstance()->Play_Effect(L"Dementor_sk4_shoot", XMVectorSet(xmf3EfcPos.x, xmf3EfcPos.y, xmf3EfcPos.z, 1.f),
+				XMVectorSet(0.f, XMConvertToDegrees(m_fAngleY) - 180.f, 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
 		}
 	}
 
@@ -363,6 +453,19 @@ CDementor::CDementor(string name, tag t, bool bSprit, CGameObject * pWeapon, INT
 	, m_SLOT_ID(slot_id)
 {
 	m_fSpeed = 14.f;
+
+	vector<CGameObject*> vecSkill;
+	for (int i = 0; i < 12; ++i)
+	{
+		CGameObject* pObject = new CDemSkillArrow("Dementor_Arrow", TAG_DYNAMIC_OBJECT);
+		pObject->SetActive(false);
+		pObject->SetUTag(utag::UTAG_ARROW);
+		pObject->Begin();
+		pObject->SetPosition(XMVectorSet(0, 0, 0, 1));
+		UPDATER->GetSpaceContainer()->AddObject(pObject);
+		vecSkill.push_back(pObject);
+	}
+	m_mapSkill["Dementor_Arrow"] = vecSkill;
 }
 
 CDementor::~CDementor()

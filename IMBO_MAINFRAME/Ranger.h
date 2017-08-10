@@ -30,6 +30,8 @@ private:
 	void	ShootArrow(bool bStrong);
 private:
 	bool	m_bSelRangeMode{ false };
+	XMFLOAT3 m_xmf3ClickPos;
+
 private:
 	float	m_fTranslateTime{ 0.f };
 	int		m_iAnimNum{ 0 };

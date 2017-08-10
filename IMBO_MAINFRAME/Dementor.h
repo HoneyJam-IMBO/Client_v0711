@@ -18,8 +18,10 @@ private:
 	void	SetWeapon();
 
 	void	UpdateSkill();
+	void	ShootArrow(bool bStrong, float fAngle = 0.f);
 private:
 	bool	m_bSelRangeMode{ false };
+	XMFLOAT3 m_xmf3ClickPos;
 
 private:
 	float	m_fTranslateTime{ 0.f };

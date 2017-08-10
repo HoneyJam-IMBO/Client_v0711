@@ -91,7 +91,7 @@ void CKnight::KeyInput(float fDeltaTime)
 
 			m_pCamera->CameraStartVibration(1.5f, 10.f);
 
-			m_pWeaponTrail->PlayOnSkill1();
+			m_pWeaponTrail->PlayOnKnightSkill1();
 
 			CEffectMgr::GetInstance()->Play_Effect(L"Knight_sk1_con", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y + 1.f, m_xmf3Position.z, 1.f),
 				XMVectorSet(0.f, 0.f, 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));

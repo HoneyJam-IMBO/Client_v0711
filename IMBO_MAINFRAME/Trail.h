@@ -31,7 +31,7 @@ private:
 	float		m_fFollowTime{ 0.f };
 
 	bool		m_bRender{ true };
-	bool		m_bSkill1{ false };
+	bool		m_bKnightSkill1{ false };
 
 	float		m_fSkill1AccTime{ 0.f };
 	float		m_fFireAccTime{ 0.f };
@@ -42,12 +42,14 @@ public:
 	void	SetTexName(CString name);
 	void	SetRenderSwitch(bool bRender) { m_bRender = bRender; }
 	void	SetParent(CGameObject* pObj) { m_pParent = pObj; }
-	void	PlayOnSkill1() { m_bSkill1 = true; }
+	void	PlayOnKnightSkill1() { m_bKnightSkill1 = true; }
 //	void	SetWorld(XMMATRIX xmworld) { XMStoreFloat4x4(&m_tTrailInfo.m_xmWorld, xmworld); }
 
 private:
 	void	SetParameter();
 	void	SetLerpPos();
+
+	void	SwitchKnightSkill(float fTimeElapsed);
 
 
 public:

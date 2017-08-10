@@ -46,6 +46,7 @@ bool CRanger::End()
 
 void CRanger::UpdateSkill()
 {
+	CCamera* pCam = CCameraMgr::GetInstance()->GetCamera(CAM_FREE);
 	if (ANIM_SKILL2_START == m_nAnimNum)
 	{
 		if (true == m_pAnimater->GetCurAnimationInfo()->GetLoopDone())
@@ -80,24 +81,22 @@ void CRanger::UpdateSkill()
 
 	if (true == m_bSelRangeMode)
 	{
-		CCamera* pCam = CCameraMgr::GetInstance()->GetCamera(CAM_FREE);
 		pCam->SetFixCamera(false);
-
 		if (true == m_bSkill && INPUTMGR->MouseLeftDown())
 		{
-			/*
-			d
-			*/
+			CSceneMgr::GetInstance()->GetPresentScene()->GetPickPositionByCursor(INPUTMGR->GetMousePoint().x, INPUTMGR->GetMousePoint().y, m_xmf3ClickPos);
+
 			m_nAnimNum = ANIM_SKILL4_FIRE;
 			m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
+
+			CEffectMgr::GetInstance()->Play_Effect(L"Ranger_sk4_con", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y + 1.f, m_xmf3Position.z, 1.f),
+				XMVectorSet(0.f, XMConvertToDegrees(m_fAngleY), 0.f, 0.f), XMVectorSet(2.f, 2.f, 0.f, 1.f));
+
+			CEffectMgr::GetInstance()->Play_Effect(L"Ranger_sk4_Shoot", XMVectorSet(m_xmf3ClickPos.x, m_xmf3ClickPos.y, m_xmf3ClickPos.z, 1.f),
+				XMVectorSet(0.f, 0.f, 0.f, 0.f), XMVectorSet(1.f, 1.f, 1.f, 1.f));
+
 			m_bSelRangeMode = false;
 			pCam->SetFixCamera(true);
-
-			//CEffectMgr::GetInstance()->Play_Effect(L"Ranger_sk4_con", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y + 1.f, m_xmf3Position.z, 1.f),
-//				XMVectorSet(0.f, XMConvertToDegrees(m_fAngleY), 0.f, 0.f), XMVectorSet(2.f, 2.f, 0.f, 1.f));
-
-			CEffectMgr::GetInstance()->Play_Effect(L"Ranger_sk4_Shoot", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y, m_xmf3Position.z + 3.f, 1.f),
-				XMVectorSet(0.f, 0.f, 0.f, 0.f), XMVectorSet(1.f, 1.f, 1.f, 1.f));
 		}
 		if (true == m_bSkill && INPUTMGR->MouseRightDown())
 		{
