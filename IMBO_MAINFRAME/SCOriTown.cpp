@@ -35,11 +35,6 @@ bool CSCOriTown::Begin() {
 		switch (CHARACTER) {
 		case 0:
 			//±Ã¼ö
-			//pWeapon = new CGameObject("Bow1", TAG_DYNAMIC_OBJECT);
-			//pWeapon->Begin();
-			//m_ppPawn[i] = new CDementor("Hum03M", TAG_DYNAMIC_OBJECT, bSoul, pWeapon, i);
-			//m_ppPawn[i] = new CSister("Lup01M", TAG_DYNAMIC_OBJECT, bSoul, pWeapon, i);
-			m_ppPawn[i] = new CBard("Hum04F", TAG_DYNAMIC_OBJECT, bSoul, pWeapon, i);
 			pWeapon = new CGameObject("Bow1", TAG_DYNAMIC_OBJECT);
 			pWeapon->Begin();
 			m_ppPawn[i] = new CRanger("Elf01F", TAG_DYNAMIC_OBJECT, bSoul, pWeapon, i);

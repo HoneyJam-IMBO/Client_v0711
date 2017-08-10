@@ -99,7 +99,7 @@ void CRanger::UpdateSkill()
 			pCam->SetFixCamera(true);
 		}
 		if (true == m_bSkill && INPUTMGR->MouseRightDown())
-		{S
+		{
 			m_nAnimNum = ANIM_IDLE;
 			m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
 			m_bSkill = false;
