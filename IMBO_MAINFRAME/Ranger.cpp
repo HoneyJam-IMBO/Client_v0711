@@ -450,7 +450,7 @@ void CRanger::PhisicsLogic(map<utag, list<CGameObject*>>& mlpObject, float fDelt
 			break;
 		}
 	}
-	for (auto pObj : mlpObject[UTAG_COLLISION]) {
+	for (auto pObj : mlpObject[UTAG_NPC]) {
 		if (true == IsCollision(pObj))
 		{
 			CEffectMgr::GetInstance()->Play_Effect(L"TestBlood", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y + 2.f, m_xmf3Position.z, 1.f),

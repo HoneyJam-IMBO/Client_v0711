@@ -20,7 +20,7 @@ enum tag {
 enum utag {
 	UTAG_DEFAULT,//충돌검사 x 0
 	UTAG_COLLISION,//충돌 검사 o 1
-	UTAG_COLLISION_MULTIOBB,//2
+	UTAG_NPC,//2
 	UTAG_PLAYER,//3
 	UTAG_BOSS1,//4
 	UTAG_BOSS2,//5

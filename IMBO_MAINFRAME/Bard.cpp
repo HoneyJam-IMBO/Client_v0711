@@ -57,21 +57,33 @@ void CBard::KeyInput(float fDeltaTime)
 			m_bSkill = true;
 			m_nAnimNum = BARD_ANIM_SKILL1_FIRE;
 			m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
+
+			CEffectMgr::GetInstance()->Play_Effect(L"bard_skill1", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y + 1.f, m_xmf3Position.z, 1.f),
+				XMVectorSet(0.f, 0, 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
 		}
 		else if (INPUTMGR->KeyDown(VK_2)) {				// 스킬 2 ------------------------
 			m_bSkill = true;
 			m_nAnimNum = BARD_ANIM_SKILL2_FIRE;
 			m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
+
+			CEffectMgr::GetInstance()->Play_Effect(L"bard_skill2", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y + 1.f, m_xmf3Position.z, 1.f),
+				XMVectorSet(0.f, XMConvertToDegrees(m_fAngleY), 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
 		}
 		else if (INPUTMGR->KeyDown(VK_3)) {				// 스킬 3 ------------------------
 			m_bSkill = true;
 			m_nAnimNum = BARD_ANIM_SKILL3_FIRE;
 			m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
+
+			CEffectMgr::GetInstance()->Play_Effect(L"bard_skill3", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y + 1.f, m_xmf3Position.z, 1.f),
+				XMVectorSet(0.f, XMConvertToDegrees(m_fAngleY), 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
 		}
 		else if (INPUTMGR->KeyDown(VK_4)) {				// 스킬 3 ------------------------
 			m_bSkill = true;
 			m_nAnimNum = BARD_ANIM_SKILL4_FIRE;
 			m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
+
+			CEffectMgr::GetInstance()->Play_Effect(L"bard_skill4", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y + 1.f, m_xmf3Position.z, 1.f),
+				XMVectorSet(0.f, 0, 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
 		}
 	}
 
@@ -330,7 +342,7 @@ void CBard::PhisicsLogic(map<utag, list<CGameObject*>>& mlpObject, float fDeltaT
 			break;
 		}
 	}
-	for (auto pObj : mlpObject[UTAG_COLLISION]) {
+	for (auto pObj : mlpObject[UTAG_NPC]) {
 		if (true == IsCollision(pObj))
 		{
 			CEffectMgr::GetInstance()->Play_Effect(L"TestBlood", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y + 2.f, m_xmf3Position.z, 1.f),

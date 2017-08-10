@@ -179,6 +179,7 @@
     <ClInclude Include="SCSarasen.h" />
     <ClInclude Include="SkillObj.h" />
     <ClInclude Include="BigWaterRenderer.h" />
+    <ClInclude Include="SoundManager.h" />
     <ClInclude Include="Trail.h" />
     <ClInclude Include="SCAldenard.h" />
     <ClInclude Include="TrailMesh.h" />
@@ -312,6 +313,7 @@
     <ClCompile Include="SCSarasen.cpp" />
     <ClCompile Include="SkillObj.cpp" />
     <ClCompile Include="BigWaterRenderer.cpp" />
+    <ClCompile Include="SoundManager.cpp" />
     <ClCompile Include="Trail.cpp" />
     <ClCompile Include="SCAldenard.cpp" />
     <ClCompile Include="TrailMesh.cpp" />

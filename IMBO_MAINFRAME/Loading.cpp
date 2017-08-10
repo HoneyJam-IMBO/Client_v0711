@@ -224,7 +224,7 @@ void CLoading::LoadScene_ORITOWN()
 	RESOURCEMGR->CreateTexture("skicon3", _T("../../Assets/Game_UI/skicon3.tga"), PS_TEXTURE, BIND_PS);
 	RESOURCEMGR->CreateTexture("skicon4", _T("../../Assets/Game_UI/skicon4.tga"), PS_TEXTURE, BIND_PS);
 
-	LoadUI_Skill(3, 0, 0, 0);
+	LoadUI_Skill(6, 0, 0, 0);
 	
 	CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/TestBlood.dat", L"TestBlood");
 	CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/SparkTest.dat", L"SparkTest");
@@ -353,6 +353,10 @@ void CLoading::LoadUI_Skill(int cn1, int cn2, int cn3, int cn4)
 			RESOURCEMGR->CreateTexture("Char_Select_3", _T("../../Assets/Scene_HeroSel/Char_Select_4.jpg"), PS_TEXTURE, BIND_PS);
 			RESOURCEMGR->CreateMultiMesh("../../Assets/SceneResource/GJM/Lup01M.gjm", "Lup01M");
 
+			CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/sister_skill1.dat", L"sister_skill1", 10);
+			CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/sister_skill2.dat", L"sister_skill2", 10);
+			CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/sister_skill3.dat", L"sister_skill3", 10);
+
 			RESOURCEMGR->CreateTexture("Trail03", _T("../../Assets/SceneResource/Trail/Trail03.tga"), PS_TEXTURE, BIND_PS);
 			RESOURCEMGR->CreateMultiMesh("../../Assets/SceneResource/GJM/HMR.gjm", "HMR");
 			//RESOURCEMGR->CreateMultiMesh("../../Assets/SceneResource/GJM/OSW.gjm", "OSW");
@@ -363,6 +367,11 @@ void CLoading::LoadUI_Skill(int cn1, int cn2, int cn3, int cn4)
 			RESOURCEMGR->CreateMultiMesh("../../Assets/SceneResource/GJM/Hum02F.gjm", "Hum02F");
 			break;
 		case bard:
+			CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/bard_skill1.dat", L"bard_skill1");
+			CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/bard_skill2.dat", L"bard_skill2");
+			CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/bard_skill3.dat", L"bard_skill3");
+			CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/bard_skill4.dat", L"bard_skill4");
+
 			RESOURCEMGR->CreateTexture("Char_Select_5", _T("../../Assets/Scene_HeroSel/Char_Select_6.jpg"), PS_TEXTURE, BIND_PS);
 			RESOURCEMGR->CreateMultiMesh("../../Assets/SceneResource/GJM/Hum04F.gjm", "Hum04F");
 			break;
