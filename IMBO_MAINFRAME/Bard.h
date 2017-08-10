@@ -4,11 +4,13 @@ class CBard :
 	public CGameObject
 {
 public:
+	
 	bool Begin();
 	virtual void Animate(float fTimeElapsed);
 	virtual bool End();
 
 private:
+	
 	void	KeyInput(float fDeltaTime);
 	void	PushServerData(float x, float y, float z, float fAngleY, DWORD dwDirection, bool bJump);
 	void	GetServerData(float fTimeElapsed);

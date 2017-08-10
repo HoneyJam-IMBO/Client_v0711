@@ -174,11 +174,17 @@ protected:
 	//animater
 	 CAnimater* m_pAnimater{ nullptr };
 	vector<BoundingOrientedBox> m_vObjectActiveOBBs;
+
+	//stay flag
+	void SetbStay(bool b) { m_bStay = b; }
+	bool GetbStay() { return m_bStay; }
+
 protected:
 	bool		m_bIdle{ false };
 	CCamera*	m_pCamera{ nullptr };
 	bool		m_bJump{ false };
-	
+	bool		m_bStay{ false };
+
 public:
 	void SetIdleState(bool bIdle) { m_bIdle = bIdle; }
 	bool GetIdleState() { return m_bIdle; }

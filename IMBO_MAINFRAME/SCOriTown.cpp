@@ -112,16 +112,16 @@ bool CSCOriTown::Begin() {
 	}
 
 	
-	////보스 제작
-	//CGameObject*	pBoss = new CLesserGiant("Boss01L", TAG_DYNAMIC_OBJECT, m_ppPawn[0]);
-	//pBoss->SetUTag(utag::UTAG_BOSS1);
-	//pBoss->Begin();
-	//pBoss->SetTerrainContainer(UPDATER->GetTerrainContainer());
-	//pBoss->SetPosition(XMVectorSet(200, 0, 250, 0));
-	//pBoss->SetNaviMeshIndex();
-	//pBoss->SetScale(XMVectorSet(1, 1, 1, 1));
-	//UPDATER->GetSpaceContainer()->AddObject(pBoss);
-	//pBoss->GetAnimater()->SetCurAnimationIndex(0);
+	//보스 제작
+	CGameObject*	pBoss = new CLesserGiant("Boss01L", TAG_DYNAMIC_OBJECT, m_ppPawn[0]);
+	pBoss->SetUTag(utag::UTAG_BOSS1);
+	pBoss->Begin();
+	pBoss->SetTerrainContainer(UPDATER->GetTerrainContainer());
+	pBoss->SetPosition(XMVectorSet(200, 0, 250, 0));
+	pBoss->SetNaviMeshIndex();
+	pBoss->SetScale(XMVectorSet(1, 1, 1, 1));
+	UPDATER->GetSpaceContainer()->AddObject(pBoss);
+	pBoss->GetAnimater()->SetCurAnimationIndex(0);
 	//보스 제작
 	//CGameObject*	pBoss = new CLesserGiant("Boss01L", TAG_DYNAMIC_OBJECT, m_ppPawn[0]);
 	//pBoss->SetUTag(utag::UTAG_BOSS1);

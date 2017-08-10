@@ -21,7 +21,14 @@ void CRanger::Animate(float fTimeElapsed)
 
 
 	UpdateSkill();
-	CGameObject::Animate(fTimeElapsed);
+	ActionMoveProc();
+
+	//모든 컴포넌트를 돌면서 Update실행
+	for (auto i : m_mapComponents) {
+		i.second->Update(fTimeElapsed);
+	}
+
+	DEBUGER->RegistCoordinateSys(GetWorldMtx());
 
 	SetWeapon();
 	DEBUGER->AddText(30, 100, 600, YT_Color(255.f, 255.f, 255.f), L"animation %d", m_nAnimNum);

@@ -102,6 +102,7 @@ bool CGameObject::End() {
 
 void CGameObject::Animate(float fTimeElapsed) {
 
+	if(m_pAnimater) m_pAnimater->Update(fTimeElapsed);
 	ActionMoveProc();
 
 	//모든 컴포넌트를 돌면서 Update실행

@@ -230,7 +230,7 @@ void CLoading::LoadScene_ORITOWN()
 	CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/SparkTest.dat", L"SparkTest");
 
 	// Boss
-	//RESOURCEMGR->CreateMultiMesh("../../Assets/SceneResource/GJM/Boss01L.gjm", "Boss01L");
+	RESOURCEMGR->CreateMultiMesh("../../Assets/SceneResource/GJM/Boss01L.gjm", "Boss01L");
 
 	LoadScene("../../Assets/SceneResource/test/test.scn");
 	//LoadScene("../../Assets/SceneResource/FirstTown/FirstTown.scn");

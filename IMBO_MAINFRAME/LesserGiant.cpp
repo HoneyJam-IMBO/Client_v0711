@@ -23,7 +23,14 @@ void CLesserGiant::Animate(float fTimeElapsed)
 	Move(XMVector3Normalize(XMLoadFloat3(&m_f3Diraction)), (m_fSpeed) * fTimeElapsed);
 
 	if (m_pAnimater) m_pAnimater->Update(TIMEMGR->GetTimeElapsed());
-	CGameObject::Animate(fTimeElapsed);
+	ActionMoveProc();
+
+	//모든 컴포넌트를 돌면서 Update실행
+	for (auto i : m_mapComponents) {
+		i.second->Update(fTimeElapsed);
+	}
+
+	DEBUGER->RegistCoordinateSys(GetWorldMtx());
 }
 
 void CLesserGiant::RegistToContainer()

@@ -123,7 +123,7 @@ void CSpace::Animate(float fTimeElapsed) {
 		list<CGameObject*>::iterator iter = m_mlpObject[tag::TAG_DYNAMIC_OBJECT].begin();
 		for (; iter != m_mlpObject[tag::TAG_DYNAMIC_OBJECT].end(); )
 		{
-			(*iter)->Animate(fTimeElapsed);
+ 			(*iter)->Animate(fTimeElapsed);
 			int current_index = m_pSpaceContainer->SearchSpace((*iter)->GetPosition());
 			if ((*iter)->GetSpaceIndex() != current_index)//이전 공간 index와 현재 index가 다르다면
 			{

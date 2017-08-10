@@ -17,7 +17,14 @@ void CDementor::Animate(float fTimeElapsed)
 	if (m_pAnimater) m_pAnimater->Update(TIMEMGR->GetTimeElapsed());
 
 	UpdateSkill();
-	CGameObject::Animate(fTimeElapsed);
+	ActionMoveProc();
+
+	//모든 컴포넌트를 돌면서 Update실행
+	for (auto i : m_mapComponents) {
+		i.second->Update(fTimeElapsed);
+	}
+
+	DEBUGER->RegistCoordinateSys(GetWorldMtx());
 
 	SetWeapon();
 	DEBUGER->AddText(30, 100, 600, YT_Color(255.f, 255.f, 255.f), L"animation %d", m_nAnimNum);
@@ -373,12 +380,12 @@ void CDementor::PhisicsLogic(map<utag, list<CGameObject*>>& mlpObject, float fDe
 	for (auto pBoss : mlpObject[UTAG_BOSS1]) {
 		if (true == IsCollision(pBoss))
 		{
-			m_bDamaged = true;
+			//m_bDamaged = true;
 			CEffectMgr::GetInstance()->Play_Effect(L"TestBlood", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y + 2.f, m_xmf3Position.z, 1.f),
 				XMVectorSet(0.f, 0.f, 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
 
-			m_nAnimNum = DEMENTOR_ANIM_HIT_F;
-			m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
+			//m_nAnimNum = DEMENTOR_ANIM_HIT_F;
+			//m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
 
 			break;
 		}
