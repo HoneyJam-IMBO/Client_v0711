@@ -522,8 +522,25 @@
     <Filter Include="1. 소스 파일\00. Singleton\-02. FileIO\PositionInfoManager\PositionInfoData">
       <UniqueIdentifier>{115fb219-8d02-4e0b-acc1-ff9dcf161071}</UniqueIdentifier>
     </Filter>
+<<<<<<< Updated upstream
     <Filter Include="1. 소스 파일\00. Singleton\-14. SoundManager">
       <UniqueIdentifier>{42799d93-9a76-4ab2-bba2-5f5b5b9061d9}</UniqueIdentifier>
+=======
+    <Filter Include="1. 소스 파일\05. GameObject\-07. Skill/Effect\3. Dementor">
+      <UniqueIdentifier>{2b527617-b039-4121-bbeb-bd6b3746e9d6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="1. 소스 파일\05. GameObject\-07. Skill/Effect\4. Wizard">
+      <UniqueIdentifier>{6b9e2276-94dc-427b-b005-5d312ed542b2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="1. 소스 파일\05. GameObject\-07. Skill/Effect\5. Bard">
+      <UniqueIdentifier>{625af6e9-01ed-4b12-b0d0-5eb617a9287d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="1. 소스 파일\05. GameObject\-07. Skill/Effect\4. Wizard\w_Arrow">
+      <UniqueIdentifier>{3899742a-cab4-43a6-a427-ba385dfcb05e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="1. 소스 파일\05. GameObject\-07. Skill/Effect\3. Dementor\d_Arrow">
+      <UniqueIdentifier>{00ed8e7e-fc6f-4082-b66d-6ee7ba440d0b}</UniqueIdentifier>
+>>>>>>> Stashed changes
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -920,8 +937,16 @@
     <ClInclude Include="PositionInfoManager.h">
       <Filter>1. 소스 파일\00. Singleton\-02. FileIO\PositionInfoManager</Filter>
     </ClInclude>
+<<<<<<< Updated upstream
     <ClInclude Include="SoundManager.h">
       <Filter>1. 소스 파일\00. Singleton\-14. SoundManager</Filter>
+=======
+    <ClInclude Include="..\..\..\..\..\..\0. JH%27s Folder\Study\IBClient\ImBo\Client_v0711\IMBO_MAINFRAME\DemSkillArrow.h">
+      <Filter>1. 소스 파일\05. GameObject\-07. Skill/Effect\3. Dementor\d_Arrow</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\0. JH%27s Folder\Study\IBClient\ImBo\Client_v0711\IMBO_MAINFRAME\WizardSkillArrow.h">
+      <Filter>1. 소스 파일\05. GameObject\-07. Skill/Effect\4. Wizard\w_Arrow</Filter>
+>>>>>>> Stashed changes
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1303,8 +1328,16 @@
     <ClCompile Include="PositionInfoManager.cpp">
       <Filter>1. 소스 파일\00. Singleton\-02. FileIO\PositionInfoManager</Filter>
     </ClCompile>
+<<<<<<< Updated upstream
     <ClCompile Include="SoundManager.cpp">
       <Filter>1. 소스 파일\00. Singleton\-14. SoundManager</Filter>
+=======
+    <ClCompile Include="..\..\..\..\..\..\0. JH%27s Folder\Study\IBClient\ImBo\Client_v0711\IMBO_MAINFRAME\DemSkillArrow.cpp">
+      <Filter>1. 소스 파일\05. GameObject\-07. Skill/Effect\3. Dementor\d_Arrow</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\0. JH%27s Folder\Study\IBClient\ImBo\Client_v0711\IMBO_MAINFRAME\WizardSkillArrow.cpp">
+      <Filter>1. 소스 파일\05. GameObject\-07. Skill/Effect\4. Wizard\w_Arrow</Filter>
+>>>>>>> Stashed changes
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

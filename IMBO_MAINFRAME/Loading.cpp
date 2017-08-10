@@ -225,6 +225,7 @@ void CLoading::LoadScene_ORITOWN()
 	RESOURCEMGR->CreateTexture("skicon4", _T("../../Assets/Game_UI/skicon4.tga"), PS_TEXTURE, BIND_PS);
 
 	LoadUI_Skill(6, 0, 0, 0);
+	LoadUI_Skill(1, 0, 0, 0);
 	
 	CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/TestBlood.dat", L"TestBlood");
 	CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/SparkTest.dat", L"SparkTest");
@@ -341,10 +342,19 @@ void CLoading::LoadUI_Skill(int cn1, int cn2, int cn3, int cn4)
 			RESOURCEMGR->CreateTexture("Trail04", _T("../../Assets/SceneResource/Trail/Trail04.tga"), PS_TEXTURE, BIND_PS);
 			break;
 		case demantor:
+			CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/Dementor_Shot.dat", L"Dementor_Shot");
+			CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/Dementor_sk1_Shield.dat", L"Dementor_sk1_Shield");
+			CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/Dementor_sk2_Shoot.dat", L"Dementor_sk2_Shoot");
+			CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/Dementor_sk3_con.dat", L"Dementor_sk3_con");
+			CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/Dementor_sk4_shoot.dat", L"Dementor_sk4_shoot");
+
 			CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/hum3_sk1.dat", L"hum3_sk1");
 			CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/hum3_sk2.dat", L"hum3_sk2");
 			//CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/hum2_sk3.dat", L"hum2_sk3");
 			//CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/hum2_sk4.dat", L"hum2_sk4");
+
+			RESOURCEMGR->CreateTexture("Trail01", _T("../../Assets/SceneResource/Trail/Trail01.tga"), PS_TEXTURE, BIND_PS);
+			RESOURCEMGR->CreateMultiMesh("../../Assets/SceneResource/GJM/Dementor_Arrow.gjm", "Dementor_Arrow");
 
 			RESOURCEMGR->CreateTexture("Char_Select_2", _T("../../Assets/Scene_HeroSel/Char_Select_3.jpg"), PS_TEXTURE, BIND_PS);
 			RESOURCEMGR->CreateMultiMesh("../../Assets/SceneResource/GJM/Hum03M.gjm", "Hum03M");
@@ -365,6 +375,16 @@ void CLoading::LoadUI_Skill(int cn1, int cn2, int cn3, int cn4)
 		case wizard:
 			RESOURCEMGR->CreateTexture("Char_Select_4", _T("../../Assets/Scene_HeroSel/Char_Select_5.jpg"), PS_TEXTURE, BIND_PS);
 			RESOURCEMGR->CreateMultiMesh("../../Assets/SceneResource/GJM/Hum02F.gjm", "Hum02F");
+
+			CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/Wizard_Shot.dat", L"Wizard_Shot", 10);
+			CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/Wizard_sk1_con.dat", L"Wizard_sk1_con");
+			CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/Wizard_sk3_con.dat", L"Wizard_sk3_con");
+			CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/Wizard_sk24_shot.dat", L"Wizard_sk24_shot", 10);
+			CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/Wizard_shot_trail.dat", L"Wizard_shot_trail", 100);
+
+			RESOURCEMGR->CreateMultiMesh("../../Assets/SceneResource/GJM/Wizard_Arrow.gjm", "Wizard_Arrow");
+
+
 			break;
 		case bard:
 			CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/bard_skill1.dat", L"bard_skill1");

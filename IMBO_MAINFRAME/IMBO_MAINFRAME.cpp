@@ -111,7 +111,10 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 
 	HWND hWnd;
 	RECT rcWindow = { 0, 0, WINSIZEX, WINSIZEY };
-	AdjustWindowRect(&rcWindow, WS_OVERLAPPEDWINDOW, FALSE);
+	DWORD dwStyle = WS_OVERLAPPED | WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU | WS_BORDER;
+	AdjustWindowRect(&rcWindow, dwStyle, FALSE);			//윈도우가 원하는 클라이언트 영역의 크기를 가지도록 윈도우의 크기를 계산하여 준다.
+
+//	AdjustWindowRect(&rcWindow, WS_OVERLAPPEDWINDOW, FALSE);
 
 	hWnd = CreateWindow(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
 		CW_USEDEFAULT, 0, rcWindow.right - rcWindow.left, rcWindow.bottom - rcWindow.top, NULL, NULL, hInstance, NULL);

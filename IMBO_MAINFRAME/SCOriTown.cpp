@@ -40,6 +40,9 @@ bool CSCOriTown::Begin() {
 			//m_ppPawn[i] = new CDementor("Hum03M", TAG_DYNAMIC_OBJECT, bSoul, pWeapon, i);
 			//m_ppPawn[i] = new CSister("Lup01M", TAG_DYNAMIC_OBJECT, bSoul, pWeapon, i);
 			m_ppPawn[i] = new CBard("Hum04F", TAG_DYNAMIC_OBJECT, bSoul, pWeapon, i);
+			pWeapon = new CGameObject("Bow1", TAG_DYNAMIC_OBJECT);
+			pWeapon->Begin();
+			m_ppPawn[i] = new CRanger("Elf01F", TAG_DYNAMIC_OBJECT, bSoul, pWeapon, i);
 			m_ppPawn[i]->Begin();
 			m_ppPawn[i]->SetPosition(XMVectorSet(10 * i + 250, 0, 250, 0));//[10, 10]부터 [40, 10]까지 배치
 			m_ppPawn[i]->SetScale(XMVectorSet(1, 1, 1, 1));

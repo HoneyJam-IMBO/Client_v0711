@@ -32,7 +32,7 @@ PS_EFFECT_OUT main(VS_TEXTURED_OUTPUT input) : SV_TARGET
 
 	float fObjDepth = gDepthtexture.Sample(gSampler, input.texCoord);
 	float fEftDepth = gEffectDepthtexture.Sample(gSampler, input.texCoord);
-	float Alpha = saturate((fObjDepth - fEftDepth)* 40.f);
+	float Alpha = saturate((fObjDepth - fEftDepth) * 100.f);
 	float fEffectAlpha = gAlphatexture.Sample(gSampler, input.texCoord);
 	//cBaseTexColor = saturate(cBaseTexColor);
 	//fEffectAlpha = fEffectAlpha - Alpha;
