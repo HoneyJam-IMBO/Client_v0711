@@ -1,7 +1,7 @@
 #pragma once
 #include "LabClientSession.h"
 #include "SingleTon.h"
-#define NO_SERVER
+//#define NO_SERVER
 
 //protocol
 

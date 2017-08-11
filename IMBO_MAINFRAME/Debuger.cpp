@@ -227,6 +227,14 @@ void CDebuger::ClearDebuger(){
 	
 	m_nAABB = 0;
 	m_nCoordinateSys = 0;
+
+
+	GLOBALVALUEMGR->GetDeviceContext()->VSSetShader(nullptr, nullptr, 0);
+	GLOBALVALUEMGR->GetDeviceContext()->GSSetShader(nullptr, nullptr, 0);
+	GLOBALVALUEMGR->GetDeviceContext()->HSSetShader(nullptr, nullptr, 0);
+	GLOBALVALUEMGR->GetDeviceContext()->DSSetShader(nullptr, nullptr, 0);
+	GLOBALVALUEMGR->GetDeviceContext()->PSSetShader(nullptr, nullptr, 0);
+
 }
 
 //utill func

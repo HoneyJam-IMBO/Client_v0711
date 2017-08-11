@@ -395,6 +395,7 @@ void CRenderer::Render( CCamera* pCamera) {
 		//이건 꼭 여기서 해줘야함.
 		DEBUGER->RenderTexture();
 		DEBUGER->RenderText();
+		DEBUGER->ClearDebuger();
 	}
 	else {
 		DEBUGER->ClearDebuger();

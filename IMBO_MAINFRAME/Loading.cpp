@@ -214,6 +214,7 @@ void CLoading::LoadScene_HEROSEL()
 }
 void CLoading::LoadScene_ORITOWN()
 {
+	INT CHARACTER[4]{ 0,0,0,0};
 	RESOURCEMGR->CreateTexture("SkillBack", _T("../../Assets/Game_UI/SkillBack.png"), PS_TEXTURE, BIND_PS);
 	RESOURCEMGR->CreateTexture("Bar", _T("../../Assets/Game_UI/HpBar.png"), PS_TEXTURE, BIND_PS);
 	RESOURCEMGR->CreateTexture("Bar_Fill", _T("../../Assets/Game_UI/HpPoint.png"), PS_TEXTURE, BIND_PS);
@@ -224,8 +225,15 @@ void CLoading::LoadScene_ORITOWN()
 	RESOURCEMGR->CreateTexture("skicon3", _T("../../Assets/Game_UI/skicon3.tga"), PS_TEXTURE, BIND_PS);
 	RESOURCEMGR->CreateTexture("skicon4", _T("../../Assets/Game_UI/skicon4.tga"), PS_TEXTURE, BIND_PS);
 
+
+#ifdef NO_SERVER
 	LoadUI_Skill(6, 0, 0, 0);
-	
+#else
+	for (int i = 0; i < NETWORKMGR->GetServerPlayerInfos().size(); ++i)
+		CHARACTER[i] = NETWORKMGR->GetServerPlayerInfos()[i].CHARACTER + 1;
+
+	LoadUI_Skill(CHARACTER[0], CHARACTER[1], CHARACTER[2], CHARACTER[3]);
+#endif
 	CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/TestBlood.dat", L"TestBlood");
 	CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/SparkTest.dat", L"SparkTest");
 
@@ -243,6 +251,7 @@ void CLoading::LoadScene_REPAIRTOWN()
 
 void CLoading::LoadScene_ALDENAD()
 {
+	INT CHARACTER[4]{ 0,0,0,0 };
 	RESOURCEMGR->CreateTexture("SkillBack", _T("../../Assets/Game_UI/SkillBack.png"), PS_TEXTURE, BIND_PS);
 	RESOURCEMGR->CreateTexture("Bar", _T("../../Assets/Game_UI/HpBar.png"), PS_TEXTURE, BIND_PS);
 	RESOURCEMGR->CreateTexture("Bar_Fill", _T("../../Assets/Game_UI/HpPoint.png"), PS_TEXTURE, BIND_PS);
@@ -254,7 +263,15 @@ void CLoading::LoadScene_ALDENAD()
 	RESOURCEMGR->CreateTexture("skicon4", _T("../../Assets/Game_UI/skicon4.tga"), PS_TEXTURE, BIND_PS);
 
 
+
+#ifdef NO_SERVER
 	LoadUI_Skill(2, 0, 0, 0);
+#else
+	for (int i = 0; i < NETWORKMGR->GetServerPlayerInfos().size(); ++i)
+		CHARACTER[i] = NETWORKMGR->GetServerPlayerInfos()[i].CHARACTER + 1;
+
+	LoadUI_Skill(CHARACTER[0], CHARACTER[1], CHARACTER[2], CHARACTER[3]);
+#endif
 
 	CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/TestBlood.dat", L"TestBlood");
 	CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/SparkTest.dat", L"SparkTest");
@@ -264,6 +281,7 @@ void CLoading::LoadScene_ALDENAD()
 
 void CLoading::LoadScene_BOSS()
 {
+	INT CHARACTER[4]{ 0,0,0,0 };
 	RESOURCEMGR->CreateTexture("SkillBack", _T("../../Assets/Game_UI/SkillBack.png"), PS_TEXTURE, BIND_PS);
 	RESOURCEMGR->CreateTexture("Bar", _T("../../Assets/Game_UI/HpBar.png"), PS_TEXTURE, BIND_PS);
 	RESOURCEMGR->CreateTexture("Bar_Fill", _T("../../Assets/Game_UI/HpPoint.png"), PS_TEXTURE, BIND_PS);
@@ -275,7 +293,14 @@ void CLoading::LoadScene_BOSS()
 	RESOURCEMGR->CreateTexture("skicon4", _T("../../Assets/Game_UI/skicon4.tga"), PS_TEXTURE, BIND_PS);
 
 
+#ifdef NO_SERVER
 	LoadUI_Skill(4, 0, 0, 0);
+#else
+	for (int i = 0; i < NETWORKMGR->GetServerPlayerInfos().size(); ++i)
+		CHARACTER[i] = NETWORKMGR->GetServerPlayerInfos()[i].CHARACTER + 1;
+
+	LoadUI_Skill(CHARACTER[0], CHARACTER[1], CHARACTER[2], CHARACTER[3]);
+#endif
 
 	CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/TestBlood.dat", L"TestBlood");
 	CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/SparkTest.dat", L"SparkTest");
@@ -366,7 +391,7 @@ void CLoading::LoadUI_Skill(int cn1, int cn2, int cn3, int cn4)
 			CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/sister_skill3.dat", L"sister_skill3", 10);
 
 			RESOURCEMGR->CreateTexture("Trail03", _T("../../Assets/SceneResource/Trail/Trail03.tga"), PS_TEXTURE, BIND_PS);
-			RESOURCEMGR->CreateMultiMesh("../../Assets/SceneResource/GJM/HMR.gjm", "HMR");
+			RESOURCEMGR->CreateMultiMesh("../../Assets/SceneResource/GJM/THM.gjm", "THM");
 			//RESOURCEMGR->CreateMultiMesh("../../Assets/SceneResource/GJM/OSW.gjm", "OSW");
 
 			break;

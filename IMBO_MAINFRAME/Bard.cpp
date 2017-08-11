@@ -10,8 +10,10 @@ bool CBard::Begin()
 void CBard::Animate(float fTimeElapsed)
 {
 	
-	if (true == m_bSprit && false == m_bDamaged)
-		KeyInput(fTimeElapsed); //KeyInput(fTimeElapsed);
+	if (true == m_bSprit) {
+		if(false == m_bDamaged)
+			KeyInput(fTimeElapsed); //KeyInput(fTimeElapsed);
+	}
 	else	GetServerData(fTimeElapsed);
 
 	// 애니메이션 업데이트함수
@@ -309,7 +311,7 @@ void CBard::SetWeapon()
 
 void CBard::UpdateSkill()
 {
-	if (ANIM_HIT_F == m_nAnimNum) {
+	if (BARD_ANIM_HIT_F == m_nAnimNum) {
 		if (true == m_pAnimater->GetCurAnimationInfo()->GetLoopDone()) {
 			m_bDamaged = false;
 			m_nAnimNum = BARD_ANIM_IDLE;
@@ -355,7 +357,7 @@ void CBard::PhisicsLogic(map<utag, list<CGameObject*>>& mlpObject, float fDeltaT
 	//		//m_bDamaged = true;
 	//		
 	//
-	//		//m_nAnimNum = ANIM_HIT_F;
+	//		//m_nAnimNum = BARD_ANIM_HIT_F;
 	//		//m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
 	//
 	//		break;
@@ -378,7 +380,7 @@ bool CBard::GetDemaged(float fDemage){
 	CEffectMgr::GetInstance()->Play_Effect(L"TestBlood", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y + 2.f, m_xmf3Position.z, 1.f),
 		XMVectorSet(0.f, 0.f, 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
 
-	m_nAnimNum = WIZARD_ANIM_HIT_F;
+	m_nAnimNum = BARD_ANIM_HIT_F;
 	m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
 	return true;
 }
