@@ -12,7 +12,8 @@ bool CRanger::Begin()
 
 void CRanger::Animate(float fTimeElapsed)
 {
-	if (true == m_bSprit && false == m_bDamaged)
+	if (true == m_bSprit)
+		if(false == m_bDamaged)
 			KeyInput(fTimeElapsed); //KeyInput(fTimeElapsed);
 	else	GetServerData(fTimeElapsed);
 	

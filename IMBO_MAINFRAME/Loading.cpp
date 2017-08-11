@@ -103,7 +103,7 @@ void CLoading::OnProcessingKeyboardMessage(HWND hWnd, UINT nMessageID, WPARAM wP
 {
 }
 
-void CLoading::ProcessInput(float fTimeElapsed) 
+void CLoading::ProcessInput(float fTimeElapsed)
 {
 
 }
@@ -214,7 +214,7 @@ void CLoading::LoadScene_HEROSEL()
 }
 void CLoading::LoadScene_ORITOWN()
 {
-	INT CHARACTER[4]{ 0,0,0,0};
+	INT CHARACTER[4]{ 0,0,0,0 };
 	RESOURCEMGR->CreateTexture("SkillBack", _T("../../Assets/Game_UI/SkillBack.png"), PS_TEXTURE, BIND_PS);
 	RESOURCEMGR->CreateTexture("Bar", _T("../../Assets/Game_UI/HpBar.png"), PS_TEXTURE, BIND_PS);
 	RESOURCEMGR->CreateTexture("Bar_Fill", _T("../../Assets/Game_UI/HpPoint.png"), PS_TEXTURE, BIND_PS);
@@ -225,15 +225,16 @@ void CLoading::LoadScene_ORITOWN()
 	RESOURCEMGR->CreateTexture("skicon3", _T("../../Assets/Game_UI/skicon3.tga"), PS_TEXTURE, BIND_PS);
 	RESOURCEMGR->CreateTexture("skicon4", _T("../../Assets/Game_UI/skicon4.tga"), PS_TEXTURE, BIND_PS);
 
-
 #ifdef NO_SERVER
 	LoadUI_Skill(6, 0, 0, 0);
+	NETWORKMGR->GetServerPlayerInfos()[0].CHARACTER = 6-1;
 #else
 	for (int i = 0; i < NETWORKMGR->GetServerPlayerInfos().size(); ++i)
 		CHARACTER[i] = NETWORKMGR->GetServerPlayerInfos()[i].CHARACTER + 1;
 
 	LoadUI_Skill(CHARACTER[0], CHARACTER[1], CHARACTER[2], CHARACTER[3]);
 #endif
+
 	CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/TestBlood.dat", L"TestBlood");
 	CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/SparkTest.dat", L"SparkTest");
 
@@ -263,9 +264,8 @@ void CLoading::LoadScene_ALDENAD()
 	RESOURCEMGR->CreateTexture("skicon4", _T("../../Assets/Game_UI/skicon4.tga"), PS_TEXTURE, BIND_PS);
 
 
-
 #ifdef NO_SERVER
-	LoadUI_Skill(2, 0, 0, 0);
+	LoadUI_Skill(6, 0, 0, 0);
 #else
 	for (int i = 0; i < NETWORKMGR->GetServerPlayerInfos().size(); ++i)
 		CHARACTER[i] = NETWORKMGR->GetServerPlayerInfos()[i].CHARACTER + 1;
@@ -275,7 +275,7 @@ void CLoading::LoadScene_ALDENAD()
 
 	CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/TestBlood.dat", L"TestBlood");
 	CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/SparkTest.dat", L"SparkTest");
-	
+
 	LoadScene("../../Assets/SceneResource/Aldenard/Aldenard.scn");
 }
 
@@ -294,7 +294,7 @@ void CLoading::LoadScene_BOSS()
 
 
 #ifdef NO_SERVER
-	LoadUI_Skill(4, 0, 0, 0);
+	LoadUI_Skill(6, 0, 0, 0);
 #else
 	for (int i = 0; i < NETWORKMGR->GetServerPlayerInfos().size(); ++i)
 		CHARACTER[i] = NETWORKMGR->GetServerPlayerInfos()[i].CHARACTER + 1;
@@ -317,10 +317,10 @@ void CLoading::LoadUI_Skill(int cn1, int cn2, int cn3, int cn4)
 
 	enum CharNum { ranger = 1, knight, demantor, sister, wizard, bard };
 	// 1 - ranger || 2 - knight  || 3 - demantor || 4 - sister || 5 - wizard  || 6 - bard
-	for (int i = 0; i < 4; ++i)	{
+	for (int i = 0; i < 4; ++i) {
 		if (i != 0 && nCheckRepeat[i - 1] == cn[i])	continue;
 		nCheckRepeat[i] = cn[i];
-		switch (cn[i]){
+		switch (cn[i]) {
 		case ranger:
 
 			CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/Ranger_sk1_efc.dat", L"Ranger_sk1_efc");
@@ -342,7 +342,7 @@ void CLoading::LoadUI_Skill(int cn1, int cn2, int cn3, int cn4)
 			break;
 		case knight:
 			RESOURCEMGR->CreateTexture("Char_Select_1", _T("../../Assets/Scene_HeroSel/Char_Select_2.jpg"), PS_TEXTURE, BIND_PS);
-			
+
 			CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/Knight_sk1_con.dat", L"Knight_sk1_con");
 			CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/Knight_sk1_fire.dat", L"Knight_sk1_fire", 50);
 			CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/Knight_sk1_fire2.dat", L"Knight_sk1_fire2", 50);
@@ -391,7 +391,7 @@ void CLoading::LoadUI_Skill(int cn1, int cn2, int cn3, int cn4)
 			CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/sister_skill3.dat", L"sister_skill3", 10);
 
 			RESOURCEMGR->CreateTexture("Trail03", _T("../../Assets/SceneResource/Trail/Trail03.tga"), PS_TEXTURE, BIND_PS);
-			RESOURCEMGR->CreateMultiMesh("../../Assets/SceneResource/GJM/THM.gjm", "THM");
+			RESOURCEMGR->CreateMultiMesh("../../Assets/SceneResource/GJM/HMR.gjm", "HMR");
 			//RESOURCEMGR->CreateMultiMesh("../../Assets/SceneResource/GJM/OSW.gjm", "OSW");
 
 			break;
