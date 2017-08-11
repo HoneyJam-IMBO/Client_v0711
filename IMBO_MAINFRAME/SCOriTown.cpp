@@ -138,7 +138,7 @@ bool CSCOriTown::Begin() {
 	return CScene::Begin();
 #endif
 	BYTE Packet[MAX_BUFFER_LENGTH] = { 0, };
-	NETWORKMGR->WritePacket(PT_FTOWN_READY_CS, Packet, WRITE_PT_FTOWN_READY_CS(Packet));
+	NETWORKMGR->WritePacket(PT_FTOWN_READY_CS, Packet, WRITE_PT_FTOWN_READY_CS(Packet, NETWORKMGR->GetROOM_ID()));
 
 	while (false == m_bGameStart) {
 		NetworkProc();
@@ -324,6 +324,8 @@ VOID CSCOriTown::PROC_PT_FREQUENCY_MOVE_SC(DWORD dwProtocol, BYTE * Packet, DWOR
 	data.fPosZ = Data.POSZ;
 
 	data.fAngleY = Data.ANGLEY;
+	data.dwDirection = Data.DIRECTION;
+	data.bJump = Data.JUMP;
 	//CPawn* pPawn = (CPawn*)m_ppPawn[Data.SLOT_ID];
 	//pPawn->NetworkInput(data.dwDirection, data.fAngleY);
 	//network queue에 입력하구 대기한다.

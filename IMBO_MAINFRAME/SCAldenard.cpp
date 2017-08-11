@@ -125,7 +125,7 @@ bool CSCAldenard::Begin()
 	return CScene::Begin();
 #endif
 	BYTE Packet[MAX_BUFFER_LENGTH] = { 0, };
-	NETWORKMGR->WritePacket(PT_FTOWN_READY_CS, Packet, WRITE_PT_FTOWN_READY_CS(Packet));
+//	NETWORKMGR->WritePacket(PT_FTOWN_READY_CS, Packet, WRITE_PT_FTOWN_READY_CS(Packet));
 
 	while (false == m_bGameStart) {
 		NetworkProc();

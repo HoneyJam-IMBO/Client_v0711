@@ -155,16 +155,16 @@ void CDebuger::RegistToDebugRenderContainer(CGameObject * pObject){
 
 void CDebuger::DebugRender( CCamera* pCamera){
 	if (false == INPUTMGR->GetDebugMode()) return;
-
+	
 	CNaviObjectManager::Render();
 	RenderAABB(pCamera);
 	RenderLightVolume(pCamera);
 	RenderCoordinateSys(pCamera);
-
+	
 	for (auto pRenderContaier : m_mDebugRenderContainer) {
 		pRenderContaier.second->ClearObjectList();
 	}
-
+	
 	m_nAABB = 0;
 	m_nCoordinateSys = 0;
 	//ClearDebuger();
@@ -173,7 +173,7 @@ void CDebuger::DebugRender( CCamera* pCamera){
 void CDebuger::RenderAABB( CCamera* pCamera){
 	if (false == INPUTMGR->GetDebugMode()) return;
 	//render aabb
-
+	
 	m_mDebugRenderContainer["aabb"]->Render(pCamera);
 }
 void CDebuger::RenderCoordinateSys( CCamera* pCamera) {
@@ -182,20 +182,20 @@ void CDebuger::RenderCoordinateSys( CCamera* pCamera) {
 	m_mDebugRenderContainer["coordinatesys"]->Render(pCamera);
 }
 void CDebuger::RenderLightVolume( CCamera* pCamera){
-
+	
 	//이전 상태 저장
 	//m_pd3dDeviceContext->OMGetDepthStencilState(&m_pPreDepthStencilState, &m_PreStencilRef);
 	//m_pd3dDeviceContext->OMGetBlendState(&m_pPreBlendState, m_pPreBlendFactor, &m_PreSampleMask);
 	GLOBALVALUEMGR->GetDeviceContext()->RSGetState(&m_pPreRasterizerState);
-
+	
 	//m_pd3dDeviceContext->OMSetBlendState(m_pLightBlendState, nullptr, 0xffffffff);
 	//m_pd3dDeviceContext->OMSetDepthStencilState(m_pLightDepthStencilState, 0);
 	GLOBALVALUEMGR->GetDeviceContext()->RSSetState(m_pLightRasterizerState);
-
+	
 	m_mDebugRenderContainer["debugpointlight"]->Render(pCamera);
 	m_mDebugRenderContainer["debugcapsulelight"]->Render(pCamera);
 	m_mDebugRenderContainer["debugspotlight"]->Render(pCamera);
-
+	
 	//for (auto RenderContainer : m_mDebugRenderContainer) {
 	//	RenderContainer.second->Render(pCamera);
 	//}
@@ -209,7 +209,7 @@ void CDebuger::RenderLightVolume( CCamera* pCamera){
 
 void CDebuger::ClearDebuger(){
 	Timemeasurement_count = 0;
-
+	
 //font
 	while (false == m_qDebugFontData.empty()) {
 		m_qDebugFontData.pop();
@@ -227,6 +227,18 @@ void CDebuger::ClearDebuger(){
 	
 	m_nAABB = 0;
 	m_nCoordinateSys = 0;
+
+	// ps
+	GLOBALVALUEMGR->GetDeviceContext()->VSSetShader(nullptr, nullptr, 0);
+	// gs
+	GLOBALVALUEMGR->GetDeviceContext()->GSSetShader(nullptr, nullptr, 0);
+	//hs
+	GLOBALVALUEMGR->GetDeviceContext()->HSSetShader(nullptr, nullptr, 0);
+	//ds
+	GLOBALVALUEMGR->GetDeviceContext()->DSSetShader(nullptr, nullptr, 0);
+	// ps
+	GLOBALVALUEMGR->GetDeviceContext()->PSSetShader(nullptr, nullptr, 0);
+
 }
 
 //utill func
@@ -235,26 +247,26 @@ void CDebuger::AddText(float fontSize, float posX, float posY, UINT32 color, TCH
 	va_start(arg, msg);
 	TCHAR TEXT[500] = { NULL };
 	vswprintf(TEXT, msg, arg);
-
+	
 	CDebugFontData Data(TEXT, fontSize, posX, posY, color, m_pivot);
 	m_qDebugFontData.push(Data);
 }
 void CDebuger::RenderText(){
 	Timemeasurement_count = 0;
-
+	
 	if (false == m_pFW1Font) return;
 	if (false == INPUTMGR->GetDebugMode()) return;
-
+	
 	//이전 상태 저장
 	GLOBALVALUEMGR->GetDeviceContext()->OMGetDepthStencilState(&m_pPreDepthStencilState, &m_PreStencilRef);
 	GLOBALVALUEMGR->GetDeviceContext()->OMGetBlendState(&m_pPreBlendState, m_pPreBlendFactor, &m_PreSampleMask);
 	GLOBALVALUEMGR->GetDeviceContext()->RSGetState(&m_pPreRasterizerState);
-
-
+	
+	
 	while (false == m_qDebugFontData.empty()) {
 		//get
 		CDebugFontData Data = m_qDebugFontData.front();
-
+	
 		//draw
 		m_pFW1Font->DrawString
 		(
@@ -266,11 +278,12 @@ void CDebuger::RenderText(){
 			Data.color,
 			Data.pivot
 		);
-
+	
 		//pop
 		m_qDebugFontData.pop();
 	}
 	
+
 	//이전 상태로 되돌림
 	GLOBALVALUEMGR->GetDeviceContext()->OMSetDepthStencilState(m_pPreDepthStencilState, m_PreStencilRef);
 	GLOBALVALUEMGR->GetDeviceContext()->OMSetBlendState(m_pPreBlendState, m_pPreBlendFactor, m_PreSampleMask);
@@ -290,12 +303,12 @@ void CDebuger::AddDepthTexture(XMFLOAT2 fLeftTop, XMFLOAT2 fRightBottom, ID3D11S
 void CDebuger::RenderTexture(){
 	if (false == INPUTMGR->GetDebugMode()) return;
 	while (false == m_qDebugTextureData.empty()) {
-
+	
 		CDebugTextureData DebugTextureData = m_qDebugTextureData.front();
 		m_qDebugTextureData.pop();
-
+	
 		m_pDebugTexture = CTexture::CreateTexture(DebugTextureData.m_pSRV);
-
+	
 		m_pDebugTextureObj->SetTextureInfo(DebugTextureData.lt, DebugTextureData.rb);
 		string csName = "debugtexture";
 		m_mDebugRenderContainer[csName]->AddObject(m_pDebugTextureObj);
@@ -303,20 +316,20 @@ void CDebuger::RenderTexture(){
 		m_mDebugRenderContainer[csName]->Render(nullptr);
 		m_mDebugRenderContainer[csName]->ClearObjectList();
 		m_mDebugRenderContainer[csName]->ClearTextures();
-
+	
 	//	m_pDebugTexture->End();
 		delete m_pDebugTexture;
 		m_pDebugTexture = nullptr;
 	}
-
+	
 	//dpeh thexture
 	while (false == m_qDebugDepthTextureData.empty()) {
-
+	
 		CDebugTextureData DebugTextureData = m_qDebugDepthTextureData.front();
 		m_qDebugDepthTextureData.pop();
-
+	
 		m_pDebugTexture = CTexture::CreateTexture(DebugTextureData.m_pSRV);
-
+	
 		m_pDebugTextureObj->SetTextureInfo(DebugTextureData.lt, DebugTextureData.rb);
 		string csName = "debugdepthtexture";
 		m_mDebugRenderContainer[csName]->AddObject(m_pDebugTextureObj);
@@ -324,7 +337,7 @@ void CDebuger::RenderTexture(){
 		m_mDebugRenderContainer[csName]->Render(nullptr);
 		m_mDebugRenderContainer[csName]->ClearObjectList();
 		m_mDebugRenderContainer[csName]->ClearTextures();
-
+	
 	//	m_pDebugTexture->End();
 		delete m_pDebugTexture;
 		m_pDebugTexture = nullptr;
@@ -336,13 +349,14 @@ int CDebuger::DebugMessageBox(std::string _title, std::string _message)
 	int msgLen = static_cast<int>(1 + strlen(msgChar));
 	TCHAR* message = new TCHAR[msgLen];
 	mbstowcs(message, msgChar, msgLen);
-
+	
 	const char* titleChar = _title.c_str();
 	int titleLen = static_cast<int>(1 + strlen(titleChar));
 	TCHAR* title = new TCHAR[titleLen];
 	mbstowcs(title, titleChar, titleLen);
-
+	
 	return MessageBox(nullptr, message, title, MB_OK);
+	//return 1;
 }
 
 int CDebuger::DebugGMessageBox(TCHAR* title, TCHAR* message, ...)
@@ -351,7 +365,7 @@ int CDebuger::DebugGMessageBox(TCHAR* title, TCHAR* message, ...)
 	va_start(arg, message);
 	TCHAR TEXT[500] = { NULL };
 	vswprintf(TEXT, message, arg);
-
+	
 	return MessageBox(nullptr, TEXT, title, MB_OK);
 }
 
@@ -363,13 +377,13 @@ static int x = 400;
 static int y = 20;
 void CDebuger::end_Timemeasurement(WCHAR* msg) {
 	std::chrono::duration<double> sec = std::chrono::system_clock::now() - start;
-
+	
 	WCHAR wMsg[256];
 	WCHAR wTime[256];
 	float time = (float)sec.count();
 	_stprintf(wMsg, L"%s :", msg);
 	_stprintf(wTime, L"%f", time);
-
+	
 	DEBUGER->AddText(15, x, y * Timemeasurement_count, YT_Color(255, 0, 0, 255), wMsg);
 	DEBUGER->AddText(15, x + 150, y * Timemeasurement_count++, YT_Color(255, 0, 0, 255), wTime);
 }

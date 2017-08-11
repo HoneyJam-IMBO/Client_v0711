@@ -360,14 +360,16 @@ void CRenderer::Render( CCamera* pCamera) {
 
 	//DEBUG
 	if (true == bDebug) {
-		DEBUGER->AddDepthTexture(XMFLOAT2(500, 0), XMFLOAT2(750, 150), m_pd3dsrvDepthStencil);
-		//	DEBUGER->AddTexture(XMFLOAT2(100, 0), XMFLOAT2(350, 250), pRFL);
-		DEBUGER->AddTexture(XMFLOAT2(0, 0), XMFLOAT2(200, 200), m_vObjectLayerResultTexture[1]->GetShaderResourceView());
-		DEBUGER->AddTexture(XMFLOAT2(0, 200), XMFLOAT2(200, 400), m_vObjectLayerResultTexture[2]->GetShaderResourceView());
-		DEBUGER->AddTexture(XMFLOAT2(0, 400), XMFLOAT2(200, 600), m_vObjectLayerResultTexture[3]->GetShaderResourceView());
-		DEBUGER->AddTexture(XMFLOAT2(0, 600), XMFLOAT2(200, 800), m_vLightLayerResultTexture[0]->GetShaderResourceView());
+		//DEBUGER->AddDepthTexture(XMFLOAT2(500, 0), XMFLOAT2(750, 150), m_pd3dsrvDepthStencil);
+		////	DEBUGER->AddTexture(XMFLOAT2(100, 0), XMFLOAT2(350, 250), pRFL);
+		//DEBUGER->AddTexture(XMFLOAT2(0, 0), XMFLOAT2(200, 200), m_vObjectLayerResultTexture[1]->GetShaderResourceView());
+		//DEBUGER->AddTexture(XMFLOAT2(0, 200), XMFLOAT2(200, 400), m_vObjectLayerResultTexture[2]->GetShaderResourceView());
+		//DEBUGER->AddTexture(XMFLOAT2(0, 400), XMFLOAT2(200, 600), m_vObjectLayerResultTexture[3]->GetShaderResourceView());
+		//DEBUGER->AddTexture(XMFLOAT2(0, 600), XMFLOAT2(200, 800), m_vLightLayerResultTexture[0]->GetShaderResourceView());
+		//
+		//DEBUGER->AddTexture(XMFLOAT2(200, 400), XMFLOAT2(400, 600), m_pd3dsrvPostProcess);
 
-		DEBUGER->AddTexture(XMFLOAT2(200, 400), XMFLOAT2(400, 600), m_pd3dsrvPostProcess);
+
 		//if (INPUTMGR->KeyDown(VK_F2_)) {
 		//	//bSSAO = (bSSAO + 1) % 2; 
 		//	++m_iOption;
@@ -395,6 +397,7 @@ void CRenderer::Render( CCamera* pCamera) {
 		//이건 꼭 여기서 해줘야함.
 		DEBUGER->RenderTexture();
 		DEBUGER->RenderText();
+		DEBUGER->ClearDebuger();
 	}
 	else {
 		DEBUGER->ClearDebuger();
