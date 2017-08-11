@@ -391,7 +391,7 @@ void CLoading::LoadUI_Skill(int cn1, int cn2, int cn3, int cn4)
 			CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/sister_skill3.dat", L"sister_skill3", 10);
 
 			RESOURCEMGR->CreateTexture("Trail03", _T("../../Assets/SceneResource/Trail/Trail03.tga"), PS_TEXTURE, BIND_PS);
-			RESOURCEMGR->CreateMultiMesh("../../Assets/SceneResource/GJM/HMR.gjm", "HMR");
+			RESOURCEMGR->CreateMultiMesh("../../Assets/SceneResource/GJM/THM.gjm", "THM");
 			//RESOURCEMGR->CreateMultiMesh("../../Assets/SceneResource/GJM/OSW.gjm", "OSW");
 
 			break;

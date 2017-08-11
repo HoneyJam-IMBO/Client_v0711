@@ -10,9 +10,10 @@ bool CWizard::Begin()
 
 void CWizard::Animate(float fTimeElapsed)
 {
-	if (true == m_bSprit )
-		if(false == m_bDamaged)
+	if (true == m_bSprit) {
+		if (false == m_bDamaged)
 			KeyInput(fTimeElapsed); //KeyInput(fTimeElapsed);
+	}
 	else	GetServerData(fTimeElapsed);
 
 	// 애니메이션 업데이트함수
@@ -43,6 +44,14 @@ bool CWizard::End()
 }
 void CWizard::UpdateSkill()
 {
+	if (WIZARD_ANIM_HIT_F == m_nAnimNum) {
+		if (true == m_pAnimater->GetCurAnimationInfo()->GetLoopDone()) {
+			m_bDamaged = false;
+			m_nAnimNum = WIZARD_ANIM_IDLE;
+			m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
+			m_bSkill = false;
+		}
+	}
 	CCamera* pCam = CCameraMgr::GetInstance()->GetCamera(CAM_FREE);
 	// 4스킬
 	if (WIZARD_ANIM_SKILL4_START == m_nAnimNum) {
@@ -429,19 +438,19 @@ void CWizard::RegistToContainer()
 
 void CWizard::PhisicsLogic(map<utag, list<CGameObject*>>& mlpObject, float fDeltaTime)
 {
-	for (auto pBoss : mlpObject[UTAG_BOSS1]) {
-		if (true == IsCollision(pBoss))
-		{
-			//m_bDamaged = true;
-			CEffectMgr::GetInstance()->Play_Effect(L"TestBlood", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y + 2.f, m_xmf3Position.z, 1.f),
-				XMVectorSet(0.f, 0.f, 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
-
-			//m_nAnimNum = WIZARD_ANIM_HIT_F;
-			//m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
-
-			break;
-		}
-	}
+	//for (auto pBoss : mlpObject[UTAG_BOSS1]) {
+	//	if (true == IsCollision(pBoss))
+	//	{
+	//		//m_bDamaged = true;
+	//		CEffectMgr::GetInstance()->Play_Effect(L"TestBlood", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y + 2.f, m_xmf3Position.z, 1.f),
+	//			XMVectorSet(0.f, 0.f, 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
+	//
+	//		//m_nAnimNum = WIZARD_ANIM_HIT_F;
+	//		//m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
+	//
+	//		break;
+	//	}
+	//}
 	for (auto pObj : mlpObject[UTAG_NPC]) {
 		if (true == IsCollision(pObj))
 		{
@@ -451,4 +460,14 @@ void CWizard::PhisicsLogic(map<utag, list<CGameObject*>>& mlpObject, float fDelt
 			break;
 		}
 	}
+}
+
+bool CWizard::GetDemaged(float fDemage) {
+	m_bDamaged = true;
+	CEffectMgr::GetInstance()->Play_Effect(L"TestBlood", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y + 2.f, m_xmf3Position.z, 1.f),
+		XMVectorSet(0.f, 0.f, 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
+
+	m_nAnimNum = WIZARD_ANIM_HIT_F;
+	m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
+	return true;
 }

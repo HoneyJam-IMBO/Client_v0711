@@ -60,7 +60,8 @@ public:
 
 public:
 	virtual void PhisicsLogic(map<utag, list<CGameObject*>>& mlpObject, float fDeltaTime);
-
+	//demage proc
+	virtual bool GetDemaged(float fDemage);
 public:
 	CSister(string name, tag t = tag::TAG_DEFAULT, bool bSprit = false, CGameObject* pWeapon = nullptr, INT slot_id = 0);
 	virtual ~CSister();
