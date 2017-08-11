@@ -42,6 +42,7 @@ void CDirectXFramework::End() {
 	CEffectMgr::GetInstance()->End();
 	CEffectMgr::GetInstance()->ReleseInstance();
 	CNaviObjectManager::End();
+	CPositionInfoManager::End();
 }
 void CDirectXFramework::FrameAdvance()
 {
@@ -132,6 +133,7 @@ void CDirectXFramework::InitSingleton(HINSTANCE hInstance, HWND hWnd)
 	NETWORKMGR->Begin();
 
 	CNaviObjectManager::Begin();
+	CPositionInfoManager::Begin();
 
 #ifdef NO_SERVER
 	SCENEMGR->ChangeScene(SCN_ORITOWN);

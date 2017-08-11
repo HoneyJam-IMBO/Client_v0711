@@ -73,12 +73,23 @@ void CLesserGiant::PhisicsLogic(map<utag, list<CGameObject*>>& mlpObject, float 
 					m_bCollision = true;
 				}
 				break;
+			case BOSS1_ANI_SKILL4:
+				if (SkillCollision(pPlayer)) {
+					pPlayer->GetDemaged(100.f);
+					m_bCollision = true;
+				}
+				break;
 			default:
 				break;
 			}
 		}
 	}
 	m_fAnimTime += fDeltaTime;
+	m_fCollisionTime += fDeltaTime;
+	if (m_fCollisionTime > 2.f) {
+		m_fCollisionTime = 0.f;
+		m_bCollision = false;//2초에 한번씩 다시 맞게 한다.
+	}
 }
 
 void CLesserGiant::UpdatePattern(float fTimeElapsed)
@@ -151,16 +162,21 @@ void CLesserGiant::UpdatePattern(float fTimeElapsed)
 				m_fSk2Speed = xmf3Distance.x;
 				XMStoreFloat3(&m_xmf3Sk2Dir, XMLoadFloat3(&m_f3Diraction));
 				break;
+
+			case 2:
+				m_nAnimNum = BOSS1_ANI_SKILL4;
+				if (m_pAnimater->SetCurAnimationIndex(m_nAnimNum)) ResetCollisionValue(XMFLOAT3(0, 0, 0), 2, 7, 7);
+				break;
 			}			
 			++m_nPatternNum;
-			if (m_nPatternNum == 2) m_nPatternNum = 0;
+			if (m_nPatternNum == 3) m_nPatternNum = 0;
 		}
 		
 		// 거리가 10 이하면 스킬1 시전
 		if (xmf3Distance.x < 7.f){
 			if (true == m_pAnimater->GetCurAnimationInfo()->GetLoopDone()){		// 스킬1 할때마다 위치 찾기.
 				SetRotation(DirectX::XMMatrixRotationY(fDirAngle));
-				ResetCollisionValue(XMFLOAT3(0, 1, 5), 0, 10, 5);
+				ResetCollisionValue(XMFLOAT3(0, 1, 5), 1, 1.7, 5);
 			}
 			m_f3Diraction = XMFLOAT3(0.f, 0.f, 0.f);
 			m_nAnimNum = BOSS1_ANI_SKILL1;
@@ -189,30 +205,3 @@ void CLesserGiant::UpdatePattern(float fTimeElapsed)
 	//	m_bAttack = false;
 	//}
 }
-
-bool CLesserGiant::SkillCollision(CGameObject * pPlayer)
-{
-	if (m_fMaxCollisionOffsetTime > m_fAnimTime && m_fAnimTime > m_fMinCollisionOffsetTime) {//충돌체가 활동하는 시간동안
-
-		
-		XMVECTOR xmvRight = XMVector3Normalize(GetRight()) * m_xmf3CollisionOffset.x;
-		XMVECTOR xmvUp = XMVector3Normalize(GetUp()) * m_xmf3CollisionOffset.y;
-		XMVECTOR xmvLook = XMVector3Normalize(GetLook()) * m_xmf3CollisionOffset.z;
-
-		XMVECTOR xmvPos = GetPosition();
-		xmvPos = xmvPos + xmvRight + xmvUp + xmvLook;
-
-		BoundingOrientedBox obb;
-		XMStoreFloat3(&obb.Center, xmvPos);
-		obb.Extents = XMFLOAT3(m_fRadius, m_fRadius, m_fRadius);
-		DEBUGER->RegistOBB(obb, UTAG_PLAYER);
-
-		XMVECTOR xmvPlayerPos = pPlayer->GetPosition();
-
-		XMFLOAT4 xmf4Result;
-		XMStoreFloat4(&xmf4Result, XMVector3Length(xmvPlayerPos - xmvPos));
-		if (xmf4Result.x < m_fRadius) return true;
-	}
-	return false;
-}
-

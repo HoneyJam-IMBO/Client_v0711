@@ -14,7 +14,7 @@ void CGameObject::ActionMoveStart(string sName)
 	if (m_pTerrainContainer) {
 		m_pTerrainContainer = nullptr;
 	}
-	CPositionInfoManager::LoadData(sName);
+	m_sActionCamName = sName;
 	m_bActionMove = true;
 	m_CurPositionInfoIndex = 0;
 	m_fProgress = 0.f;
@@ -27,7 +27,6 @@ void CGameObject::ActionMoveEnd()
  		SetPosition(XMVectorSet(m_xmf4x4World._41, m_xmf4x4World._42, m_xmf4x4World._43, 1.f));
 		SetNaviMeshIndex();
 	}
-	CPositionInfoManager::End();
 	m_bActionMove = false;
 	m_CurPositionInfoIndex = 0;
 	m_fProgress = 0.f;
@@ -36,18 +35,18 @@ void CGameObject::ActionMoveProc()
 {
 	if (m_bActionMove) {
 		//action cam이 true라면 PositionInfo에서 
-		int max_index = CPositionInfoManager::GetInfoCnt() - 1;
+		int max_index = CPositionInfoManager::GetInfoCnt(m_sActionCamName) - 1;
 		XMVECTOR xmvPos;
 		XMVECTOR xmvQua;
 		if (m_CurPositionInfoIndex != max_index && max_index > 0) {
 
-			XMVECTOR xmvPos1 = CPositionInfoManager::GetAllPositionInfo()[m_CurPositionInfoIndex].GetPosition();
-			XMVECTOR xmvPos2 = CPositionInfoManager::GetAllPositionInfo()[m_CurPositionInfoIndex + 1].GetPosition();
+			XMVECTOR xmvPos1 = CPositionInfoManager::GetAllPositionInfo()[m_sActionCamName].m_vPositionInfoData[m_CurPositionInfoIndex].GetPosition();
+			XMVECTOR xmvPos2 = CPositionInfoManager::GetAllPositionInfo()[m_sActionCamName].m_vPositionInfoData[m_CurPositionInfoIndex + 1].GetPosition();
 			xmvPos = XMVectorLerp(xmvPos1, xmvPos2, m_fProgress);
-			XMVECTOR xmvQua1 = CPositionInfoManager::GetAllPositionInfo()[m_CurPositionInfoIndex].GetQuaternion();
-			XMVECTOR xmvQua2 = CPositionInfoManager::GetAllPositionInfo()[m_CurPositionInfoIndex + 1].GetQuaternion();
+			XMVECTOR xmvQua1 = CPositionInfoManager::GetAllPositionInfo()[m_sActionCamName].m_vPositionInfoData[m_CurPositionInfoIndex].GetQuaternion();
+			XMVECTOR xmvQua2 = CPositionInfoManager::GetAllPositionInfo()[m_sActionCamName].m_vPositionInfoData[m_CurPositionInfoIndex + 1].GetQuaternion();
 			xmvQua = XMQuaternionSlerp(xmvQua1, xmvQua2, m_fProgress);
-			m_fProgress += TIMEMGR->GetTimeElapsed() * CPositionInfoManager::GetActionSpeed();
+			m_fProgress += TIMEMGR->GetTimeElapsed() * CPositionInfoManager::GetActionSpeed(m_sActionCamName);
 			if (m_fProgress > 1.f) {
 				m_fProgress = 0.f;
 				m_CurPositionInfoIndex++;
@@ -55,8 +54,8 @@ void CGameObject::ActionMoveProc()
 		}
 		else {
 			if (max_index > 0) {
-				xmvPos = CPositionInfoManager::GetAllPositionInfo()[m_CurPositionInfoIndex].GetPosition();
-				xmvQua = CPositionInfoManager::GetAllPositionInfo()[m_CurPositionInfoIndex].GetQuaternion();
+				xmvPos = CPositionInfoManager::GetAllPositionInfo()[m_sActionCamName].m_vPositionInfoData[m_CurPositionInfoIndex].GetPosition();
+				xmvQua = CPositionInfoManager::GetAllPositionInfo()[m_sActionCamName].m_vPositionInfoData[m_CurPositionInfoIndex].GetQuaternion();
 				ActionMoveEnd();
 			}
 			else {
@@ -1003,6 +1002,32 @@ void CGameObject::SetNaviMeshIndex() {
 		m_xmf4x4World._42 = m_xmf3Position.y;
 		m_xmf4x4World._43 = m_xmf3Position.z;
 	}
+}
+
+bool CGameObject::SkillCollision(CGameObject * pPlayer)
+{
+	if (m_fMaxCollisionOffsetTime > m_fAnimTime && m_fAnimTime > m_fMinCollisionOffsetTime) {//충돌체가 활동하는 시간동안
+
+
+		XMVECTOR xmvRight = XMVector3Normalize(GetRight()) * m_xmf3CollisionOffset.x;
+		XMVECTOR xmvUp = XMVector3Normalize(GetUp()) * m_xmf3CollisionOffset.y;
+		XMVECTOR xmvLook = XMVector3Normalize(GetLook()) * m_xmf3CollisionOffset.z;
+
+		XMVECTOR xmvPos = GetPosition();
+		xmvPos = xmvPos + xmvRight + xmvUp + xmvLook;
+
+		BoundingOrientedBox obb;
+		XMStoreFloat3(&obb.Center, xmvPos);
+		obb.Extents = XMFLOAT3(m_fRadius, m_fRadius, m_fRadius);
+		DEBUGER->RegistOBB(obb, UTAG_PLAYER);
+
+		XMVECTOR xmvPlayerPos = pPlayer->GetPosition();
+
+		XMFLOAT4 xmf4Result;
+		XMStoreFloat4(&xmf4Result, XMVector3Length(xmvPlayerPos - xmvPos));
+		if (xmf4Result.x < m_fRadius) return true;
+	}
+	return false;
 }
 
 //생성자는 위에서부터 

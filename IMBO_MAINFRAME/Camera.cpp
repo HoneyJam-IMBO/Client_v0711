@@ -3,7 +3,8 @@
 
 void CCamera::ActionCamStart(string sName)
 {
-	CPositionInfoManager::LoadData(sName);
+	//CPositionInfoManager::LoadData(sName);
+	m_sActionCamName = sName;
 	m_bActionCam = true;
 	m_CurPositionInfoIndex = 0;
 	m_fProgress = 0.f;
@@ -11,7 +12,7 @@ void CCamera::ActionCamStart(string sName)
 
 void CCamera::ActionCamEnd()
 {
-	CPositionInfoManager::End();
+	//CPositionInfoManager::End();
 	m_bActionCam = false;
 	m_CurPositionInfoIndex = 0;
 	m_fProgress = 0.f;
@@ -30,18 +31,18 @@ void CCamera::ActionCamProc() {
 
 	if (m_bActionCam) {
 		//action cam이 true라면 PositionInfo에서 
-		int max_index = CPositionInfoManager::GetInfoCnt() - 1;
+		int max_index = CPositionInfoManager::GetInfoCnt(m_sActionCamName) - 1;
 		XMVECTOR xmvPos;
 		XMVECTOR xmvQua;
 		if (m_CurPositionInfoIndex != max_index && max_index > 0) {
 
-			XMVECTOR xmvPos1 = CPositionInfoManager::GetAllPositionInfo()[m_CurPositionInfoIndex].GetPosition();
-			XMVECTOR xmvPos2 = CPositionInfoManager::GetAllPositionInfo()[m_CurPositionInfoIndex + 1].GetPosition();
+			XMVECTOR xmvPos1 = CPositionInfoManager::GetAllPositionInfo()[m_sActionCamName].m_vPositionInfoData[m_CurPositionInfoIndex].GetPosition();
+			XMVECTOR xmvPos2 = CPositionInfoManager::GetAllPositionInfo()[m_sActionCamName].m_vPositionInfoData[m_CurPositionInfoIndex + 1].GetPosition();
 			xmvPos = XMVectorLerp(xmvPos1, xmvPos2, m_fProgress);
-			XMVECTOR xmvQua1 = CPositionInfoManager::GetAllPositionInfo()[m_CurPositionInfoIndex].GetQuaternion();
-			XMVECTOR xmvQua2 = CPositionInfoManager::GetAllPositionInfo()[m_CurPositionInfoIndex + 1].GetQuaternion();
+			XMVECTOR xmvQua1 = CPositionInfoManager::GetAllPositionInfo()[m_sActionCamName].m_vPositionInfoData[m_CurPositionInfoIndex].GetQuaternion();
+			XMVECTOR xmvQua2 = CPositionInfoManager::GetAllPositionInfo()[m_sActionCamName].m_vPositionInfoData[m_CurPositionInfoIndex + 1].GetQuaternion();
 			xmvQua = XMQuaternionSlerp(xmvQua1, xmvQua2, m_fProgress);
-			m_fProgress += TIMEMGR->GetTimeElapsed() * CPositionInfoManager::GetActionSpeed();
+			m_fProgress += TIMEMGR->GetTimeElapsed() * CPositionInfoManager::GetActionSpeed(m_sActionCamName);
 			if (m_fProgress > 1.f) {
 				m_fProgress = 0.f;
 				m_CurPositionInfoIndex++;
@@ -49,8 +50,8 @@ void CCamera::ActionCamProc() {
 		}
 		else {
 			if (max_index > 0) {
-				xmvPos = CPositionInfoManager::GetAllPositionInfo()[m_CurPositionInfoIndex].GetPosition();
-				xmvQua = CPositionInfoManager::GetAllPositionInfo()[m_CurPositionInfoIndex].GetQuaternion();
+				xmvPos = CPositionInfoManager::GetAllPositionInfo()[m_sActionCamName].m_vPositionInfoData[m_CurPositionInfoIndex].GetPosition();
+				xmvQua = CPositionInfoManager::GetAllPositionInfo()[m_sActionCamName].m_vPositionInfoData[m_CurPositionInfoIndex].GetQuaternion();
 				ActionCamEnd();
 			}
 			else {

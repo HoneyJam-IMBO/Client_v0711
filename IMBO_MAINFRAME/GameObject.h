@@ -34,7 +34,7 @@ public:
 	bool m_bActionMove{ false };
 	UINT m_CurPositionInfoIndex{ 0 };
 	float m_fProgress{ 0.f };
-
+	string m_sActionCamName;
 	//----------------------------object-----------------------------
 	bool Begin();
 	virtual void Initialize() {};
@@ -152,6 +152,24 @@ public:
 public:
 	BoundingBox*	GetBBox() { return &m_OriBoundingBox; }
 
+
+	bool SkillCollision(CGameObject* pDest);
+	//충돌 처리할 때 
+	float m_fAnimTime{ 0.f };//현재 진행중인 Animation time
+	float m_fCollisionTime{ 0.f };//collision 주기
+	XMFLOAT3 m_xmf3CollisionOffset;//충돌체가 있을 offset 위치
+	float m_fMinCollisionOffsetTime{ 0.f };//충돌체가 생성될 시간
+	float m_fMaxCollisionOffsetTime{ 0.f };//충돌체가 생성될 시간
+	bool m_bCollision{ false };//충돌은 한번만 할꺼니까. .
+	float m_fRadius{ 0.f };
+	void ResetCollisionValue(XMFLOAT3 xmf3CollisionOffset, float fMin, float fMax, float fRadius) {
+		m_xmf3CollisionOffset = xmf3CollisionOffset;
+		m_fMinCollisionOffsetTime = fMin;
+		m_fMaxCollisionOffsetTime = fMax;
+		m_fRadius = fRadius;
+		m_fAnimTime = 0.f;
+		m_bCollision = false;
+	}
 protected:
 	//navi mesh index
 	int m_indexNaviMesh{ -1 };

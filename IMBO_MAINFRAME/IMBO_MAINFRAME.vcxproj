@@ -172,8 +172,8 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\..\..\..\0. JH%27s Folder\Study\IBClient\ImBo\Client_v0711\IMBO_MAINFRAME\DemSkillArrow.h" />
-    <ClInclude Include="..\..\..\..\..\..\0. JH%27s Folder\Study\IBClient\ImBo\Client_v0711\IMBO_MAINFRAME\WizardSkillArrow.h" />
+    <ClInclude Include="DemSkillArrow.h" />
+    <ClInclude Include="WizardSkillArrow.h" />
     <ClInclude Include="ElfSkill1Efc.h" />
     <ClInclude Include="PositionInfoData.h" />
     <ClInclude Include="PositionInfoManager.h" />
@@ -308,8 +308,8 @@
     <ClInclude Include="WaterRenderer.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\..\..\..\0. JH%27s Folder\Study\IBClient\ImBo\Client_v0711\IMBO_MAINFRAME\DemSkillArrow.cpp" />
-    <ClCompile Include="..\..\..\..\..\..\0. JH%27s Folder\Study\IBClient\ImBo\Client_v0711\IMBO_MAINFRAME\WizardSkillArrow.cpp" />
+    <ClCompile Include="DemSkillArrow.cpp" />
+    <ClCompile Include="WizardSkillArrow.cpp" />
     <ClCompile Include="ElfSkill1Efc.cpp" />
     <ClCompile Include="PositionInfoData.cpp" />
     <ClCompile Include="PositionInfoManager.cpp" />

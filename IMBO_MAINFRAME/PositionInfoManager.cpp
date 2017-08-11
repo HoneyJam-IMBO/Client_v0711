@@ -1,33 +1,36 @@
 #include "stdafx.h"
 #include "PositionInfoManager.h"
 
-vector<CPositionInfoData> CPositionInfoManager::m_vPositionInfoData;
-float CPositionInfoManager::m_fActionSpeed = 1.0f;
+map<string, stPositionInfo> CPositionInfoManager::m_mvPositionInfoData;
 
 void CPositionInfoManager::Begin() {
-	
+	LoadData("test1");
+	LoadData("test2");
+
+	LoadData("Firsttown_Fly1");
+	LoadData("Firsttown_Fly2");
+	LoadData("Firsttown_Fly3");
+	LoadData("Firsttown_Boss1");
+	LoadData("Firsttown_Boss2");
+
+	LoadData("Aldenard_Fly1");
+	LoadData("Aldenard_Fly2");
+	LoadData("Aldenard_Fly3");
+
+	LoadData("Sarasen_Boss1");
+	LoadData("Sarasen_Boss2");
+	LoadData("Sarasen_Boss3");
 }
 
 void CPositionInfoManager::End() {
-	m_vPositionInfoData.clear();
-}
-
-void CPositionInfoManager::DeletePositionInfoData(int index) {
-	if (m_vPositionInfoData.size() < index) return;
-	auto Iter = m_vPositionInfoData.begin();
-	for (int i = 0; i < index; ++i) {
-		Iter++;
-	}
-	m_vPositionInfoData.erase(Iter);
-
+	m_mvPositionInfoData.clear();
 }
 
 void CPositionInfoManager::LoadData(string name) {
-	m_vPositionInfoData.clear();
-
+	stPositionInfo data;
 	IMPORTER->Begin(root_path + name);
 
-	m_fActionSpeed = IMPORTER->ReadFloat();
+	data.m_fActionSpeed = IMPORTER->ReadFloat();
 	int nCnt = IMPORTER->ReadInt();
 	for (int i = 0; i < nCnt; ++i) {
 		XMFLOAT3 xmf3Pos;
@@ -43,9 +46,10 @@ void CPositionInfoManager::LoadData(string name) {
 		xmf4Qua.z = IMPORTER->ReadFloat();
 		xmf4Qua.w = IMPORTER->ReadFloat();
 
-		m_vPositionInfoData.push_back(CPositionInfoData(xmf3Pos, xmf4Qua));
+		data.m_vPositionInfoData.push_back(CPositionInfoData(xmf3Pos, xmf4Qua));
 	}
 
+	m_mvPositionInfoData.insert(pair<string, stPositionInfo>(name, data));
 	IMPORTER->End();
 }
 
@@ -66,8 +70,8 @@ void CPositionInfoManager::LoadData(string name) {
 //	}
 //}
 
-void CPositionInfoManager::RenderAllPositionInfo() {
-	for (auto Info : m_vPositionInfoData) {
+void CPositionInfoManager::RenderPositionInfo(string name) {
+	for (auto Info : m_mvPositionInfoData[name].m_vPositionInfoData) {
 		XMMATRIX xmMtx = XMMatrixAffineTransformation(XMVectorSet(1, 1, 1, 1), XMQuaternionIdentity(), Info.GetQuaternion(), Info.GetPosition());
 		DEBUGER->RegistCoordinateSys(xmMtx);
 	}

@@ -51,7 +51,7 @@ public:
 	bool m_bActionCam{ false };
 	UINT m_CurPositionInfoIndex{ 0 };
 	float m_fProgress{ 0.f };
-
+	string m_sActionCamName;
 	//----------------------------dxobject-----------------------------
 	virtual bool Begin();
 	virtual bool End();
