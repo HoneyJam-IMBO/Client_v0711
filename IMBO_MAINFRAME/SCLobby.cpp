@@ -63,18 +63,18 @@ void CSCLobby::Animate(float fTimeElapsed)
 		if (m_bSceneChange) return;
 	}
 	/////////////////////////	
-	m_pRoomListNum->SetImageName("Num_" + to_string(m_iRoomListNum + 1));
-	list<tRoomData*>::iterator iter = m_pRoomList.begin();
-	for (int i = 0; i < m_iRoomListNum * 2.f; ++i)
-	{
-		++iter;
-	}
-	if (iter == m_pRoomList.end())
-	{
-		m_pRoom1Capa->SetImageName("Num_0");
-		m_pRoom1Opt->SetImageName("Lobby_RoomEmptyFont");
-	}
-	else
+	//m_pRoomListNum->SetImageName("Num_" + to_string(m_iRoomListNum + 1));
+	//list<tRoomData*>::iterator iter = m_pRoomList.begin();
+	//for (int i = 0; i < m_iRoomListNum * 2.f; ++i)
+	//{
+	//	++iter;
+	//}
+	//if (iter == m_pRoomList.end())
+	//{
+	//	m_pRoom1Capa->SetImageName("Num_0");
+	//	m_pRoom1Opt->SetImageName("Lobby_RoomEmptyFont");
+	//}
+	/*else
 	{
 		int iRoomNum10 = (*iter)->iRoomNum / 10;
 		int iRoomNum1 = (*iter)->iRoomNum % 10;
@@ -101,7 +101,7 @@ void CSCLobby::Animate(float fTimeElapsed)
 			m_pRoom2Capa->SetImageName("Num_" + to_string((*iter)->iJoinNum));
 			m_pRoom2Opt->SetImageName("Lobby_RoomGameFont");
 		}
-	}
+	}*/
 	/////////////////////////
 	size_t iVecSize = m_vecUI.size();
 	for (size_t i = 0; i < iVecSize; ++i)

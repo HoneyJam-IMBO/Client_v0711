@@ -337,8 +337,8 @@ VOID CSCOriTown::PROC_PT_MOUSE_LEFT_ATTACK_SC(DWORD dwProtocol, BYTE * Packet, D
 
 void CSCOriTown::ReadMapData()
 {
-	IMPORTER->Begin("../../Assets/SceneResource/test/test.scn");
-	//IMPORTER->Begin("../../Assets/SceneResource/FirstTown/FirstTown.scn");
+	//IMPORTER->Begin("../../Assets/SceneResource/test/test.scn");
+	IMPORTER->Begin("../../Assets/SceneResource/FirstTown/FirstTown.scn");
 	//IMPORTER->Begin("../../Assets/SceneResource/Aldenard/Aldenard.scn");
 	//IMPORTER->Begin("../../Assets/SceneResource/Sarasen/Sarasen.scn");
 	//output path
