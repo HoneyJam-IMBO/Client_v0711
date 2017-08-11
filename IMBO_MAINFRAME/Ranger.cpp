@@ -12,9 +12,10 @@ bool CRanger::Begin()
 
 void CRanger::Animate(float fTimeElapsed)
 {
-	if (true == m_bSprit)
-		if(false == m_bDamaged)
+	if (true == m_bSprit) {
+		if (false == m_bDamaged)
 			KeyInput(fTimeElapsed); //KeyInput(fTimeElapsed);
+	}
 	else	GetServerData(fTimeElapsed);
 	
 	// 애니메이션 업데이트함수
@@ -47,6 +48,14 @@ bool CRanger::End()
 
 void CRanger::UpdateSkill()
 {
+	if (ANIM_HIT_F == m_nAnimNum) {
+		if (true == m_pAnimater->GetCurAnimationInfo()->GetLoopDone()) {
+			m_bDamaged = false;
+			m_nAnimNum = ANIM_IDLE;
+			m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
+			m_bSkill = false;
+		}
+	}
 	CCamera* pCam = CCameraMgr::GetInstance()->GetCamera(CAM_FREE);
 	if (ANIM_SKILL2_START == m_nAnimNum)
 	{
@@ -444,19 +453,6 @@ void CRanger::RegistToContainer() {
 
 void CRanger::PhisicsLogic(map<utag, list<CGameObject*>>& mlpObject, float fDeltaTime)
 {
-	for (auto pBoss : mlpObject[UTAG_BOSS1]) {
-		if (true == IsCollision(pBoss))
-		{
-			//m_bDamaged = true;
-			CEffectMgr::GetInstance()->Play_Effect(L"TestBlood", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y + 2.f, m_xmf3Position.z, 1.f),
-				XMVectorSet(0.f, 0.f, 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
-
-			//m_nAnimNum = ANIM_HIT_F;
-			//m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
-
-			break;
-		}
-	}
 	for (auto pObj : mlpObject[UTAG_NPC]) {
 		if (true == IsCollision(pObj))
 		{
@@ -466,29 +462,16 @@ void CRanger::PhisicsLogic(map<utag, list<CGameObject*>>& mlpObject, float fDelt
 			break;
 		}
 	}
-	//CAtlArray<CGameObject*>* lpCollsion;
-	//pUtagObjectAtlMap->Lookup(utag::UTAG_COLLISION, lpCollsion);
-	//// move player to mapmesh
-	//
-	//pUtagObjectAtlMap->Lookup(utag::UTAG_BOSS1, lpCollsion);
-	//size_t iSize = lpCollsion->GetCount();
-	//if (false == m_bDamaged) {
-	//	for (size_t i = 0; i < iSize; ++i)
-	//	{
-	//		//if (false == (*lpCollsion)[i]->GetActive()) continue;
-	//		if (true == IsCollision((*lpCollsion)[i]))
-	//		{
-	//			m_bDamaged = true;
-	//			CEffectMgr::GetInstance()->Play_Effect(L"TestBlood", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y + 2.f, m_xmf3Position.z, 1.f),
-	//				XMVectorSet(0.f, 0.f, 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
-	//
-	//			m_nAnimNum = ANIM_HIT_F;
-	//			m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
-	//
-	//			break;
-	//		}
-	//	}
-	//}
+}
+
+bool CRanger::GetDemaged(float fDemage) {
+	m_bDamaged = true;
+	CEffectMgr::GetInstance()->Play_Effect(L"TestBlood", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y + 2.f, m_xmf3Position.z, 1.f),
+		XMVectorSet(0.f, 0.f, 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
+
+	m_nAnimNum = ANIM_HIT_F;
+	m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
+	return true;
 }
 
 CRanger::CRanger(string name, tag t, bool bSprit, CGameObject* pWeapon, INT slot_id)
