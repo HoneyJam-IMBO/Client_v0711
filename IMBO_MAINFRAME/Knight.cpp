@@ -10,8 +10,9 @@ bool CKnight::Begin()
 void CKnight::Animate(float fTimeElapsed)
 {
 	m_fTime = fTimeElapsed;
-	if (true == m_bSprit && false == m_bDamaged)
-		KeyInput(fTimeElapsed); //KeyInput(fTimeElapsed);
+	if (true == m_bSprit)
+		if(false == m_bDamaged)
+			KeyInput(fTimeElapsed); //KeyInput(fTimeElapsed);
 	else	GetServerData(fTimeElapsed);
 
 	// 애니메이션 업데이트함수
