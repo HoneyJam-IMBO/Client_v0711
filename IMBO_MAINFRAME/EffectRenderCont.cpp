@@ -129,7 +129,7 @@ void CEffectRenderCont::RenderEffect()
 	}
 
 	GLOBALVALUEMGR->GetDeviceContext()->RSSetState(preRasterizerState);
-	GLOBALVALUEMGR->GetDeviceContext()->OMSetBlendState(m_pPreBlendState, nullptr, 0xffffffff);
+	GLOBALVALUEMGR->GetDeviceContext()->OMSetBlendState(m_pPreBlendState, m_pPreBlendFactor, m_PreSampleMask);
 
 	//DEBUGER->AddTexture(XMFLOAT2(750, 0), XMFLOAT2(1000, 150), m_pd3dsrvEffect);
 	//DEBUGER->AddTexture(XMFLOAT2(750, 300), XMFLOAT2(1000, 450), m_pd3dsrvEffectAlpha);
@@ -187,20 +187,20 @@ ID3D11ShaderResourceView* CEffectRenderCont::RenderDistortionEffect(ID3D11DepthS
 
 	m_pRenderShader->CleanShaderState();
 	m_mapDistortEffect.clear();		// 다그리고 제거
-	GLOBALVALUEMGR->GetDeviceContext()->OMSetBlendState(m_pPreBlendState, nullptr, 0xffffffff);
+	GLOBALVALUEMGR->GetDeviceContext()->OMSetBlendState(m_pPreBlendState, m_pPreBlendFactor, m_PreSampleMask);
 
 
 	//GLOBALVALUEMGR->GetDeviceContext()->CSSetSamplers(0, 1, &pSampler);
 	//GLOBALVALUEMGR->GetDeviceContext()->PSSetSamplers(0, 1, &pSampler);
 
-	DEBUGER->AddTexture(XMFLOAT2(1000, 0), XMFLOAT2(1250, 150), m_pd3dsrvDistortion);
+	//DEBUGER->AddTexture(XMFLOAT2(1000, 0), XMFLOAT2(1250, 150), m_pd3dsrvDistortion);
 	return m_pd3dsrvDistortion;
 }
 
 ID3D11ShaderResourceView* CEffectRenderCont::BlendingDistortion(ID3D11ShaderResourceView* pSRV, ID3D11ShaderResourceView* pDepthSRV)
 {
 	ID3D11RenderTargetView *pd3dRTVs[2] = { m_pd3drtvBlend, m_pd3drtvBlendAlpha };
-	float fClearColor[4] = { 0.f, 0.f, 0.f, 1.f };
+	float fClearColor[4] = { 1.f, 1.f, 1.f, 1.f };
 	if (m_pd3drtvBlend) GLOBALVALUEMGR->GetDeviceContext()->ClearRenderTargetView(m_pd3drtvBlend, fClearColor);
 
 	GLOBALVALUEMGR->GetDeviceContext()->OMSetRenderTargets(2, pd3dRTVs, nullptr);
