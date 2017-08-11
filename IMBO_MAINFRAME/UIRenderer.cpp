@@ -39,7 +39,8 @@ HRESULT CUIRenderer::Initialize()
 void CUIRenderer::RenderUI()
 {
 	if (m_mapUI.empty()) return;
-	
+	PreRenderUI();
+
 	GLOBALVALUEMGR->GetDeviceContext()->OMGetBlendState(&m_pPreBlendState, m_pPreBlendFactor, &m_PreSampleMask);
 	GLOBALVALUEMGR->GetDeviceContext()->OMSetBlendState(m_pAlphaBlendState, nullptr, 0xffffffff);
 	////°ψΕλ set
