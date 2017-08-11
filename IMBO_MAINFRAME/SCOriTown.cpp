@@ -67,7 +67,7 @@ bool CSCOriTown::Begin() {
 			m_ppPawn[i]->SetScale(XMVectorSet(1, 1, 1, 1));
 			break;
 		case 4:
-			m_ppPawn[i] = new CWizard("Hum03F", TAG_DYNAMIC_OBJECT, bSoul, nullptr, i);
+			m_ppPawn[i] = new CWizard("Hum02F", TAG_DYNAMIC_OBJECT, bSoul, nullptr, i);
 			m_ppPawn[i]->Begin();
 			m_ppPawn[i]->SetPosition(XMVectorSet(10 * i + 250, 0, 250, 0));//[10, 10]부터 [40, 10]까지 배치
 			m_ppPawn[i]->SetScale(XMVectorSet(1, 1, 1, 1));

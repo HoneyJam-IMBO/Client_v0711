@@ -141,6 +141,9 @@ void CRenderer::NoPostProcessRender( CCamera* pCamera)
 	SetRenderTargetViews(1, &pRTV, m_pd3ddsvDepthStencil);
 	m_pObjectRenderer->Excute(pCamera);
 
+	UPDATER->GetSpaceContainer()->PrepareRender(pCamera);
+	UPDATER->GetSkyBoxContainer()->GetSkyBox()->RegistToContainer();
+
 	////=> render pass
 	if (true == bDebug) DEBUGER->start_Timemeasurement();
 	GLOBALVALUEMGR->GetDeviceContext()->OMSetDepthStencilState(m_pd3dDSSEarlyZRead, 1);
@@ -156,7 +159,7 @@ void CRenderer::NoPostProcessRender( CCamera* pCamera)
 
 	// SSAO render
 	if (true == bDebug) DEBUGER->start_Timemeasurement();
-	//SetRenderTargetViews(1, &m_pd3drtvLight, m_pd3ddsvReadOnlyDepthStencil);
+	SetRenderTargetViews(1, &m_pd3drtvLight, m_pd3ddsvReadOnlyDepthStencil);
 	SetMainRenderTargetView(); 
 	size_t iVecSize = m_vObjectLayerResultTexture.size();
 	for (size_t i = 0; i < iVecSize; ++i) {
@@ -181,7 +184,7 @@ void CRenderer::NoPostProcessRender( CCamera* pCamera)
 	}
 
 	//water
-	m_pBigWaterRenderer->RenderBigWater(pCamera, m_pd3drtvLight, m_pd3ddsvReadOnlyDepthStencil, m_vObjectLayerResultTexture);
+	//m_pBigWaterRenderer->RenderBigWater(pCamera, m_pd3drtvLight, m_pd3ddsvReadOnlyDepthStencil, m_vObjectLayerResultTexture);
 	//water
 
 	m_pObjectRenderer->RenderSkyBox();

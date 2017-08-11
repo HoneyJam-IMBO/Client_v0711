@@ -249,13 +249,14 @@ void CSCHeroSel::SetSelSceneInfo(int slot_id, int input_slot_id, bool is_ready, 
 			break;
 		case 4:
 			m_pObject->SetActive(true);
-			m_pObject->SetName("SelectHum04F");
+			m_pObject->SetName("SelectHum02F");
 			m_pObject->Begin();
 			break;
 		case 5:
 			m_pObject->SetActive(true);
-			m_pObject->SetName("SelectHum02F");
+			m_pObject->SetName("SelectHum04F");
 			m_pObject->Begin();
+			
 			break;
 		}
 
