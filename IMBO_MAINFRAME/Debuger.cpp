@@ -103,6 +103,9 @@ bool CDebuger::End() {
 	while (false == m_qDebugFontData.empty()) {
 		m_qDebugFontData.pop();
 	}
+	while (false == m_qGameFontData.empty()) {
+		m_qGameFontData.pop();
+	}
 	while (false == m_qDebugTextureData.empty()) {
 		m_qDebugTextureData.pop();
 	}
@@ -214,6 +217,9 @@ void CDebuger::ClearDebuger(){
 	while (false == m_qDebugFontData.empty()) {
 		m_qDebugFontData.pop();
 	}
+	while (false == m_qGameFontData.empty()) {
+		m_qGameFontData.pop();
+	}
 //texture
 	while (false == m_qDebugTextureData.empty()) {
 		m_qDebugTextureData.pop();
@@ -289,6 +295,53 @@ void CDebuger::RenderText(){
 	GLOBALVALUEMGR->GetDeviceContext()->OMSetBlendState(m_pPreBlendState, m_pPreBlendFactor, m_PreSampleMask);
 	GLOBALVALUEMGR->GetDeviceContext()->RSSetState(m_pPreRasterizerState);
 
+}
+void CDebuger::AddGameText(float fontSize, float posX, float posY, UINT32 color, TCHAR * msg, ...)
+{
+	va_list arg;
+	va_start(arg, msg);
+	TCHAR TEXT[500] = { NULL };
+	vswprintf(TEXT, msg, arg);
+
+	CDebugFontData Data(TEXT, fontSize, posX, posY, color, m_pivot);
+	m_qGameFontData.push(Data);
+}
+void CDebuger::RenderGameText()
+{
+	if (false == m_pFW1Font) return;
+	//if (false == INPUTMGR->GetDebugMode()) return;
+
+	//이전 상태 저장
+	GLOBALVALUEMGR->GetDeviceContext()->OMGetDepthStencilState(&m_pPreDepthStencilState, &m_PreStencilRef);
+	GLOBALVALUEMGR->GetDeviceContext()->OMGetBlendState(&m_pPreBlendState, m_pPreBlendFactor, &m_PreSampleMask);
+	GLOBALVALUEMGR->GetDeviceContext()->RSGetState(&m_pPreRasterizerState);
+
+
+	while (false == m_qGameFontData.empty()) {
+		//get
+		CDebugFontData Data = m_qGameFontData.front();
+
+		//draw
+		m_pFW1Font->DrawString
+		(
+			GLOBALVALUEMGR->GetDeviceContext(),
+			Data.msg.c_str(),
+			Data.fontSize,
+			Data.x,
+			Data.y,
+			Data.color,
+			Data.pivot
+		);
+
+		//pop
+		m_qGameFontData.pop();
+	}
+
+
+	//이전 상태로 되돌림
+	GLOBALVALUEMGR->GetDeviceContext()->OMSetDepthStencilState(m_pPreDepthStencilState, m_PreStencilRef);
+	GLOBALVALUEMGR->GetDeviceContext()->OMSetBlendState(m_pPreBlendState, m_pPreBlendFactor, m_PreSampleMask);
+	GLOBALVALUEMGR->GetDeviceContext()->RSSetState(m_pPreRasterizerState);
 }
 void CDebuger::AddTexture(XMFLOAT2 lt, XMFLOAT2 rb, ID3D11ShaderResourceView* pSRV){
 	if (false == INPUTMGR->GetDebugMode()) return;

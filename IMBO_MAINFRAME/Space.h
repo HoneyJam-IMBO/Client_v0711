@@ -24,7 +24,7 @@ public:
 	//virtual void SetGlobalBufferInfo(void** ppMappedResources);
 
 	//해당 space안의 lay 충돌 검사된 객체 중 가장 가장 가까운 객체
-	CGameObject* PickObject(XMVECTOR xmvWorldCameraStartPos, XMVECTOR xmvRayDir, float& distance);
+	CGameObject* PickObject(XMVECTOR xmvWorldCameraStartPos, XMVECTOR xmvRayDir, float& distance, UINT tag);
 	map<tag, list<CGameObject*>>& GetmlpObject() { return m_mlpObject; }
 	map<utag, list<CGameObject*>>& GetmlpCollisionObject() { return m_mlpCollisionObject; }
 private:

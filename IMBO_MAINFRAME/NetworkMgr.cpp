@@ -32,7 +32,7 @@ bool CNetworkManager::Begin() {
 	}
 
 #else
-	if (!m_pClientSession->BeginTcp("192.168.0.250", DEFAULT_PORT)) {
+	if (!m_pClientSession->BeginTcp("192.168.0.110", DEFAULT_PORT)) {
 		m_pClientSession->End();
 		return FALSE;
 	}
