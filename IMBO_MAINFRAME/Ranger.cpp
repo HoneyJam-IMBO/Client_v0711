@@ -214,8 +214,15 @@ void CRanger::KeyInput(float fDeltaTime)
 	}
 
 	// 스킬시 이동 점프X
-	if (true == m_bSkill) return;
-
+	if (true == m_bSkill) {
+		//60fps로 업데이트, 네트워크 갱신
+		m_fTranslateTime += fDeltaTime;
+		if (m_fTranslateTime > FREQUENCY_TRANSFER_TIME) {
+			m_fTranslateTime = 0;
+			PushServerData(m_xmf3Position.x, m_xmf3Position.y, m_xmf3Position.z, m_fAngleY, m_nAnimNum);
+		}
+		return;
+	}
 	// 마우스 우클릭회전
 	if (true == INPUTMGR->MouseRightUp() && abs(m_pCamera->m_cxDelta + m_pCamera->m_cyDelta) > 1.f) {
 		m_bIdle = false;
@@ -277,6 +284,7 @@ void CRanger::KeyInput(float fDeltaTime)
 #ifdef NO_SERVER
 	return;
 #endif 
+	DEBUGER->AddGameText(50, 200, 300, YT_Color(0, 0, 255), L"%d" ,m_nAnimNum);
 	//60fps로 업데이트, 네트워크 갱신
 	m_fTranslateTime += fDeltaTime;
 	if (m_fTranslateTime > FREQUENCY_TRANSFER_TIME) {
@@ -318,7 +326,27 @@ void CRanger::GetServerData(float fTimeElapsed) {
 	SetPosition(XMVectorSet(fPosX, fPosY, fPosZ, 1.0f));
 	SetRotation(XMMatrixRotationY(fAngleY));
 
-	m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
+	if (m_pAnimater->SetCurAnimationIndex(m_nAnimNum)) {
+		switch (m_nAnimNum) {
+		case ANIM_ATTACK:
+			CEffectMgr::GetInstance()->Play_Effect(L"Arrow_Skill1Shot", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y + 2.f, m_xmf3Position.z, 1.f),
+				XMVectorSet(0.f, XMConvertToDegrees(m_fAngleY), 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
+			break;
+		case ANIM_SKILL1_FIRE:
+			CEffectMgr::GetInstance()->Play_Effect(L"Ranger_sk1_efc", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y, m_xmf3Position.z, 1.f),
+				XMVectorSet(0.f, 0.f, 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
+			break;
+		case ANIM_SKILL2_START:
+			CEffectMgr::GetInstance()->Play_Effect(L"Ranger_sk2_con", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y + 2.f, m_xmf3Position.z, 1.f),
+				XMVectorSet(0.f, 0.f, 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
+			break;
+		case ANIM_SKILL3_FIRE:
+			CEffectMgr::GetInstance()->Play_Effect(L"Ranger_sk3_wheelwind", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y + 1.f, m_xmf3Position.z, 1.f),
+				XMVectorSet(0.f, 0.f, 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
+			break;
+
+		}
+	}
 	// 공격
 	//if (m_bSkill == false && m_bJump == false && bAttack == true && m_nAnimNum != ANIM_ATTACK) {
 	//	CEffectMgr::GetInstance()->Play_Effect(L"Test2", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y + 2.f, m_xmf3Position.z, 1.f),

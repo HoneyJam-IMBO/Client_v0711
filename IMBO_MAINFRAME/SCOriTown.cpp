@@ -529,6 +529,7 @@ VOID CSCOriTown::PROC_PT_FTOWN_BOSS_ACTION_CAMERA_READY_COMP_SC(DWORD dwProtocol
 	//
 	//
 	m_pCamera->ActionCamEnd();
+	
 
 	return VOID();
 }
@@ -565,8 +566,8 @@ VOID CSCOriTown::PROC_PT_FTOWN_NPC2_READY_COMP_SC(DWORD dwProtocol, BYTE * Packe
 
 void CSCOriTown::ReadMapData()
 {
-	IMPORTER->Begin("../../Assets/SceneResource/test/test.scn");
-	//IMPORTER->Begin("../../Assets/SceneResource/FirstTown/FirstTown.scn");
+	//IMPORTER->Begin("../../Assets/SceneResource/test/test.scn");
+	IMPORTER->Begin("../../Assets/SceneResource/FirstTown/FirstTown.scn");
 	//IMPORTER->Begin("../../Assets/SceneResource/Aldenard/Aldenard.scn");
 	//IMPORTER->Begin("../../Assets/SceneResource/Sarasen/Sarasen.scn");
 	//output path

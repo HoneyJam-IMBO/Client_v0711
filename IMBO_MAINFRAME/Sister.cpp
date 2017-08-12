@@ -204,6 +204,7 @@ void CSister::GetServerData(float fTimeElapsed)
 	SetPosition(XMVectorSet(fPosX, fPosY, fPosZ, 1.0f));
 	SetRotation(XMMatrixRotationY(fAngleY));
 	m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
+
 	// АјАн
 	//if (m_bSkill == false && m_bJump == false && bAttack == true && m_nAnimNum != ANIM_ATTACK) {
 	//	CEffectMgr::GetInstance()->Play_Effect(L"Test2", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y + 2.f, m_xmf3Position.z, 1.f),
