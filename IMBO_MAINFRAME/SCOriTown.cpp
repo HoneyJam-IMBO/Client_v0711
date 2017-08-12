@@ -146,7 +146,12 @@ void CSCOriTown::Animate(float fTimeElapsed) {
 	
 	NetworkProc();
 	CScene::Animate(fTimeElapsed);
-
+	if (m_bStartBossCam) {
+		if (false == m_pCamera->m_bActionCam) {
+			int boss_fight_start = 0;
+			m_pBoss->SetFirstAction(false);
+		}
+	}
 	if (m_bFinalProc) {
 		int slot_id = NETWORKMGR->GetSLOT_ID();
 		if (false == m_ppPawn[slot_id]->m_bActionMove) {
@@ -160,21 +165,14 @@ void CSCOriTown::Animate(float fTimeElapsed) {
 	}
 
 	if (INPUTMGR->KeyBoardDown(VK_R)){
-
-		BYTE Packet[MAX_BUFFER_LENGTH] = { 0, };
-		NETWORKMGR->WritePacket(PT_FTOWN_NPC_READY_CS, Packet, WRITE_PT_FTOWN_NPC_READY_CS(Packet, NETWORKMGR->GetROOM_ID(), NETWORKMGR->GetSLOT_ID()));
-
-		//CreateBoss1();
-	
+		StartBoss1ActionCam();
+		CreateBoss1();
 	}
 	else if (INPUTMGR->KeyBoardDown(VK_K)) {
 		KillBoss1();
 	}
 	else if (INPUTMGR->KeyBoardDown(VK_F)) {
-		BYTE Packet[MAX_BUFFER_LENGTH] = { 0, };
-		NETWORKMGR->WritePacket(PT_FTOWN_NPC2_READY_CS, Packet, WRITE_PT_FTOWN_NPC2_READY_CS(Packet, NETWORKMGR->GetROOM_ID(), NETWORKMGR->GetSLOT_ID()));
-
-		//FirstTownFly();
+		FirstTownFly();
 	}
 	else if (INPUTMGR->KeyBoardDown(VK_Y)) {
 		int slot_id = NETWORKMGR->GetSLOT_ID();
@@ -340,6 +338,7 @@ void CSCOriTown::NetworkProc(){
 			break;
 		case PT_FTOWN_BOSS_ACTION_CAMERA_READY_COMP_SC:
 			PROC_PT_FTOWN_BOSS_ACTION_CAMERA_READY_COMP_SC(dwProtocol, Packet, dwPacketLength);
+
 			break;
 		}
 	}
@@ -374,6 +373,11 @@ VOID CSCOriTown::PROC_PT_FREQUENCY_MOVE_SC(DWORD dwProtocol, BYTE * Packet, DWOR
 	return VOID();
 }
 
+void CSCOriTown::StartBoss1ActionCam(){
+	m_bStartBossCam = true;
+	m_pCamera->ActionCamStart("Firsttown_Boss2");
+}
+
 void CSCOriTown::CreateBoss1()
 {
 	//º¸½º Á¦ÀÛ
@@ -381,11 +385,13 @@ void CSCOriTown::CreateBoss1()
 	m_pBoss->SetUTag(utag::UTAG_BOSS1);
 	m_pBoss->Begin();
 	m_pBoss->SetTerrainContainer(UPDATER->GetTerrainContainer());
-	m_pBoss->SetPosition(XMVectorSet(200, 0, 250, 0));
+	m_pBoss->SetPosition(XMVectorSet(180, 0, 175, 0));
 	m_pBoss->SetNaviMeshIndex();
 	m_pBoss->SetScale(XMVectorSet(1, 1, 1, 1));
 	UPDATER->GetSpaceContainer()->AddObject(m_pBoss);
-	m_pBoss->GetAnimater()->SetCurAnimationIndex(0);
+	m_pBoss->SetFirstAction(true);
+	m_pBoss->SetAnimNum(BOSS1_ANI_SKILL2);
+	m_pBoss->GetAnimater()->SetCurAnimationIndex(BOSS1_ANI_SKILL2);
 }
 
 void CSCOriTown::KillBoss1(){
@@ -429,7 +435,7 @@ VOID CSCOriTown::PROC_PT_FTOWN_NPC_READY_COMP_SC(DWORD dwProtocol, BYTE * Packet
 
 
 	//
-	// 
+	//
 	// º¸½º ¾×¼ÇÄ·¹Ç¹Ç¹Ê¹Ç¹Ç¤Ñ¹Ç¹Ç¹Ç¹Ç¹Ç
 	//
 	//
@@ -453,11 +459,11 @@ VOID CSCOriTown::PROC_PT_FTOWN_BOSS_ACTION_CAMERA_READY_COMP_SC(DWORD dwProtocol
 
 
 	//
-	// 	
+	//
 	// º¸½º ÀüÅõ ½ÃÀÛ²ô²ô²ô²ô²ô²ô²ô²ô²ô²ô²ô
 	//
 	//
-	CreateBoss1();
+
 
 	return VOID();
 }
@@ -486,7 +492,7 @@ VOID CSCOriTown::PROC_PT_FTOWN_NPC2_READY_COMP_SC(DWORD dwProtocol, BYTE * Packe
 	// ftown -> ¾Ëµ¥³ªµå·Î Ãâ¹ß!!!
 	//
 	//
-	FirstTownFly();
+
 
 	return VOID();
 }
@@ -494,8 +500,8 @@ VOID CSCOriTown::PROC_PT_FTOWN_NPC2_READY_COMP_SC(DWORD dwProtocol, BYTE * Packe
 
 void CSCOriTown::ReadMapData()
 {
-	IMPORTER->Begin("../../Assets/SceneResource/test/test.scn");
-	//IMPORTER->Begin("../../Assets/SceneResource/FirstTown/FirstTown.scn");
+	//IMPORTER->Begin("../../Assets/SceneResource/test/test.scn");
+	IMPORTER->Begin("../../Assets/SceneResource/FirstTown/FirstTown.scn");
 	//IMPORTER->Begin("../../Assets/SceneResource/Aldenard/Aldenard.scn");
 	//IMPORTER->Begin("../../Assets/SceneResource/Sarasen/Sarasen.scn");
 	//output path
