@@ -159,6 +159,7 @@ bool CSCAldenard::End()
 
 void CSCAldenard::Animate(float fTimeElapsed)
 {
+	BYTE Packet[MAX_BUFFER_LENGTH] = { 0, };
 	NetworkProc();
 	CScene::Animate(fTimeElapsed);
 
@@ -174,6 +175,8 @@ void CSCAldenard::Animate(float fTimeElapsed)
 		//flag인 부분과 충돌했다면!
 		m_ppPawn[slot_id]->SetbStay(true);//나 stay!
 		m_ppPawn[slot_id]->GetAnimater()->SetCurAnimationIndex(ANIM_IDLE);
+		NETWORKMGR->WritePacket(PT_SARASEN_START_CS, Packet, WRITE_PT_SARASEN_START_CS(Packet, NETWORKMGR->GetROOM_ID(), NETWORKMGR->GetSLOT_ID()));
+		NETWORKMGR->GetServerPlayerInfos()[NETWORKMGR->GetSLOT_ID()].READY = true;
 	}
 
 	if (INPUTMGR->KeyBoardDown(VK_Y))
@@ -320,13 +323,14 @@ VOID CSCAldenard::PROC_PT_FREQUENCY_MOVE_SC(DWORD dwProtocol, BYTE * Packet, DWO
 	data.fPosZ = Data.POSZ;
 
 	data.fAngleY = Data.ANGLEY;
-	data.dwDirection = Data.DIRECTION;
-	data.bJump = Data.JUMP;
+	data.iAnimNum = Data.ANIMNUM;
 	//CPawn* pPawn = (CPawn*)m_ppPawn[Data.SLOT_ID];
 	//pPawn->NetworkInput(data.dwDirection, data.fAngleY);
 	//network queue에 입력하구 대기한다.
 	//NETWORKMGR->GetServerPlayerInfos()[Data.SLOT_ID].m_qFREQUENCY_DATA.push(data);
 	NETWORKMGR->GetServerPlayerInfos()[Data.SLOT_ID].FREQUENCY_DATA = data;
+
+	return VOID();
 
 	return VOID();
 }
@@ -357,7 +361,7 @@ VOID CSCAldenard::PROC_PT_SARASEN_START_COMP_SC(DWORD dwProtocol, BYTE * Packet,
 	// 사라센으로 출발엥에에에에ㅔ엥
 	//
 	//
-
+	SCENEMGR->ChangeScene(SCN_BOSS);
 	return VOID();
 }
 

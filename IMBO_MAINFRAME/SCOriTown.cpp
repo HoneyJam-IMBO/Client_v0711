@@ -144,6 +144,22 @@ bool CSCOriTown::End() {
 
 void CSCOriTown::Animate(float fTimeElapsed) {
 	BYTE Packet[MAX_BUFFER_LENGTH] = { 0, };
+	int progress = 0;
+	for (auto player_info : NETWORKMGR->GetServerPlayerInfos()) {
+
+		if (player_info.READY) {
+			DEBUGER->AddGameText(50, 10, 50 * progress, YT_Color(0, 255, 0), L"ÁØºñ");
+		}
+		else {
+			DEBUGER->AddGameText(50, 10, 50 * progress, YT_Color(0, 0, 255), L"´ë±â");
+			DEBUGER->AddGameText(25, 200, 50 * progress, YT_Color(200,200,200), L"%f %f %f", player_info.FREQUENCY_DATA.fPosX, player_info.FREQUENCY_DATA.fPosY, player_info.FREQUENCY_DATA.fPosZ);
+		}
+		progress++;
+	}
+
+	
+	
+
 	NetworkProc();
 	CScene::Animate(fTimeElapsed);
 	if (m_bStartBossCam) {
@@ -163,29 +179,49 @@ void CSCOriTown::Animate(float fTimeElapsed) {
 	{
 		m_vecUI[i]->Update(fTimeElapsed);
 	}
-
-	if (INPUTMGR->KeyBoardDown(VK_R)){
-		//StartBoss1ActionCam();
-		//CreateBoss1();
-		NETWORKMGR->WritePacket(PT_FTOWN_NPC_READY_CS, Packet, WRITE_PT_FTOWN_NPC_READY_CS(Packet, NETWORKMGR->GetROOM_ID(), NETWORKMGR->GetSLOT_ID()));
-		NETWORKMGR->GetServerPlayerInfos()[NETWORKMGR->GetSLOT_ID()].READY = true;
+#ifdef NO_SERVER
+	if (INPUTMGR->KeyBoardDown(VK_R)) {
+		StartBoss1ActionCam();
+		CreateBoss1();
 	}
 	else if (INPUTMGR->KeyBoardDown(VK_K)) {
-		//KillBoss1();
-		NETWORKMGR->WritePacket(PT_SKILL_COLLISION_TO_TARGET_CS, Packet, WRITE_PT_SKILL_COLLISION_TO_TARGET_CS(Packet,
-			NETWORKMGR->GetROOM_ID(),
-			NETWORKMGR->GetSLOT_ID(),
-			9,
-			NETWORKMGR->GetServerPlayerInfo(NETWORKMGR->GetSLOT_ID()).CHARACTER,
-			99));
-
+		KillBoss1();
 	}
 	else if (INPUTMGR->KeyBoardDown(VK_F)) {
-		//FirstTownFly();
-		NETWORKMGR->WritePacket(PT_FTOWN_NPC2_READY_CS, Packet, WRITE_PT_FTOWN_NPC2_READY_CS(Packet, NETWORKMGR->GetROOM_ID(), NETWORKMGR->GetSLOT_ID()));
-		NETWORKMGR->GetServerPlayerInfos()[NETWORKMGR->GetSLOT_ID()].READY = true;
+		FirstTownFly();
 	}
-	else if (INPUTMGR->KeyBoardDown(VK_Y)) {
+
+#else
+	if (NETWORKMGR->GetServerPlayerInfos()[NETWORKMGR->GetSLOT_ID()].READY == false){
+		if (INPUTMGR->KeyBoardDown(VK_R)) {
+			//StartBoss1ActionCam();
+			//CreateBoss1();
+			if (NETWORKMGR->GetServerPlayerInfos()[NETWORKMGR->GetSLOT_ID()].ACTIONCAM == false)
+				NETWORKMGR->WritePacket(PT_FTOWN_NPC_READY_CS, Packet, WRITE_PT_FTOWN_NPC_READY_CS(Packet, NETWORKMGR->GetROOM_ID(), NETWORKMGR->GetSLOT_ID()));
+			else
+				NETWORKMGR->WritePacket(PT_FTOWN_BOSS_ACTION_CAMERA_READY_CS, Packet, WRITE_PT_FTOWN_BOSS_ACTION_CAMERA_READY_CS(Packet, NETWORKMGR->GetROOM_ID(), NETWORKMGR->GetSLOT_ID()));
+
+			NETWORKMGR->GetServerPlayerInfos()[NETWORKMGR->GetSLOT_ID()].READY = true;
+
+		}
+		else if (INPUTMGR->KeyBoardDown(VK_K)) {
+			//KillBoss1();
+			NETWORKMGR->WritePacket(PT_SKILL_COLLISION_TO_TARGET_CS, Packet, WRITE_PT_SKILL_COLLISION_TO_TARGET_CS(Packet,
+				NETWORKMGR->GetROOM_ID(),
+				NETWORKMGR->GetSLOT_ID(),
+				9,
+				NETWORKMGR->GetServerPlayerInfo(NETWORKMGR->GetSLOT_ID()).CHARACTER,
+				99));
+	
+		}
+		else if (INPUTMGR->KeyBoardDown(VK_F)) {
+			//FirstTownFly();
+			NETWORKMGR->WritePacket(PT_FTOWN_NPC2_READY_CS, Packet, WRITE_PT_FTOWN_NPC2_READY_CS(Packet, NETWORKMGR->GetROOM_ID(), NETWORKMGR->GetSLOT_ID()));
+			NETWORKMGR->GetServerPlayerInfos()[NETWORKMGR->GetSLOT_ID()].READY = true;
+		}
+	}
+#endif
+	if (INPUTMGR->KeyBoardDown(VK_Y)) {
 		int slot_id = NETWORKMGR->GetSLOT_ID();
 		char action_move_file_name[128];
 		int action_move_id = slot_id + 1;
@@ -196,6 +232,8 @@ void CSCOriTown::Animate(float fTimeElapsed) {
 	}
 	else if (INPUTMGR->KeyBoardDown(VK_T))
 	{
+
+
 #ifdef NO_SERVER
 		SCENEMGR->ChangeScene(SCN_ALDENAD);
 #else
@@ -376,7 +414,7 @@ VOID CSCOriTown::PROC_PT_FREQUENCY_MOVE_SC(DWORD dwProtocol, BYTE * Packet, DWOR
 	READ_PACKET(PT_FREQUENCY_MOVE_SC);
 
 	DEBUGER->AddText(25, 10, 400 + Data.SLOT_ID * 50, YT_Color(), L"recv ID : %d", Data.SLOT_ID);
-	DEBUGER->AddText(25, 10, 450 + Data.SLOT_ID * 50, YT_Color(), L"%f %f %f", Data.POSX, Data.POSY, Data.POSZ);
+	DEBUGER->AddGameText(25, 10, 450 + Data.SLOT_ID * 50, YT_Color(200 ,200,200), L"%f %f %f", Data.POSX, Data.POSY, Data.POSZ);
 	DEBUGER->AddText(25, 10, 450 + Data.SLOT_ID * 50, YT_Color(), L"%f", Data.ANGLEY);
 
 	PLAYR_FREQUENCY_DATA data;
@@ -385,14 +423,14 @@ VOID CSCOriTown::PROC_PT_FREQUENCY_MOVE_SC(DWORD dwProtocol, BYTE * Packet, DWOR
 	data.fPosZ = Data.POSZ;
 
 	data.fAngleY = Data.ANGLEY;
-	data.dwDirection = Data.DIRECTION;
-	data.bJump = Data.JUMP;
+	data.iAnimNum = Data.ANIMNUM;
 	//CPawn* pPawn = (CPawn*)m_ppPawn[Data.SLOT_ID];
 	//pPawn->NetworkInput(data.dwDirection, data.fAngleY);
 	//network queue¿¡ ÀÔ·ÂÇÏ±¸ ´ë±âÇÑ´Ù.
 	//NETWORKMGR->GetServerPlayerInfos()[Data.SLOT_ID].m_qFREQUENCY_DATA.push(data);
 	NETWORKMGR->GetServerPlayerInfos()[Data.SLOT_ID].FREQUENCY_DATA = data;
-
+	BYTE PacketT[MAX_BUFFER_LENGTH] = { 0, };
+	NETWORKMGR->WritePacket(PT_TEMP, PacketT, WRITE_PT_TEMP(PacketT));
 	return VOID();
 }
 
@@ -453,8 +491,10 @@ VOID CSCOriTown::PROC_PT_FTOWN_NPC_READY_SC(DWORD dwProtocol, BYTE * Packet, DWO
 
 VOID CSCOriTown::PROC_PT_FTOWN_NPC_READY_COMP_SC(DWORD dwProtocol, BYTE * Packet, DWORD dwPacketLength) {
 
-	for (int i = 0; i < NETWORKMGR->GetServerPlayerInfos().size(); ++i)
+	for (int i = 0; i < NETWORKMGR->GetServerPlayerInfos().size(); ++i) {
 		NETWORKMGR->GetServerPlayerInfos()[i].READY = false;
+		NETWORKMGR->GetServerPlayerInfos()[i].ACTIONCAM = true;
+	}
 
 
 	//
@@ -463,6 +503,7 @@ VOID CSCOriTown::PROC_PT_FTOWN_NPC_READY_COMP_SC(DWORD dwProtocol, BYTE * Packet
 	//
 	//
 	StartBoss1ActionCam();
+	CreateBoss1();
 
 	return VOID();
 }
@@ -477,16 +518,17 @@ VOID CSCOriTown::PROC_PT_FTOWN_BOSS_ACTION_CAMERA_READY_SC(DWORD dwProtocol, BYT
 }
 VOID CSCOriTown::PROC_PT_FTOWN_BOSS_ACTION_CAMERA_READY_COMP_SC(DWORD dwProtocol, BYTE * Packet, DWORD dwPacketLength) {
 
-	for (int i = 0; i < NETWORKMGR->GetServerPlayerInfos().size(); ++i)
+	for (int i = 0; i < NETWORKMGR->GetServerPlayerInfos().size(); ++i) {
 		NETWORKMGR->GetServerPlayerInfos()[i].READY = false;
-
+		NETWORKMGR->GetServerPlayerInfos()[i].ACTIONCAM = true;
+	}
 
 	//
 	//
 	// º¸½º ÀüÅõ ½ÃÀÛ²ô²ô²ô²ô²ô²ô²ô²ô²ô²ô²ô
 	//
 	//
-	CreateBoss1();
+	m_pCamera->ActionCamEnd();
 
 	return VOID();
 }
@@ -523,8 +565,8 @@ VOID CSCOriTown::PROC_PT_FTOWN_NPC2_READY_COMP_SC(DWORD dwProtocol, BYTE * Packe
 
 void CSCOriTown::ReadMapData()
 {
-	//IMPORTER->Begin("../../Assets/SceneResource/test/test.scn");
-	IMPORTER->Begin("../../Assets/SceneResource/FirstTown/FirstTown.scn");
+	IMPORTER->Begin("../../Assets/SceneResource/test/test.scn");
+	//IMPORTER->Begin("../../Assets/SceneResource/FirstTown/FirstTown.scn");
 	//IMPORTER->Begin("../../Assets/SceneResource/Aldenard/Aldenard.scn");
 	//IMPORTER->Begin("../../Assets/SceneResource/Sarasen/Sarasen.scn");
 	//output path

@@ -60,9 +60,7 @@ void CKnight::KeyInput(float fDeltaTime)
 #ifdef NO_SERVER
 
 #else
-	BYTE Packet[MAX_BUFFER_LENGTH] = { 0, };
-	bool bAttack = true;
-	NETWORKMGR->WritePacket(PT_MOUSE_LEFT_ATTACK_CS, Packet, WRITE_PT_MOUSE_LEFT_ATTACK_CS(Packet, bAttack));
+
 #endif
 	if (GetAsyncKeyState(VK_SHIFT))
 	{
@@ -179,17 +177,16 @@ void CKnight::KeyInput(float fDeltaTime)
 #endif 
 	//60fps로 업데이트, 네트워크 갱신
 	m_fTranslateTime += fDeltaTime;
-	if (m_fTranslateTime > 0.033) {
+	if (m_fTranslateTime > FREQUENCY_TRANSFER_TIME) {
 		m_fTranslateTime = 0;
-		PushServerData(m_xmf3Position.x, m_xmf3Position.y, m_xmf3Position.z, m_fAngleY, dwDirection, m_bJump);
+		PushServerData(m_xmf3Position.x, m_xmf3Position.y, m_xmf3Position.z, m_fAngleY, m_nAnimNum);
 	}
 }
 
-void CKnight::PushServerData(float x, float y, float z, float fAngleY, DWORD dwDirection, bool bJump)
-{
+void CKnight::PushServerData(float x, float y, float z, float fAngleY, int nAnimNum){
 	BYTE Packet[MAX_BUFFER_LENGTH] = { 0, };
 
-	NETWORKMGR->WritePacket(PT_FREQUENCY_MOVE_CS, Packet, WRITE_PT_FREQUENCY_MOVE_CS(Packet, x, y, z, fAngleY, dwDirection, bJump));
+	NETWORKMGR->WritePacket(PT_FREQUENCY_MOVE_CS, Packet, WRITE_PT_FREQUENCY_MOVE_CS(Packet, x, y, z, fAngleY, nAnimNum));
 }
 
 void CKnight::GetServerData(float fTimeElapsed)
@@ -205,20 +202,21 @@ void CKnight::GetServerData(float fTimeElapsed)
 	float fPosZ = data.fPosZ;
 
 	float fAngleY = data.fAngleY;
-	DWORD dwDirection = data.dwDirection;
-
+	//DWORD dwDirection = data.dwDirection;
+	if (m_nAnimNum != data.iAnimNum)
+		m_nAnimNum = data.iAnimNum;
 	bool bAttack = NETWORKMGR->GetAttack(m_SLOT_ID);
 	//////
 
-	if (m_bJump == true && data.bJump == false) {
-		m_nAnimNum = KNIGHT_ANIM_JUMP_END;
-		m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
-	}
-	m_bJump = data.bJump;
+	//if (m_bJump == true && data.bJump == false) {
+	//	m_nAnimNum = ANIM_JUMP_END;
+	//	m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
+	//}
+	//m_bJump = data.bJump;
 
 	SetPosition(XMVectorSet(fPosX, fPosY, fPosZ, 1.0f));
 	SetRotation(XMMatrixRotationY(fAngleY));
-
+	m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
 	// 공격
 	//if (m_bSkill == false && m_bJump == false && bAttack == true && m_nAnimNum != ANIM_ATTACK) {
 	//	CEffectMgr::GetInstance()->Play_Effect(L"Test2", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y + 2.f, m_xmf3Position.z, 1.f),
@@ -237,18 +235,18 @@ void CKnight::GetServerData(float fTimeElapsed)
 	//	}
 	//}
 
-	SetupAnimation(dwDirection);
-	if (dwDirection) {
-		m_bIdle = false;
-	}
-	else {
-		if (false == m_bJump) {
-			if (ANIM_JUMP_END != m_nAnimNum) {
-				m_nAnimNum = KNIGHT_ANIM_IDLE;
-				m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
-			}
-		}
-	}
+	//SetupAnimation(dwDirection);
+	//if (dwDirection) {
+	//	m_bIdle = false;
+	//}
+	//else {
+	//	if (false == m_bJump) {
+	//		if (ANIM_JUMP_END != m_nAnimNum) {
+	//			m_nAnimNum = ANIM_IDLE;
+	//			m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
+	//		}
+	//	}
+	//}
 }
 
 void CKnight::SetupAnimation(DWORD dwDirection)

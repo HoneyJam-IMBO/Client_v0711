@@ -11,7 +11,7 @@ public:
 
 private:
 	void	KeyInput(float fDeltaTime);
-	void	PushServerData(float x, float y, float z, float fAngleY, DWORD dwDirection, bool bJump);
+	void	PushServerData(float x, float y, float z, float fAngleY, int nAnimNum);
 	void	GetServerData(float fTimeElapsed);
 	void	SetupAnimation(DWORD dwDirection);
 	void	Jumping(float fDeltaTime);

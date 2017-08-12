@@ -1,7 +1,7 @@
 #pragma once
 #include "LabClientSession.h"
 #include "SingleTon.h"
-#define NO_SERVER
+//#define NO_SERVER
 
 //protocol
 
@@ -15,6 +15,7 @@
 
 #define WM_SOCKET WM_USER + 1
 
+#define FREQUENCY_TRANSFER_TIME 5
 
 #define MAX_BUFFER_SIZE         1024
 #define MAX_PACKET_SIZE         1024
@@ -246,11 +247,13 @@ struct PLAYR_FREQUENCY_DATA {
 	float fPosY{ 0.f };
 	float fPosZ{ 0.f };
 	float fAngleY{ 0.f };
-	DWORD dwDirection{ 0 };
-	bool bJump{ false };
+	//DWORD dwDirection{ 0 };
+	//bool bJump{ false };
+	INT iAnimNum{ 0 };
 };
 struct ServerPlayerInfo {
 	BOOL READY{ 0 };
+	BOOL ACTIONCAM{ 0 };
 	INT CHARACTER{ 0 };
 	//std::queue<PLAYR_FREQUENCY_DATA> m_qFREQUENCY_DATA;
 	PLAYR_FREQUENCY_DATA FREQUENCY_DATA;
