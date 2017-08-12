@@ -212,6 +212,8 @@ void CLoading::LoadScene_HEROSEL()
 	RESOURCEMGR->CreateMultiMesh("../../Assets/Scene_HeroSel/SelectHum04F.gjm", "SelectHum04F");
 	RESOURCEMGR->CreateMultiMesh("../../Assets/Scene_HeroSel/SelectLup01M.gjm", "SelectLup01M");
 }
+
+#define TEST_CHAR 1
 void CLoading::LoadScene_ORITOWN()
 {
 	INT CHARACTER[4]{ 0,0,0,0 };
@@ -226,8 +228,8 @@ void CLoading::LoadScene_ORITOWN()
 	RESOURCEMGR->CreateTexture("skicon4", _T("../../Assets/Game_UI/skicon4.tga"), PS_TEXTURE, BIND_PS);
 
 #ifdef NO_SERVER
-	LoadUI_Skill(6, 0, 0, 0);
-	NETWORKMGR->GetServerPlayerInfos()[0].CHARACTER = 6-1;
+	LoadUI_Skill(TEST_CHAR, 0, 0, 0);
+	NETWORKMGR->GetServerPlayerInfos()[0].CHARACTER = TEST_CHAR - 1;
 #else
 	for (int i = 0; i < NETWORKMGR->GetServerPlayerInfos().size(); ++i)
 		CHARACTER[i] = NETWORKMGR->GetServerPlayerInfos()[i].CHARACTER + 1;
@@ -241,8 +243,8 @@ void CLoading::LoadScene_ORITOWN()
 	// Boss
 	RESOURCEMGR->CreateMultiMesh("../../Assets/SceneResource/GJM/Boss01L.gjm", "Boss01L");
 
-	//LoadScene("../../Assets/SceneResource/test/test.scn");
-	LoadScene("../../Assets/SceneResource/FirstTown/FirstTown.scn");
+	LoadScene("../../Assets/SceneResource/test/test.scn");
+	//LoadScene("../../Assets/SceneResource/FirstTown/FirstTown.scn");
 	//LoadScene("../../Assets/SceneResource/Aldenard/Aldenard.scn");	
 }
 
@@ -264,8 +266,8 @@ void CLoading::LoadScene_ALDENAD()
 	RESOURCEMGR->CreateTexture("skicon4", _T("../../Assets/Game_UI/skicon4.tga"), PS_TEXTURE, BIND_PS);
 
 #ifdef NO_SERVER
-	LoadUI_Skill(6, 0, 0, 0);
-	NETWORKMGR->GetServerPlayerInfos()[0].CHARACTER = 6 - 1;
+	LoadUI_Skill(TEST_CHAR, 0, 0, 0);
+	NETWORKMGR->GetServerPlayerInfos()[0].CHARACTER = TEST_CHAR - 1;
 #else
 	for (int i = 0; i < NETWORKMGR->GetServerPlayerInfos().size(); ++i)
 		CHARACTER[i] = NETWORKMGR->GetServerPlayerInfos()[i].CHARACTER + 1;
@@ -294,8 +296,8 @@ void CLoading::LoadScene_BOSS()
 
 
 #ifdef NO_SERVER
-	LoadUI_Skill(6, 0, 0, 0);
-	NETWORKMGR->GetServerPlayerInfos()[0].CHARACTER = 6 - 1;
+	LoadUI_Skill(TEST_CHAR, 0, 0, 0);
+	NETWORKMGR->GetServerPlayerInfos()[0].CHARACTER = TEST_CHAR - 1;
 #else
 	for (int i = 0; i < NETWORKMGR->GetServerPlayerInfos().size(); ++i)
 		CHARACTER[i] = NETWORKMGR->GetServerPlayerInfos()[i].CHARACTER + 1;

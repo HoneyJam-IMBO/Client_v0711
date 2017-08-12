@@ -143,6 +143,18 @@ bool CSCOriTown::End() {
 }
 
 void CSCOriTown::Animate(float fTimeElapsed) {
+	//test
+	int slot_id = NETWORKMGR->GetSLOT_ID();
+	wchar_t wcPosition[126];
+	XMFLOAT3 xmf3Pos;
+	XMStoreFloat3(&xmf3Pos, m_ppPawn[slot_id]->GetPosition());
+	int x = xmf3Pos.x;
+	int y = xmf3Pos.y;
+	int z = xmf3Pos.z;
+	wsprintf(wcPosition, L"player_position : %d, %d, %d", x, y, z);
+	DEBUGER->AddGameText(20, 100, 100, YT_Color(255, 255, 0), wcPosition);
+	//test
+
 	BYTE Packet[MAX_BUFFER_LENGTH] = { 0, };
 	NetworkProc();
 	CScene::Animate(fTimeElapsed);
@@ -165,25 +177,36 @@ void CSCOriTown::Animate(float fTimeElapsed) {
 	}
 
 	if (INPUTMGR->KeyBoardDown(VK_R)){
+		
+#ifdef NO_SERVER
 		//StartBoss1ActionCam();
-		//CreateBoss1();
+		CreateBoss1();
+		m_pBoss->SetFirstAction(false);
+		m_bStartBossCam = false;
+#else
 		NETWORKMGR->WritePacket(PT_FTOWN_NPC_READY_CS, Packet, WRITE_PT_FTOWN_NPC_READY_CS(Packet, NETWORKMGR->GetROOM_ID(), NETWORKMGR->GetSLOT_ID()));
 		NETWORKMGR->GetServerPlayerInfos()[NETWORKMGR->GetSLOT_ID()].READY = true;
+#endif
 	}
 	else if (INPUTMGR->KeyBoardDown(VK_K)) {
-		//KillBoss1();
+#ifdef NO_SERVER
+		KillBoss1();
+#else
 		NETWORKMGR->WritePacket(PT_SKILL_COLLISION_TO_TARGET_CS, Packet, WRITE_PT_SKILL_COLLISION_TO_TARGET_CS(Packet,
 			NETWORKMGR->GetROOM_ID(),
 			NETWORKMGR->GetSLOT_ID(),
 			9,
 			NETWORKMGR->GetServerPlayerInfo(NETWORKMGR->GetSLOT_ID()).CHARACTER,
 			99));
-
+#endif
 	}
 	else if (INPUTMGR->KeyBoardDown(VK_F)) {
-		//FirstTownFly();
+#ifdef NO_SERVER
+		FirstTownFly();
+#else
 		NETWORKMGR->WritePacket(PT_FTOWN_NPC2_READY_CS, Packet, WRITE_PT_FTOWN_NPC2_READY_CS(Packet, NETWORKMGR->GetROOM_ID(), NETWORKMGR->GetSLOT_ID()));
 		NETWORKMGR->GetServerPlayerInfos()[NETWORKMGR->GetSLOT_ID()].READY = true;
+#endif
 	}
 	else if (INPUTMGR->KeyBoardDown(VK_Y)) {
 		int slot_id = NETWORKMGR->GetSLOT_ID();
@@ -418,7 +441,7 @@ void CSCOriTown::CreateBoss1()
 }
 
 void CSCOriTown::KillBoss1(){
-	if(m_pBoss) m_pBoss->GetAnimater()->SetCurAnimationIndex(1);
+	if(m_pBoss) m_pBoss->GetAnimater()->SetCurAnimationIndex(BOSS1_ANI_DYING);
 }
 
 void CSCOriTown::FirstTownFly(){
@@ -523,8 +546,8 @@ VOID CSCOriTown::PROC_PT_FTOWN_NPC2_READY_COMP_SC(DWORD dwProtocol, BYTE * Packe
 
 void CSCOriTown::ReadMapData()
 {
-	//IMPORTER->Begin("../../Assets/SceneResource/test/test.scn");
-	IMPORTER->Begin("../../Assets/SceneResource/FirstTown/FirstTown.scn");
+	IMPORTER->Begin("../../Assets/SceneResource/test/test.scn");
+	//IMPORTER->Begin("../../Assets/SceneResource/FirstTown/FirstTown.scn");
 	//IMPORTER->Begin("../../Assets/SceneResource/Aldenard/Aldenard.scn");
 	//IMPORTER->Begin("../../Assets/SceneResource/Sarasen/Sarasen.scn");
 	//output path

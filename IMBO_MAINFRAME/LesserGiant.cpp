@@ -84,8 +84,8 @@ void CLesserGiant::PhisicsLogic(map<utag, list<CGameObject*>>& mlpObject, float 
 			}
 		}
 	}
-	m_fAnimTime += fDeltaTime;
 	m_fCollisionTime += fDeltaTime;
+	m_fAnimTime += fDeltaTime;
 	if (m_fCollisionTime > 2.f) {
 		m_fCollisionTime = 0.f;
 		m_bCollision = false;//2초에 한번씩 다시 맞게 한다.
@@ -166,7 +166,7 @@ void CLesserGiant::UpdatePattern(float fTimeElapsed)
 			}
 			return;
 		}
-
+		
 		if (m_fAccSkillTime > 2.f)
 		{
 			m_fAccSkillTime = 0.f;
