@@ -115,7 +115,7 @@ bool CSCAldenard::Begin()
 	pBoss->SetScale(XMVectorSet(1, 1, 1, 1));
 	UPDATER->GetSpaceContainer()->AddObject(pBoss);
 	pBoss->GetAnimater()->SetCurAnimationIndex(0);*/
-
+	ResetCollisionValue(XMFLOAT3(179, 20, 290), 20);
 #ifdef NO_SERVER
 	return CScene::Begin();
 #endif
@@ -162,14 +162,22 @@ void CSCAldenard::Animate(float fTimeElapsed)
 	NetworkProc();
 	CScene::Animate(fTimeElapsed);
 
+
 	size_t iVecSize = m_vecUI.size();
 	for (size_t i = 0; i < iVecSize; ++i)
 	{
 		m_vecUI[i]->Update(fTimeElapsed);
 	}
+	int slot_id = NETWORKMGR->GetSLOT_ID();
+//flag인 부분 충돌 처리
+	if (FlagCollision(m_ppPawn[slot_id])) {
+		//flag인 부분과 충돌했다면!
+		m_ppPawn[slot_id]->SetbStay(true);//나 stay!
+		m_ppPawn[slot_id]->GetAnimater()->SetCurAnimationIndex(ANIM_IDLE);
+	}
+
 	if (INPUTMGR->KeyBoardDown(VK_Y))
 	{
-		int slot_id = NETWORKMGR->GetSLOT_ID();
 		char action_move_file_name[128];
 		int action_move_id = slot_id + 1;
 		if (action_move_id> 3) action_move_id = rand() % 3 + 1;
@@ -416,7 +424,23 @@ void CSCAldenard::CreateUI()
 	pUI = CImageUI::Create(XMLoadFloat2(&XMFLOAT2(397.f, WINSIZEY * 0.82f)), XMLoadFloat2(&XMFLOAT2(23.f, 23.f)), sName, 9.5f);
 	m_vecUI.push_back(pUI);
 }
+bool CSCAldenard::FlagCollision(CGameObject * pDest) {
+	XMVECTOR xmvPos = XMLoadFloat3(&m_xmf3CollisionOffset);
 
+	BoundingOrientedBox obb;
+	XMStoreFloat3(&obb.Center, xmvPos);
+	obb.Extents = XMFLOAT3(m_fRadius, m_fRadius, m_fRadius);
+	DEBUGER->RegistOBB(obb, UTAG_COLLISION);
+
+	XMVECTOR xmvPlayerPos = pDest->GetPosition();
+
+	XMFLOAT4 xmf4Result;
+	XMStoreFloat4(&xmf4Result, XMVector3Length(xmvPlayerPos - xmvPos));
+	if (xmf4Result.x < m_fRadius)
+		return true;
+
+	return false;
+}
 CSCAldenard::CSCAldenard(SCENE_ID eID, CDirectXFramework* pFrameWork): CScene(eID){
 	m_pFrameWork = pFrameWork;
 }

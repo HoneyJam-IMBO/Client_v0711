@@ -143,7 +143,17 @@ bool CSCOriTown::End() {
 }
 
 void CSCOriTown::Animate(float fTimeElapsed) {
-	
+	int progress = 0;
+	for (auto player_info : NETWORKMGR->GetServerPlayerInfos()) {
+		
+		if (player_info.READY) {
+			DEBUGER->AddGameText(50, 10, 50 * progress, YT_Color(0, 255, 0), L"준비");
+		}
+		else{
+			DEBUGER->AddGameText(50, 10, 50 * progress, YT_Color(0, 0, 255), L"대기");
+		}
+		progress++;
+	}
 	NetworkProc();
 	CScene::Animate(fTimeElapsed);
 	if (m_bStartBossCam) {
