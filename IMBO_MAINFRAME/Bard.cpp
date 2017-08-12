@@ -351,18 +351,6 @@ void CBard::RegistToContainer()
 
 void CBard::PhisicsLogic(map<utag, list<CGameObject*>>& mlpObject, float fDeltaTime)
 {
-	//for (auto pBoss : mlpObject[UTAG_BOSS1]) {
-	//	if (true == IsCollision(pBoss))
-	//	{
-	//		//m_bDamaged = true;
-	//		
-	//
-	//		//m_nAnimNum = BARD_ANIM_HIT_F;
-	//		//m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
-	//
-	//		break;
-	//	}
-	//}
 	for (auto pObj : mlpObject[UTAG_NPC]) {
 		if (true == IsCollision(pObj))
 		{

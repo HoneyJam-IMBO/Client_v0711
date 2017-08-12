@@ -102,17 +102,6 @@ bool CSCOriTown::Begin() {
 			m_ppPawn[i]->SetNaviMeshIndex();
 	}
 
-	
-	//보스 제작
-	CGameObject*	pBoss = new CLesserGiant("Boss01L", TAG_DYNAMIC_OBJECT, m_ppPawn[0]);
-	pBoss->SetUTag(utag::UTAG_BOSS1);
-	pBoss->Begin();
-	pBoss->SetTerrainContainer(UPDATER->GetTerrainContainer());
-	pBoss->SetPosition(XMVectorSet(200, 0, 250, 0));
-	pBoss->SetNaviMeshIndex();
-	pBoss->SetScale(XMVectorSet(1, 1, 1, 1));
-	UPDATER->GetSpaceContainer()->AddObject(pBoss);
-	pBoss->GetAnimater()->SetCurAnimationIndex(0);
 	//보스 제작
 	//CGameObject*	pBoss = new CLesserGiant("Boss01L", TAG_DYNAMIC_OBJECT, m_ppPawn[0]);
 	//pBoss->SetUTag(utag::UTAG_BOSS1);
@@ -123,8 +112,6 @@ bool CSCOriTown::Begin() {
 	//pBoss->SetScale(XMVectorSet(1, 1, 1, 1));
 	//UPDATER->GetSpaceContainer()->AddObject(pBoss);
 	//pBoss->GetAnimater()->SetCurAnimationIndex(0);
-
-	
 
 #ifdef NO_SERVER
 	return CScene::Begin();
@@ -160,18 +147,46 @@ void CSCOriTown::Animate(float fTimeElapsed) {
 	NetworkProc();
 	CScene::Animate(fTimeElapsed);
 
+	if (m_bFinalProc) {
+		int slot_id = NETWORKMGR->GetSLOT_ID();
+		if (false == m_ppPawn[slot_id]->m_bActionMove) {
+			SCENEMGR->ChangeScene(SCN_ALDENAD);
+		}
+	}
 	size_t iVecSize = m_vecUI.size();
 	for (size_t i = 0; i < iVecSize; ++i)
 	{
 		m_vecUI[i]->Update(fTimeElapsed);
 	}
-	if (INPUTMGR->KeyBoardDown(VK_T))
+	if (INPUTMGR->KeyBoardDown(VK_R)){
+		CreateBoss1();
+	}
+	else if (INPUTMGR->KeyBoardDown(VK_K)) {
+		KillBoss1();
+	}
+	else if (INPUTMGR->KeyBoardDown(VK_F)) {
+		FirstTownFly();
+	}
+	else if (INPUTMGR->KeyBoardDown(VK_Y)) {
+		int slot_id = NETWORKMGR->GetSLOT_ID();
+		char action_move_file_name[128];
+		int action_move_id = slot_id + 1;
+		if (action_move_id> 3) action_move_id = rand() % 3 + 1;
+		sprintf(action_move_file_name, "Firsttown_Fly%d", action_move_id);
+		float fSpeed = CPositionInfoManager::GetActionSpeed(action_move_file_name);
+		CPositionInfoManager::SetActoionSpeed(action_move_file_name, fSpeed + 1.f);
+	}
+	else if (INPUTMGR->KeyBoardDown(VK_T))
 	{
-
+#ifdef NO_SERVER
+		SCENEMGR->ChangeScene(SCN_ALDENAD);
+#else
 		BYTE Packet[MAX_BUFFER_LENGTH] = { 0, };
-		NETWORKMGR->WritePacket(PT_FTOWN_NPC2_READY_CS, Packet, WRITE_PT_FTOWN_NPC2_READY_CS(Packet, NETWORKMGR->GetROOM_ID() ,NETWORKMGR->GetSLOT_ID()));
+		NETWORKMGR->WritePacket(PT_FTOWN_NPC2_READY_CS, Packet, WRITE_PT_FTOWN_NPC2_READY_CS(Packet, NETWORKMGR->GetROOM_ID(), NETWORKMGR->GetSLOT_ID()));
 		NETWORKMGR->GetServerPlayerInfos()[NETWORKMGR->GetSLOT_ID()].READY = true;
-		//SCENEMGR->ChangeScene(SCN_ALDENAD);
+#endif
+		
+		//
 	}
 }
 
@@ -335,6 +350,37 @@ VOID CSCOriTown::PROC_PT_FREQUENCY_MOVE_SC(DWORD dwProtocol, BYTE * Packet, DWOR
 	return VOID();
 }
 
+void CSCOriTown::CreateBoss1()
+{
+	//보스 제작
+	m_pBoss = new CLesserGiant("Boss01L", TAG_DYNAMIC_OBJECT, m_ppPawn[0]);
+	m_pBoss->SetUTag(utag::UTAG_BOSS1);
+	m_pBoss->Begin();
+	m_pBoss->SetTerrainContainer(UPDATER->GetTerrainContainer());
+	m_pBoss->SetPosition(XMVectorSet(200, 0, 250, 0));
+	m_pBoss->SetNaviMeshIndex();
+	m_pBoss->SetScale(XMVectorSet(1, 1, 1, 1));
+	UPDATER->GetSpaceContainer()->AddObject(m_pBoss);
+	m_pBoss->GetAnimater()->SetCurAnimationIndex(0);
+}
+
+void CSCOriTown::KillBoss1(){
+	if(m_pBoss) m_pBoss->GetAnimater()->SetCurAnimationIndex(BOSS1_ANI_DYING);
+}
+
+void CSCOriTown::FirstTownFly(){
+	m_bFinalProc = true;//날면 마지막 단계임
+	int slot_id = NETWORKMGR->GetSLOT_ID();
+	m_ppPawn[slot_id]->ActionMoveEnd();
+
+	char action_move_file_name[128];
+	int action_move_id = slot_id + 1;
+	if (action_move_id> 3) action_move_id = rand() % 3 + 1;
+	sprintf(action_move_file_name, "Firsttown_Fly%d", action_move_id);
+
+	m_ppPawn[slot_id]->ActionMoveStart(action_move_file_name);
+}
+
 VOID CSCOriTown::PROC_PT_MOUSE_LEFT_ATTACK_SC(DWORD dwProtocol, BYTE * Packet, DWORD dwPacketLength) {
 	READ_PACKET(PT_MOUSE_LEFT_ATTACK_SC);
 
@@ -368,8 +414,8 @@ VOID CSCOriTown::PROC_PT_FTOWN_NPC2_READY_SC(DWORD dwProtocol, BYTE * Packet, DW
 }
 void CSCOriTown::ReadMapData()
 {
-	//IMPORTER->Begin("../../Assets/SceneResource/test/test.scn");
-	IMPORTER->Begin("../../Assets/SceneResource/FirstTown/FirstTown.scn");
+	IMPORTER->Begin("../../Assets/SceneResource/test/test.scn");
+	//IMPORTER->Begin("../../Assets/SceneResource/FirstTown/FirstTown.scn");
 	//IMPORTER->Begin("../../Assets/SceneResource/Aldenard/Aldenard.scn");
 	//IMPORTER->Begin("../../Assets/SceneResource/Sarasen/Sarasen.scn");
 	//output path

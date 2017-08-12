@@ -35,13 +35,17 @@ public:
 	//test
 	//vector<XMFLOAT3> m_vPickPos;
 private:
-	
+	CGameObject*	m_pBoss{ nullptr };
+	void CreateBoss1();
+	void KillBoss1();
+	void FirstTownFly();
 	void ReadMapData();
 
 	void LoadSkillObjects();
 	void CreateUI();
 
 	bool m_bGameStart{ false };
+	bool m_bFinalProc{ false };
 private:
 	//CGameObject* m_pObject{ nullptr };
 	CGameObject** m_ppPawn{ nullptr };
