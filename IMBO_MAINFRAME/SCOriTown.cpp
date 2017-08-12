@@ -158,6 +158,7 @@ void CSCOriTown::Animate(float fTimeElapsed) {
 	{
 		m_vecUI[i]->Update(fTimeElapsed);
 	}
+
 	if (INPUTMGR->KeyBoardDown(VK_R)){
 		CreateBoss1();
 	}
@@ -313,14 +314,26 @@ void CSCOriTown::NetworkProc(){
 			break;
 		case PT_MOUSE_LEFT_ATTACK_SC:
 			PROC_PT_MOUSE_LEFT_ATTACK_SC(dwProtocol, Packet, dwPacketLength);
+			break;
 		case PT_FTOWN_NPC_READY_SC:
 			PROC_PT_FTOWN_NPC_READY_SC(dwProtocol, Packet, dwPacketLength);
+			break;
 		case PT_FTOWN_NPC_READY_COMP_SC:
 			PROC_PT_FTOWN_NPC_READY_COMP_SC(dwProtocol, Packet, dwPacketLength);
+			break;
 		case PT_FTOWN_NPC2_READY_SC:
 			PROC_PT_FTOWN_NPC2_READY_SC(dwProtocol, Packet, dwPacketLength);
+			break;
 		case PT_FTOWN_NPC2_READY_COMP_SC:
 			PROC_PT_FTOWN_NPC2_READY_COMP_SC(dwProtocol, Packet, dwPacketLength);
+			break;
+		case PT_FTOWN_BOSS_ACTION_CAMERA_READY_SC:
+			PROC_PT_FTOWN_BOSS_ACTION_CAMERA_READY_SC(dwProtocol, Packet, dwPacketLength);
+			break;
+		case PT_FTOWN_BOSS_ACTION_CAMERA_READY_COMP_SC:
+			PROC_PT_FTOWN_BOSS_ACTION_CAMERA_READY_COMP_SC(dwProtocol, Packet, dwPacketLength);
+
+			break;
 		}
 	}
 }
@@ -410,13 +423,38 @@ VOID CSCOriTown::PROC_PT_FTOWN_NPC_READY_COMP_SC(DWORD dwProtocol, BYTE * Packet
 
 	//
 	//
-	// ∫∏Ω∫ ¿¸≈ı Ω√¿€¿Ãæﬂæ∆æ∆æ∆æ∆æ∆æ∆æ∆
+	// ∫∏Ω∫ æ◊º«ƒ∑π«π«π π«π«§—π«π«π«π«π«
 	//
 	//
 
 
 	return VOID();
 }
+VOID CSCOriTown::PROC_PT_FTOWN_BOSS_ACTION_CAMERA_READY_SC(DWORD dwProtocol, BYTE * Packet, DWORD dwPacketLength) {
+	READ_PACKET(PT_FTOWN_BOSS_ACTION_CAMERA_READY_SC);
+
+
+	NETWORKMGR->GetServerPlayerInfos()[Data.SLOT_ID].READY = Data.READY;
+
+
+	return VOID();
+}
+VOID CSCOriTown::PROC_PT_FTOWN_BOSS_ACTION_CAMERA_READY_COMP_SC(DWORD dwProtocol, BYTE * Packet, DWORD dwPacketLength) {
+
+	for (int i = 0; i < NETWORKMGR->GetServerPlayerInfos().size(); ++i)
+		NETWORKMGR->GetServerPlayerInfos()[i].READY = false;
+
+
+	//
+	//
+	// ∫∏Ω∫ ¿¸≈ı Ω√¿€≤Ù≤Ù≤Ù≤Ù≤Ù≤Ù≤Ù≤Ù≤Ù≤Ù≤Ù
+	//
+	//
+
+
+	return VOID();
+}
+
 
 VOID CSCOriTown::PROC_PT_FTOWN_NPC2_READY_SC(DWORD dwProtocol, BYTE * Packet, DWORD dwPacketLength) {
 

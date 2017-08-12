@@ -279,13 +279,16 @@ void CSCAldenard::NetworkProc()
 			break;
 		case PT_MOUSE_LEFT_ATTACK_SC:
 			PROC_PT_MOUSE_LEFT_ATTACK_SC(dwProtocol, Packet, dwPacketLength);
+			break;
 		case PT_ALDENARD_READY_SC:
 			PROC_PT_ALDENARD_READY_SC(dwProtocol, Packet, dwPacketLength);
 			break;
 		case PT_SARASEN_START_SC:
 			PROC_PT_SARASEN_START_SC(dwProtocol, Packet, dwPacketLength);
+			break;
 		case PT_SARASEN_START_COMP_SC:
 			PROC_PT_SARASEN_START_COMP_SC(dwProtocol, Packet, dwPacketLength);
+			break;
 		}
 	}
 }

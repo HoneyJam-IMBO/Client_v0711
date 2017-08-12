@@ -253,9 +253,21 @@ void CSCSarasen::NetworkProc()
 			break;
 		case PT_MOUSE_LEFT_ATTACK_SC:
 			PROC_PT_MOUSE_LEFT_ATTACK_SC(dwProtocol, Packet, dwPacketLength);
-
+			break;
 		case PT_SARASEN_READY_SC:
 			PROC_PT_SARASEN_READY_SC(dwProtocol, Packet, dwPacketLength);
+			break;
+		case PT_SARASEN_BOSS_START_SC:
+			PROC_PT_SARASEN_BOSS_START_SC(dwProtocol, Packet, dwPacketLength);
+			break;
+		case PT_SARASEN_BOSS_START_COMP_SC:
+			PROC_PT_SARASEN_BOSS_START_COMP_SC(dwProtocol, Packet, dwPacketLength);
+			break;
+		case PT_SARASEN_BOSS_ACTION_CAMERA_READY_SC:
+			PROC_PT_SARASEN_BOSS_ACTION_CAMERA_READY_SC(dwProtocol, Packet, dwPacketLength);
+			break;
+		case PT_SARASEN_BOSS_ACTION_CAMERA_READY_COMP_SC:
+			PROC_PT_SARASEN_BOSS_ACTION_CAMERA_READY_COMP_SC(dwProtocol, Packet, dwPacketLength);
 			break;
 		
 		}
@@ -268,6 +280,45 @@ VOID CSCSarasen::PROC_PT_SARASEN_READY_SC(DWORD dwProtocol, BYTE * Packet, DWORD
 	return VOID();
 }
 
+VOID CSCSarasen::PROC_PT_SARASEN_BOSS_START_SC(DWORD dwProtocol, BYTE * Packet, DWORD dwPacketLength)
+{
+	READ_PACKET(PT_SARASEN_BOSS_START_SC);
+	NETWORKMGR->GetServerPlayerInfos()[Data.SLOT_ID].READY = Data.READY;
+	return VOID();
+}
+
+VOID CSCSarasen::PROC_PT_SARASEN_BOSS_START_COMP_SC(DWORD dwProtocol, BYTE * Packet, DWORD dwPacketLength)
+{
+	for (int i = 0; i < NETWORKMGR->GetServerPlayerInfos().size(); ++i)
+		NETWORKMGR->GetServerPlayerInfos()[i].READY = false;
+
+	//
+	//
+	// 보스 액션 캠 시자가아아아아아아앙
+	//
+	//
+	return VOID();
+}
+VOID CSCSarasen::PROC_PT_SARASEN_BOSS_ACTION_CAMERA_READY_SC(DWORD dwProtocol, BYTE * Packet, DWORD dwPacketLength)
+{
+	READ_PACKET(PT_SARASEN_BOSS_ACTION_CAMERA_READY_SC);
+	NETWORKMGR->GetServerPlayerInfos()[Data.SLOT_ID].READY = Data.READY;
+	return VOID();
+}
+VOID CSCSarasen::PROC_PT_SARASEN_BOSS_ACTION_CAMERA_READY_COMP_SC(DWORD dwProtocol, BYTE * Packet, DWORD dwPacketLength)
+{
+	for (int i = 0; i < NETWORKMGR->GetServerPlayerInfos().size(); ++i)
+		NETWORKMGR->GetServerPlayerInfos()[i].READY = false;
+
+	//
+	//
+	// 보스 전투 시작아아아아아ㅏ아아아
+	//
+	//
+	//
+	//
+	return VOID();
+}
 VOID CSCSarasen::PROC_PT_FREQUENCY_MOVE_SC(DWORD dwProtocol, BYTE * Packet, DWORD dwPacketLength)
 {
 	READ_PACKET(PT_FREQUENCY_MOVE_SC);
