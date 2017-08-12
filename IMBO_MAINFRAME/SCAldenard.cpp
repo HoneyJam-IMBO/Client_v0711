@@ -119,9 +119,8 @@ bool CSCAldenard::Begin()
 #ifdef NO_SERVER
 	return CScene::Begin();
 #endif
-	ResetCollisionValue(XMFLOAT3(179, 20, 290), 20);
 	BYTE Packet[MAX_BUFFER_LENGTH] = { 0, };
-//	NETWORKMGR->WritePacket(PT_FTOWN_READY_CS, Packet, WRITE_PT_FTOWN_READY_CS(Packet, NETWORKMGR->GetROOM_ID()));
+	NETWORKMGR->WritePacket(PT_ALDENARD_READY_CS, Packet, WRITE_PT_FTOWN_READY_CS(Packet, NETWORKMGR->GetROOM_ID()));
 
 	while (false == m_bGameStart) {
 		NetworkProc();
@@ -275,26 +274,32 @@ void CSCAldenard::NetworkProc()
 
 	if (NETWORKMGR->GetClientSession()->ReadPacket(dwProtocol, Packet, dwPacketLength)) {
 		switch (dwProtocol) {
-		case PT_FTOWN_READY_SC:
-			PROC_PT_FTOWN_READY_SC(dwProtocol, Packet, dwPacketLength);
-			break;
 		case PT_FREQUENCY_MOVE_SC:
 			PROC_PT_FREQUENCY_MOVE_SC(dwProtocol, Packet, dwPacketLength);
 			break;
 		case PT_MOUSE_LEFT_ATTACK_SC:
 			PROC_PT_MOUSE_LEFT_ATTACK_SC(dwProtocol, Packet, dwPacketLength);
+			break;
+		case PT_ALDENARD_READY_SC:
+			PROC_PT_ALDENARD_READY_SC(dwProtocol, Packet, dwPacketLength);
+			break;
+		case PT_SARASEN_START_SC:
+			PROC_PT_SARASEN_START_SC(dwProtocol, Packet, dwPacketLength);
+			break;
+		case PT_SARASEN_START_COMP_SC:
+			PROC_PT_SARASEN_START_COMP_SC(dwProtocol, Packet, dwPacketLength);
+			break;
 		}
 	}
 }
 
-VOID CSCAldenard::PROC_PT_FTOWN_READY_SC(DWORD dwProtocol, BYTE * Packet, DWORD dwPacketLength)
+VOID CSCAldenard::PROC_PT_ALDENARD_READY_SC(DWORD dwProtocol, BYTE * Packet, DWORD dwPacketLength)
 {
 	m_bGameStart = true;
 	return VOID();
 }
 
-VOID CSCAldenard::PROC_PT_FREQUENCY_MOVE_SC(DWORD dwProtocol, BYTE * Packet, DWORD dwPacketLength)
-{
+VOID CSCAldenard::PROC_PT_FREQUENCY_MOVE_SC(DWORD dwProtocol, BYTE * Packet, DWORD dwPacketLength) {
 	READ_PACKET(PT_FREQUENCY_MOVE_SC);
 
 	DEBUGER->AddText(25, 10, 400 + Data.SLOT_ID * 50, YT_Color(), L"recv ID : %d", Data.SLOT_ID);
@@ -307,6 +312,8 @@ VOID CSCAldenard::PROC_PT_FREQUENCY_MOVE_SC(DWORD dwProtocol, BYTE * Packet, DWO
 	data.fPosZ = Data.POSZ;
 
 	data.fAngleY = Data.ANGLEY;
+	data.dwDirection = Data.DIRECTION;
+	data.bJump = Data.JUMP;
 	//CPawn* pPawn = (CPawn*)m_ppPawn[Data.SLOT_ID];
 	//pPawn->NetworkInput(data.dwDirection, data.fAngleY);
 	//network queue에 입력하구 대기한다.
@@ -316,8 +323,7 @@ VOID CSCAldenard::PROC_PT_FREQUENCY_MOVE_SC(DWORD dwProtocol, BYTE * Packet, DWO
 	return VOID();
 }
 
-VOID CSCAldenard::PROC_PT_MOUSE_LEFT_ATTACK_SC(DWORD dwProtocol, BYTE * Packet, DWORD dwPacketLength)
-{
+VOID CSCAldenard::PROC_PT_MOUSE_LEFT_ATTACK_SC(DWORD dwProtocol, BYTE * Packet, DWORD dwPacketLength) {
 	READ_PACKET(PT_MOUSE_LEFT_ATTACK_SC);
 
 	NETWORKMGR->GetServerPlayerInfos()[Data.SLOT_ID].ATTACK = Data.ATTACK;
@@ -325,23 +331,28 @@ VOID CSCAldenard::PROC_PT_MOUSE_LEFT_ATTACK_SC(DWORD dwProtocol, BYTE * Packet, 
 	return VOID();
 }
 
-bool CSCAldenard::FlagCollision(CGameObject * pDest){
-	XMVECTOR xmvPos = XMLoadFloat3(&m_xmf3CollisionOffset);
+VOID CSCAldenard::PROC_PT_SARASEN_START_SC(DWORD dwProtocol, BYTE * Packet, DWORD dwPacketLength) {
+	READ_PACKET(PT_SARASEN_START_SC);
 
-	BoundingOrientedBox obb;
-	XMStoreFloat3(&obb.Center, xmvPos);
-	obb.Extents = XMFLOAT3(m_fRadius, m_fRadius, m_fRadius);
-	DEBUGER->RegistOBB(obb, UTAG_COLLISION);
+	NETWORKMGR->GetServerPlayerInfos()[Data.SLOT_ID].READY = Data.READY;
 
-	XMVECTOR xmvPlayerPos = pDest->GetPosition();
-
-	XMFLOAT4 xmf4Result;
-	XMStoreFloat4(&xmf4Result, XMVector3Length(xmvPlayerPos - xmvPos));
-	if (xmf4Result.x < m_fRadius)
-		return true;
-
-	return false;
+	return VOID();
 }
+
+VOID CSCAldenard::PROC_PT_SARASEN_START_COMP_SC(DWORD dwProtocol, BYTE * Packet, DWORD dwPacketLength) {
+
+	for (int i = 0; i < NETWORKMGR->GetServerPlayerInfos().size(); ++i)
+		NETWORKMGR->GetServerPlayerInfos()[i].READY = false;
+
+	//
+	//
+	// 사라센으로 출발엥에에에에ㅔ엥
+	//
+	//
+
+	return VOID();
+}
+
 
 void CSCAldenard::ReadMapData()
 {
