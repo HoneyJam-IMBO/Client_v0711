@@ -143,17 +143,7 @@ bool CSCOriTown::End() {
 }
 
 void CSCOriTown::Animate(float fTimeElapsed) {
-	int progress = 0;
-	for (auto player_info : NETWORKMGR->GetServerPlayerInfos()) {
-		
-		if (player_info.READY) {
-			DEBUGER->AddGameText(50, 10, 50 * progress, YT_Color(0, 255, 0), L"ÁØºñ");
-		}
-		else{
-			DEBUGER->AddGameText(50, 10, 50 * progress, YT_Color(0, 0, 255), L"´ë±â");
-		}
-		progress++;
-	}
+	BYTE Packet[MAX_BUFFER_LENGTH] = { 0, };
 	NetworkProc();
 	CScene::Animate(fTimeElapsed);
 	if (m_bStartBossCam) {
@@ -175,14 +165,25 @@ void CSCOriTown::Animate(float fTimeElapsed) {
 	}
 
 	if (INPUTMGR->KeyBoardDown(VK_R)){
-		StartBoss1ActionCam();
-		CreateBoss1();
+		//StartBoss1ActionCam();
+		//CreateBoss1();
+		NETWORKMGR->WritePacket(PT_FTOWN_NPC_READY_CS, Packet, WRITE_PT_FTOWN_NPC_READY_CS(Packet, NETWORKMGR->GetROOM_ID(), NETWORKMGR->GetSLOT_ID()));
+		NETWORKMGR->GetServerPlayerInfos()[NETWORKMGR->GetSLOT_ID()].READY = true;
 	}
 	else if (INPUTMGR->KeyBoardDown(VK_K)) {
-		KillBoss1();
+		//KillBoss1();
+		NETWORKMGR->WritePacket(PT_SKILL_COLLISION_TO_TARGET_CS, Packet, WRITE_PT_SKILL_COLLISION_TO_TARGET_CS(Packet,
+			NETWORKMGR->GetROOM_ID(),
+			NETWORKMGR->GetSLOT_ID(),
+			9,
+			NETWORKMGR->GetServerPlayerInfo(NETWORKMGR->GetSLOT_ID()).CHARACTER,
+			99));
+
 	}
 	else if (INPUTMGR->KeyBoardDown(VK_F)) {
-		FirstTownFly();
+		//FirstTownFly();
+		NETWORKMGR->WritePacket(PT_FTOWN_NPC2_READY_CS, Packet, WRITE_PT_FTOWN_NPC2_READY_CS(Packet, NETWORKMGR->GetROOM_ID(), NETWORKMGR->GetSLOT_ID()));
+		NETWORKMGR->GetServerPlayerInfos()[NETWORKMGR->GetSLOT_ID()].READY = true;
 	}
 	else if (INPUTMGR->KeyBoardDown(VK_Y)) {
 		int slot_id = NETWORKMGR->GetSLOT_ID();
@@ -348,10 +349,22 @@ void CSCOriTown::NetworkProc(){
 			break;
 		case PT_FTOWN_BOSS_ACTION_CAMERA_READY_COMP_SC:
 			PROC_PT_FTOWN_BOSS_ACTION_CAMERA_READY_COMP_SC(dwProtocol, Packet, dwPacketLength);
-
+			break;
+		case PT_BOSS_HP_SC:
+			break;
+		case PT_BOSS_CLEAR_SC:
+			PROC_PT_BOSS_CLEAR_SC(dwProtocol, Packet, dwPacketLength);
 			break;
 		}
 	}
+}
+
+
+VOID CSCOriTown::PROC_PT_BOSS_CLEAR_SC(DWORD dwProtocol, BYTE * Packet, DWORD dwPacketLength) {
+	// º¸½º Á×À½
+	KillBoss1();
+
+	return VOID();
 }
 
 VOID CSCOriTown::PROC_PT_FTOWN_READY_SC(DWORD dwProtocol, BYTE * Packet, DWORD dwPacketLength){
@@ -449,7 +462,7 @@ VOID CSCOriTown::PROC_PT_FTOWN_NPC_READY_COMP_SC(DWORD dwProtocol, BYTE * Packet
 	// º¸½º ¾×¼ÇÄ·¹Ç¹Ç¹Ê¹Ç¹Ç¤Ñ¹Ç¹Ç¹Ç¹Ç¹Ç
 	//
 	//
-
+	StartBoss1ActionCam();
 
 	return VOID();
 }
@@ -473,7 +486,7 @@ VOID CSCOriTown::PROC_PT_FTOWN_BOSS_ACTION_CAMERA_READY_COMP_SC(DWORD dwProtocol
 	// º¸½º ÀüÅõ ½ÃÀÛ²ô²ô²ô²ô²ô²ô²ô²ô²ô²ô²ô
 	//
 	//
-
+	CreateBoss1();
 
 	return VOID();
 }
@@ -498,11 +511,11 @@ VOID CSCOriTown::PROC_PT_FTOWN_NPC2_READY_COMP_SC(DWORD dwProtocol, BYTE * Packe
 
 
 	//
-	//
+	// 
 	// ftown -> ¾Ëµ¥³ªµå·Î Ãâ¹ß!!!
 	//
 	//
-
+	FirstTownFly();
 
 	return VOID();
 }
