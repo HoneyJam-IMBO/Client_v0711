@@ -38,6 +38,8 @@ public:
 	//utill func
 	void AddText(float fontSize, float posX, float posY, UINT32 color, TCHAR * msg, ...);
 	void RenderText();
+	void AddGameText(float fontSize, float posX, float posY, UINT32 color, TCHAR * msg, ...);
+	void RenderGameText();
 	void AddTexture(XMFLOAT2 fLeftTop, XMFLOAT2 fRightBottom, ID3D11ShaderResourceView* pSRV);
 	void AddDepthTexture(XMFLOAT2 fLeftTop, XMFLOAT2 fRightBottom, ID3D11ShaderResourceView* pSRV);
 
@@ -85,6 +87,7 @@ private:
 	IFW1GlyphProvider*							 m_pFW1Glyphrovider{ nullptr };
 
 	queue<CDebugFontData>						m_qDebugFontData;
+	queue<CDebugFontData>						m_qGameFontData;
 	UINT m_pivot{ FW1_TOP | FW1_LEFT };
 
 //debug texture

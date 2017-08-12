@@ -28,7 +28,7 @@ void CScene::Animate(float fTimeElapsed){
 }
 
 
-bool CScene::GetPickPositionByCursor(int xClient, int yClient, XMFLOAT3& output)
+bool CScene::GetPickPositionByCursor(int xClient, int yClient, XMFLOAT3& output, UINT tag)
 {
 	XMFLOAT4X4 xmf4x4Projection;
 	D3D11_VIEWPORT d3dViewport;
@@ -59,7 +59,7 @@ bool CScene::GetPickPositionByCursor(int xClient, int yClient, XMFLOAT3& output)
 	xmMtxViewInverse = XMMatrixInverse(nullptr, m_pCamera->GetViewMtx());
 	xmvRayDir = XMVector3Normalize(xmvPickPosition - XMVectorSet(0, 0, 0, 1));//view space pick ray
 
-	pNearestObject = UPDATER->PickObject(xmvPickPosition, xmvRayDir, fHitDistance);
+	pNearestObject = UPDATER->PickObject(xmvPickPosition, xmvRayDir, fHitDistance, tag);
 	if (pNearestObject) {
 		fNearDistance = fHitDistance;
 

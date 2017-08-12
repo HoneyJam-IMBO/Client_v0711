@@ -174,7 +174,7 @@ void CSpaceContainer::ChangeSpaceData(){
 	m_vTempObjects.clear();
 }
 
-CGameObject * CSpaceContainer::PickObject(XMVECTOR xmvWorldCameraStartPos, XMVECTOR xmvRayDir, float& distanse) {
+CGameObject * CSpaceContainer::PickObject(XMVECTOR xmvWorldCameraStartPos, XMVECTOR xmvRayDir, float& distanse, UINT renderFlag) {
 	float fHitDistance = FLT_MAX;
 	float fNearHitDistance = FLT_MAX;
 	CGameObject* pHitObj = nullptr;
@@ -183,7 +183,7 @@ CGameObject * CSpaceContainer::PickObject(XMVECTOR xmvWorldCameraStartPos, XMVEC
 	//자신의 모든 leaf space에 대해서 검사
 	for (int i = 0; i < m_nSpace; ++i) {
 		if (m_ppSpace[i]->GetbRender()) {//내가 그림을 그리는 space라면
-			pHitObj = m_ppSpace[i]->PickObject(xmvWorldCameraStartPos, xmvRayDir, fHitDistance);
+			pHitObj = m_ppSpace[i]->PickObject(xmvWorldCameraStartPos, xmvRayDir, fHitDistance, renderFlag);
 			if (fNearHitDistance > fHitDistance) {
 				fNearHitDistance = fHitDistance;
 				pNearObj = pHitObj;

@@ -26,7 +26,7 @@ public:
 	void AddSpace(UINT index, CSpace* pSpace);
 	void ChangeSpaceData();
 	//모든 lay 충돌 검사된 객체 중 가장 가장 가까운 객체
-	CGameObject* PickObject(XMVECTOR xmvWorldCameraStartPos, XMVECTOR xmvRayDir, float& distanse);
+	CGameObject* PickObject(XMVECTOR xmvWorldCameraStartPos, XMVECTOR xmvRayDir, float& distanse, UINT renderFlag = TAG_TERRAIN | TAG_STATIC_OBJECT | TAG_DYNAMIC_OBJECT | TAG_LIGHT | TAG_REFLECTION | TAG_BIGWATER);
 	//space controller
 
 	static CSpaceContainer* CreateSpaceContainer(int size, int lv);

@@ -24,7 +24,7 @@ public:
 	//input
 	//pick
 	virtual CGameObject* PickObjectPointedByCursor(int xClient, int yClient) { return nullptr; };
-	bool GetPickPositionByCursor(int xClient, int yClient, XMFLOAT3& output);
+	bool GetPickPositionByCursor(int xClient, int yClient, XMFLOAT3& output, UINT tag = TAG_STATIC_OBJECT | TAG_TERRAIN);
 	//pick
 	//create scene
 	static CScene* CreateScene(string name, CDirectXFramework* pFramework, SCENE_ID eID);

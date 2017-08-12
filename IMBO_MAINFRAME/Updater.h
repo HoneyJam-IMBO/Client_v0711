@@ -39,7 +39,7 @@ public:
 	void LoadObjectsInfo();
 
 	//picking
-	CGameObject* PickObject(XMVECTOR xmvWorldCameraStartPos, XMVECTOR xmvRayDir, float& distanse);
+	CGameObject* PickObject(XMVECTOR xmvWorldCameraStartPos, XMVECTOR xmvRayDir, float& distanse, UINT tag = TAG_TERRAIN | TAG_STATIC_OBJECT | TAG_DYNAMIC_OBJECT | TAG_LIGHT | TAG_REFLECTION | TAG_BIGWATER);
 
 private:
 	CDirectionalLight* m_pDirectionalLight{ nullptr };
