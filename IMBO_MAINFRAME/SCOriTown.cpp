@@ -146,7 +146,12 @@ void CSCOriTown::Animate(float fTimeElapsed) {
 	
 	NetworkProc();
 	CScene::Animate(fTimeElapsed);
-
+	if (m_bStartBossCam) {
+		if (false == m_pCamera->m_bActionCam) {
+			int boss_fight_start = 0;
+			m_pBoss->SetFirstAction(false);
+		}
+	}
 	if (m_bFinalProc) {
 		int slot_id = NETWORKMGR->GetSLOT_ID();
 		if (false == m_ppPawn[slot_id]->m_bActionMove) {
@@ -159,6 +164,7 @@ void CSCOriTown::Animate(float fTimeElapsed) {
 		m_vecUI[i]->Update(fTimeElapsed);
 	}
 	if (INPUTMGR->KeyBoardDown(VK_R)){
+		StartBoss1ActionCam();
 		CreateBoss1();
 	}
 	else if (INPUTMGR->KeyBoardDown(VK_K)) {
@@ -350,6 +356,11 @@ VOID CSCOriTown::PROC_PT_FREQUENCY_MOVE_SC(DWORD dwProtocol, BYTE * Packet, DWOR
 	return VOID();
 }
 
+void CSCOriTown::StartBoss1ActionCam(){
+	m_bStartBossCam = true;
+	m_pCamera->ActionCamStart("Firsttown_Boss2");
+}
+
 void CSCOriTown::CreateBoss1()
 {
 	//보스 제작
@@ -357,11 +368,13 @@ void CSCOriTown::CreateBoss1()
 	m_pBoss->SetUTag(utag::UTAG_BOSS1);
 	m_pBoss->Begin();
 	m_pBoss->SetTerrainContainer(UPDATER->GetTerrainContainer());
-	m_pBoss->SetPosition(XMVectorSet(200, 0, 250, 0));
+	m_pBoss->SetPosition(XMVectorSet(180, 0, 175, 0));
 	m_pBoss->SetNaviMeshIndex();
 	m_pBoss->SetScale(XMVectorSet(1, 1, 1, 1));
 	UPDATER->GetSpaceContainer()->AddObject(m_pBoss);
-	m_pBoss->GetAnimater()->SetCurAnimationIndex(0);
+	m_pBoss->SetFirstAction(true);
+	m_pBoss->SetAnimNum(BOSS1_ANI_SKILL2);
+	m_pBoss->GetAnimater()->SetCurAnimationIndex(BOSS1_ANI_SKILL2);
 }
 
 void CSCOriTown::KillBoss1(){
@@ -414,8 +427,8 @@ VOID CSCOriTown::PROC_PT_FTOWN_NPC2_READY_SC(DWORD dwProtocol, BYTE * Packet, DW
 }
 void CSCOriTown::ReadMapData()
 {
-	IMPORTER->Begin("../../Assets/SceneResource/test/test.scn");
-	//IMPORTER->Begin("../../Assets/SceneResource/FirstTown/FirstTown.scn");
+	//IMPORTER->Begin("../../Assets/SceneResource/test/test.scn");
+	IMPORTER->Begin("../../Assets/SceneResource/FirstTown/FirstTown.scn");
 	//IMPORTER->Begin("../../Assets/SceneResource/Aldenard/Aldenard.scn");
 	//IMPORTER->Begin("../../Assets/SceneResource/Sarasen/Sarasen.scn");
 	//output path

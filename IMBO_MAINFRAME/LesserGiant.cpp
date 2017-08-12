@@ -94,6 +94,7 @@ void CLesserGiant::PhisicsLogic(map<utag, list<CGameObject*>>& mlpObject, float 
 
 void CLesserGiant::UpdatePattern(float fTimeElapsed)
 {
+	if (m_bFirstAction) return;//첫번째 액션중이면 return
 	m_f3Diraction = XMFLOAT3(0.f, 0.f, 0.f);
 	if (m_pAnimater->GetCurAnimationIndex() == BOSS1_ANI_DYING || m_pAnimater->GetCurAnimationIndex() == BOSS1_ANI_DIE) {
 		if (m_pAnimater->GetCurAnimationInfo()->GetLoopDone()) {

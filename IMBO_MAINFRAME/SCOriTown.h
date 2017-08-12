@@ -4,7 +4,7 @@
 
 //object
 #include "FreeCamera.h"
-
+class CLesserGiant;
 class CSCOriTown;
 class CSCOriTown :public CScene{
 
@@ -35,7 +35,8 @@ public:
 	//test
 	//vector<XMFLOAT3> m_vPickPos;
 private:
-	CGameObject*	m_pBoss{ nullptr };
+	CLesserGiant*	m_pBoss{ nullptr };
+	void StartBoss1ActionCam();
 	void CreateBoss1();
 	void KillBoss1();
 	void FirstTownFly();
@@ -46,6 +47,7 @@ private:
 
 	bool m_bGameStart{ false };
 	bool m_bFinalProc{ false };
+	bool m_bStartBossCam{ false };
 private:
 	//CGameObject* m_pObject{ nullptr };
 	CGameObject** m_ppPawn{ nullptr };

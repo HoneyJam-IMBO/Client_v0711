@@ -119,6 +119,7 @@ bool CSCAldenard::Begin()
 #ifdef NO_SERVER
 	return CScene::Begin();
 #endif
+	ResetCollisionValue(XMFLOAT3(179, 20, 290), 20);
 	BYTE Packet[MAX_BUFFER_LENGTH] = { 0, };
 //	NETWORKMGR->WritePacket(PT_FTOWN_READY_CS, Packet, WRITE_PT_FTOWN_READY_CS(Packet, NETWORKMGR->GetROOM_ID()));
 
@@ -322,6 +323,24 @@ VOID CSCAldenard::PROC_PT_MOUSE_LEFT_ATTACK_SC(DWORD dwProtocol, BYTE * Packet, 
 	NETWORKMGR->GetServerPlayerInfos()[Data.SLOT_ID].ATTACK = Data.ATTACK;
 
 	return VOID();
+}
+
+bool CSCAldenard::FlagCollision(CGameObject * pDest){
+	XMVECTOR xmvPos = XMLoadFloat3(&m_xmf3CollisionOffset);
+
+	BoundingOrientedBox obb;
+	XMStoreFloat3(&obb.Center, xmvPos);
+	obb.Extents = XMFLOAT3(m_fRadius, m_fRadius, m_fRadius);
+	DEBUGER->RegistOBB(obb, UTAG_COLLISION);
+
+	XMVECTOR xmvPlayerPos = pDest->GetPosition();
+
+	XMFLOAT4 xmf4Result;
+	XMStoreFloat4(&xmf4Result, XMVector3Length(xmvPlayerPos - xmvPos));
+	if (xmf4Result.x < m_fRadius)
+		return true;
+
+	return false;
 }
 
 void CSCAldenard::ReadMapData()
