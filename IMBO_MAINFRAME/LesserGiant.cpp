@@ -187,6 +187,8 @@ void CLesserGiant::UpdatePattern(float fTimeElapsed)
 
 			case 2:
 				m_nAnimNum = BOSS1_ANI_SKILL4;
+				m_fSk2Speed = xmf3Distance.x;
+				XMStoreFloat3(&m_xmf3Sk2Dir, XMLoadFloat3(&m_f3Diraction));
 				if (m_pAnimater->SetCurAnimationIndex(m_nAnimNum)) ResetCollisionValue(XMFLOAT3(0, 0, 0), 2, 7, 7);
 				break;
 			}			

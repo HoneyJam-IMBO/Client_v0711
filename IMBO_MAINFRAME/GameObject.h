@@ -170,6 +170,7 @@ public:
 		m_fAnimTime = 0.f;
 		m_bCollision = false;
 	}
+
 protected:
 	//navi mesh index
 	int m_indexNaviMesh{ -1 };
@@ -195,9 +196,6 @@ protected:
 	 CAnimater* m_pAnimater{ nullptr };
 	vector<BoundingOrientedBox> m_vObjectActiveOBBs;
 
-	//stay flag
-	void SetbStay(bool b) { m_bStay = b; }
-	bool GetbStay() { return m_bStay; }
 
 protected:
 	bool		m_bIdle{ false };
@@ -206,6 +204,10 @@ protected:
 	bool		m_bStay{ false };
 
 public:
+	//stay flag
+	void SetbStay(bool b) { m_bStay = b; }
+	bool GetbStay() { return m_bStay; }
+
 	void SetIdleState(bool bIdle) { m_bIdle = bIdle; }
 	bool GetIdleState() { return m_bIdle; }
 

@@ -263,9 +263,9 @@ void CLoading::LoadScene_ALDENAD()
 	RESOURCEMGR->CreateTexture("skicon3", _T("../../Assets/Game_UI/skicon3.tga"), PS_TEXTURE, BIND_PS);
 	RESOURCEMGR->CreateTexture("skicon4", _T("../../Assets/Game_UI/skicon4.tga"), PS_TEXTURE, BIND_PS);
 
-
 #ifdef NO_SERVER
 	LoadUI_Skill(6, 0, 0, 0);
+	NETWORKMGR->GetServerPlayerInfos()[0].CHARACTER = 6 - 1;
 #else
 	for (int i = 0; i < NETWORKMGR->GetServerPlayerInfos().size(); ++i)
 		CHARACTER[i] = NETWORKMGR->GetServerPlayerInfos()[i].CHARACTER + 1;
@@ -295,6 +295,7 @@ void CLoading::LoadScene_BOSS()
 
 #ifdef NO_SERVER
 	LoadUI_Skill(6, 0, 0, 0);
+	NETWORKMGR->GetServerPlayerInfos()[0].CHARACTER = 6 - 1;
 #else
 	for (int i = 0; i < NETWORKMGR->GetServerPlayerInfos().size(); ++i)
 		CHARACTER[i] = NETWORKMGR->GetServerPlayerInfos()[i].CHARACTER + 1;
