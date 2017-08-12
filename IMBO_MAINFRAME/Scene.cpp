@@ -129,3 +129,25 @@ void CScene::LoadResource(wstring wsMeshRoot){
 	//RCSELLER->TestingRCAdd();
 	RCSELLER->CreateStempRenderContainer();
 }
+
+
+bool CScene::FlagCollision(CGameObject * pDest) {
+	if (false == m_bCollision) {
+		XMVECTOR xmvPos = XMLoadFloat3(&m_xmf3CollisionOffset);
+
+		BoundingOrientedBox obb;
+		XMStoreFloat3(&obb.Center, xmvPos);
+		obb.Extents = XMFLOAT3(m_fRadius, m_fRadius, m_fRadius);
+		DEBUGER->RegistOBB(obb, UTAG_COLLISION);
+
+		XMVECTOR xmvPlayerPos = pDest->GetPosition();
+
+		XMFLOAT4 xmf4Result;
+		XMStoreFloat4(&xmf4Result, XMVector3Length(xmvPlayerPos - xmvPos));
+		if (xmf4Result.x < m_fRadius) {
+			m_bCollision = true;//flag는 한번만 사용한다.
+			return true;
+		}
+	}
+	return false;
+}

@@ -424,23 +424,6 @@ void CSCAldenard::CreateUI()
 	pUI = CImageUI::Create(XMLoadFloat2(&XMFLOAT2(397.f, WINSIZEY * 0.82f)), XMLoadFloat2(&XMFLOAT2(23.f, 23.f)), sName, 9.5f);
 	m_vecUI.push_back(pUI);
 }
-bool CSCAldenard::FlagCollision(CGameObject * pDest) {
-	XMVECTOR xmvPos = XMLoadFloat3(&m_xmf3CollisionOffset);
-
-	BoundingOrientedBox obb;
-	XMStoreFloat3(&obb.Center, xmvPos);
-	obb.Extents = XMFLOAT3(m_fRadius, m_fRadius, m_fRadius);
-	DEBUGER->RegistOBB(obb, UTAG_COLLISION);
-
-	XMVECTOR xmvPlayerPos = pDest->GetPosition();
-
-	XMFLOAT4 xmf4Result;
-	XMStoreFloat4(&xmf4Result, XMVector3Length(xmvPlayerPos - xmvPos));
-	if (xmf4Result.x < m_fRadius)
-		return true;
-
-	return false;
-}
 CSCAldenard::CSCAldenard(SCENE_ID eID, CDirectXFramework* pFrameWork): CScene(eID){
 	m_pFrameWork = pFrameWork;
 }

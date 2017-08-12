@@ -405,7 +405,7 @@ void CSCOriTown::CreateBoss1()
 }
 
 void CSCOriTown::KillBoss1(){
-	if(m_pBoss) m_pBoss->GetAnimater()->SetCurAnimationIndex(BOSS1_ANI_DYING);
+	if(m_pBoss) m_pBoss->GetAnimater()->SetCurAnimationIndex(1);
 }
 
 void CSCOriTown::FirstTownFly(){
