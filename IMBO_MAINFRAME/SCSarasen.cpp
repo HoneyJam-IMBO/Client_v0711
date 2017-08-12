@@ -120,7 +120,7 @@ bool CSCSarasen::Begin()
 	return CScene::Begin();
 #endif
 	BYTE Packet[MAX_BUFFER_LENGTH] = { 0, };
-//	NETWORKMGR->WritePacket(PT_FTOWN_READY_CS, Packet, WRITE_PT_FTOWN_READY_CS(Packet, NETWORKMGR->GetROOM_ID()));
+	NETWORKMGR->WritePacket(PT_SARASEN_READY_CS, Packet, WRITE_PT_SARASEN_READY_CS(Packet, NETWORKMGR->GetROOM_ID()));
 
 	while (false == m_bGameStart) {
 		NetworkProc();
@@ -248,19 +248,21 @@ void CSCSarasen::NetworkProc()
 
 	if (NETWORKMGR->GetClientSession()->ReadPacket(dwProtocol, Packet, dwPacketLength)) {
 		switch (dwProtocol) {
-		case PT_FTOWN_READY_SC:
-			PROC_PT_FTOWN_READY_SC(dwProtocol, Packet, dwPacketLength);
-			break;
 		case PT_FREQUENCY_MOVE_SC:
 			PROC_PT_FREQUENCY_MOVE_SC(dwProtocol, Packet, dwPacketLength);
 			break;
 		case PT_MOUSE_LEFT_ATTACK_SC:
 			PROC_PT_MOUSE_LEFT_ATTACK_SC(dwProtocol, Packet, dwPacketLength);
+
+		case PT_SARASEN_READY_SC:
+			PROC_PT_SARASEN_READY_SC(dwProtocol, Packet, dwPacketLength);
+			break;
+		
 		}
 	}
 }
 
-VOID CSCSarasen::PROC_PT_FTOWN_READY_SC(DWORD dwProtocol, BYTE * Packet, DWORD dwPacketLength)
+VOID CSCSarasen::PROC_PT_SARASEN_READY_SC(DWORD dwProtocol, BYTE * Packet, DWORD dwPacketLength)
 {
 	m_bGameStart = true;
 	return VOID();
@@ -280,6 +282,8 @@ VOID CSCSarasen::PROC_PT_FREQUENCY_MOVE_SC(DWORD dwProtocol, BYTE * Packet, DWOR
 	data.fPosZ = Data.POSZ;
 
 	data.fAngleY = Data.ANGLEY;
+	data.dwDirection = Data.DIRECTION;
+	data.bJump = Data.JUMP;
 	//CPawn* pPawn = (CPawn*)m_ppPawn[Data.SLOT_ID];
 	//pPawn->NetworkInput(data.dwDirection, data.fAngleY);
 	//network queue에 입력하구 대기한다.
