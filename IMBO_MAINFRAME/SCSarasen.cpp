@@ -41,7 +41,7 @@ bool CSCSarasen::Begin()
 			pWeapon->Begin();
 			m_ppPawn[i] = new CRanger("Elf01F", TAG_DYNAMIC_OBJECT, bSoul, pWeapon, i);
 			m_ppPawn[i]->Begin();
-			m_ppPawn[i]->SetPosition(XMVectorSet(10 * i + 250, 0, 250, 0));//[10, 10]부터 [40, 10]까지 배치
+			m_ppPawn[i]->SetPosition(XMVectorSet(15 * i + 690, 0, 10 * i + 430, 0));//[10, 10]부터 [40, 10]까지 배치
 			m_ppPawn[i]->SetScale(XMVectorSet(1, 1, 1, 1));
 			break;
 		case 1:
@@ -50,14 +50,14 @@ bool CSCSarasen::Begin()
 			pWeapon->Begin();
 			m_ppPawn[i] = new CKnight("Hum01M", TAG_DYNAMIC_OBJECT, bSoul, pWeapon, i);
 			m_ppPawn[i]->Begin();
-			m_ppPawn[i]->SetPosition(XMVectorSet(10 * i + 250, 0, 250, 0));//[10, 10]부터 [40, 10]까지 배치
+			m_ppPawn[i]->SetPosition(XMVectorSet(15 * i + 690, 0, 10 * i + 430, 0));//[10, 10]부터 [40, 10]까지 배치
 			m_ppPawn[i]->SetScale(XMVectorSet(1, 1, 1, 1));
 			break;
 		case 2:
 			//공간술사
 			m_ppPawn[i] = new CDementor("Hum03M", TAG_DYNAMIC_OBJECT, bSoul, nullptr, i);
 			m_ppPawn[i]->Begin();
-			m_ppPawn[i]->SetPosition(XMVectorSet(10 * i + 250, 0, 250, 0));//[10, 10]부터 [40, 10]까지 배치
+			m_ppPawn[i]->SetPosition(XMVectorSet(15 * i + 690, 0, 10 * i + 430, 0));//[10, 10]부터 [40, 10]까지 배치
 			m_ppPawn[i]->SetScale(XMVectorSet(1, 1, 1, 1));
 			break;
 		case 3:
@@ -65,20 +65,20 @@ bool CSCSarasen::Begin()
 			pWeapon->Begin();
 			m_ppPawn[i] = new CSister("Lup01M", TAG_DYNAMIC_OBJECT, bSoul, pWeapon, i);
 			m_ppPawn[i]->Begin();
-			m_ppPawn[i]->SetPosition(XMVectorSet(10 * i + 250, 0, 250, 0));//[10, 10]부터 [40, 10]까지 배치
+			m_ppPawn[i]->SetPosition(XMVectorSet(15 * i + 690, 0, 10 * i + 430, 0));//[10, 10]부터 [40, 10]까지 배치
 			m_ppPawn[i]->SetScale(XMVectorSet(1, 1, 1, 1));
 			break;
 		case 4:
 			m_ppPawn[i] = new CWizard("Hum02F", TAG_DYNAMIC_OBJECT, bSoul, nullptr, i);
 			m_ppPawn[i]->Begin();
-			m_ppPawn[i]->SetPosition(XMVectorSet(10 * i + 250, 0, 250, 0));//[10, 10]부터 [40, 10]까지 배치
+			m_ppPawn[i]->SetPosition(XMVectorSet(15 * i + 690, 0, 10 * i + 430, 0));//[10, 10]부터 [40, 10]까지 배치
 			m_ppPawn[i]->SetScale(XMVectorSet(1, 1, 1, 1));
 			break;
 		case 5:
 			//법사
 			m_ppPawn[i] = new CBard("Hum04F", TAG_DYNAMIC_OBJECT, bSoul, nullptr, i);
 			m_ppPawn[i]->Begin();
-			m_ppPawn[i]->SetPosition(XMVectorSet(10 * i + 250, 0, 250, 0));//[10, 10]부터 [40, 10]까지 배치
+			m_ppPawn[i]->SetPosition(XMVectorSet(15 * i + 690, 0, 10 * i + 430, 0));//[10, 10]부터 [40, 10]까지 배치
 			m_ppPawn[i]->SetScale(XMVectorSet(1, 1, 1, 1));
 			break;
 		}
@@ -104,17 +104,8 @@ bool CSCSarasen::Begin()
 			m_ppPawn[i]->SetNaviMeshIndex();
 	}
 
-
-	//보스 제작
-	CGameObject*	pBoss = new CRoisa("Boss02R", TAG_DYNAMIC_OBJECT, m_ppPawn[0]);
-	pBoss->SetUTag(utag::UTAG_BOSS1);
-	pBoss->Begin();
-	pBoss->SetTerrainContainer(UPDATER->GetTerrainContainer());
-	pBoss->SetPosition(XMVectorSet(512, 0, 768, 0));
-	pBoss->SetNaviMeshIndex();
-	pBoss->SetScale(XMVectorSet(3, 3, 3, 1));
-	UPDATER->GetSpaceContainer()->AddObject(pBoss);
-	pBoss->GetAnimater()->SetCurAnimationIndex(0);
+	ResetCollisionValue(XMFLOAT3(620, -161, 580), 20);
+	CreateBoss2();
 
 #ifdef NO_SERVER
 	return CScene::Begin();
@@ -147,6 +138,32 @@ bool CSCSarasen::End()
 
 void CSCSarasen::Animate(float fTimeElapsed)
 {
+	int slot_id = NETWORKMGR->GetSLOT_ID();
+	wchar_t wcPosition[126];
+	XMFLOAT3 xmf3Pos;
+	XMStoreFloat3(&xmf3Pos, m_ppPawn[slot_id]->GetPosition());
+	int x = xmf3Pos.x;
+	int y = xmf3Pos.y;
+	int z = xmf3Pos.z;
+	wsprintf(wcPosition, L"player_position : %d, %d, %d", x, y, z);
+	DEBUGER->AddGameText(20, 100, 100, YT_Color(255, 255, 0), wcPosition);
+
+	//flag인 부분 충돌 처리
+	if (FlagCollision(m_ppPawn[slot_id])) {
+		StartBoss2ActionCam();
+		//flag인 부분과 충돌했다면!
+		m_ppPawn[slot_id]->SetbStay(true);//나 stay!
+		m_ppPawn[slot_id]->GetAnimater()->SetCurAnimationIndex(ANIM_IDLE);
+	}
+	//보스캠 처리
+	if (m_bStartBossCam) {
+		if (false == m_pCamera->m_bActionCam) {
+			m_ppPawn[slot_id]->SetbStay(false);//나 stay 해제!
+			int boss_fight_start = 0; //보스 처음 움직임 무한루프 해제
+			//싸움 시작
+			//m_pBoss->SetFirstAction(false);
+		}
+	}
 	NetworkProc();
 	CScene::Animate(fTimeElapsed);
 
@@ -158,6 +175,15 @@ void CSCSarasen::Animate(float fTimeElapsed)
 	if (INPUTMGR->KeyBoardDown(VK_T))
 	{
 		SCENEMGR->ChangeScene(SCN_ORITOWN);
+	}
+	else if (INPUTMGR->KeyBoardDown(VK_Y)) {
+		int slot_id = NETWORKMGR->GetSLOT_ID();
+		char action_move_file_name[128];
+		int action_move_id = slot_id + 1;
+		if (action_move_id> 3) action_move_id = rand() % 3 + 1;
+		sprintf(action_move_file_name, "Sarasen_Boss2", action_move_id);
+		float fSpeed = CPositionInfoManager::GetActionSpeed(action_move_file_name);
+		CPositionInfoManager::SetActoionSpeed(action_move_file_name, fSpeed + 1.f);
 	}
 }
 
@@ -414,6 +440,33 @@ void CSCSarasen::CreateUI()
 	sName = "skicon4";
 	pUI = CImageUI::Create(XMLoadFloat2(&XMFLOAT2(397.f, WINSIZEY * 0.82f)), XMLoadFloat2(&XMFLOAT2(23.f, 23.f)), sName, 9.5f);
 	m_vecUI.push_back(pUI);
+}
+
+void CSCSarasen::StartBoss2ActionCam(){
+	char BossActionCamFileName[128];
+	//Sarasen_Boss%d
+	sprintf(BossActionCamFileName, "Sarasen_Boss2", (rand() % 3) + 1);
+	m_bStartBossCam = true;
+	m_pCamera->ActionCamStart(BossActionCamFileName);
+}
+
+void CSCSarasen::CreateBoss2()
+{
+	//보스 제작
+	m_pBoss = new CRoisa("Boss02R", TAG_DYNAMIC_OBJECT, m_ppPawn[0]);
+	m_pBoss->SetUTag(utag::UTAG_BOSS1);
+	m_pBoss->Begin();
+	m_pBoss->SetTerrainContainer(UPDATER->GetTerrainContainer());
+	m_pBoss->SetPosition(XMVectorSet(512, 0, 768, 0));
+	m_pBoss->SetNaviMeshIndex();
+	m_pBoss->SetScale(XMVectorSet(3, 3, 3, 1));
+	UPDATER->GetSpaceContainer()->AddObject(m_pBoss);
+	m_pBoss->GetAnimater()->SetCurAnimationIndex(0);
+}
+
+void CSCSarasen::KillBoss2()
+{
+	if (m_pBoss) m_pBoss->GetAnimater()->SetCurAnimationIndex(2);
 }
 
 CSCSarasen::CSCSarasen(SCENE_ID eID, CDirectXFramework* pFrameWork) : CScene(eID) {

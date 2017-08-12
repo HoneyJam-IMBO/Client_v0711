@@ -2,7 +2,7 @@
 #include "Scene.h"
 #include "FreeCamera.h"
 
-
+class CRoisa;
 class CSCSarasen :
 	public CScene
 {
@@ -41,13 +41,18 @@ public:
 
 	CGameObject* GetPlayer() { return m_ppPawn ? m_ppPawn[NETWORKMGR->GetSLOT_ID()] : nullptr; }
 
+	//cam
 private:
 	void ReadMapData();
 	void LoadSkillObjects();
 	void CreateUI();
+	void StartBoss2ActionCam();
+	void CreateBoss2();
+	void KillBoss2();
+	CRoisa* m_pBoss{ nullptr };
 
 	bool m_bGameStart{ false };
-
+	bool m_bStartBossCam{ false };
 private:
 	CGameObject** m_ppPawn{ nullptr };
 };

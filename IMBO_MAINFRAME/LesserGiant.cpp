@@ -84,8 +84,8 @@ void CLesserGiant::PhisicsLogic(map<utag, list<CGameObject*>>& mlpObject, float 
 			}
 		}
 	}
-	m_fAnimTime += fDeltaTime;
 	m_fCollisionTime += fDeltaTime;
+	m_fAnimTime += fDeltaTime;
 	if (m_fCollisionTime > 2.f) {
 		m_fCollisionTime = 0.f;
 		m_bCollision = false;//2초에 한번씩 다시 맞게 한다.
@@ -143,11 +143,12 @@ void CLesserGiant::UpdatePattern(float fTimeElapsed)
 			}
 			else if (BOSS1_ANI_SKILL4 == m_nAnimNum)
 			{
+				SetRotation(DirectX::XMMatrixRotationY(fDirAngle));
 				m_fSpeed = 0.f;
 				if (m_fAnimTime < 7.0f &&m_fAnimTime > 1.f)
 				{
-					XMStoreFloat3(&m_f3Diraction, XMLoadFloat3(&m_xmf3Sk2Dir));
-					m_fSpeed = m_fSk2Speed * 0.9f;
+					//XMStoreFloat3(&m_f3Diraction, XMLoadFloat3(&m_xmf3Sk2Dir));
+					m_fSpeed = m_fSk2Speed * 0.2f;
 				}
 				//else if (m_fAnimTime >= 7.3f)
 				//{
@@ -165,7 +166,7 @@ void CLesserGiant::UpdatePattern(float fTimeElapsed)
 			}
 			return;
 		}
-
+		
 		if (m_fAccSkillTime > 2.f)
 		{
 			m_fAccSkillTime = 0.f;
@@ -187,8 +188,9 @@ void CLesserGiant::UpdatePattern(float fTimeElapsed)
 
 			case 2:
 				m_nAnimNum = BOSS1_ANI_SKILL4;
+
 				m_fSk2Speed = xmf3Distance.x;
-				XMStoreFloat3(&m_xmf3Sk2Dir, XMLoadFloat3(&m_f3Diraction));
+				//XMStoreFloat3(&m_xmf3Sk2Dir, XMLoadFloat3(&m_f3Diraction));
 				if (m_pAnimater->SetCurAnimationIndex(m_nAnimNum)) ResetCollisionValue(XMFLOAT3(0, 0, 0), 2, 7, 7);
 				break;
 			}			

@@ -149,6 +149,7 @@ public:
 
 	//demage proc
 	virtual bool GetDemaged(float fDemage) { return true; };
+	virtual bool GetHeal(float fHeal) { return true; }
 public:
 	BoundingBox*	GetBBox() { return &m_OriBoundingBox; }
 

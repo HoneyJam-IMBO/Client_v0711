@@ -1006,27 +1006,29 @@ void CGameObject::SetNaviMeshIndex() {
 
 bool CGameObject::SkillCollision(CGameObject * pPlayer)
 {
-	if (m_fMaxCollisionOffsetTime > m_fAnimTime && m_fAnimTime > m_fMinCollisionOffsetTime) {//충돌체가 활동하는 시간동안
+	if (false == m_bCollision) {
+		if (m_fMaxCollisionOffsetTime > m_fAnimTime && m_fAnimTime > m_fMinCollisionOffsetTime) {//충돌체가 활동하는 시간동안
+			XMVECTOR xmvRight = XMVector3Normalize(GetRight()) * m_xmf3CollisionOffset.x;
+			XMVECTOR xmvUp = XMVector3Normalize(GetUp()) * m_xmf3CollisionOffset.y;
+			XMVECTOR xmvLook = XMVector3Normalize(GetLook()) * m_xmf3CollisionOffset.z;
 
+			XMVECTOR xmvPos = GetPosition();
+			xmvPos = xmvPos + xmvRight + xmvUp + xmvLook;
 
-		XMVECTOR xmvRight = XMVector3Normalize(GetRight()) * m_xmf3CollisionOffset.x;
-		XMVECTOR xmvUp = XMVector3Normalize(GetUp()) * m_xmf3CollisionOffset.y;
-		XMVECTOR xmvLook = XMVector3Normalize(GetLook()) * m_xmf3CollisionOffset.z;
+			BoundingOrientedBox obb;
+			XMStoreFloat3(&obb.Center, xmvPos);
+			obb.Extents = XMFLOAT3(m_fRadius, m_fRadius, m_fRadius);
+			DEBUGER->RegistOBB(obb, UTAG_PLAYER);
 
-		XMVECTOR xmvPos = GetPosition();
-		xmvPos = xmvPos + xmvRight + xmvUp + xmvLook;
+			XMVECTOR xmvPlayerPos = pPlayer->GetPosition();
 
-		BoundingOrientedBox obb;
-		XMStoreFloat3(&obb.Center, xmvPos);
-		obb.Extents = XMFLOAT3(m_fRadius, m_fRadius, m_fRadius);
-		DEBUGER->RegistOBB(obb, UTAG_PLAYER);
-
-		XMVECTOR xmvPlayerPos = pPlayer->GetPosition();
-
-		XMFLOAT4 xmf4Result;
-		XMStoreFloat4(&xmf4Result, XMVector3Length(xmvPlayerPos - xmvPos));
-		if (xmf4Result.x < m_fRadius) 
-			return true;
+			XMFLOAT4 xmf4Result;
+			XMStoreFloat4(&xmf4Result, XMVector3Length(xmvPlayerPos - xmvPos));
+			if (xmf4Result.x < m_fRadius) {
+				return true;
+				m_bCollision = true;
+			}
+		}
 	}
 	return false;
 }

@@ -52,7 +52,15 @@ protected:
 public:
 	bool		GetIsLoading() { return m_bIsLoading; };
 
-
+	//flag 충돌 처리
+	bool FlagCollision(CGameObject* pDest);
+	bool m_bCollision{ false };
+	XMFLOAT3 m_xmf3CollisionOffset;//충돌체가 있을 offset 위치
+	float m_fRadius{ 0.f };
+	void ResetCollisionValue(XMFLOAT3 xmf3CollisionOffset, float fRadius) {
+		m_xmf3CollisionOffset = xmf3CollisionOffset;
+		m_fRadius = fRadius;
+	}
 public:
 	CScene::CScene(SCENE_ID eID){ m_eSceneID = eID; }
 	~CScene() {}

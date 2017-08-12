@@ -180,6 +180,7 @@ void CRanger::KeyInput(float fDeltaTime)
 			}
 			CEffectMgr::GetInstance()->Play_Effect(L"Ranger_sk1_efc", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y, m_xmf3Position.z, 1.f),
 				XMVectorSet(0.f, 0.f, 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
+			ResetCollisionValue(m_xmf3Position, 0.f, 25.f, 5.f);
 		}
 		else if (INPUTMGR->KeyDown(VK_2)){				// 스킬 2 ------------------------
 			m_bSkill = true;
@@ -460,6 +461,37 @@ void CRanger::PhisicsLogic(map<utag, list<CGameObject*>>& mlpObject, float fDelt
 				m_pAnimater->SetCurAnimationIndex(ANIM_IDLE);
 				m_bStay = true;
 			}
+			break;
+		}
+	}
+	//skill collision proc
+	//for (auto pPlayer : mlpObject[utag::UTAG_PLAYER]) {
+	//	switch (m_nAnimNum) {
+	//	case ANIM_SKILL1_FIRE:
+	//		if (SkillCollision(pPlayer)) {
+	//			pPlayer->GetHeal(100.f);
+	//			m_bCollision = true;
+	//		}
+	//		break;
+	//	default:
+	//		break;
+	//	}
+	//}
+	m_fCollisionTime += fDeltaTime;
+	m_fAnimTime += fDeltaTime;
+	if (m_fCollisionTime > 2.f) {
+		m_fCollisionTime = 0.f;
+		m_bCollision = false;//2초에 한번씩 다시 맞게 한다.
+	}
+	for (auto pPlayer : mlpObject[utag::UTAG_BOSS1]) {
+		switch (m_nAnimNum) {
+		case ANIM_SKILL1_FIRE:
+			if (SkillCollision(pPlayer)) {
+				pPlayer->GetHeal(100.f);
+				m_bCollision = true;
+			}
+			break;
+		default:
 			break;
 		}
 	}
