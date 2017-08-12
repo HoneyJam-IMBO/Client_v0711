@@ -13,6 +13,7 @@ public:
 public:
 	//-----------------------------------scene--------------------------
 	virtual bool Begin();
+	void AldenardFly();
 	virtual bool End();
 
 	virtual void Animate(float fTimeElapsed);

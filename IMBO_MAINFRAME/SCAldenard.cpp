@@ -89,6 +89,8 @@ bool CSCAldenard::Begin()
 			m_ppPawn[i]->GetAnimater()->SetCurAnimationIndex(0);
 			CAMMGR->SetTarget(CAM_FREE, m_ppPawn[i]);
 			CAMMGR->GetCamera(CAM_FREE)->SetMode(MODE_FIX);
+			//들어오자마자 action move start
+			AldenardFly();
 		}
 		else {
 			//다른 player는 충돌처리를 허지 않으심
@@ -127,6 +129,18 @@ bool CSCAldenard::Begin()
 	return CScene::Begin();
 }
 
+void CSCAldenard::AldenardFly() {
+	//m_bFinalProc = true;//날면 마지막 단계임
+	int slot_id = NETWORKMGR->GetSLOT_ID();
+	m_ppPawn[slot_id]->ActionMoveEnd();
+
+	char action_move_file_name[128];
+	int action_move_id = slot_id + 1;
+	if (action_move_id> 3) action_move_id = rand() % 3 + 1;
+	sprintf(action_move_file_name, "Aldenard_Fly%d", action_move_id);
+
+	m_ppPawn[slot_id]->ActionMoveStart(action_move_file_name);
+}
 bool CSCAldenard::End()
 {
 	int nPawn = NETWORKMGR->GetServerPlayerInfos().size();
@@ -153,7 +167,21 @@ void CSCAldenard::Animate(float fTimeElapsed)
 	{
 		m_vecUI[i]->Update(fTimeElapsed);
 	}
-	if (INPUTMGR->KeyBoardDown(VK_T))
+	if (INPUTMGR->KeyBoardDown(VK_Y))
+	{
+		int slot_id = NETWORKMGR->GetSLOT_ID();
+		char action_move_file_name[128];
+		int action_move_id = slot_id + 1;
+		if (action_move_id> 3) action_move_id = rand() % 3 + 1;
+		sprintf(action_move_file_name, "Aldenard_Fly%d", action_move_id);
+		float fSpeed = CPositionInfoManager::GetActionSpeed(action_move_file_name);
+		CPositionInfoManager::SetActoionSpeed(action_move_file_name, fSpeed + 1.f);
+	}
+	else if (INPUTMGR->KeyBoardDown(VK_F))
+	{
+		AldenardFly();
+	}
+	else if (INPUTMGR->KeyBoardDown(VK_T))
 	{
 		SCENEMGR->ChangeScene(SCN_BOSS);
 	}

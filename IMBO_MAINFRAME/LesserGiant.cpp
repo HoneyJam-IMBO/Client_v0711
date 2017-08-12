@@ -95,6 +95,14 @@ void CLesserGiant::PhisicsLogic(map<utag, list<CGameObject*>>& mlpObject, float 
 void CLesserGiant::UpdatePattern(float fTimeElapsed)
 {
 	m_f3Diraction = XMFLOAT3(0.f, 0.f, 0.f);
+	if (m_pAnimater->GetCurAnimationIndex() == BOSS1_ANI_DYING || m_pAnimater->GetCurAnimationIndex() == BOSS1_ANI_DIE) {
+		if (m_pAnimater->GetCurAnimationInfo()->GetLoopDone()) {
+			m_pAnimater->SetCurAnimationIndex(BOSS1_ANI_DIE);
+		}
+		m_bCollision = true;
+		return;
+	}
+
 	float fDistance = 0.f;
 	m_fSpeed = 5.f;
 	if (nullptr != m_pTempPlayer)
@@ -131,6 +139,19 @@ void CLesserGiant::UpdatePattern(float fTimeElapsed)
 				{
 					m_fSpeed = 0.f;
 				}
+			}
+			else if (BOSS1_ANI_SKILL4 == m_nAnimNum)
+			{
+				m_fSpeed = 0.f;
+				if (m_fAnimTime < 7.0f &&m_fAnimTime > 1.f)
+				{
+					XMStoreFloat3(&m_f3Diraction, XMLoadFloat3(&m_xmf3Sk2Dir));
+					m_fSpeed = m_fSk2Speed * 0.9f;
+				}
+				//else if (m_fAnimTime >= 7.3f)
+				//{
+				//	m_fSpeed = 0.f;
+				//}
 			}
 
 			if (true == m_pAnimater->GetCurAnimationInfo()->GetLoopDone())
