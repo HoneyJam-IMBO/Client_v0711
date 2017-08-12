@@ -167,7 +167,11 @@ void CSCOriTown::Animate(float fTimeElapsed) {
 	}
 	if (INPUTMGR->KeyBoardDown(VK_T))
 	{
-		SCENEMGR->ChangeScene(SCN_ALDENAD);
+
+		BYTE Packet[MAX_BUFFER_LENGTH] = { 0, };
+		NETWORKMGR->WritePacket(PT_FTOWN_NPC2_READY_CS, Packet, WRITE_PT_FTOWN_NPC2_READY_CS(Packet, NETWORKMGR->GetROOM_ID() ,NETWORKMGR->GetSLOT_ID()));
+		NETWORKMGR->GetServerPlayerInfos()[NETWORKMGR->GetSLOT_ID()].READY = true;
+		//SCENEMGR->ChangeScene(SCN_ALDENAD);
 	}
 }
 
@@ -294,6 +298,10 @@ void CSCOriTown::NetworkProc(){
 			break;
 		case PT_MOUSE_LEFT_ATTACK_SC:
 			PROC_PT_MOUSE_LEFT_ATTACK_SC(dwProtocol, Packet, dwPacketLength);
+		case PT_FTOWN_NPC_READY_SC:
+			PROC_PT_FTOWN_NPC_READY_SC(dwProtocol, Packet, dwPacketLength);
+		case PT_FTOWN_NPC2_READY_SC:
+			PROC_PT_FTOWN_NPC2_READY_SC(dwProtocol, Packet, dwPacketLength);
 		}
 	}
 }
@@ -334,7 +342,30 @@ VOID CSCOriTown::PROC_PT_MOUSE_LEFT_ATTACK_SC(DWORD dwProtocol, BYTE * Packet, D
 
 	return VOID();
 }
+VOID CSCOriTown::PROC_PT_FTOWN_NPC_READY_SC(DWORD dwProtocol, BYTE * Packet, DWORD dwPacketLength) {
 
+
+	//
+	//
+	// 보스 전투 시작이야아아아아아아아
+	//
+	//
+
+
+	return VOID();
+}
+VOID CSCOriTown::PROC_PT_FTOWN_NPC2_READY_SC(DWORD dwProtocol, BYTE * Packet, DWORD dwPacketLength) {
+
+	//
+	// 알데나드 뿅
+	// 알데나드로 이동하는 로딩화면으로 바뀔것이다
+	//
+	for (int i = 0; i < NETWORKMGR->GetServerPlayerInfos().size(); ++i)
+		NETWORKMGR->GetServerPlayerInfos()[i].READY = false;
+
+	SCENEMGR->ChangeScene(SCN_ALDENAD);
+	return VOID();
+}
 void CSCOriTown::ReadMapData()
 {
 	//IMPORTER->Begin("../../Assets/SceneResource/test/test.scn");

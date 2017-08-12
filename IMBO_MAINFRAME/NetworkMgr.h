@@ -250,6 +250,7 @@ struct PLAYR_FREQUENCY_DATA {
 	bool bJump{ false };
 };
 struct ServerPlayerInfo {
+	BOOL READY{ 0 };
 	INT CHARACTER{ 0 };
 	//std::queue<PLAYR_FREQUENCY_DATA> m_qFREQUENCY_DATA;
 	PLAYR_FREQUENCY_DATA FREQUENCY_DATA;

@@ -179,7 +179,7 @@ void CKnight::KeyInput(float fDeltaTime)
 #endif 
 	//60fps로 업데이트, 네트워크 갱신
 	m_fTranslateTime += fDeltaTime;
-	if (m_fTranslateTime > 0.015) {
+	if (m_fTranslateTime > 0.033) {
 		m_fTranslateTime = 0;
 		PushServerData(m_xmf3Position.x, m_xmf3Position.y, m_xmf3Position.z, m_fAngleY, dwDirection, m_bJump);
 	}
