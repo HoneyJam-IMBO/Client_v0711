@@ -203,7 +203,35 @@ void CBard::GetServerData(float fTimeElapsed)
 
 	SetPosition(XMVectorSet(fPosX, fPosY, fPosZ, 1.0f));
 	SetRotation(XMMatrixRotationY(fAngleY));
-	m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
+	if (m_pAnimater->SetCurAnimationIndex(m_nAnimNum)) {
+		switch (m_nAnimNum) {
+		case BARD_ANIM_SKILL1_FIRE:
+			CEffectMgr::GetInstance()->Play_Effect(L"bard_skill1", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y + 1.f, m_xmf3Position.z, 1.f),
+				XMVectorSet(0.f, 0, 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
+			break;
+		case BARD_ANIM_SKILL2_FIRE:
+			ShootArrow(false, 0.f);
+			ShootArrow(false, 25.f);
+			ShootArrow(false, -25.f);
+			CEffectMgr::GetInstance()->Play_Effect(L"bard_skill2", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y + 1.f, m_xmf3Position.z, 1.f),
+				XMVectorSet(0.f, XMConvertToDegrees(m_fAngleY), 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
+			break;
+		case BARD_ANIM_SKILL3_FIRE:
+			CEffectMgr::GetInstance()->Play_Effect(L"bard_skill3", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y + 1.f, m_xmf3Position.z, 1.f),
+				XMVectorSet(0.f, XMConvertToDegrees(m_fAngleY), 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
+			break;
+		case BARD_ANIM_SKILL4_FIRE:
+			CEffectMgr::GetInstance()->Play_Effect(L"bard_skill4", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y + 1.f, m_xmf3Position.z, 1.f),
+				XMVectorSet(0.f, 0, 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
+			break;
+		case BARD_ANIM_HIT_F:
+			CEffectMgr::GetInstance()->Play_Effect(L"TestBlood", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y + 2.f, m_xmf3Position.z, 1.f),
+				XMVectorSet(0.f, 0.f, 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
+			break;
+		default:
+			break;
+		}
+	}
 	// АјАн
 	//if (m_bSkill == false && m_bJump == false && bAttack == true && m_nAnimNum != ANIM_ATTACK) {
 	//	CEffectMgr::GetInstance()->Play_Effect(L"Test2", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y + 2.f, m_xmf3Position.z, 1.f),
