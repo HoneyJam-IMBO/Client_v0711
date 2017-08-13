@@ -1004,16 +1004,30 @@ void CGameObject::SetNaviMeshIndex() {
 	}
 }
 
-bool CGameObject::SkillCollision(CGameObject * pPlayer)
+bool CGameObject::SkillCollision(CGameObject * pPlayer, bool bRelative)
 {
 	if (false == m_bCollision) {
 		if (m_fMaxCollisionOffsetTime > m_fAnimTime && m_fAnimTime > m_fMinCollisionOffsetTime) {//충돌체가 활동하는 시간동안
-			XMVECTOR xmvRight = XMVector3Normalize(GetRight()) * m_xmf3CollisionOffset.x;
-			XMVECTOR xmvUp = XMVector3Normalize(GetUp()) * m_xmf3CollisionOffset.y;
-			XMVECTOR xmvLook = XMVector3Normalize(GetLook()) * m_xmf3CollisionOffset.z;
 
-			XMVECTOR xmvPos = GetPosition();
-			xmvPos = xmvPos + xmvRight + xmvUp + xmvLook;
+			XMVECTOR xmvPos;
+			if (bRelative) {
+				XMVECTOR xmvRight = XMVector3Normalize(GetRight()) * m_xmf3CollisionOffset.x;
+				XMVECTOR xmvUp = XMVector3Normalize(GetUp()) * m_xmf3CollisionOffset.y;
+				XMVECTOR xmvLook = XMVector3Normalize(GetLook()) * m_xmf3CollisionOffset.z;
+
+				XMFLOAT4X4 xmf4x4World;
+				XMStoreFloat4x4(&xmf4x4World, GetWorldMtx());
+				xmvPos = XMVectorSet(xmf4x4World._41, xmf4x4World._42, xmf4x4World._43, 1.f);
+				xmvPos = xmvPos + xmvRight + xmvUp + xmvLook;
+			}
+			else {
+				XMFLOAT4X4 xmf4x4World;
+				XMStoreFloat4x4(&xmf4x4World, GetWorldMtx());
+				xmvPos = XMVectorSet(xmf4x4World._41, xmf4x4World._42, xmf4x4World._43, 1.f);
+				XMVECTOR xmvOffset = XMLoadFloat3(&m_xmf3CollisionOffset);
+				xmvPos = xmvPos + xmvOffset;
+			}
+			
 
 			BoundingOrientedBox obb;
 			XMStoreFloat3(&obb.Center, xmvPos);
@@ -1025,8 +1039,8 @@ bool CGameObject::SkillCollision(CGameObject * pPlayer)
 			XMFLOAT4 xmf4Result;
 			XMStoreFloat4(&xmf4Result, XMVector3Length(xmvPlayerPos - xmvPos));
 			if (xmf4Result.x < m_fRadius) {
-				return true;
 				m_bCollision = true;
+				return true;
 			}
 		}
 	}

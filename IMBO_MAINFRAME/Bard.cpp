@@ -64,6 +64,7 @@ void CBard::KeyInput(float fDeltaTime)
 		if (INPUTMGR->MouseLeftDown()) {					// 기본공격 ----------------------
 			m_bSkill = true;
 			m_nAnimNum = BARD_ANIM_ATTACK;
+			ShootArrow(false, 0.f);
 			m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
 		}
 		else if (INPUTMGR->KeyDown(VK_1)) {				// 스킬 1 ------------------------
@@ -73,12 +74,16 @@ void CBard::KeyInput(float fDeltaTime)
 
 			CEffectMgr::GetInstance()->Play_Effect(L"bard_skill1", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y + 1.f, m_xmf3Position.z, 1.f),
 				XMVectorSet(0.f, 0, 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
+			ResetCollisionValue(XMFLOAT3(0, 0, 0), 1.f, 10.f, 8.f);
 		}
 		else if (INPUTMGR->KeyDown(VK_2)) {				// 스킬 2 ------------------------
 			m_bSkill = true;
 			m_nAnimNum = BARD_ANIM_SKILL2_FIRE;
 			m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
 
+			ShootArrow(false, 0.f);
+			ShootArrow(false, 25.f);
+			ShootArrow(false, -25.f);
 			CEffectMgr::GetInstance()->Play_Effect(L"bard_skill2", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y + 1.f, m_xmf3Position.z, 1.f),
 				XMVectorSet(0.f, XMConvertToDegrees(m_fAngleY), 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
 		}
@@ -89,6 +94,7 @@ void CBard::KeyInput(float fDeltaTime)
 
 			CEffectMgr::GetInstance()->Play_Effect(L"bard_skill3", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y + 1.f, m_xmf3Position.z, 1.f),
 				XMVectorSet(0.f, XMConvertToDegrees(m_fAngleY), 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
+			ResetCollisionValue(XMFLOAT3(0, 0, 0), 0.3f, 0.8f, 7.f);
 		}
 		else if (INPUTMGR->KeyDown(VK_4)) {				// 스킬 3 ------------------------
 			m_bSkill = true;
@@ -97,6 +103,7 @@ void CBard::KeyInput(float fDeltaTime)
 
 			CEffectMgr::GetInstance()->Play_Effect(L"bard_skill4", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y + 1.f, m_xmf3Position.z, 1.f),
 				XMVectorSet(0.f, 0, 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
+			ResetCollisionValue(XMFLOAT3(0, 0, 0), 1.f, 10.f, 8.f);
 		}
 	}
 
@@ -336,10 +343,48 @@ CBard::CBard(string name, tag t, bool bSprit, CGameObject * pWeapon, INT slot_id
 	, m_SLOT_ID(slot_id)
 {
 	m_fSpeed = 14.f;
+	vector<CGameObject*> vecSkill;
+	
+	utag ut = UTAG_OTHERPLAYER_ARROW;
+	if (bSprit) ut = UTAG_ARROW;
+
+	for (int i = 0; i < 10; ++i)
+	{
+		CGameObject* pObject = new CBardSkillArrow("Bard_arrow", TAG_DYNAMIC_OBJECT);
+		pObject->SetActive(false);
+		pObject->SetUTag(ut);
+		pObject->Begin();
+		pObject->SetPosition(XMVectorSet(0, 0, 0, 1));
+		UPDATER->GetSpaceContainer()->AddObject(pObject);
+		vecSkill.push_back(pObject);
+	}
+	m_mapSkill["Bard_arrow"] = vecSkill;
 }
 
 CBard::~CBard()
 {
+}
+
+void CBard::ShootArrow(bool bStrong, float fAngle)
+{
+	string strName;
+	if (false == bStrong)
+		strName = "Bard_arrow";
+	else
+		strName = "StrongArrow";
+
+	size_t iArraySize = m_mapSkill[strName].size();
+	for (size_t i = 0; i < iArraySize; ++i) {
+		if (false == m_mapSkill[strName][i]->GetActive()) {
+			m_mapSkill[strName][i]->SetPosition(XMVectorSet(m_xmf3Position.x, m_xmf3Position.y + 3.f, m_xmf3Position.z, 1.f));
+			m_mapSkill[strName][i]->Rotate(XMMatrixRotationY(m_fAngleY + fAngle));
+			m_mapSkill[strName][i]->SetScale(XMVectorSet(0.5f, 0.5f, 0.5f, 1.f));
+			m_mapSkill[strName][i]->SetActive(true);
+
+			//((CElfSkillArrow*)m_mapSkill["Arrow1"][i])->GetTrail()->SetPosition(XMVectorSet(m_xmf3Position.x, m_xmf3Position.y + 3.f, m_xmf3Position.z, 1.f));
+			break;
+		}
+	}
 }
 
 void CBard::RegistToContainer()
@@ -350,6 +395,44 @@ void CBard::RegistToContainer()
 
 void CBard::PhisicsLogic(map<utag, list<CGameObject*>>& mlpObject, float fDeltaTime)
 {
+	m_fCollisionTime += fDeltaTime;
+	m_fAnimTime += fDeltaTime;
+	if (m_fCollisionTime > 2.f) {
+		m_fCollisionTime = 0.f;
+		m_bCollision = false;//2초에 한번씩 다시 맞게 한다.
+	}
+	for (auto pPlayer : mlpObject[utag::UTAG_PLAYER]) {
+		switch (m_nAnimNum) {
+		case BARD_ANIM_SKILL4_FIRE:
+			if (SkillCollision(pPlayer, false)) {//skill4
+				pPlayer->GetHeal(100.f);
+				m_bCollision = true;
+			}
+			break;
+		default:
+			break;
+		}
+	}
+	for (auto pBoss : mlpObject[utag::UTAG_BOSS1]) {
+		switch (m_nAnimNum) {
+
+		case BARD_ANIM_SKILL1_FIRE:
+			if (SkillCollision(pBoss)) {//skill1 boss에게 대미지
+				pBoss->GetDemaged(100.f);
+				m_bCollision = true;
+			}
+			break;
+		case BARD_ANIM_SKILL3_FIRE:
+			if (SkillCollision(pBoss, false)) {//skill4
+				pBoss->GetDemaged(100.f);
+				m_bCollision = true;
+			}
+			break;
+		
+		default:
+			break;
+		}
+	}
 	for (auto pObj : mlpObject[UTAG_NPC]) {
 		if (true == IsCollision(pObj))
 		{

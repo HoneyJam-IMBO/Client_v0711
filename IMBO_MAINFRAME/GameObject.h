@@ -154,7 +154,7 @@ public:
 	BoundingBox*	GetBBox() { return &m_OriBoundingBox; }
 
 
-	bool SkillCollision(CGameObject* pDest);
+	bool SkillCollision(CGameObject* pDest, bool bRelative = true);
 	//충돌 처리할 때 
 	float m_fAnimTime{ 0.f };//현재 진행중인 Animation time
 	float m_fCollisionTime{ 0.f };//collision 주기

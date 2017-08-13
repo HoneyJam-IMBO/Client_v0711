@@ -20,6 +20,10 @@ private:
 	void	UpdateSkill();
 	void	ShootArrow(bool bStrong, float fAngle = 0.f);
 private:
+	//skill 변수
+	float m_fSkillTime{ 0.f };
+	float m_fSkill1EndTime{ 0.f };//공격력 증가
+
 	bool	m_bSelRangeMode{ false };
 	XMFLOAT3 m_xmf3ClickPos;
 

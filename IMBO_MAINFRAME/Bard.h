@@ -1,5 +1,6 @@
 #pragma once
 #include "GameObject.h"
+#include "BardSkillArrow.h"
 class CBard :
 	public CGameObject
 {
@@ -41,6 +42,7 @@ private:
 private:	//½ºÅ³
 	map<string, vector<CGameObject*>>	m_mapSkill;
 
+	void ShootArrow(bool bStrong, float fAngle);
 	//bool	m_bSkill[SKM_END];
 	bool	m_bSkill{ false };
 

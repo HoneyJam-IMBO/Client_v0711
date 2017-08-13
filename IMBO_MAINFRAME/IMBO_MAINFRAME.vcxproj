@@ -172,6 +172,7 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BardSkillArrow.h" />
     <ClInclude Include="DemSkillArrow.h" />
     <ClInclude Include="WizardSkillArrow.h" />
     <ClInclude Include="ElfSkill1Efc.h" />
@@ -308,6 +309,7 @@
     <ClInclude Include="WaterRenderer.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="BardSkillArrow.cpp" />
     <ClCompile Include="DemSkillArrow.cpp" />
     <ClCompile Include="WizardSkillArrow.cpp" />
     <ClCompile Include="ElfSkill1Efc.cpp" />
