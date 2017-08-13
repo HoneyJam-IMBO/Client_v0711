@@ -198,15 +198,15 @@ void CKnight::GetServerData(float fTimeElapsed)
 #endif
 	//////
 	PLAYR_FREQUENCY_DATA data = NETWORKMGR->GetPlayerFrequencyData(m_SLOT_ID);
-	float fPosX = data.fPosX;
-	float fPosY = data.fPosY;
-	float fPosZ = data.fPosZ;
+	m_xmf3Position.x = data.fPosX;
+	m_xmf3Position.y = data.fPosY;
+	m_xmf3Position.z = data.fPosZ;
 
-	float fAngleY = data.fAngleY;
+	m_fAngleY = data.fAngleY;
 	//DWORD dwDirection = data.dwDirection;
 	if (m_nAnimNum != data.iAnimNum)
 		m_nAnimNum = data.iAnimNum;
-	bool bAttack = NETWORKMGR->GetAttack(m_SLOT_ID);
+
 	//////
 
 	//if (m_bJump == true && data.bJump == false) {
@@ -215,8 +215,9 @@ void CKnight::GetServerData(float fTimeElapsed)
 	//}
 	//m_bJump = data.bJump;
 
-	SetPosition(XMVectorSet(fPosX, fPosY, fPosZ, 1.0f));
-	SetRotation(XMMatrixRotationY(fAngleY));
+	SetPosition(XMVectorSet(m_xmf3Position.x, m_xmf3Position.y, m_xmf3Position.z, 1.0f));
+	SetRotation(XMMatrixRotationY(m_fAngleY));
+
 	m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
 	// АјАн
 	//if (m_bSkill == false && m_bJump == false && bAttack == true && m_nAnimNum != ANIM_ATTACK) {
@@ -312,7 +313,7 @@ void CKnight::Jumping(float fDeltaTime)
 		m_nAnimNum = KNIGHT_ANIM_JUMP_END;
 		m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
 	}
-}
+} 
 
 void CKnight::SetWeapon()
 {

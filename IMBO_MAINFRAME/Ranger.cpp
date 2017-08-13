@@ -294,7 +294,7 @@ void CRanger::KeyInput(float fDeltaTime)
 }
 
 void CRanger::PushServerData(float x, float y, float z, float fAngleY, int nAnimNum)
-{
+{ 
 	BYTE Packet[MAX_BUFFER_LENGTH] = { 0, };
 
 	NETWORKMGR->WritePacket(PT_FREQUENCY_MOVE_CS, Packet, WRITE_PT_FREQUENCY_MOVE_CS(Packet, x, y, z, fAngleY, nAnimNum));
@@ -306,15 +306,15 @@ void CRanger::GetServerData(float fTimeElapsed) {
 #endif
 	//////
 	PLAYR_FREQUENCY_DATA data = NETWORKMGR->GetPlayerFrequencyData(m_SLOT_ID);
-	float fPosX = data.fPosX;
-	float fPosY = data.fPosY;
-	float fPosZ = data.fPosZ;
+	m_xmf3Position.x = data.fPosX;
+	m_xmf3Position.y = data.fPosY;
+	m_xmf3Position.z = data.fPosZ;
 
-	float fAngleY = data.fAngleY;
+	m_fAngleY = data.fAngleY;
 	//DWORD dwDirection = data.dwDirection;
 	if (m_nAnimNum != data.iAnimNum)
 		m_nAnimNum = data.iAnimNum;
-	bool bAttack = NETWORKMGR->GetAttack(m_SLOT_ID);
+
 	//////
 
 	//if (m_bJump == true && data.bJump == false) {
@@ -323,8 +323,8 @@ void CRanger::GetServerData(float fTimeElapsed) {
 	//}
 	//m_bJump = data.bJump;
 
-	SetPosition(XMVectorSet(fPosX, fPosY, fPosZ, 1.0f));
-	SetRotation(XMMatrixRotationY(fAngleY));
+	SetPosition(XMVectorSet(m_xmf3Position.x, m_xmf3Position.y, m_xmf3Position.z, 1.0f));
+	SetRotation(XMMatrixRotationY(m_fAngleY));
 
 	if (m_pAnimater->SetCurAnimationIndex(m_nAnimNum)) {
 		switch (m_nAnimNum) {

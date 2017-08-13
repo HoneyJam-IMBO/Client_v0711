@@ -159,13 +159,13 @@ void CSCOriTown::Animate(float fTimeElapsed) {
 
 	
 	
-
-	NetworkProc();
+	for (int i = 0; i < 20; ++i)
+		NetworkProc();
 	CScene::Animate(fTimeElapsed);
 	if (m_bStartBossCam) {
 		if (false == m_pCamera->m_bActionCam) {
 			int boss_fight_start = 0;
-			m_pBoss->SetFirstAction(false);
+			m_pBoss->SetFirstAction(false); 
 		}
 	}
 	if (m_bFinalProc) {
@@ -429,8 +429,8 @@ VOID CSCOriTown::PROC_PT_FREQUENCY_MOVE_SC(DWORD dwProtocol, BYTE * Packet, DWOR
 	//network queue에 입력하구 대기한다.
 	//NETWORKMGR->GetServerPlayerInfos()[Data.SLOT_ID].m_qFREQUENCY_DATA.push(data);
 	NETWORKMGR->GetServerPlayerInfos()[Data.SLOT_ID].FREQUENCY_DATA = data;
-	BYTE PacketT[MAX_BUFFER_LENGTH] = { 0, };
-	NETWORKMGR->WritePacket(PT_TEMP, PacketT, WRITE_PT_TEMP(PacketT));
+	//BYTE PacketT[MAX_BUFFER_LENGTH] = { 0, };
+	//NETWORKMGR->WritePacket(PT_TEMP, PacketT, WRITE_PT_TEMP(PacketT));
 	return VOID();
 }
 
@@ -566,8 +566,8 @@ VOID CSCOriTown::PROC_PT_FTOWN_NPC2_READY_COMP_SC(DWORD dwProtocol, BYTE * Packe
 
 void CSCOriTown::ReadMapData()
 {
-	//IMPORTER->Begin("../../Assets/SceneResource/test/test.scn");
-	IMPORTER->Begin("../../Assets/SceneResource/FirstTown/FirstTown.scn");
+	IMPORTER->Begin("../../Assets/SceneResource/test/test.scn");
+	//IMPORTER->Begin("../../Assets/SceneResource/FirstTown/FirstTown.scn");
 	//IMPORTER->Begin("../../Assets/SceneResource/Aldenard/Aldenard.scn");
 	//IMPORTER->Begin("../../Assets/SceneResource/Sarasen/Sarasen.scn");
 	//output path
