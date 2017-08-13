@@ -107,6 +107,18 @@ void CRanger::UpdateSkill()
 
 			m_bSelRangeMode = false;
 			pCam->SetFixCamera(true);
+
+			XMVECTOR xmvClickPos;
+			xmvClickPos = XMLoadFloat3(&m_xmf3ClickPos);
+			XMVECTOR xmvPos = GetPosition();
+			XMVECTOR xmvDir = xmvClickPos - xmvPos;
+			XMFLOAT4 xmf4Length;
+			XMStoreFloat4(&xmf4Length, XMVector3Length(xmvDir));
+			xmvDir = XMVector3Normalize(xmvDir);
+
+			XMFLOAT3 xmf3Offset;
+			XMStoreFloat3(&xmf3Offset, xmvDir*xmf4Length.x);
+			ResetCollisionValue(xmf3Offset, 0.f, 10.f, 10.f);
 		}
 		if (true == m_bSkill && INPUTMGR->MouseRightDown())
 		{
@@ -180,7 +192,7 @@ void CRanger::KeyInput(float fDeltaTime)
 			}
 			CEffectMgr::GetInstance()->Play_Effect(L"Ranger_sk1_efc", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y, m_xmf3Position.z, 1.f),
 				XMVectorSet(0.f, 0.f, 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
-			ResetCollisionValue(m_xmf3Position, 0.f, 25.f, 5.f);
+			ResetCollisionValue(XMFLOAT3(0,0,0), 0.f, 0.8f, 10.f);
 		}
 		else if (INPUTMGR->KeyDown(VK_2)){				// 스킬 2 ------------------------
 			m_bSkill = true;
@@ -202,6 +214,7 @@ void CRanger::KeyInput(float fDeltaTime)
 			
 			CEffectMgr::GetInstance()->Play_Effect(L"Ranger_sk3_wheelwind", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y + 1.f, m_xmf3Position.z, 1.f),
 				XMVectorSet(0.f, 0.f, 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
+			ResetCollisionValue(XMFLOAT3(0, 0, 0), 0.f, 0.5f, 10.f);
 		}
 		else if (INPUTMGR->KeyDown(VK_4)){				// 스킬 3 ------------------------
 			m_bSkill = true;
@@ -209,7 +222,7 @@ void CRanger::KeyInput(float fDeltaTime)
 			m_nAnimNum = /*ANIM_SKILL2_FIRE*/ANIM_IDLE;
 			//m_nAnimNum = ANIM_SKILL4_FIRE;
 			m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
-
+			
 		}
 	}
 
@@ -483,11 +496,23 @@ void CRanger::PhisicsLogic(map<utag, list<CGameObject*>>& mlpObject, float fDelt
 		m_fCollisionTime = 0.f;
 		m_bCollision = false;//2초에 한번씩 다시 맞게 한다.
 	}
-	for (auto pPlayer : mlpObject[utag::UTAG_BOSS1]) {
+	for (auto pBoss : mlpObject[utag::UTAG_NPC]) {
 		switch (m_nAnimNum) {
 		case ANIM_SKILL1_FIRE:
-			if (SkillCollision(pPlayer)) {
-				pPlayer->GetHeal(100.f);
+			if (SkillCollision(pBoss)) {//char
+				pBoss->GetHeal(100.f);
+				m_bCollision = true;
+			}
+			break;
+		case ANIM_SKILL3_FIRE:
+			if (SkillCollision(pBoss)) {//boss
+				pBoss->GetDemaged(100.f);
+				m_bCollision = true;
+			}
+			break;
+		case ANIM_SKILL4_FIRE:
+			if (SkillCollision(pBoss, false)) {
+				pBoss->GetDemaged(100.f);
 				m_bCollision = true;
 			}
 			break;

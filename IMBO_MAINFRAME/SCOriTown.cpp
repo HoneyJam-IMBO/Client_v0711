@@ -143,6 +143,12 @@ bool CSCOriTown::End() {
 }
 
 void CSCOriTown::Animate(float fTimeElapsed) {
+
+	XMFLOAT3 xmf3Pos;
+	int slot_id = NETWORKMGR->GetSLOT_ID();
+	XMStoreFloat3(&xmf3Pos, m_ppPawn[slot_id]->GetPosition());
+	DEBUGER->AddGameText(25, 100, 100, YT_Color(200, 200, 0), L"%d %d %d", (int)xmf3Pos.x , (int)xmf3Pos.y, (int)xmf3Pos.z);
+
 	BYTE Packet[MAX_BUFFER_LENGTH] = { 0, };
 	int progress = 0;
 	for (auto player_info : NETWORKMGR->GetServerPlayerInfos()) {
