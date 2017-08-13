@@ -80,11 +80,13 @@ void CKnight::KeyInput(float fDeltaTime)
 			m_bSkill = true;
 			m_nAnimNum = KNIGHT_ANIM_ATTACK;
 			m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
-
+			//기본공격 충돌체 생성
+			ResetCollisionValue(XMFLOAT3(0, 0, 1), 0.f, 0.8f, 2.f);
 			INPUTMGR->SetMouseLeft(false);
 			RENDERER->SetRadialBlurTime(true, 0.3f);
 		}
 		else if (INPUTMGR->KeyDown(VK_1)) {				// 스킬 1 ------------------------
+			m_fSkill1EndTime = m_fSkillTime + 10.f;// skill1는 10초
 			m_bSkill = true;
 			m_nAnimNum = KNIGHT_ANIM_SKILL1_FIRE;
 			m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
@@ -97,6 +99,7 @@ void CKnight::KeyInput(float fDeltaTime)
 				XMVectorSet(0.f, 0.f, 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
 		}
 		else if (INPUTMGR->KeyDown(VK_2)) {				// 스킬 2 ------------------------
+			m_fSkill2EndTime = m_fSkillTime + 5.f;// skill2는 5초
 			m_bSkill = true;
 			m_nAnimNum = KNIGHT_ANIM_SKILL2_FIRE;
 			m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
@@ -111,7 +114,8 @@ void CKnight::KeyInput(float fDeltaTime)
 			CEffectMgr::GetInstance()->Play_Effect(L"Knight_sk3_con", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y + 1.f, m_xmf3Position.z, 1.f),
 				XMVectorSet(0.f, 0.f, 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
 		}
-		else if (INPUTMGR->KeyDown(VK_4)) {				// 스킬 3 ------------------------
+		else if (INPUTMGR->KeyDown(VK_4)) {				// 스킬 4 ------------------------
+			m_fSkill4EndTime = m_fSkillTime + 2.f;// skill4는 2초
 			m_bSkill = true;
 			m_nAnimNum = KNIGHT_ANIM_SKILL4_FIRE;
 			m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
@@ -386,11 +390,15 @@ void CKnight::UpdateSkill()
 			if (true == m_bAttak && KNIGHT_ANIM_ATTACK == m_nAnimNum)
 			{
 				m_nAnimNum = KNIGHT_ANIM_ATTACK2;
+				//기본공격 충돌체 생성
+				ResetCollisionValue(XMFLOAT3(0, 0, 1), 0.f, 0.8f, 2.f);
 				RENDERER->SetRadialBlurTime(true, 0.3f);
 			}
 			else if (true == m_bAttak && KNIGHT_ANIM_ATTACK2 == m_nAnimNum)
 			{
 				m_nAnimNum = KNIGHT_ANIM_ATTACK3;
+				//기본공격 충돌체 생성
+				ResetCollisionValue(XMFLOAT3(0, 0, 1), 0.f, 0.8f, 2.f);
 				RENDERER->SetRadialBlurTime(true, 0.4f);
 			}
 
@@ -440,6 +448,16 @@ void CKnight::RegistToContainer()
 
 void CKnight::PhisicsLogic(map<utag, list<CGameObject*>>& mlpObject, float fDeltaTime)
 {
+	//나이트 스킬 변수
+	m_fSkillTime += fDeltaTime;
+
+	m_fCollisionTime += fDeltaTime;
+	m_fAnimTime += fDeltaTime;
+	if (m_fCollisionTime > 2.f) {
+		m_fCollisionTime = 0.f;
+		m_bCollision = false;//2초에 한번씩 다시 맞게 한다.
+	}
+
 	for (auto pObj : mlpObject[UTAG_NPC]) {
 		if (true == IsCollision(pObj))
 		{
@@ -450,9 +468,45 @@ void CKnight::PhisicsLogic(map<utag, list<CGameObject*>>& mlpObject, float fDelt
 			break;
 		}
 	}
+	float fDemege = 100.f;
+	if (m_fSkill1EndTime > m_fSkillTime) {//skill1이 활성화 중이면 대미지 +
+		fDemege *= 1.5f;
+	}
+	//for (auto pBoss : mlpObject[utag::UTAG_BOSS1]) {
+	for (auto pBoss : mlpObject[utag::UTAG_NPC]) {
+		switch (m_nAnimNum) {
+		case KNIGHT_ANIM_ATTACK:
+			if (SkillCollision(pBoss)) {//char
+				pBoss->GetHeal(fDemege);
+				m_bCollision = true;
+			}
+			break;
+		case KNIGHT_ANIM_ATTACK2:
+			if (SkillCollision(pBoss)) {//boss
+				pBoss->GetDemaged(fDemege);
+				m_bCollision = true;
+			}
+			break;
+		case KNIGHT_ANIM_ATTACK3:
+			if (SkillCollision(pBoss)) {
+				pBoss->GetDemaged(fDemege);
+				m_bCollision = true;
+			}
+			break;
+		default:
+			break;
+		}
+	}
 }
 
 bool CKnight::GetDemaged(float fDemage) {
+	if (m_fSkillTime < m_fSkill4EndTime) {// skill 4
+		return false;//무적
+	}
+	if (m_fSkillTime < m_fSkill2EndTime) {// skill 2
+		fDemage *= 0.5f;//대미지 절반으로 감소
+	}
+
 	m_bDamaged = true;
 	CEffectMgr::GetInstance()->Play_Effect(L"TestBlood", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y + 2.f, m_xmf3Position.z, 1.f),
 		XMVectorSet(0.f, 0.f, 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));

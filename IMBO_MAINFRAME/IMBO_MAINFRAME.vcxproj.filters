@@ -528,6 +528,12 @@
     <Filter Include="1. 소스 파일\05. GameObject\-09. Collision">
       <UniqueIdentifier>{2deb2c8a-b75e-46c0-926c-20401c8cfa6d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="1. 소스 파일\05. GameObject\-07. Skill/Effect\4. Bard">
+      <UniqueIdentifier>{bc7f4703-2715-4e57-aa14-2b1aa3373c5b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="1. 소스 파일\05. GameObject\-07. Skill/Effect\4. Bard\1. b_Arrow">
+      <UniqueIdentifier>{a82fc242-b7bb-41d0-83fc-68150fcdd988}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Light.h">
@@ -928,6 +934,9 @@
     </ClInclude>
     <ClInclude Include="DemSkillArrow.h" />
     <ClInclude Include="WizardSkillArrow.h" />
+    <ClInclude Include="BardSkillArrow.h">
+      <Filter>1. 소스 파일\05. GameObject\-07. Skill/Effect\4. Bard\1. b_Arrow</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Light.cpp">
@@ -1316,6 +1325,9 @@
     </ClCompile>
     <ClCompile Include="WizardSkillArrow.cpp">
       <Filter>1. 소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="BardSkillArrow.cpp">
+      <Filter>1. 소스 파일\05. GameObject\-07. Skill/Effect\4. Bard\1. b_Arrow</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

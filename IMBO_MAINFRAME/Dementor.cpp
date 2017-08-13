@@ -63,6 +63,7 @@ void CDementor::UpdateSkill()
 	}
 	if (DEMENTOR_ANIM_SKILL1_CHARGING == m_nAnimNum) {
 		if (true == m_pAnimater->GetCurAnimationInfo()->GetLoopDone()) {
+			m_fSkill1EndTime = m_fSkillTime + 10.f;
 			m_nAnimNum = DEMENTOR_ANIM_SKILL1_FIRE;
 			m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
 		}
@@ -86,6 +87,18 @@ void CDementor::UpdateSkill()
 
 			CEffectMgr::GetInstance()->Play_Effect(L"Dementor_sk2_Shoot", XMVectorSet(m_xmf3ClickPos.x, m_xmf3ClickPos.y , m_xmf3ClickPos.z, 1.f),
 				XMVectorSet(0.f, XMConvertToDegrees(m_fAngleY), 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
+
+			XMVECTOR xmvClickPos;
+			xmvClickPos = XMLoadFloat3(&m_xmf3ClickPos);
+			XMVECTOR xmvPos = GetPosition();
+			XMVECTOR xmvDir = xmvClickPos - xmvPos;
+			XMFLOAT4 xmf4Length;
+			XMStoreFloat4(&xmf4Length, XMVector3Length(xmvDir));
+			xmvDir = XMVector3Normalize(xmvDir);
+
+			XMFLOAT3 xmf3Offset;
+			XMStoreFloat3(&xmf3Offset, xmvDir*xmf4Length.x);
+			ResetCollisionValue(xmf3Offset, 1.f, 1.5f, 5.f);
 
 			m_bSelRangeMode = false;
 			pCam->SetFixCamera(true);
@@ -210,6 +223,7 @@ void CDementor::KeyInput(float fDeltaTime)
 			m_nAnimNum = DEMENTOR_ANIM_SKILL3_FIRE;
 			m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
 
+			ResetCollisionValue(XMFLOAT3(0,0,0), 0.f, 5.0f, 5.f);
 			CEffectMgr::GetInstance()->Play_Effect(L"Dementor_sk3_con", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y + 1.f, m_xmf3Position.z, 1.f),
 				XMVectorSet(0.f, XMConvertToDegrees(m_fAngleY), 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
 		}
@@ -463,12 +477,15 @@ CDementor::CDementor(string name, tag t, bool bSprit, CGameObject * pWeapon, INT
 {
 	m_fSpeed = 14.f;
 
+	utag ut = UTAG_OTHERPLAYER_ARROW;
+	if (bSprit) ut = UTAG_ARROW;
+
 	vector<CGameObject*> vecSkill;
 	for (int i = 0; i < 12; ++i)
 	{
 		CGameObject* pObject = new CDemSkillArrow("Dementor_Arrow", TAG_DYNAMIC_OBJECT);
 		pObject->SetActive(false);
-		pObject->SetUTag(utag::UTAG_ARROW);
+		pObject->SetUTag(ut);
 		pObject->Begin();
 		pObject->SetPosition(XMVectorSet(0, 0, 0, 1));
 		UPDATER->GetSpaceContainer()->AddObject(pObject);
@@ -489,6 +506,16 @@ void CDementor::RegistToContainer()
 
 void CDementor::PhisicsLogic(map<utag, list<CGameObject*>>& mlpObject, float fDeltaTime)
 {
+	//스킬 변수
+	m_fSkillTime += fDeltaTime;
+
+	m_fCollisionTime += fDeltaTime;
+	m_fAnimTime += fDeltaTime;
+	if (m_fCollisionTime > 2.f) {
+		m_fCollisionTime = 0.f;
+		m_bCollision = false;//2초에 한번씩 다시 맞게 한다.
+	}
+
 	for (auto pObj : mlpObject[UTAG_NPC]) {
 		if (true == IsCollision(pObj))
 		{
@@ -499,9 +526,34 @@ void CDementor::PhisicsLogic(map<utag, list<CGameObject*>>& mlpObject, float fDe
 			break;
 		}
 	}
+
+	for (auto pBoss : mlpObject[utag::UTAG_BOSS1]) {
+		switch (m_nAnimNum) {
+		
+		case DEMENTOR_ANIM_SKILL3_FIRE:
+			if (SkillCollision(pBoss)) {//skill3 boss에게 대미지
+				pBoss->GetDemaged(100.f);
+				m_bCollision = true;
+			}
+			break;
+
+		case DEMENTOR_ANIM_SKILL2_FIRE:
+			if (SkillCollision(pBoss, false)) {//skill2 투사체 boss에게 대미지
+				pBoss->GetDemaged(100.f);
+				m_bCollision = true;
+			}
+			break;
+
+		default:
+			break;
+		}
+	}
 }
 
 bool CDementor::GetDemaged(float fDemage) {
+	if (m_fSkill1EndTime > m_fSkillTime) {
+		fDemage *= 0.75f;//skill 1이면 데미지 감소 10초간
+	}
 	m_bDamaged = true;
 	CEffectMgr::GetInstance()->Play_Effect(L"TestBlood", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y + 2.f, m_xmf3Position.z, 1.f),
 		XMVectorSet(0.f, 0.f, 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));

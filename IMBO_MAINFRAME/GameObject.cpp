@@ -1039,8 +1039,8 @@ bool CGameObject::SkillCollision(CGameObject * pPlayer, bool bRelative)
 			XMFLOAT4 xmf4Result;
 			XMStoreFloat4(&xmf4Result, XMVector3Length(xmvPlayerPos - xmvPos));
 			if (xmf4Result.x < m_fRadius) {
-				return true;
 				m_bCollision = true;
+				return true;
 			}
 		}
 	}

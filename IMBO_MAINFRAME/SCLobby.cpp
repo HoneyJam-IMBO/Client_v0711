@@ -208,11 +208,16 @@ void CSCLobby::CheckCollisionButton()
 				m_iClickRoomNum = -1;
 				m_pSelectUI->SetRender(false);
 
+#ifdef NO_SERVER
+
+#else
 				if (0 == NETWORKMGR->GetSLOT_ID()) {
 					BYTE Packet[MAX_BUFFER_LENGTH] = { 0, };
 					INT id = NETWORKMGR->GetNETWORK_ID();
 					NETWORKMGR->WritePacket(PT_ROOM_CREATE_CS, Packet, WRITE_PT_ROOM_CREATE_CS(Packet, id));
 				}
+#endif
+				
 				// ¾ÀÀüÈ¯
 				SCENEMGR->ChangeScene(SCN_HEROSEL);
 				m_bSceneChange = true;

@@ -169,6 +169,11 @@ void CSCHeroSel::Animate(float fTimeElapsed)
 	}
 	if (INPUTMGR->KeyDown(VK_F5_))
 	{
+#ifdef NO_SERVER
+		m_pHEROSEL_INFO[NETWORKMGR->GetSLOT_ID()].READY = true;
+		m_bSceneChange = true;
+		return;
+#else
 		m_pHEROSEL_INFO[NETWORKMGR->GetSLOT_ID()].READY = (1 + m_pHEROSEL_INFO[NETWORKMGR->GetSLOT_ID()].READY) % 2;
 		INT ROOM_ID = NETWORKMGR->GetROOM_ID();
 		INT SLOT_ID = NETWORKMGR->GetSLOT_ID();
@@ -177,6 +182,8 @@ void CSCHeroSel::Animate(float fTimeElapsed)
 		BYTE Packet[MAX_BUFFER_LENGTH] = { 0, };
 		NETWORKMGR->WritePacket(PT_ROOM_DATA_CHANGE_CS, Packet, WRITE_PT_ROOM_DATA_CHANGE_CS(Packet,
 			ROOM_ID, SLOT_ID, READY, CHARACTER));
+#endif
+		
 	}
 
 }
@@ -197,6 +204,9 @@ void CSCHeroSel::ProcessInput(float fTimeElapsed)
 }
 
 void CSCHeroSel::SetSelSceneInfo(int slot_id, int input_slot_id, bool is_ready, int character) {
+#ifdef NO_SERVER
+	NETWORKMGR->GetServerPlayerInfos()[NETWORKMGR->GetSLOT_ID()].CHARACTER = character;
+#endif
 
 	m_pHEROSEL_INFO[slot_id].SLOT_ID = input_slot_id;
 	m_pHEROSEL_INFO[slot_id].READY = is_ready;

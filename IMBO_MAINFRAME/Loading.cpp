@@ -213,7 +213,7 @@ void CLoading::LoadScene_HEROSEL()
 	RESOURCEMGR->CreateMultiMesh("../../Assets/Scene_HeroSel/SelectLup01M.gjm", "SelectLup01M");
 }
 
-#define TEST_CHAR 1
+#define TEST_CHAR 6
 void CLoading::LoadScene_ORITOWN()
 {
 	INT CHARACTER[4]{ 0,0,0,0 };
@@ -228,8 +228,9 @@ void CLoading::LoadScene_ORITOWN()
 	RESOURCEMGR->CreateTexture("skicon4", _T("../../Assets/Game_UI/skicon4.tga"), PS_TEXTURE, BIND_PS);
 
 #ifdef NO_SERVER
-	LoadUI_Skill(TEST_CHAR, 0, 0, 0);
-	NETWORKMGR->GetServerPlayerInfos()[0].CHARACTER = TEST_CHAR - 1;
+	//LoadUI_Skill(TEST_CHAR, 0, 0, 0);
+	//NETWORKMGR->GetServerPlayerInfos()[0].CHARACTER = TEST_CHAR - 1;
+	LoadUI_Skill(NETWORKMGR->GetServerPlayerInfos()[NETWORKMGR->GetSLOT_ID()].CHARACTER + 1, 0, 0, 0);
 #else
 	for (int i = 0; i < NETWORKMGR->GetServerPlayerInfos().size(); ++i)
 		CHARACTER[i] = NETWORKMGR->GetServerPlayerInfos()[i].CHARACTER + 1;
@@ -243,8 +244,8 @@ void CLoading::LoadScene_ORITOWN()
 	// Boss
 	RESOURCEMGR->CreateMultiMesh("../../Assets/SceneResource/GJM/Boss01L.gjm", "Boss01L");
 
-	//LoadScene("../../Assets/SceneResource/test/test.scn");
-	LoadScene("../../Assets/SceneResource/FirstTown/FirstTown.scn");
+	LoadScene("../../Assets/SceneResource/test/test.scn");
+	//LoadScene("../../Assets/SceneResource/FirstTown/FirstTown.scn");
 	//LoadScene("../../Assets/SceneResource/Aldenard/Aldenard.scn");	
 }
 
@@ -266,8 +267,9 @@ void CLoading::LoadScene_ALDENAD()
 	RESOURCEMGR->CreateTexture("skicon4", _T("../../Assets/Game_UI/skicon4.tga"), PS_TEXTURE, BIND_PS);
 
 #ifdef NO_SERVER
-	LoadUI_Skill(TEST_CHAR, 0, 0, 0);
-	NETWORKMGR->GetServerPlayerInfos()[0].CHARACTER = TEST_CHAR - 1;
+	//LoadUI_Skill(TEST_CHAR, 0, 0, 0);
+	//NETWORKMGR->GetServerPlayerInfos()[0].CHARACTER = TEST_CHAR - 1;
+	LoadUI_Skill(NETWORKMGR->GetServerPlayerInfos()[NETWORKMGR->GetSLOT_ID()].CHARACTER + 1, 0, 0, 0);
 #else
 	for (int i = 0; i < NETWORKMGR->GetServerPlayerInfos().size(); ++i)
 		CHARACTER[i] = NETWORKMGR->GetServerPlayerInfos()[i].CHARACTER + 1;
@@ -296,8 +298,9 @@ void CLoading::LoadScene_BOSS()
 
 
 #ifdef NO_SERVER
-	LoadUI_Skill(TEST_CHAR, 0, 0, 0);
-	NETWORKMGR->GetServerPlayerInfos()[0].CHARACTER = TEST_CHAR - 1;
+	//LoadUI_Skill(TEST_CHAR, 0, 0, 0);
+	//NETWORKMGR->GetServerPlayerInfos()[0].CHARACTER = TEST_CHAR - 1;
+	LoadUI_Skill(NETWORKMGR->GetServerPlayerInfos()[NETWORKMGR->GetSLOT_ID()].CHARACTER + 1, 0, 0, 0);
 #else
 	for (int i = 0; i < NETWORKMGR->GetServerPlayerInfos().size(); ++i)
 		CHARACTER[i] = NETWORKMGR->GetServerPlayerInfos()[i].CHARACTER + 1;
@@ -392,6 +395,8 @@ void CLoading::LoadUI_Skill(int cn1, int cn2, int cn3, int cn4)
 			CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/sister_skill1.dat", L"sister_skill1", 10);
 			CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/sister_skill2.dat", L"sister_skill2", 10);
 			CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/sister_skill3.dat", L"sister_skill3", 10);
+			CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/sister_skill4.dat", L"sister_skill4", 10);
+
 
 			RESOURCEMGR->CreateTexture("Trail03", _T("../../Assets/SceneResource/Trail/Trail03.tga"), PS_TEXTURE, BIND_PS);
 			RESOURCEMGR->CreateMultiMesh("../../Assets/SceneResource/GJM/THM.gjm", "THM");
@@ -420,6 +425,10 @@ void CLoading::LoadUI_Skill(int cn1, int cn2, int cn3, int cn4)
 
 			RESOURCEMGR->CreateTexture("Char_Select_5", _T("../../Assets/Scene_HeroSel/Char_Select_6.jpg"), PS_TEXTURE, BIND_PS);
 			RESOURCEMGR->CreateMultiMesh("../../Assets/SceneResource/GJM/Hum04F.gjm", "Hum04F");
+
+			CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/Arrow_Trace.dat", L"Bard_Arrow_Trace", 50);
+			RESOURCEMGR->CreateTexture("BardTrail01", _T("../../Assets/SceneResource/Trail/Trail01.tga"), PS_TEXTURE, BIND_PS);
+			RESOURCEMGR->CreateMultiMesh("../../Assets/SceneResource/GJM/Bard_arrow.gjm", "Bard_arrow");
 			break;
 		}
 	}

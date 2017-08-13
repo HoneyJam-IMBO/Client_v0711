@@ -136,11 +136,7 @@ void CRanger::KeyInput(float fDeltaTime)
 	DWORD dwDirection = 0;
 	m_xmvShift = XMVectorSet(0.0f, 0.0f, 0.0f, 0.f);
 
-#ifdef NO_SERVER
 
-#else
-	
-#endif
 	if (GetAsyncKeyState(VK_SHIFT))
 	{
 		m_fSpeed = 50.f;
@@ -228,12 +224,17 @@ void CRanger::KeyInput(float fDeltaTime)
 
 	// 스킬시 이동 점프X
 	if (true == m_bSkill) {
-		//60fps로 업데이트, 네트워크 갱신
+#ifdef NO_SERVER
+
+#else
 		m_fTranslateTime += fDeltaTime;
 		if (m_fTranslateTime > FREQUENCY_TRANSFER_TIME) {
 			m_fTranslateTime = 0;
 			PushServerData(m_xmf3Position.x, m_xmf3Position.y, m_xmf3Position.z, m_fAngleY, m_nAnimNum);
 		}
+#endif
+		//60fps로 업데이트, 네트워크 갱신
+		
 		return;
 	}
 	// 마우스 우클릭회전
@@ -495,6 +496,14 @@ void CRanger::RegistToContainer() {
 
 void CRanger::PhisicsLogic(map<utag, list<CGameObject*>>& mlpObject, float fDeltaTime)
 {
+
+	m_fCollisionTime += fDeltaTime;
+	m_fAnimTime += fDeltaTime;
+	if (m_fCollisionTime > 2.f) {
+		m_fCollisionTime = 0.f;
+		m_bCollision = false;//2초에 한번씩 다시 맞게 한다.
+	}
+
 	for (auto pObj : mlpObject[UTAG_NPC]) {
 		if (true == IsCollision(pObj))
 		{
@@ -506,32 +515,20 @@ void CRanger::PhisicsLogic(map<utag, list<CGameObject*>>& mlpObject, float fDelt
 		}
 	}
 	//skill collision proc
-	//for (auto pPlayer : mlpObject[utag::UTAG_PLAYER]) {
-	//	switch (m_nAnimNum) {
-	//	case ANIM_SKILL1_FIRE:
-	//		if (SkillCollision(pPlayer)) {
-	//			pPlayer->GetHeal(100.f);
-	//			m_bCollision = true;
-	//		}
-	//		break;
-	//	default:
-	//		break;
-	//	}
-	//}
-	m_fCollisionTime += fDeltaTime;
-	m_fAnimTime += fDeltaTime;
-	if (m_fCollisionTime > 2.f) {
-		m_fCollisionTime = 0.f;
-		m_bCollision = false;//2초에 한번씩 다시 맞게 한다.
-	}
-	for (auto pBoss : mlpObject[utag::UTAG_NPC]) {
+	for (auto pPlayer : mlpObject[utag::UTAG_PLAYER]) {
 		switch (m_nAnimNum) {
 		case ANIM_SKILL1_FIRE:
-			if (SkillCollision(pBoss)) {//char
-				pBoss->GetHeal(100.f);
+			if (SkillCollision(pPlayer)) {
+				pPlayer->GetHeal(100.f);
 				m_bCollision = true;
 			}
 			break;
+		default:
+			break;
+		}
+	}
+	for (auto pBoss : mlpObject[utag::UTAG_BOSS1]) {
+		switch (m_nAnimNum) {
 		case ANIM_SKILL3_FIRE:
 			if (SkillCollision(pBoss)) {//boss
 				pBoss->GetDemaged(100.f);
@@ -568,12 +565,15 @@ CRanger::CRanger(string name, tag t, bool bSprit, CGameObject* pWeapon, INT slot
 {
 	m_fSpeed = 10.f;
 
+	utag ut = UTAG_OTHERPLAYER_ARROW;
+	//if (bSprit) ut = UTAG_ARROW;
+
 	vector<CGameObject*> vecSkill;
 	for (int i = 0; i < 5; ++i)
 	{
 		CGameObject* pObject = new CElfSkillArrow("Arrow1", TAG_DYNAMIC_OBJECT);
 		pObject->SetActive(false);
-		pObject->SetUTag(utag::UTAG_ARROW);
+		pObject->SetUTag(ut);
 		pObject->Begin();
 		pObject->SetPosition(XMVectorSet(0, 0, 0, 1));
 		pObject->SetScale(XMVectorSet(5, 5, 5, 1));

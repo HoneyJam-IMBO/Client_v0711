@@ -28,7 +28,11 @@ private:
 
 	bool	m_bDamaged{ false };
 private:
-
+	//skill 변수
+	float m_fSkillTime{ 0.f };
+	float m_fSkill1EndTime{ 0.f };//공격력 증가
+	float m_fSkill2EndTime{ 0.f };//방어
+	float m_fSkill4EndTime{ 0.f };
 	UINT	m_nAnimNum{ 0 };
 	float	m_fAngleY{ 0.f };
 	float	m_fAngleX{ 0.f };

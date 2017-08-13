@@ -83,6 +83,7 @@ void CSister::KeyInput(float fDeltaTime)
 
 			CEffectMgr::GetInstance()->Play_Effect(L"sister_skill1", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y + 1.f, m_xmf3Position.z, 1.f),
 				XMVectorSet(0.f, XMConvertToDegrees(m_fAngleY), 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
+			ResetCollisionValue(XMFLOAT3(0,0,0), 1.f, 2.0f, 8.f);
 		}
 		else if (INPUTMGR->KeyDown(VK_2)) {				// 스킬 2 ------------------------
 			m_bSkill = true;
@@ -91,6 +92,7 @@ void CSister::KeyInput(float fDeltaTime)
 
 			CEffectMgr::GetInstance()->Play_Effect(L"sister_skill2", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y + 1.f, m_xmf3Position.z, 1.f),
 				XMVectorSet(0.f, XMConvertToDegrees(m_fAngleY), 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
+			ResetCollisionValue(XMFLOAT3(0, 0, 0), 1.f, 2.0f, 8.f);
 		}
 		else if (INPUTMGR->KeyDown(VK_3)) {				// 스킬 3 ------------------------
 			m_bSkill = true;
@@ -99,11 +101,16 @@ void CSister::KeyInput(float fDeltaTime)
 
 			CEffectMgr::GetInstance()->Play_Effect(L"sister_skill3", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y + 1.f, m_xmf3Position.z, 1.f),
 				XMVectorSet(0.f, XMConvertToDegrees(m_fAngleY), 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
+			
 		}
 		else if (INPUTMGR->KeyDown(VK_4)) {				// 스킬 3 ------------------------
 			m_bSkill = true;
 			m_nAnimNum = SISTER_ANIM_SKILL4_FIRE;
 			m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
+
+			CEffectMgr::GetInstance()->Play_Effect(L"sister_skill4", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y + 1.f, m_xmf3Position.z, 1.f),
+				XMVectorSet(0.f, XMConvertToDegrees(m_fAngleY), 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
+			ResetCollisionValue(XMFLOAT3(0, 0, 0), 0.5f, 1.2f, 8.f);
 		}
 	}
 
@@ -347,6 +354,7 @@ void CSister::UpdateSkill()
 		if (true == m_pAnimater->GetCurAnimationInfo()->GetLoopDone()) {
 			m_nAnimNum = SISTER_ANIM_SKILL3_FIRE;
 			m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
+			ResetCollisionValue(XMFLOAT3(0, 0, 0), 0.f, 1.0f, 8.f);
 		}
 		return;
 	}
@@ -390,6 +398,50 @@ void CSister::RegistToContainer()
 
 void CSister::PhisicsLogic(map<utag, list<CGameObject*>>& mlpObject, float fDeltaTime)
 {
+	m_fCollisionTime += fDeltaTime;
+	m_fAnimTime += fDeltaTime;
+	if (m_fCollisionTime > 2.f) {
+		m_fCollisionTime = 0.f;
+		m_bCollision = false;//2초에 한번씩 다시 맞게 한다.
+	}
+	//skill collision proc
+	for (auto pPlayer : mlpObject[utag::UTAG_PLAYER]) {
+		switch (m_nAnimNum) {
+		case SISTER_ANIM_SKILL1_FIRE:
+			if (SkillCollision(pPlayer)) {//skill3 boss에게 대미지
+				pPlayer->GetHeal(100.f);
+				m_bCollision = true;
+			}
+			break;
+		case SISTER_ANIM_SKILL3_FIRE:
+			if (SkillCollision(pPlayer, false)) {//skill2 투사체 boss에게 대미지
+				pPlayer->GetHeal(300.f);
+				m_bCollision = true;
+			}
+			break;
+		default:
+			break;
+		}
+	}
+	
+	for (auto pBoss : mlpObject[utag::UTAG_BOSS1]) {
+		switch (m_nAnimNum) {
+		case SISTER_ANIM_SKILL2_FIRE:
+			if (SkillCollision(pBoss, false)) {//skill2 투사체 boss에게 대미지
+				pBoss->GetDemaged(100.f);
+				m_bCollision = true;
+			}
+			break;
+		case SISTER_ANIM_SKILL4_FIRE:
+			if (SkillCollision(pBoss, false)) {//skill2 투사체 boss에게 대미지
+				pBoss->GetDemaged(100.f);
+				m_bCollision = true;
+			}
+			break;
+		default:
+			break;
+		}
+	}
 	for (auto pObj : mlpObject[UTAG_NPC]) {
 		if (true == IsCollision(pObj))
 		{

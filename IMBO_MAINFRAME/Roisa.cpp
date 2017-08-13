@@ -40,12 +40,20 @@ void CRoisa::RegistToContainer()
 void CRoisa::PhisicsLogic(map<utag, list<CGameObject*>>& mlpObject, float fDeltaTime)
 {
 	for (auto pArrow : mlpObject[utag::UTAG_ARROW]) {
+		//내가쏜 화살만 데미지를 입음
+		if (false == pArrow->GetActive()) continue;
+		if (true == IsCollision(pArrow))
+		{
+			GetDemaged(100.f);
+			pArrow->DisappearSkill();
+			break;
+		}
+	}
+	for (auto pArrow : mlpObject[utag::UTAG_OTHERPLAYER_ARROW]) {
 
 		if (false == pArrow->GetActive()) continue;
 		if (true == IsCollision(pArrow))
 		{
-			//XMStoreFloat3(&m_xmf3Position, XMLoadFloat3(&m_xmf3Position) + ((XMVector3Normalize(m_xmvShift) * -m_fSpeed) * fDeltaTime));
-			//SetPosition(XMLoadFloat3(&m_xmf3Position));
 			pArrow->DisappearSkill();
 			break;
 		}
