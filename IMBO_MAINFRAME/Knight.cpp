@@ -172,6 +172,7 @@ void CKnight::KeyInput(float fDeltaTime)
 	//มกวม
 	if (true == m_bJump)	Jumping(fDeltaTime);
 
+
 #ifdef NO_SERVER
 	return;
 #endif 

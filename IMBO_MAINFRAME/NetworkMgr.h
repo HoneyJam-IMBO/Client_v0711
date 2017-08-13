@@ -15,7 +15,7 @@
 
 #define WM_SOCKET WM_USER + 1
 
-#define FREQUENCY_TRANSFER_TIME 5
+#define FREQUENCY_TRANSFER_TIME 0.033
 
 #define MAX_BUFFER_SIZE         1024
 #define MAX_PACKET_SIZE         1024

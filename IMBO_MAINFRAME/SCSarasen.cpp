@@ -138,6 +138,7 @@ bool CSCSarasen::End()
 
 void CSCSarasen::Animate(float fTimeElapsed)
 {
+	BYTE Packet[MAX_BUFFER_LENGTH] = { 0, };
 	int slot_id = NETWORKMGR->GetSLOT_ID();
 	wchar_t wcPosition[126];
 	XMFLOAT3 xmf3Pos;
@@ -147,6 +148,7 @@ void CSCSarasen::Animate(float fTimeElapsed)
 	int z = xmf3Pos.z;
 	wsprintf(wcPosition, L"player_position : %d, %d, %d", x, y, z);
 	DEBUGER->AddGameText(20, 100, 100, YT_Color(255, 255, 0), wcPosition);
+#ifdef NO_SERVER
 
 	//flag인 부분 충돌 처리
 	if (FlagCollision(m_ppPawn[slot_id])) {
@@ -154,6 +156,9 @@ void CSCSarasen::Animate(float fTimeElapsed)
 		//flag인 부분과 충돌했다면!
 		m_ppPawn[slot_id]->SetbStay(true);//나 stay!
 		m_ppPawn[slot_id]->GetAnimater()->SetCurAnimationIndex(ANIM_IDLE);
+		
+
+
 	}
 	//보스캠 처리
 	if (m_bStartBossCam) {
@@ -164,6 +169,32 @@ void CSCSarasen::Animate(float fTimeElapsed)
 			//m_pBoss->SetFirstAction(false);
 		}
 	}
+#else
+	//flag인 부분 충돌 처리
+	if (FlagCollision(m_ppPawn[slot_id])) {
+	
+		//flag인 부분과 충돌했다면!
+		m_ppPawn[slot_id]->SetbStay(true);//나 stay!
+		m_ppPawn[slot_id]->GetAnimater()->SetCurAnimationIndex(ANIM_IDLE);
+		
+		NETWORKMGR->WritePacket(PT_SARASEN_BOSS_START_CS, Packet, WRITE_PT_SARASEN_BOSS_START_CS(Packet, NETWORKMGR->GetROOM_ID(), NETWORKMGR->GetSLOT_ID()));
+		NETWORKMGR->GetServerPlayerInfos()[NETWORKMGR->GetSLOT_ID()].READY = true;
+
+	}
+	if (INPUTMGR->KeyBoardDown(VK_R)) {
+		NETWORKMGR->WritePacket(PT_SARASEN_BOSS_ACTION_CAMERA_READY_CS, Packet, WRITE_PT_SARASEN_BOSS_ACTION_CAMERA_READY_CS(Packet, NETWORKMGR->GetROOM_ID(), NETWORKMGR->GetSLOT_ID()));
+		NETWORKMGR->GetServerPlayerInfos()[NETWORKMGR->GetSLOT_ID()].READY = true;
+	}
+	//보스캠 처리
+	if (m_bStartBossCam) {
+		if (false == m_pCamera->m_bActionCam) {
+			m_ppPawn[slot_id]->SetbStay(false);//나 stay 해제!
+			int boss_fight_start = 0; //보스 처음 움직임 무한루프 해제
+			//싸움 시작
+			//m_pBoss->SetFirstAction(false);
+		}
+	}
+#endif
 	NetworkProc();
 	CScene::Animate(fTimeElapsed);
 
@@ -323,6 +354,7 @@ VOID CSCSarasen::PROC_PT_SARASEN_BOSS_START_COMP_SC(DWORD dwProtocol, BYTE * Pac
 	// 보스 액션 캠 시자가아아아아아아앙
 	//
 	//
+	StartBoss2ActionCam();
 	return VOID();
 }
 VOID CSCSarasen::PROC_PT_SARASEN_BOSS_ACTION_CAMERA_READY_SC(DWORD dwProtocol, BYTE * Packet, DWORD dwPacketLength)
@@ -337,12 +369,14 @@ VOID CSCSarasen::PROC_PT_SARASEN_BOSS_ACTION_CAMERA_READY_COMP_SC(DWORD dwProtoc
 		NETWORKMGR->GetServerPlayerInfos()[i].READY = false;
 
 	//
-	//
+	// 액션캠 끄고
 	// 보스 전투 시작아아아아아ㅏ아아아
 	//
 	//
 	//
 	//
+	m_pCamera->ActionCamEnd();
+
 	return VOID();
 }
 VOID CSCSarasen::PROC_PT_FREQUENCY_MOVE_SC(DWORD dwProtocol, BYTE * Packet, DWORD dwPacketLength)
