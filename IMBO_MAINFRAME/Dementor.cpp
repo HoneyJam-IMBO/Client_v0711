@@ -561,7 +561,7 @@ CDementor::CDementor(string name, tag t, bool bSprit, CGameObject * pWeapon, INT
 	, m_pWeapon(pWeapon)
 	, m_SLOT_ID(slot_id)
 {
-	ResetHPValues(100, 100);
+	ResetHPValues(1000, 1000);
 	m_fSpeed = 14.f;
 
 	utag ut = UTAG_OTHERPLAYER_ARROW;
@@ -626,14 +626,14 @@ void CDementor::PhisicsLogic(map<utag, list<CGameObject*>>& mlpObject, float fDe
 		
 		case DEMENTOR_ANIM_SKILL3_FIRE:
 			if (SkillCollision(pBoss)) {//skill3 boss에게 대미지
-				pBoss->GetDemaged(100.f);
+				pBoss->GetDemaged(m_iCurAttack);
 				m_bCollision = true;
 			}
 			break;
 
 		case DEMENTOR_ANIM_SKILL2_FIRE:
 			if (SkillCollision(pBoss, false)) {//skill2 투사체 boss에게 대미지
-				pBoss->GetDemaged(100.f);
+				pBoss->GetDemaged(m_iCurAttack);
 				m_bCollision = true;
 			}
 			break;

@@ -489,7 +489,7 @@ CWizard::CWizard(string name, tag t, bool bSprit, CGameObject * pWeapon, INT slo
 	, m_pWeapon(pWeapon)
 	, m_SLOT_ID(slot_id)
 {
-	ResetHPValues(100, 100);
+	ResetHPValues(1000, 1000);
 	m_fSpeed = 14.f;
 
 	utag ut = UTAG_OTHERPLAYER_ARROW;
@@ -533,20 +533,20 @@ void CWizard::PhisicsLogic(map<utag, list<CGameObject*>>& mlpObject, float fDelt
 
 		case WIZARD_ANIM_SKILL1_FIRE:
 			if (SkillCollision(pBoss)) {//skill1 boss에게 대미지
-				pBoss->GetDemaged(100.f);
+				pBoss->GetDemaged(m_iCurAttack);
 				m_bCollision = true;
 			}
 			break;
 
 		case WIZARD_ANIM_SKILL2_FIRE:
 			if (SkillCollision(pBoss, false)) {//skill2
-				pBoss->GetDemaged(100.f);
+				pBoss->GetDemaged(m_iCurAttack);
 				m_bCollision = true;
 			}
 			break;
 		case WIZARD_ANIM_SKILL4_FIRE:
 			if (SkillCollision(pBoss, false)) {//skill4
-				pBoss->GetDemaged(100.f);
+				pBoss->GetDemaged(m_iCurAttack);
 				m_bCollision = true;
 			}
 			break;

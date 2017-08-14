@@ -157,7 +157,8 @@ public:
 		m_iCurHP = MIN(m_iMaxHP, m_iCurHP + iHeal);
 		return true; 
 	}
-
+	bool GetbCollision() { return m_bCollision; }
+	void SetbCollision(bool b) { m_bCollision = b; }
 public:
 	BoundingBox*	GetBBox() { return &m_OriBoundingBox; }
 
@@ -172,6 +173,7 @@ public:
 	bool m_bCollision{ false };//충돌은 한번만 할꺼니까. .
 	float m_fRadius{ 0.f };
 	void ResetCollisionValue(XMFLOAT3 xmf3CollisionOffset, float fMin, float fMax, float fRadius) {
+		m_fCollisionTime = 0.f;
 		m_xmf3CollisionOffset = xmf3CollisionOffset;
 		m_fMinCollisionOffsetTime = fMin;
 		m_fMaxCollisionOffsetTime = fMax;
@@ -203,8 +205,7 @@ public:
 		float m_fDefence{ 1.f };
 	}
 	virtual void GetSkilled(int nSkill);
-	virtual int GetSlotID();
-	
+
 protected:
 	//navi mesh index
 	int m_indexNaviMesh{ -1 };
