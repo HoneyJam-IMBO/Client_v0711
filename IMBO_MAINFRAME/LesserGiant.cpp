@@ -34,9 +34,32 @@ void CLesserGiant::Animate(float fTimeElapsed)
 
 	if(false == m_bAttack && false == m_bSkill)
 		m_fAccSkillTime += fTimeElapsed;
-
+#ifdef NO_SERVER
 	UpdatePattern(fTimeElapsed);
-	Move(XMVector3Normalize(XMLoadFloat3(&m_f3Diraction)), (m_fSpeed) * fTimeElapsed);
+	Move(XMVector3Normalize(XMLoadFloat3(&m_f3Diraction)), (m_fSpeed)* fTimeElapsed);
+#else
+	if (NETWORKMGR->GetSLOT_ID() == 0) {
+		UpdatePattern(fTimeElapsed);
+		Move(XMVector3Normalize(XMLoadFloat3(&m_f3Diraction)), (m_fSpeed)* fTimeElapsed);
+
+
+		BYTE Packet[MAX_BUFFER_LENGTH] = { 0, };
+		NETWORKMGR->WritePacket(PT_BOSS_FREQUENCY_MOVE_CS, Packet, WRITE_PT_BOSS_FREQUENCY_MOVE_CS(Packet, m_xmf3Position.x, m_xmf3Position.y, m_xmf3Position.z, m_fAngleY, m_nAnimNum));
+	}
+
+
+	else {
+		BOSS_FREQUENCY_DATA data = NETWORKMGR->GetBossInfo();
+		DEBUGER->AddGameText(25, 10, 350, YT_Color(0, 0, 200), L"%f %f %f %f %f", data.fPosX, data.fPosY, data.fPosZ, data.fAngleY, data.iAnimNum);
+
+		SetPositionServer(XMVectorSet(data.fPosX, data.fPosY, data.fPosZ, 1.0f));
+		SetRotation(XMMatrixRotationY(data.fAngleY));
+
+
+		m_pAnimater->SetCurAnimationIndex(data.iAnimNum);
+
+	}
+#endif
 
 	if (m_pAnimater) m_pAnimater->Update(TIMEMGR->GetTimeElapsed());
 	ActionMoveProc();
@@ -108,7 +131,7 @@ void CLesserGiant::PhisicsLogic(map<utag, list<CGameObject*>>& mlpObject, float 
 			}
 		}
 	}
-	m_fCollisionTime += fDeltaTime;
+	m_fCollisionTime += fDeltaTime; 
 	m_fAnimTime += fDeltaTime;
 	if (m_fCollisionTime > 2.f) {
 		m_fCollisionTime = 0.f;
@@ -164,6 +187,7 @@ void CLesserGiant::UpdatePattern(float fTimeElapsed)
 		XMFLOAT3 xmf3DotValue;
 		XMStoreFloat3(&xmf3DotValue, XMVector3Dot(XMVectorSet(0.f, 0.f, 1.f, 0.f), XMLoadFloat3(&m_f3Diraction)));
 		float fDirAngle = acosf(xmf3DotValue.x);
+		m_fAngleY = fDirAngle;
 		if (m_f3Diraction.x < 0.f) fDirAngle = XM_PI * 2.f - fDirAngle;
 
 		if (true == m_bSkill)

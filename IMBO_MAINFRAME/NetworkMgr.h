@@ -1,7 +1,7 @@
 #pragma once
 #include "LabClientSession.h"
 #include "SingleTon.h"
-#define NO_SERVER
+//#define NO_SERVER
 
 //protocol
 
@@ -251,6 +251,16 @@ struct PLAYR_FREQUENCY_DATA {
 	//bool bJump{ false };
 	INT iAnimNum{ 0 };
 };
+struct BOSS_FREQUENCY_DATA {
+	float fPosX{ 0.f };
+	float fPosY{ 0.f };
+	float fPosZ{ 0.f };
+	float fAngleY{ 0.f };
+	//DWORD dwDirection{ 0 };
+	//bool bJump{ false };
+	INT iAnimNum{ 0 };
+};
+
 struct ServerPlayerInfo {
 	BOOL READY{ 0 };
 	BOOL ACTIONCAM{ 0 };
@@ -351,15 +361,18 @@ public:
 	ServerPlayerInfo GetServerPlayerInfo(INT SLOT_ID);
 	void ClearServerPlayerInfo() { m_vServerPlayerInfo.clear(); }
 
+	BOSS_FREQUENCY_DATA GetBossInfo() { return m_tBossInfo; }
+	void SetBossInfo(BOSS_FREQUENCY_DATA data) { m_tBossInfo = data; }
 	//network pawn input 
 	PLAYR_FREQUENCY_DATA GetPlayerFrequencyData(INT SLOT_ID);
+	
 	BOOL GetAttack(INT SLOT_ID);
 private:
 	//hero sel scene에서 
 	vector<ServerPlayerInfo> m_vServerPlayerInfo;
 	//서버와의 통신을 총괄하는 객체
 	CLabClientSession* m_pClientSession;
-
+	BOSS_FREQUENCY_DATA m_tBossInfo;
 	//현재 내가 조종하는 플레이어는 scene에 존재한다.
 	INT NETWORK_ID{ 0 };
 	INT ROOM_ID{ 0 };
