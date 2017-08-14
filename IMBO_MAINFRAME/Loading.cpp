@@ -214,19 +214,71 @@ void CLoading::LoadScene_HEROSEL()
 }
 
 #define TEST_CHAR 6
+void LoadCharUI() {
+	
+	//hp
+	RESOURCEMGR->CreateTexture("Bar", _T("../../Assets/Game_UI/HpBar.png"), PS_TEXTURE, BIND_PS);
+	RESOURCEMGR->CreateTexture("Bar_Fill", _T("../../Assets/Game_UI/HpPoint.png"), PS_TEXTURE, BIND_PS);
+	RESOURCEMGR->CreateTexture("SkillBack", _T("../../Assets/Game_UI/SkillBack.png"), PS_TEXTURE, BIND_PS);
+	int nChracter = NETWORKMGR->GetServerPlayerInfo(NETWORKMGR->GetSLOT_ID()).CHARACTER;
+	switch (nChracter) {
+	case 0:
+		//char
+		RESOURCEMGR->CreateTexture("Char_Select_0", _T("../../Assets/Scene_HeroSel/Char_Select_1.jpg"), PS_TEXTURE, BIND_PS);
+		//skill
+		RESOURCEMGR->CreateTexture("ranger_skicon1", _T("../../Assets/Game_UI/ranger_skicon1.tga"), PS_TEXTURE, BIND_PS);
+		RESOURCEMGR->CreateTexture("ranger_skicon2", _T("../../Assets/Game_UI/ranger_skicon2.tga"), PS_TEXTURE, BIND_PS);
+		RESOURCEMGR->CreateTexture("ranger_skicon3", _T("../../Assets/Game_UI/ranger_skicon3.tga"), PS_TEXTURE, BIND_PS);
+		RESOURCEMGR->CreateTexture("ranger_skicon4", _T("../../Assets/Game_UI/ranger_skicon4.tga"), PS_TEXTURE, BIND_PS);
+		break;
+	case 1:
+		//char
+		RESOURCEMGR->CreateTexture("Char_Select_1", _T("../../Assets/Scene_HeroSel/Char_Select_2.jpg"), PS_TEXTURE, BIND_PS);
+		//skill
+		RESOURCEMGR->CreateTexture("knight_skicon1", _T("../../Assets/Game_UI/knight_skicon1.tga"), PS_TEXTURE, BIND_PS);
+		RESOURCEMGR->CreateTexture("knight_skicon2", _T("../../Assets/Game_UI/knight_skicon2.tga"), PS_TEXTURE, BIND_PS);
+		RESOURCEMGR->CreateTexture("knight_skicon3", _T("../../Assets/Game_UI/knight_skicon3.tga"), PS_TEXTURE, BIND_PS);
+		RESOURCEMGR->CreateTexture("knight_skicon4", _T("../../Assets/Game_UI/knight_skicon4.tga"), PS_TEXTURE, BIND_PS);
+	case 2:
+		//char
+		RESOURCEMGR->CreateTexture("Char_Select_2", _T("../../Assets/Scene_HeroSel/Char_Select_3.jpg"), PS_TEXTURE, BIND_PS);
+		//skill
+		RESOURCEMGR->CreateTexture("dementor_skicon1", _T("../../Assets/Game_UI/dementor_skicon1.tga"), PS_TEXTURE, BIND_PS);
+		RESOURCEMGR->CreateTexture("dementor_skicon2", _T("../../Assets/Game_UI/dementor_skicon2.tga"), PS_TEXTURE, BIND_PS);
+		RESOURCEMGR->CreateTexture("dementor_skicon3", _T("../../Assets/Game_UI/dementor_skicon3.tga"), PS_TEXTURE, BIND_PS);
+		RESOURCEMGR->CreateTexture("dementor_skicon4", _T("../../Assets/Game_UI/dementor_skicon4.tga"), PS_TEXTURE, BIND_PS);
+	case 3:
+		//char
+		RESOURCEMGR->CreateTexture("Char_Select_3", _T("../../Assets/Scene_HeroSel/Char_Select_4.jpg"), PS_TEXTURE, BIND_PS);
+		//skill
+		RESOURCEMGR->CreateTexture("sister_skicon1", _T("../../Assets/Game_UI/sister_skicon1.tga"), PS_TEXTURE, BIND_PS);
+		RESOURCEMGR->CreateTexture("sister_skicon2", _T("../../Assets/Game_UI/sister_skicon2.tga"), PS_TEXTURE, BIND_PS);
+		RESOURCEMGR->CreateTexture("sister_skicon3", _T("../../Assets/Game_UI/sister_skicon3.tga"), PS_TEXTURE, BIND_PS);
+		RESOURCEMGR->CreateTexture("sister_skicon4", _T("../../Assets/Game_UI/sister_skicon4.tga"), PS_TEXTURE, BIND_PS);
+	case 4:
+		//char
+		RESOURCEMGR->CreateTexture("Char_Select_4", _T("../../Assets/Scene_HeroSel/Char_Select_5.jpg"), PS_TEXTURE, BIND_PS);
+		//skill
+		RESOURCEMGR->CreateTexture("wizard_skicon1", _T("../../Assets/Game_UI/wizard_skicon1.tga"), PS_TEXTURE, BIND_PS);
+		RESOURCEMGR->CreateTexture("wizard_skicon2", _T("../../Assets/Game_UI/wizard_skicon2.tga"), PS_TEXTURE, BIND_PS);
+		RESOURCEMGR->CreateTexture("wizard_skicon3", _T("../../Assets/Game_UI/wizard_skicon3.tga"), PS_TEXTURE, BIND_PS);
+		RESOURCEMGR->CreateTexture("wizard_skicon4", _T("../../Assets/Game_UI/wizard_skicon4.tga"), PS_TEXTURE, BIND_PS);
+	case 5:
+		//char
+		RESOURCEMGR->CreateTexture("Char_Select_5", _T("../../Assets/Scene_HeroSel/Char_Select_6.jpg"), PS_TEXTURE, BIND_PS);
+		//skill
+		RESOURCEMGR->CreateTexture("bard_skicon1", _T("../../Assets/Game_UI/bard_skicon1.tga"), PS_TEXTURE, BIND_PS);
+		RESOURCEMGR->CreateTexture("bard_skicon2", _T("../../Assets/Game_UI/bard_skicon2.tga"), PS_TEXTURE, BIND_PS);
+		RESOURCEMGR->CreateTexture("bard_skicon3", _T("../../Assets/Game_UI/bard_skicon3.tga"), PS_TEXTURE, BIND_PS);
+		RESOURCEMGR->CreateTexture("bard_skicon4", _T("../../Assets/Game_UI/bard_skicon4.tga"), PS_TEXTURE, BIND_PS);
+	default:
+		break;
+	}
+}
 void CLoading::LoadScene_ORITOWN()
 {
 	INT CHARACTER[4]{ 0,0,0,0 };
-	RESOURCEMGR->CreateTexture("SkillBack", _T("../../Assets/Game_UI/SkillBack.png"), PS_TEXTURE, BIND_PS);
-	RESOURCEMGR->CreateTexture("Bar", _T("../../Assets/Game_UI/HpBar.png"), PS_TEXTURE, BIND_PS);
-	RESOURCEMGR->CreateTexture("Bar_Fill", _T("../../Assets/Game_UI/HpPoint.png"), PS_TEXTURE, BIND_PS);
-
-	RESOURCEMGR->CreateTexture("Char_Select_0", _T("../../Assets/Scene_HeroSel/Char_Select_1.jpg"), PS_TEXTURE, BIND_PS);
-	RESOURCEMGR->CreateTexture("skicon1", _T("../../Assets/Game_UI/skicon1.tga"), PS_TEXTURE, BIND_PS);
-	RESOURCEMGR->CreateTexture("skicon2", _T("../../Assets/Game_UI/skicon2.tga"), PS_TEXTURE, BIND_PS);
-	RESOURCEMGR->CreateTexture("skicon3", _T("../../Assets/Game_UI/skicon3.tga"), PS_TEXTURE, BIND_PS);
-	RESOURCEMGR->CreateTexture("skicon4", _T("../../Assets/Game_UI/skicon4.tga"), PS_TEXTURE, BIND_PS);
-
+	LoadCharUI();
 #ifdef NO_SERVER
 	//LoadUI_Skill(TEST_CHAR, 0, 0, 0);
 	//NETWORKMGR->GetServerPlayerInfos()[0].CHARACTER = TEST_CHAR - 1;
@@ -244,8 +296,8 @@ void CLoading::LoadScene_ORITOWN()
 	// Boss
 	RESOURCEMGR->CreateMultiMesh("../../Assets/SceneResource/GJM/Boss01L.gjm", "Boss01L");
 
-	//LoadScene("../../Assets/SceneResource/test/test.scn");
-	LoadScene("../../Assets/SceneResource/FirstTown/FirstTown.scn");
+	LoadScene("../../Assets/SceneResource/test/test.scn");
+	//LoadScene("../../Assets/SceneResource/FirstTown/FirstTown.scn");
 	//LoadScene("../../Assets/SceneResource/Aldenard/Aldenard.scn");	
 }
 
@@ -256,15 +308,7 @@ void CLoading::LoadScene_REPAIRTOWN()
 void CLoading::LoadScene_ALDENAD()
 {
 	INT CHARACTER[4]{ 0,0,0,0 };
-	RESOURCEMGR->CreateTexture("SkillBack", _T("../../Assets/Game_UI/SkillBack.png"), PS_TEXTURE, BIND_PS);
-	RESOURCEMGR->CreateTexture("Bar", _T("../../Assets/Game_UI/HpBar.png"), PS_TEXTURE, BIND_PS);
-	RESOURCEMGR->CreateTexture("Bar_Fill", _T("../../Assets/Game_UI/HpPoint.png"), PS_TEXTURE, BIND_PS);
-
-	RESOURCEMGR->CreateTexture("Char_Select_0", _T("../../Assets/Scene_HeroSel/Char_Select_1.jpg"), PS_TEXTURE, BIND_PS);
-	RESOURCEMGR->CreateTexture("skicon1", _T("../../Assets/Game_UI/skicon1.tga"), PS_TEXTURE, BIND_PS);
-	RESOURCEMGR->CreateTexture("skicon2", _T("../../Assets/Game_UI/skicon2.tga"), PS_TEXTURE, BIND_PS);
-	RESOURCEMGR->CreateTexture("skicon3", _T("../../Assets/Game_UI/skicon3.tga"), PS_TEXTURE, BIND_PS);
-	RESOURCEMGR->CreateTexture("skicon4", _T("../../Assets/Game_UI/skicon4.tga"), PS_TEXTURE, BIND_PS);
+	LoadCharUI();
 
 #ifdef NO_SERVER
 	//LoadUI_Skill(TEST_CHAR, 0, 0, 0);
@@ -286,16 +330,7 @@ void CLoading::LoadScene_ALDENAD()
 void CLoading::LoadScene_BOSS()
 {
 	INT CHARACTER[4]{ 0,0,0,0 };
-	RESOURCEMGR->CreateTexture("SkillBack", _T("../../Assets/Game_UI/SkillBack.png"), PS_TEXTURE, BIND_PS);
-	RESOURCEMGR->CreateTexture("Bar", _T("../../Assets/Game_UI/HpBar.png"), PS_TEXTURE, BIND_PS);
-	RESOURCEMGR->CreateTexture("Bar_Fill", _T("../../Assets/Game_UI/HpPoint.png"), PS_TEXTURE, BIND_PS);
-
-	RESOURCEMGR->CreateTexture("Char_Select_0", _T("../../Assets/Scene_HeroSel/Char_Select_1.jpg"), PS_TEXTURE, BIND_PS);
-	RESOURCEMGR->CreateTexture("skicon1", _T("../../Assets/Game_UI/skicon1.tga"), PS_TEXTURE, BIND_PS);
-	RESOURCEMGR->CreateTexture("skicon2", _T("../../Assets/Game_UI/skicon2.tga"), PS_TEXTURE, BIND_PS);
-	RESOURCEMGR->CreateTexture("skicon3", _T("../../Assets/Game_UI/skicon3.tga"), PS_TEXTURE, BIND_PS);
-	RESOURCEMGR->CreateTexture("skicon4", _T("../../Assets/Game_UI/skicon4.tga"), PS_TEXTURE, BIND_PS);
-
+	LoadCharUI();
 
 #ifdef NO_SERVER
 	//LoadUI_Skill(TEST_CHAR, 0, 0, 0);
@@ -401,7 +436,6 @@ void CLoading::LoadUI_Skill(int cn1, int cn2, int cn3, int cn4)
 			RESOURCEMGR->CreateTexture("Trail03", _T("../../Assets/SceneResource/Trail/Trail03.tga"), PS_TEXTURE, BIND_PS);
 			RESOURCEMGR->CreateMultiMesh("../../Assets/SceneResource/GJM/THM.gjm", "THM");
 			//RESOURCEMGR->CreateMultiMesh("../../Assets/SceneResource/GJM/OSW.gjm", "OSW");
-
 			break;
 		case wizard:
 			RESOURCEMGR->CreateTexture("Char_Select_4", _T("../../Assets/Scene_HeroSel/Char_Select_5.jpg"), PS_TEXTURE, BIND_PS);
@@ -414,8 +448,6 @@ void CLoading::LoadUI_Skill(int cn1, int cn2, int cn3, int cn4)
 			CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/Wizard_shot_trail.dat", L"Wizard_shot_trail", 100);
 
 			RESOURCEMGR->CreateMultiMesh("../../Assets/SceneResource/GJM/Wizard_Arrow.gjm", "Wizard_Arrow");
-
-
 			break;
 		case bard:
 			CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/bard_skill1.dat", L"bard_skill1");

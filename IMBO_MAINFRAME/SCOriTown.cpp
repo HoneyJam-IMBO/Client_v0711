@@ -474,7 +474,7 @@ void CSCOriTown::CreateBoss1()
 {
 	//보스 제작
 	m_pBoss = new CLesserGiant("Boss01L", TAG_DYNAMIC_OBJECT, m_ppPawn[0]);
-	m_pBoss->SetUTag(utag::UTAG_OTHERPLAYER);
+	m_pBoss->SetUTag(utag::UTAG_BOSS1);
 	m_pBoss->Begin();
 	m_pBoss->SetTerrainContainer(UPDATER->GetTerrainContainer());
 	m_pBoss->SetPosition(XMVectorSet(180, 0, 175, 0));
@@ -597,8 +597,8 @@ VOID CSCOriTown::PROC_PT_FTOWN_NPC2_READY_COMP_SC(DWORD dwProtocol, BYTE * Packe
 
 void CSCOriTown::ReadMapData()
 {
-	//IMPORTER->Begin("../../Assets/SceneResource/test/test.scn");
-	IMPORTER->Begin("../../Assets/SceneResource/FirstTown/FirstTown.scn");
+	IMPORTER->Begin("../../Assets/SceneResource/test/test.scn");
+	//IMPORTER->Begin("../../Assets/SceneResource/FirstTown/FirstTown.scn");
 	//IMPORTER->Begin("../../Assets/SceneResource/Aldenard/Aldenard.scn");
 	//IMPORTER->Begin("../../Assets/SceneResource/Sarasen/Sarasen.scn");
 	//output path
@@ -630,39 +630,85 @@ void CSCOriTown::CreateUI()
 	pUI = CHpBar::Create(XMLoadFloat2(&XMFLOAT2(WINSIZEX * 0.24f, WINSIZEY * 0.77f)), XMLoadFloat2(&XMFLOAT2(190.f, 6.f)));
 	m_vecUI.push_back(pUI);
 
-	string sName = "Char_Select_0";
-	pUI = CImageUI::Create(XMLoadFloat2(&XMFLOAT2(132.f, WINSIZEY * 0.8f)), XMLoadFloat2(&XMFLOAT2(50.f, 50.f)), sName, 10.f);
+	string sCharSelect;
+	string sSkill1;
+	string sSkill2;
+	string sSkill3;
+	string sSkill4;
+	int nChracter = NETWORKMGR->GetServerPlayerInfo(NETWORKMGR->GetSLOT_ID()).CHARACTER;
+	switch (nChracter) {
+	case 0:
+		sCharSelect = "Char_Select_0";
+		sSkill1 = "ranger_skicon1";
+		sSkill2 = "ranger_skicon2";
+		sSkill3 = "ranger_skicon3";
+		sSkill4 = "ranger_skicon4";
+
+		break;
+	case 1:
+		sCharSelect = "Char_Select_1";
+		sSkill1 = "knight_skicon1";
+		sSkill2 = "knight_skicon2";
+		sSkill3 = "knight_skicon3";
+		sSkill4 = "knight_skicon4";
+		break;
+	case 2:
+		sCharSelect = "Char_Select_2";
+		sSkill1 = "dementor_skicon1";
+		sSkill2 = "dementor_skicon2";
+		sSkill3 = "dementor_skicon3";
+		sSkill4 = "dementor_skicon4";
+		break;
+	case 3:
+		sCharSelect = "Char_Select_3";
+		sSkill1 = "sister_skicon1";
+		sSkill2 = "sister_skicon2";
+		sSkill3 = "sister_skicon3";
+		sSkill4 = "sister_skicon4";
+		break;
+	case 4:
+		sCharSelect = "Char_Select_4";
+		sSkill1 = "wizard_skicon1";
+		sSkill2 = "wizard_skicon2";
+		sSkill3 = "wizard_skicon3";
+		sSkill4 = "wizard_skicon4";
+		break;
+	case 5:
+		sCharSelect = "Char_Select_5";
+		sSkill1 = "bard_skicon1";
+		sSkill2 = "bard_skicon2";
+		sSkill3 = "bard_skicon3";
+		sSkill4 = "bard_skicon4";
+		break;
+	default:
+		break;
+	}
+
+	//player icon
+	pUI = CImageUI::Create(XMLoadFloat2(&XMFLOAT2(132.f, WINSIZEY * 0.8f)), XMLoadFloat2(&XMFLOAT2(50.f, 50.f)), sCharSelect, 10.f);
 	m_vecUI.push_back(pUI);
 
-	sName = "SkillBack";
-	pUI = CImageUI::Create(XMLoadFloat2(&XMFLOAT2(217.f, WINSIZEY * 0.82f)), XMLoadFloat2(&XMFLOAT2(30.f, 30.f)), sName, 9.f);
+	//skill back
+	string sSkillBack;
+	sSkillBack = "SkillBack";
+	pUI = CImageUI::Create(XMLoadFloat2(&XMFLOAT2(217.f, WINSIZEY * 0.82f)), XMLoadFloat2(&XMFLOAT2(30.f, 30.f)), sSkillBack, 9.f);
+	m_vecUI.push_back(pUI);
+	pUI = CImageUI::Create(XMLoadFloat2(&XMFLOAT2(277.f, WINSIZEY * 0.82f)), XMLoadFloat2(&XMFLOAT2(30.f, 30.f)), sSkillBack, 9.f);
+	m_vecUI.push_back(pUI);
+	pUI = CImageUI::Create(XMLoadFloat2(&XMFLOAT2(337.f, WINSIZEY * 0.82f)), XMLoadFloat2(&XMFLOAT2(30.f, 30.f)), sSkillBack, 9.f);
+	m_vecUI.push_back(pUI);
+	pUI = CImageUI::Create(XMLoadFloat2(&XMFLOAT2(397.f, WINSIZEY * 0.82f)), XMLoadFloat2(&XMFLOAT2(30.f, 30.f)), sSkillBack, 9.f);
 	m_vecUI.push_back(pUI);
 
-	pUI = CImageUI::Create(XMLoadFloat2(&XMFLOAT2(277.f, WINSIZEY * 0.82f)), XMLoadFloat2(&XMFLOAT2(30.f, 30.f)), sName, 9.f);
+	//skill icon
+	pUI = CImageUI::Create(XMLoadFloat2(&XMFLOAT2(217.f, WINSIZEY * 0.82f)), XMLoadFloat2(&XMFLOAT2(23.f, 23.f)), sSkill1, 9.5f);
 	m_vecUI.push_back(pUI);
-
-	pUI = CImageUI::Create(XMLoadFloat2(&XMFLOAT2(337.f, WINSIZEY * 0.82f)), XMLoadFloat2(&XMFLOAT2(30.f, 30.f)), sName, 9.f);
+	pUI = CImageUI::Create(XMLoadFloat2(&XMFLOAT2(277.f, WINSIZEY * 0.82f)), XMLoadFloat2(&XMFLOAT2(23.f, 23.f)), sSkill2, 9.5f);
 	m_vecUI.push_back(pUI);
-
-	pUI = CImageUI::Create(XMLoadFloat2(&XMFLOAT2(397.f, WINSIZEY * 0.82f)), XMLoadFloat2(&XMFLOAT2(30.f, 30.f)), sName, 9.f);
+	pUI = CImageUI::Create(XMLoadFloat2(&XMFLOAT2(337.f, WINSIZEY * 0.82f)), XMLoadFloat2(&XMFLOAT2(23.f, 23.f)), sSkill3, 9.5f);
 	m_vecUI.push_back(pUI);
-
-	sName = "skicon1";
-	pUI = CImageUI::Create(XMLoadFloat2(&XMFLOAT2(217.f, WINSIZEY * 0.82f)), XMLoadFloat2(&XMFLOAT2(23.f, 23.f)), sName, 9.5f);
+	pUI = CImageUI::Create(XMLoadFloat2(&XMFLOAT2(397.f, WINSIZEY * 0.82f)), XMLoadFloat2(&XMFLOAT2(23.f, 23.f)), sSkill4, 9.5f);
 	m_vecUI.push_back(pUI);
-
-	sName = "skicon2";
-	pUI = CImageUI::Create(XMLoadFloat2(&XMFLOAT2(277.f, WINSIZEY * 0.82f)), XMLoadFloat2(&XMFLOAT2(23.f, 23.f)), sName, 9.5f);
-	m_vecUI.push_back(pUI);
-
-	sName = "skicon3";
-	pUI = CImageUI::Create(XMLoadFloat2(&XMFLOAT2(337.f, WINSIZEY * 0.82f)), XMLoadFloat2(&XMFLOAT2(23.f, 23.f)), sName, 9.5f);
-	m_vecUI.push_back(pUI);
-
-	sName = "skicon4";
-	pUI = CImageUI::Create(XMLoadFloat2(&XMFLOAT2(397.f, WINSIZEY * 0.82f)), XMLoadFloat2(&XMFLOAT2(23.f, 23.f)), sName, 9.5f);
-	m_vecUI.push_back(pUI);
-
 }
 
 CSCOriTown::CSCOriTown(SCENE_ID eID, CDirectXFramework* pFrameWork) : CScene(eID) {
