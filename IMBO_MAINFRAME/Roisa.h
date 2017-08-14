@@ -21,9 +21,10 @@ public:
 	virtual void Animate(float fTimeElapsed);
 	virtual void RegistToContainer();
 
+	bool GetDemaged(int iDemege);
 public:
 	virtual void PhisicsLogic(map<utag, list<CGameObject*>>& mlpObject, float fDeltaTime);
-
+	virtual void GetSkilled(int nSkill);
 private:
 	void	UpdatePattern(float fTimeElapsed);
 

@@ -179,6 +179,17 @@ void CDementor::ShootArrow(bool bStrong, float fAngle)
 
 void CDementor::KeyInput(float fDeltaTime)
 {
+	if (m_pAnimater->GetCurAnimationIndex() == DEMENTOR_ANIM_DIE || m_pAnimater->GetCurAnimationIndex() == DEMENTOR_ANIM_DEADBODY) {
+		m_nAnimNum = DEMENTOR_ANIM_DIE;
+		if (m_pAnimater->GetCurAnimationInfo()->GetLoopDone()) {
+			m_nAnimNum = DEMENTOR_ANIM_DEADBODY;
+			m_pAnimater->SetCurAnimationIndex(DEMENTOR_ANIM_DEADBODY);
+		}
+
+		m_bCollision = true;
+		return;
+	}
+
 	DWORD dwDirection = 0;
 	m_xmvShift = XMVectorSet(0.0f, 0.0f, 0.0f, 0.f);
 
@@ -529,6 +540,7 @@ CDementor::CDementor(string name, tag t, bool bSprit, CGameObject * pWeapon, INT
 	, m_pWeapon(pWeapon)
 	, m_SLOT_ID(slot_id)
 {
+	ResetHPValues(100, 100);
 	m_fSpeed = 14.f;
 
 	utag ut = UTAG_OTHERPLAYER_ARROW;
@@ -604,9 +616,15 @@ void CDementor::PhisicsLogic(map<utag, list<CGameObject*>>& mlpObject, float fDe
 	}
 }
 
-bool CDementor::GetDemaged(float fDemage) {
+bool CDementor::GetDemaged(int iDemage) {
+	if (m_pAnimater->GetCurAnimationIndex() == DEMENTOR_ANIM_DIE || m_pAnimater->GetCurAnimationIndex() == DEMENTOR_ANIM_DEADBODY) {
+		m_nAnimNum = m_pAnimater->GetCurAnimationIndex();
+		m_bDamaged = false;
+		return false;//죽고있으면 충돌처리 하지 않음
+	}
+
 	if (m_fSkill1EndTime > m_fSkillTime) {
-		fDemage *= 0.75f;//skill 1이면 데미지 감소 10초간
+		iDemage *= 0.75f;//skill 1이면 데미지 감소 10초간
 	}
 	m_bDamaged = true;
 	CEffectMgr::GetInstance()->Play_Effect(L"TestBlood", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y + 2.f, m_xmf3Position.z, 1.f),
@@ -614,5 +632,16 @@ bool CDementor::GetDemaged(float fDemage) {
 
 	m_nAnimNum = DEMENTOR_ANIM_HIT_F;
 	m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
+
+	CGameObject::GetDemaged(iDemage);//내 hp 날리고!
+	if (m_iCurHP <= 0) {
+		m_nAnimNum = DEMENTOR_ANIM_DIE;
+		m_pAnimater->SetCurAnimationIndex(DEMENTOR_ANIM_DIE);
+	}
 	return true;
+}
+
+void CDementor::GetSkilled(int nSkill)
+{
+	int slot_id = m_SLOT_ID;
 }

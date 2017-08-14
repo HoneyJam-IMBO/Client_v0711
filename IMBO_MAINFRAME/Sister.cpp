@@ -45,6 +45,17 @@ bool CSister::End()
 
 void CSister::KeyInput(float fDeltaTime)
 {
+	if (m_pAnimater->GetCurAnimationIndex() == SISTER_ANIM_DIE || m_pAnimater->GetCurAnimationIndex() == SISTER_ANIM_DEADBODY) {
+		m_nAnimNum = SISTER_ANIM_DIE;
+		if (m_pAnimater->GetCurAnimationInfo()->GetLoopDone()) {
+			m_nAnimNum = SISTER_ANIM_DEADBODY;
+			m_pAnimater->SetCurAnimationIndex(SISTER_ANIM_DEADBODY);
+		}
+
+		m_bCollision = true;
+		return;
+	}
+
 	DWORD dwDirection = 0;
 	m_xmvShift = XMVectorSet(0.0f, 0.0f, 0.0f, 0.f);
 
@@ -402,6 +413,7 @@ CSister::CSister(string name, tag t, bool bSprit, CGameObject * pWeapon, INT slo
 	//, m_pLeftWeapon(pWeapon)
 	, m_SLOT_ID(slot_id)
 {
+	ResetHPValues(100, 100);
 	m_fSpeed = 10.f;
 	m_pLeftWeapon = new CGameObject("THM", TAG_DYNAMIC_OBJECT);
 	m_pLeftWeapon->Begin();
@@ -479,12 +491,29 @@ void CSister::PhisicsLogic(map<utag, list<CGameObject*>>& mlpObject, float fDelt
 	}
 }
 
-bool CSister::GetDemaged(float fDemage) {
+bool CSister::GetDemaged(int iDemage) {
+	if (m_pAnimater->GetCurAnimationIndex() == SISTER_ANIM_DIE || m_pAnimater->GetCurAnimationIndex() == SISTER_ANIM_DEADBODY) {
+		m_nAnimNum = m_pAnimater->GetCurAnimationIndex();
+		m_bDamaged = false;
+		return false;//죽고있으면 충돌처리 하지 않음
+	}
+
 	m_bDamaged = true;
 	CEffectMgr::GetInstance()->Play_Effect(L"TestBlood", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y + 2.f, m_xmf3Position.z, 1.f),
 		XMVectorSet(0.f, 0.f, 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
 
 	m_nAnimNum = SISTER_ANIM_HIT_F;
 	m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
+
+	CGameObject::GetDemaged(iDemage);//내 hp 날리고!
+	if (m_iCurHP <= 0) {
+		m_nAnimNum = SISTER_ANIM_DIE;
+		m_pAnimater->SetCurAnimationIndex(SISTER_ANIM_DIE);
+	}
 	return true;
+}
+
+void CSister::GetSkilled(int nSkill)
+{
+	int slot_id = m_SLOT_ID;
 }

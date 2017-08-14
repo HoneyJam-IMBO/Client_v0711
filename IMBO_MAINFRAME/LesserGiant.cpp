@@ -1,16 +1,32 @@
 #include "stdafx.h"
 #include "LesserGiant.h"
-
+#include "SCOriTown.h"
 
 CLesserGiant::CLesserGiant(string name, tag t, CGameObject* pTarget)
 	: CGameObject(name, t)
 {
+	ResetHPValues(2000.f, 2000.f);//레서 자이언트는 hp가 무려 2천이에오
 	m_pTempPlayer = pTarget;
 	m_f3Diraction = XMFLOAT3(0.f, 0.f, 0.f);
 }
 
 CLesserGiant::~CLesserGiant()
 {
+}
+
+bool CLesserGiant::GetDemaged(int iDemege){
+
+	//뭔가 이팩트가 있으면 좋겠음 ㅠ
+	CGameObject::GetDemaged(iDemege);
+	if (m_iCurHP == 0) {
+		m_pAnimater->SetCurAnimationIndex(BOSS1_ANI_DYING);
+	}
+	return true;
+}
+
+void CLesserGiant::GetSkilled(int nSkill)
+{
+	int slot_id = 5;
 }
 
 void CLesserGiant::Animate(float fTimeElapsed)
@@ -65,25 +81,25 @@ void CLesserGiant::PhisicsLogic(map<utag, list<CGameObject*>>& mlpObject, float 
 			switch (m_nAnimNum) {
 			case BOSS1_ANI_SKILL1:
 				if (SkillCollision(pPlayer)) {
-					pPlayer->GetDemaged(100.f);
+					pPlayer->GetDemaged(m_iAttack);//100
 					m_bCollision = true;
 				}
 				break;
 			case BOSS1_ANI_SKILL2:
 				if (SkillCollision(pPlayer)) {
-					pPlayer->GetDemaged(100.f);
+					pPlayer->GetDemaged(m_iAttack * 2);//200
 					m_bCollision = true;
 				}
 				break;
 			case BOSS1_ANI_SKILL3:
 				if (SkillCollision(pPlayer)) {
-					pPlayer->GetDemaged(100.f);
+					pPlayer->GetDemaged(m_iAttack * 2);//200
 					m_bCollision = true;
 				}
 				break;
 			case BOSS1_ANI_SKILL4:
 				if (SkillCollision(pPlayer)) {
-					pPlayer->GetDemaged(100.f);
+					pPlayer->GetDemaged(m_iAttack * 1.5);//150
 					m_bCollision = true;
 				}
 				break;
@@ -102,6 +118,25 @@ void CLesserGiant::PhisicsLogic(map<utag, list<CGameObject*>>& mlpObject, float 
 
 void CLesserGiant::UpdatePattern(float fTimeElapsed)
 {
+	//set target
+	CGameObject* pTarget = nullptr;
+	int nPawn = NETWORKMGR->GetServerPlayerInfos().size();
+	CSCOriTown* pScene = (CSCOriTown*)SCENEMGR->GetPresentScene();
+	for (int i = 0; i < nPawn; ++i) {
+		if (pScene->m_ppPawn[i]->GetAnimater()->GetCurAnimationIndex() != ANIM_DEADBODY) {
+			//죽은게 아니라면 보이는 가장 첫번째 녀석을 쫓는다.
+			pTarget = pScene->m_ppPawn[i];
+		}
+	}
+	m_pTempPlayer = pTarget;
+	if (nullptr == m_pTempPlayer) {
+		//타겟이 없으면 아이들을 무한반복한다.
+		m_pAnimater->SetCurAnimationIndex(BOSS1_ANI_IDLE);
+		m_fSpeed = 0;//움직이지도 않는다.
+		return;
+	}
+	//set target
+
 	if (m_bFirstAction) return;//첫번째 액션중이면 return
 	m_f3Diraction = XMFLOAT3(0.f, 0.f, 0.f);
 	if (m_pAnimater->GetCurAnimationIndex() == BOSS1_ANI_DYING || m_pAnimater->GetCurAnimationIndex() == BOSS1_ANI_DIE) {

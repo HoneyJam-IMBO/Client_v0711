@@ -54,6 +54,17 @@ bool CKnight::End()
 
 void CKnight::KeyInput(float fDeltaTime)
 {
+	if (m_pAnimater->GetCurAnimationIndex() == KNIGHT_ANIM_DIE || m_pAnimater->GetCurAnimationIndex() == KNIGHT_ANIM_DEADBODY) {
+		m_nAnimNum = KNIGHT_ANIM_DIE;
+		if (m_pAnimater->GetCurAnimationInfo()->GetLoopDone()) {
+			m_nAnimNum = KNIGHT_ANIM_DEADBODY;
+			m_pAnimater->SetCurAnimationIndex(KNIGHT_ANIM_DEADBODY);
+		}
+
+		m_bCollision = true;
+		return;
+	}
+
 	DWORD dwDirection = 0;
 	m_xmvShift = XMVectorSet(0.0f, 0.0f, 0.0f, 0.f);
 
@@ -451,6 +462,7 @@ CKnight::CKnight(string name, tag t, bool bSprit, CGameObject * pWeapon, INT slo
 	, m_pWeapon(pWeapon)
 	, m_SLOT_ID(slot_id)
 {
+	ResetHPValues(100, 100);
 	m_fSpeed = 10.f;
 	m_pLeftWeapon = new CGameObject("OSW", TAG_DYNAMIC_OBJECT);
 	m_pLeftWeapon->Begin();
@@ -531,12 +543,18 @@ void CKnight::PhisicsLogic(map<utag, list<CGameObject*>>& mlpObject, float fDelt
 	}
 }
 
-bool CKnight::GetDemaged(float fDemage) {
+bool CKnight::GetDemaged(int iDemage) {
+	if (m_pAnimater->GetCurAnimationIndex() == KNIGHT_ANIM_DIE || m_pAnimater->GetCurAnimationIndex() == KNIGHT_ANIM_DEADBODY) {
+		m_nAnimNum = m_pAnimater->GetCurAnimationIndex();
+		m_bDamaged = false;
+		return false;//죽고있으면 충돌처리 하지 않음
+	}
+
 	if (m_fSkillTime < m_fSkill4EndTime) {// skill 4
 		return false;//무적
 	}
 	if (m_fSkillTime < m_fSkill2EndTime) {// skill 2
-		fDemage *= 0.5f;//대미지 절반으로 감소
+		iDemage *= 0.5f;//대미지 절반으로 감소
 	}
 
 	m_bDamaged = true;
@@ -545,5 +563,16 @@ bool CKnight::GetDemaged(float fDemage) {
 
 	m_nAnimNum = KNIGHT_ANIM_HIT_F;
 	m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
+
+	CGameObject::GetDemaged(iDemage);//내 hp 날리고!
+	if (m_iCurHP <= 0) {
+		m_nAnimNum = KNIGHT_ANIM_DIE;
+		m_pAnimater->SetCurAnimationIndex(KNIGHT_ANIM_DIE);
+	}
 	return true;
+}
+
+void CKnight::GetSkilled(int nSkill)
+{
+	int slot_id = m_SLOT_ID;
 }

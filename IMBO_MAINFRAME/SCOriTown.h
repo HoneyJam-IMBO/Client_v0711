@@ -39,6 +39,9 @@ public:
 	CGameObject* GetPlayer() { return m_ppPawn ? m_ppPawn[NETWORKMGR->GetSLOT_ID()] : nullptr; }
 	//test
 	//vector<XMFLOAT3> m_vPickPos;
+	//CGameObject* m_pObject{ nullptr };
+	CGameObject** m_ppPawn{ nullptr };
+	//CPlayer* m_pPlayer{ nullptr };
 private:
 	CLesserGiant*	m_pBoss{ nullptr };
 	void StartBoss1ActionCam();
@@ -54,7 +57,5 @@ private:
 	bool m_bFinalProc{ false };
 	bool m_bStartBossCam{ false };
 private:
-	//CGameObject* m_pObject{ nullptr };
-	CGameObject** m_ppPawn{ nullptr };
-	//CPlayer* m_pPlayer{ nullptr };
+	
 };

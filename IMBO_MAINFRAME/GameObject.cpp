@@ -1047,6 +1047,11 @@ bool CGameObject::SkillCollision(CGameObject * pPlayer, bool bRelative)
 	return false;
 }
 
+//스킬의 영향을 받는 게임 오브젝트 인덱스
+void CGameObject::GetSkilled(int nSkill){
+
+}
+
 //생성자는 위에서부터 
 CGameObject::CGameObject(string name, tag t) : CObject(name, t) {
 	XMStoreFloat4x4(&m_xmf4x4World, XMMatrixIdentity());
