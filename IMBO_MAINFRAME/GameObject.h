@@ -149,8 +149,15 @@ public:
 	void SetNaviMeshIndex();
 
 	//demage proc
-	virtual bool GetDemaged(float fDemage) { return true; };
-	virtual bool GetHeal(float fHeal) { return true; }
+	virtual bool GetDemaged(int iDemage) { 
+		m_iCurHP = MAX(0, m_iCurHP - iDemage);
+		return true; 
+	};
+	virtual bool GetHeal(int iHeal) { 
+		m_iCurHP = MIN(m_iMaxHP, m_iCurHP + iHeal);
+		return true; 
+	}
+	
 public:
 	BoundingBox*	GetBBox() { return &m_OriBoundingBox; }
 
@@ -172,6 +179,30 @@ public:
 		m_fAnimTime = 0.f;
 		m_bCollision = false;
 	}
+
+	//maxhp가 set되면 cur hp도 maxhp로 변한다. 
+	void ResetHPValues(int fMaxHP, int fCurHP) {
+		m_iMaxHP = fMaxHP;
+		m_iCurHP = fCurHP;
+	}
+	void SetMaxHP(int fMaxHP) {
+		m_iMaxHP = fMaxHP;
+	};
+	int GetCurHp() { return m_iCurHP; }
+	void SetCurHP(int hp){ 
+		if (hp < 0) m_iCurHP = 0;
+		else if (hp > m_iMaxHP)m_iCurHP = m_iMaxHP;
+		else m_iCurHP = hp;
+	}
+	void GetDefenceValue(float& fDefence, float& fCurDefence) {
+		fDefence = m_fDefence;
+		fCurDefence = m_fCurDefence;
+	}
+	void SetDefenceValue(float fDefence, float fCurDefence) {
+		float m_fCurDefence{ 1.f };//디펜스는 퍼센트로 대미지 감소시킴 
+		float m_fDefence{ 1.f };
+	}
+	virtual void GetSkilled(int nSkill);
 
 protected:
 	//navi mesh index
@@ -200,6 +231,16 @@ protected:
 
 
 protected:
+	// 버프 지속시간 이딴거 해야함
+	//hp변수
+	int m_iCurHP{ 1000 };
+	int m_iMaxHP{ 1000 };
+	//데미지 변수
+	float m_fCurDefence{ 1.f };//디펜스는 퍼센트로 대미지 감소시킴 
+	float m_fDefence{ 1.f };
+	int m_iCurAttack{ 100 };
+	int m_iAttack{ 100 };
+
 	bool		m_bIdle{ false };
 	CCamera*	m_pCamera{ nullptr };
 	bool		m_bJump{ false };

@@ -45,6 +45,17 @@ bool CSister::End()
 
 void CSister::KeyInput(float fDeltaTime)
 {
+	if (m_pAnimater->GetCurAnimationIndex() == SISTER_ANIM_DIE || m_pAnimater->GetCurAnimationIndex() == SISTER_ANIM_DEADBODY) {
+		m_nAnimNum = SISTER_ANIM_DIE;
+		if (m_pAnimater->GetCurAnimationInfo()->GetLoopDone()) {
+			m_nAnimNum = SISTER_ANIM_DEADBODY;
+			m_pAnimater->SetCurAnimationIndex(SISTER_ANIM_DEADBODY);
+		}
+
+		m_bCollision = true;
+		return;
+	}
+
 	DWORD dwDirection = 0;
 	m_xmvShift = XMVectorSet(0.0f, 0.0f, 0.0f, 0.f);
 
@@ -115,19 +126,7 @@ void CSister::KeyInput(float fDeltaTime)
 	}
 
 	// 스킬시 이동 점프X
-	if (true == m_bSkill) {
-#ifdef NO_SERVER
-
-#else
-		m_fTranslateTime += fDeltaTime;
-		if (m_fTranslateTime > FREQUENCY_TRANSFER_TIME) {
-			m_fTranslateTime = 0;
-			PushServerData(m_xmf3Position.x, m_xmf3Position.y, m_xmf3Position.z, m_fAngleY, m_nAnimNum);
-		}
-#endif
-		//60fps로 업데이트, 네트워크 갱신
-		return;
-	}
+	if (true == m_bSkill) return;
 
 	// 마우스 우클릭회전
 	if (true == INPUTMGR->MouseRightUp() && abs(m_pCamera->m_cxDelta + m_pCamera->m_cyDelta) > 1.f) {
@@ -202,17 +201,16 @@ void CSister::GetServerData(float fTimeElapsed)
 	return;
 #endif
 	//////
-
 	PLAYR_FREQUENCY_DATA data = NETWORKMGR->GetPlayerFrequencyData(m_SLOT_ID);
-	m_xmf3Position.x = data.fPosX;
-	m_xmf3Position.y = data.fPosY;
-	m_xmf3Position.z = data.fPosZ;
+	float fPosX = data.fPosX;
+	float fPosY = data.fPosY;
+	float fPosZ = data.fPosZ;
 
-	m_fAngleY = data.fAngleY;
+	float fAngleY = data.fAngleY;
 	//DWORD dwDirection = data.dwDirection;
 	if (m_nAnimNum != data.iAnimNum)
 		m_nAnimNum = data.iAnimNum;
-
+	bool bAttack = NETWORKMGR->GetAttack(m_SLOT_ID);
 	//////
 
 	//if (m_bJump == true && data.bJump == false) {
@@ -221,32 +219,35 @@ void CSister::GetServerData(float fTimeElapsed)
 	//}
 	//m_bJump = data.bJump;
 
-	SetPositionServer(XMVectorSet(m_xmf3Position.x, m_xmf3Position.y, m_xmf3Position.z, 1.0f));
-	SetRotation(XMMatrixRotationY(m_fAngleY));
-
-
+	SetPosition(XMVectorSet(fPosX, fPosY, fPosZ, 1.0f));
+	SetRotation(XMMatrixRotationY(fAngleY));
+	
 	if (m_pAnimater->SetCurAnimationIndex(m_nAnimNum)) {
 		switch (m_nAnimNum) {
-		case ANIM_ATTACK:
-			CEffectMgr::GetInstance()->Play_Effect(L"Arrow_Skill1Shot", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y + 2.f, m_xmf3Position.z, 1.f),
+		case SISTER_ANIM_SKILL1_FIRE:
+			CEffectMgr::GetInstance()->Play_Effect(L"sister_skill1", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y + 1.f, m_xmf3Position.z, 1.f),
 				XMVectorSet(0.f, XMConvertToDegrees(m_fAngleY), 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
 			break;
-		case ANIM_SKILL1_FIRE:
-			CEffectMgr::GetInstance()->Play_Effect(L"Ranger_sk1_efc", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y, m_xmf3Position.z, 1.f),
+		case SISTER_ANIM_SKILL2_FIRE:
+			CEffectMgr::GetInstance()->Play_Effect(L"sister_skill2", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y + 1.f, m_xmf3Position.z, 1.f),
+				XMVectorSet(0.f, XMConvertToDegrees(m_fAngleY), 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
+			break;
+		case SISTER_ANIM_SKILL3_CHARGING:
+			CEffectMgr::GetInstance()->Play_Effect(L"sister_skill3", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y + 1.f, m_xmf3Position.z, 1.f),
+				XMVectorSet(0.f, XMConvertToDegrees(m_fAngleY), 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
+			break;
+		case SISTER_ANIM_SKILL4_FIRE:
+			CEffectMgr::GetInstance()->Play_Effect(L"sister_skill4", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y + 1.f, m_xmf3Position.z, 1.f),
+				XMVectorSet(0.f, XMConvertToDegrees(m_fAngleY), 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
+			break;
+		case SISTER_ANIM_HIT_F:
+			CEffectMgr::GetInstance()->Play_Effect(L"TestBlood", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y + 2.f, m_xmf3Position.z, 1.f),
 				XMVectorSet(0.f, 0.f, 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
 			break;
-		case ANIM_SKILL2_START:
-			CEffectMgr::GetInstance()->Play_Effect(L"Ranger_sk2_con", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y + 2.f, m_xmf3Position.z, 1.f),
-				XMVectorSet(0.f, 0.f, 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
+		default:
 			break;
-		case ANIM_SKILL3_FIRE:
-			CEffectMgr::GetInstance()->Play_Effect(L"Ranger_sk3_wheelwind", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y + 1.f, m_xmf3Position.z, 1.f),
-				XMVectorSet(0.f, 0.f, 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
-			break;
-
 		}
 	}
-
 	// 공격
 	//if (m_bSkill == false && m_bJump == false && bAttack == true && m_nAnimNum != ANIM_ATTACK) {
 	//	CEffectMgr::GetInstance()->Play_Effect(L"Test2", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y + 2.f, m_xmf3Position.z, 1.f),
@@ -412,6 +413,7 @@ CSister::CSister(string name, tag t, bool bSprit, CGameObject * pWeapon, INT slo
 	//, m_pLeftWeapon(pWeapon)
 	, m_SLOT_ID(slot_id)
 {
+	ResetHPValues(100, 100);
 	m_fSpeed = 10.f;
 	m_pLeftWeapon = new CGameObject("THM", TAG_DYNAMIC_OBJECT);
 	m_pLeftWeapon->Begin();
@@ -489,12 +491,29 @@ void CSister::PhisicsLogic(map<utag, list<CGameObject*>>& mlpObject, float fDelt
 	}
 }
 
-bool CSister::GetDemaged(float fDemage) {
+bool CSister::GetDemaged(int iDemage) {
+	if (m_pAnimater->GetCurAnimationIndex() == SISTER_ANIM_DIE || m_pAnimater->GetCurAnimationIndex() == SISTER_ANIM_DEADBODY) {
+		m_nAnimNum = m_pAnimater->GetCurAnimationIndex();
+		m_bDamaged = false;
+		return false;//죽고있으면 충돌처리 하지 않음
+	}
+
 	m_bDamaged = true;
 	CEffectMgr::GetInstance()->Play_Effect(L"TestBlood", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y + 2.f, m_xmf3Position.z, 1.f),
 		XMVectorSet(0.f, 0.f, 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
 
 	m_nAnimNum = SISTER_ANIM_HIT_F;
 	m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
+
+	CGameObject::GetDemaged(iDemage);//내 hp 날리고!
+	if (m_iCurHP <= 0) {
+		m_nAnimNum = SISTER_ANIM_DIE;
+		m_pAnimater->SetCurAnimationIndex(SISTER_ANIM_DIE);
+	}
 	return true;
+}
+
+void CSister::GetSkilled(int nSkill)
+{
+	int slot_id = m_SLOT_ID;
 }

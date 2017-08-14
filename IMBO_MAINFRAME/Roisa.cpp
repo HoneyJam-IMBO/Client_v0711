@@ -37,6 +37,11 @@ void CRoisa::RegistToContainer()
 	CGameObject::RegistToContainer();
 }
 
+bool CRoisa::GetDemaged(int iDemege){
+
+	return false;
+}
+
 void CRoisa::PhisicsLogic(map<utag, list<CGameObject*>>& mlpObject, float fDeltaTime)
 {
 	for (auto pArrow : mlpObject[utag::UTAG_ARROW]) {
@@ -58,6 +63,11 @@ void CRoisa::PhisicsLogic(map<utag, list<CGameObject*>>& mlpObject, float fDelta
 			break;
 		}
 	}
+}
+
+void CRoisa::GetSkilled(int nSkill)
+{
+	int slot_id = 5;
 }
 
 void CRoisa::UpdatePattern(float fTimeElapsed)

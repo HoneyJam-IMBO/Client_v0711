@@ -54,6 +54,17 @@ bool CKnight::End()
 
 void CKnight::KeyInput(float fDeltaTime)
 {
+	if (m_pAnimater->GetCurAnimationIndex() == KNIGHT_ANIM_DIE || m_pAnimater->GetCurAnimationIndex() == KNIGHT_ANIM_DEADBODY) {
+		m_nAnimNum = KNIGHT_ANIM_DIE;
+		if (m_pAnimater->GetCurAnimationInfo()->GetLoopDone()) {
+			m_nAnimNum = KNIGHT_ANIM_DEADBODY;
+			m_pAnimater->SetCurAnimationIndex(KNIGHT_ANIM_DEADBODY);
+		}
+
+		m_bCollision = true;
+		return;
+	}
+
 	DWORD dwDirection = 0;
 	m_xmvShift = XMVectorSet(0.0f, 0.0f, 0.0f, 0.f);
 
@@ -126,18 +137,7 @@ void CKnight::KeyInput(float fDeltaTime)
 	}
 
 	// 스킬시 이동 점프X
-	if (true == m_bSkill) {
-#ifdef NO_SERVER
-
-#else
-		m_fTranslateTime += fDeltaTime;
-		if (m_fTranslateTime > FREQUENCY_TRANSFER_TIME) {
-			m_fTranslateTime = 0;
-			PushServerData(m_xmf3Position.x, m_xmf3Position.y, m_xmf3Position.z, m_fAngleY, m_nAnimNum);
-		}
-#endif
-		//60fps로 업데이트, 네트워크 갱신
-		return; }
+	if (true == m_bSkill) return;
 
 	// 마우스 우클릭회전
 	if (true == INPUTMGR->MouseRightUp() && abs(m_pCamera->m_cxDelta + m_pCamera->m_cyDelta) > 1.f) {
@@ -230,14 +230,16 @@ void CKnight::GetServerData(float fTimeElapsed)
 	//}
 	//m_bJump = data.bJump;
 
-	SetPositionServer(XMVectorSet(m_xmf3Position.x, m_xmf3Position.y, m_xmf3Position.z, 1.0f));
+	SetPosition(XMVectorSet(m_xmf3Position.x, m_xmf3Position.y, m_xmf3Position.z, 1.0f));
 	SetRotation(XMMatrixRotationY(m_fAngleY));
 
 	if (m_pAnimater->SetCurAnimationIndex(m_nAnimNum)) {
 		switch (m_nAnimNum) {
 		case KNIGHT_ANIM_ATTACK:
-			//CEffectMgr::GetInstance()->Play_Effect(L"Arrow_Skill1Shot", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y + 2.f, m_xmf3Position.z, 1.f),
-			//	XMVectorSet(0.f, XMConvertToDegrees(m_fAngleY), 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
+			break;
+		case KNIGHT_ANIM_ATTACK2:
+			break;
+		case KNIGHT_ANIM_ATTACK3:
 			break;
 		case KNIGHT_ANIM_SKILL1_FIRE:
 			CEffectMgr::GetInstance()->Play_Effect(L"Knight_sk1_con", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y + 1.f, m_xmf3Position.z, 1.f),
@@ -254,9 +256,15 @@ void CKnight::GetServerData(float fTimeElapsed)
 			CEffectMgr::GetInstance()->Play_Effect(L"Knight_sk4_con", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y + 1.f, m_xmf3Position.z, 1.f),
 				XMVectorSet(0.f, 0.f, 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
 			break;
-
+		case KNIGHT_ANIM_HIT_F:
+			CEffectMgr::GetInstance()->Play_Effect(L"TestBlood", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y + 2.f, m_xmf3Position.z, 1.f),
+				XMVectorSet(0.f, 0.f, 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
+			break;
+		default:
+			break;
 		}
 	}
+
 	// 공격
 	//if (m_bSkill == false && m_bJump == false && bAttack == true && m_nAnimNum != ANIM_ATTACK) {
 	//	CEffectMgr::GetInstance()->Play_Effect(L"Test2", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y + 2.f, m_xmf3Position.z, 1.f),
@@ -454,6 +462,7 @@ CKnight::CKnight(string name, tag t, bool bSprit, CGameObject * pWeapon, INT slo
 	, m_pWeapon(pWeapon)
 	, m_SLOT_ID(slot_id)
 {
+	ResetHPValues(100, 100);
 	m_fSpeed = 10.f;
 	m_pLeftWeapon = new CGameObject("OSW", TAG_DYNAMIC_OBJECT);
 	m_pLeftWeapon->Begin();
@@ -534,12 +543,18 @@ void CKnight::PhisicsLogic(map<utag, list<CGameObject*>>& mlpObject, float fDelt
 	}
 }
 
-bool CKnight::GetDemaged(float fDemage) {
+bool CKnight::GetDemaged(int iDemage) {
+	if (m_pAnimater->GetCurAnimationIndex() == KNIGHT_ANIM_DIE || m_pAnimater->GetCurAnimationIndex() == KNIGHT_ANIM_DEADBODY) {
+		m_nAnimNum = m_pAnimater->GetCurAnimationIndex();
+		m_bDamaged = false;
+		return false;//죽고있으면 충돌처리 하지 않음
+	}
+
 	if (m_fSkillTime < m_fSkill4EndTime) {// skill 4
 		return false;//무적
 	}
 	if (m_fSkillTime < m_fSkill2EndTime) {// skill 2
-		fDemage *= 0.5f;//대미지 절반으로 감소
+		iDemage *= 0.5f;//대미지 절반으로 감소
 	}
 
 	m_bDamaged = true;
@@ -548,5 +563,16 @@ bool CKnight::GetDemaged(float fDemage) {
 
 	m_nAnimNum = KNIGHT_ANIM_HIT_F;
 	m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
+
+	CGameObject::GetDemaged(iDemage);//내 hp 날리고!
+	if (m_iCurHP <= 0) {
+		m_nAnimNum = KNIGHT_ANIM_DIE;
+		m_pAnimater->SetCurAnimationIndex(KNIGHT_ANIM_DIE);
+	}
 	return true;
+}
+
+void CKnight::GetSkilled(int nSkill)
+{
+	int slot_id = m_SLOT_ID;
 }

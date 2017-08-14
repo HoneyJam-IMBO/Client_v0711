@@ -179,6 +179,17 @@ void CDementor::ShootArrow(bool bStrong, float fAngle)
 
 void CDementor::KeyInput(float fDeltaTime)
 {
+	if (m_pAnimater->GetCurAnimationIndex() == DEMENTOR_ANIM_DIE || m_pAnimater->GetCurAnimationIndex() == DEMENTOR_ANIM_DEADBODY) {
+		m_nAnimNum = DEMENTOR_ANIM_DIE;
+		if (m_pAnimater->GetCurAnimationInfo()->GetLoopDone()) {
+			m_nAnimNum = DEMENTOR_ANIM_DEADBODY;
+			m_pAnimater->SetCurAnimationIndex(DEMENTOR_ANIM_DEADBODY);
+		}
+
+		m_bCollision = true;
+		return;
+	}
+
 	DWORD dwDirection = 0;
 	m_xmvShift = XMVectorSet(0.0f, 0.0f, 0.0f, 0.f);
 
@@ -262,19 +273,7 @@ void CDementor::KeyInput(float fDeltaTime)
 	}
 
 	// 스킬시 이동 점프X
-	if (true == m_bSkill) {
-#ifdef NO_SERVER
-
-#else
-		m_fTranslateTime += fDeltaTime;
-		if (m_fTranslateTime > FREQUENCY_TRANSFER_TIME) {
-			m_fTranslateTime = 0;
-			PushServerData(m_xmf3Position.x, m_xmf3Position.y, m_xmf3Position.z, m_fAngleY, m_nAnimNum);
-		}
-#endif
-		//60fps로 업데이트, 네트워크 갱신
-		return;
-	}
+	if (true == m_bSkill) return;
 
 	// 마우스 우클릭회전
 	if (true == INPUTMGR->MouseRightUp() && abs(m_pCamera->m_cxDelta + m_pCamera->m_cyDelta) > 1.f) {
@@ -367,30 +366,62 @@ void CDementor::GetServerData(float fTimeElapsed)
 	//}
 	//m_bJump = data.bJump;
 
-	SetPositionServer(XMVectorSet(m_xmf3Position.x, m_xmf3Position.y, m_xmf3Position.z, 1.0f));
+	SetPosition(XMVectorSet(m_xmf3Position.x, m_xmf3Position.y, m_xmf3Position.z, 1.0f));
 	SetRotation(XMMatrixRotationY(m_fAngleY));
 
+	m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
+	XMVECTOR xmEfcPos = XMLoadFloat3(&m_xmf3Position);
+	XMFLOAT3 xmf3EfcPos;
 
-	if (m_pAnimater->SetCurAnimationIndex(m_nAnimNum)) {
-		switch (m_nAnimNum) {
-		case ANIM_ATTACK:
-			CEffectMgr::GetInstance()->Play_Effect(L"Arrow_Skill1Shot", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y + 2.f, m_xmf3Position.z, 1.f),
-				XMVectorSet(0.f, XMConvertToDegrees(m_fAngleY), 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
-			break;
-		case ANIM_SKILL1_FIRE:
-			CEffectMgr::GetInstance()->Play_Effect(L"Ranger_sk1_efc", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y, m_xmf3Position.z, 1.f),
-				XMVectorSet(0.f, 0.f, 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
-			break;
-		case ANIM_SKILL2_START:
-			CEffectMgr::GetInstance()->Play_Effect(L"Ranger_sk2_con", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y + 2.f, m_xmf3Position.z, 1.f),
-				XMVectorSet(0.f, 0.f, 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
-			break;
-		case ANIM_SKILL3_FIRE:
-			CEffectMgr::GetInstance()->Play_Effect(L"Ranger_sk3_wheelwind", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y + 1.f, m_xmf3Position.z, 1.f),
-				XMVectorSet(0.f, 0.f, 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
-			break;
+	switch (m_nAnimNum) {
+	case DEMENTOR_ANIM_SKILL2_CHARGING:
+		CEffectMgr::GetInstance()->Play_Effect(L"hum3_sk2", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y + 1.f, m_xmf3Position.z, 1.f),
+			XMVectorSet(0.f, 0.f, 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
+		break;
+	case DEMENTOR_ANIM_SKILL2_FIRE:
+		CEffectMgr::GetInstance()->Play_Effect(L"Dementor_sk2_Shoot", XMVectorSet(m_xmf3ClickPos.x, m_xmf3ClickPos.y, m_xmf3ClickPos.z, 1.f),
+			XMVectorSet(0.f, XMConvertToDegrees(m_fAngleY), 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
+		break;
+	case DEMENTOR_ANIM_ATTACK:
+		ShootArrow(false);
+		CEffectMgr::GetInstance()->Play_Effect(L"Dementor_Shot", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y + 2.f, m_xmf3Position.z, 1.f),
+			XMVectorSet(0.f, XMConvertToDegrees(m_fAngleY), 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
+		break;
+	case DEMENTOR_ANIM_SKILL1_START:
+		CEffectMgr::GetInstance()->Play_Effect(L"Dementor_sk1_Shield", this);
+		break;
+	case DEMENTOR_ANIM_SKILL3_FIRE:
+		CEffectMgr::GetInstance()->Play_Effect(L"Dementor_sk3_con", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y + 1.f, m_xmf3Position.z, 1.f),
+			XMVectorSet(0.f, XMConvertToDegrees(m_fAngleY), 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
+		break;
+	case DEMENTOR_ANIM_SKILL4_START:
+		ShootArrow(false);
+		ShootArrow(false, XM_PI * 0.5f);
+		ShootArrow(false, XM_PI);
+		ShootArrow(false, XM_PI * 1.5f);
 
-		}
+		XMStoreFloat3(&xmf3EfcPos, xmEfcPos + XMVector4Normalize(GetLook()) * 4.f);
+		CEffectMgr::GetInstance()->Play_Effect(L"Dementor_sk4_shoot", XMVectorSet(xmf3EfcPos.x, xmf3EfcPos.y, xmf3EfcPos.z, 1.f),
+			XMVectorSet(0.f, XMConvertToDegrees(m_fAngleY), 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
+
+		XMStoreFloat3(&xmf3EfcPos, xmEfcPos + (XMVector4Normalize(GetRight())) * 4.f);
+		CEffectMgr::GetInstance()->Play_Effect(L"Dementor_sk4_shoot", XMVectorSet(xmf3EfcPos.x, xmf3EfcPos.y, xmf3EfcPos.z, 1.f),
+			XMVectorSet(0.f, XMConvertToDegrees(m_fAngleY) + 90.f, 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
+
+		XMStoreFloat3(&xmf3EfcPos, xmEfcPos + ((XMVector4Normalize(GetRight()) * -1.f)) * 4.f);
+		CEffectMgr::GetInstance()->Play_Effect(L"Dementor_sk4_shoot", XMVectorSet(xmf3EfcPos.x, xmf3EfcPos.y, xmf3EfcPos.z, 1.f),
+			XMVectorSet(0.f, XMConvertToDegrees(m_fAngleY) - 90.f, 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
+
+		XMStoreFloat3(&xmf3EfcPos, xmEfcPos + ((XMVector4Normalize(GetLook()) * -1.f)) * 4.f);
+		CEffectMgr::GetInstance()->Play_Effect(L"Dementor_sk4_shoot", XMVectorSet(xmf3EfcPos.x, xmf3EfcPos.y, xmf3EfcPos.z, 1.f),
+			XMVectorSet(0.f, XMConvertToDegrees(m_fAngleY) - 180.f, 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
+		break;
+	case DEMENTOR_ANIM_HIT_F:
+		CEffectMgr::GetInstance()->Play_Effect(L"TestBlood", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y + 2.f, m_xmf3Position.z, 1.f),
+			XMVectorSet(0.f, 0.f, 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
+		break;
+	default:
+		break;
 	}
 	// 공격
 	//if (m_bSkill == false && m_bJump == false && bAttack == true && m_nAnimNum != ANIM_ATTACK) {
@@ -509,6 +540,7 @@ CDementor::CDementor(string name, tag t, bool bSprit, CGameObject * pWeapon, INT
 	, m_pWeapon(pWeapon)
 	, m_SLOT_ID(slot_id)
 {
+	ResetHPValues(100, 100);
 	m_fSpeed = 14.f;
 
 	utag ut = UTAG_OTHERPLAYER_ARROW;
@@ -584,9 +616,15 @@ void CDementor::PhisicsLogic(map<utag, list<CGameObject*>>& mlpObject, float fDe
 	}
 }
 
-bool CDementor::GetDemaged(float fDemage) {
+bool CDementor::GetDemaged(int iDemage) {
+	if (m_pAnimater->GetCurAnimationIndex() == DEMENTOR_ANIM_DIE || m_pAnimater->GetCurAnimationIndex() == DEMENTOR_ANIM_DEADBODY) {
+		m_nAnimNum = m_pAnimater->GetCurAnimationIndex();
+		m_bDamaged = false;
+		return false;//죽고있으면 충돌처리 하지 않음
+	}
+
 	if (m_fSkill1EndTime > m_fSkillTime) {
-		fDemage *= 0.75f;//skill 1이면 데미지 감소 10초간
+		iDemage *= 0.75f;//skill 1이면 데미지 감소 10초간
 	}
 	m_bDamaged = true;
 	CEffectMgr::GetInstance()->Play_Effect(L"TestBlood", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y + 2.f, m_xmf3Position.z, 1.f),
@@ -594,5 +632,16 @@ bool CDementor::GetDemaged(float fDemage) {
 
 	m_nAnimNum = DEMENTOR_ANIM_HIT_F;
 	m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
+
+	CGameObject::GetDemaged(iDemage);//내 hp 날리고!
+	if (m_iCurHP <= 0) {
+		m_nAnimNum = DEMENTOR_ANIM_DIE;
+		m_pAnimater->SetCurAnimationIndex(DEMENTOR_ANIM_DIE);
+	}
 	return true;
+}
+
+void CDementor::GetSkilled(int nSkill)
+{
+	int slot_id = m_SLOT_ID;
 }

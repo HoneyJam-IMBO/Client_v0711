@@ -1,6 +1,6 @@
 #pragma once
 #include "GameObject.h"
-
+class CSCOriTown;
 class CLesserGiant :
 	public CGameObject
 {
@@ -12,7 +12,10 @@ public:
 	UINT GetAnimNum() { return m_nAnimNum; }
 	void SetFirstAction(bool b) { m_bFirstAction = b; }
 	bool GetFirstAction() { return m_bFirstAction; }
+
+	void SetTarget(CGameObject* pTarget) { m_pTempPlayer = pTarget;	};
 private:
+
 	bool m_bFirstAction{ false };
 	float		m_fSpeed{ 0.f };
 	UINT		m_nAnimNum{ 0 };
@@ -27,6 +30,7 @@ private:
 	bool		m_bAttack{ false };
 	bool		m_bSkill{ false };
 	WORD		m_nPatternNum{ 1 };
+
 public:
 	virtual void Animate(float fTimeElapsed);
 	virtual void RegistToContainer();
@@ -34,6 +38,8 @@ public:
 public:
 	virtual void PhisicsLogic(map<utag, list<CGameObject*>>& mlpObject, float fDeltaTime);
 
+	bool GetDemaged(int iDemege);
+	virtual void GetSkilled(int nSkill);
 private:
 	void	UpdatePattern(float fTimeElapsed);
 

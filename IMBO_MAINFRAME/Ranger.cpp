@@ -133,6 +133,17 @@ void CRanger::UpdateSkill()
 
 void CRanger::KeyInput(float fDeltaTime)
 {
+	if (m_pAnimater->GetCurAnimationIndex() == ANIM_DIE || m_pAnimater->GetCurAnimationIndex() == ANIM_DEADBODY) {
+		m_nAnimNum = ANIM_DIE;
+		if (m_pAnimater->GetCurAnimationInfo()->GetLoopDone()) {
+			m_nAnimNum = ANIM_DEADBODY;
+			m_pAnimater->SetCurAnimationIndex(ANIM_DEADBODY);
+		}
+
+		m_bCollision = true;
+		return;
+	}
+
 	DWORD dwDirection = 0;
 	m_xmvShift = XMVectorSet(0.0f, 0.0f, 0.0f, 0.f);
 
@@ -337,7 +348,7 @@ void CRanger::GetServerData(float fTimeElapsed) {
 	//}
 	//m_bJump = data.bJump;
 
-	SetPositionServer(XMVectorSet(m_xmf3Position.x, m_xmf3Position.y, m_xmf3Position.z, 1.0f));
+	SetPosition(XMVectorSet(m_xmf3Position.x, m_xmf3Position.y, m_xmf3Position.z, 1.0f));
 	SetRotation(XMMatrixRotationY(m_fAngleY));
 
 	if (m_pAnimater->SetCurAnimationIndex(m_nAnimNum)) {
@@ -359,8 +370,10 @@ void CRanger::GetServerData(float fTimeElapsed) {
 				XMVectorSet(0.f, 0.f, 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
 			break;
 		case ANIM_HIT_F:
-			CEffectMgr::GetInstance()->Play_Effect(L"Ranger_sk3_wheelwind", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y + 1.f, m_xmf3Position.z, 1.f),
+			CEffectMgr::GetInstance()->Play_Effect(L"TestBlood", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y + 2.f, m_xmf3Position.z, 1.f),
 				XMVectorSet(0.f, 0.f, 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
+			break;
+		default:
 			break;
 		}
 	}
@@ -522,7 +535,7 @@ void CRanger::PhisicsLogic(map<utag, list<CGameObject*>>& mlpObject, float fDelt
 		switch (m_nAnimNum) {
 		case ANIM_SKILL1_FIRE:
 			if (SkillCollision(pPlayer)) {
-				pPlayer->GetHeal(100.f);
+				pPlayer->GetHeal(m_iAttack);
 				m_bCollision = true;
 			}
 			break;
@@ -534,13 +547,13 @@ void CRanger::PhisicsLogic(map<utag, list<CGameObject*>>& mlpObject, float fDelt
 		switch (m_nAnimNum) {
 		case ANIM_SKILL3_FIRE:
 			if (SkillCollision(pBoss)) {//boss
-				pBoss->GetDemaged(100.f);
+				pBoss->GetDemaged(m_iAttack);
 				m_bCollision = true;
 			}
 			break;
 		case ANIM_SKILL4_FIRE:
 			if (SkillCollision(pBoss, false)) {
-				pBoss->GetDemaged(100.f);
+				pBoss->GetDemaged(m_iAttack);
 				m_bCollision = true;
 			}
 			break;
@@ -550,8 +563,12 @@ void CRanger::PhisicsLogic(map<utag, list<CGameObject*>>& mlpObject, float fDelt
 	}
 }
 
-bool CRanger::GetDemaged(float fDemage) {
-	
+bool CRanger::GetDemaged(int iDemage) {
+	if (m_pAnimater->GetCurAnimationIndex() == ANIM_DIE || m_pAnimater->GetCurAnimationIndex() == ANIM_DEADBODY) {
+		m_nAnimNum = m_pAnimater->GetCurAnimationIndex();
+		m_bDamaged = false;
+		return false;//죽고있으면 충돌처리 하지 않음
+	}
 	m_bDamaged = true;
 	CEffectMgr::GetInstance()->Play_Effect(L"TestBlood", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y + 2.f, m_xmf3Position.z, 1.f),
 		XMVectorSet(0.f, 0.f, 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
@@ -559,9 +576,17 @@ bool CRanger::GetDemaged(float fDemage) {
 	m_nAnimNum = ANIM_HIT_F;
 	m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
 
-	BYTE Packet[MAX_BUFFER_LENGTH] = { 0, };
-	NETWORKMGR->WritePacket(PT_FREQUENCY_MOVE_CS, Packet, WRITE_PT_FREQUENCY_MOVE_SC(Packet, NETWORKMGR->GetSLOT_ID(), m_xmf3Position.x, m_xmf3Position.y, m_xmf3Position.z, m_fAngleY, m_nAnimNum));
+	CGameObject::GetDemaged(iDemage);//내 hp 날리고!
+	if (m_iCurHP <= 0) {
+		m_nAnimNum = ANIM_DIE;
+		m_pAnimater->SetCurAnimationIndex(ANIM_DIE);
+	}
 	return true;
+}
+
+void CRanger::GetSkilled(int nSkill)
+{
+	int slot_id = m_SLOT_ID;
 }
 
 CRanger::CRanger(string name, tag t, bool bSprit, CGameObject* pWeapon, INT slot_id)
@@ -572,8 +597,12 @@ CRanger::CRanger(string name, tag t, bool bSprit, CGameObject* pWeapon, INT slot
 {
 	m_fSpeed = 10.f;
 
+	ResetHPValues(100, 100);
+
 	utag ut = UTAG_OTHERPLAYER_ARROW;
 	//if (bSprit) ut = UTAG_ARROW;
+	//attack
+	m_iAttack = 1000;
 
 	vector<CGameObject*> vecSkill;
 	for (int i = 0; i < 5; ++i)
@@ -599,6 +628,7 @@ CRanger::CRanger(string name, tag t, bool bSprit, CGameObject* pWeapon, INT slot
 		pObject->SetPosition(XMVectorSet(0, 0, 0, 1));
 		pObject->SetScale(XMVectorSet(5, 5, 5, 1));
 		UPDATER->GetSpaceContainer()->AddObject(pObject);
+
 		vecSkill2.push_back(pObject);
 	}
 	m_mapSkill["StrongArrow"] = vecSkill2;
