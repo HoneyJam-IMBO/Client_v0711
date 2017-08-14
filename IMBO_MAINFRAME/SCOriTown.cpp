@@ -373,6 +373,10 @@ void CSCOriTown::NetworkProc(){
 		case PT_FREQUENCY_MOVE_SC:
 			PROC_PT_FREQUENCY_MOVE_SC(dwProtocol, Packet, dwPacketLength);
 			break;
+		case PT_BOSS_FREQUENCY_MOVE_SC:
+			PROC_PT_BOSS_FREQUENCY_MOVE_SC(dwProtocol, Packet, dwPacketLength);
+
+			break;
 		case PT_MOUSE_LEFT_ATTACK_SC:
 			PROC_PT_MOUSE_LEFT_ATTACK_SC(dwProtocol, Packet, dwPacketLength);
 			break;
@@ -439,7 +443,28 @@ VOID CSCOriTown::PROC_PT_FREQUENCY_MOVE_SC(DWORD dwProtocol, BYTE * Packet, DWOR
 	//NETWORKMGR->WritePacket(PT_TEMP, PacketT, WRITE_PT_TEMP(PacketT));
 	return VOID();
 }
+VOID CSCOriTown::PROC_PT_BOSS_FREQUENCY_MOVE_SC(DWORD dwProtocol, BYTE * Packet, DWORD dwPacketLength) {
+	READ_PACKET(PT_BOSS_FREQUENCY_MOVE_SC);
 
+	
+	BOSS_FREQUENCY_DATA data;
+	data.fPosX = Data.POSX;
+	data.fPosY = Data.POSY;
+	data.fPosZ = Data.POSZ;
+
+	data.fAngleY = Data.ANGLEY;
+	data.iAnimNum = Data.ANIMNUM;
+	//CPawn* pPawn = (CPawn*)m_ppPawn[Data.SLOT_ID];
+	//pPawn->NetworkInput(data.dwDirection, data.fAngleY);
+	//network queue에 입력하구 대기한다.
+	//NETWORKMGR->GetServerPlayerInfos()[Data.SLOT_ID].m_qFREQUENCY_DATA.push(data);
+	//DEBUGER->AddGameText(25, 10, 300, YT_Color(0, 0, 200), L"%f %f %f %f %f", data.fPosX, data.fPosY, data.fPosZ, data.fAngleY, data.iAnimNum);
+
+	NETWORKMGR->SetBossInfo(data);
+	//BYTE PacketT[MAX_BUFFER_LENGTH] = { 0, };
+	//NETWORKMGR->WritePacket(PT_TEMP, PacketT, WRITE_PT_TEMP(PacketT));
+	return VOID();
+}
 void CSCOriTown::StartBoss1ActionCam(){
 	m_bStartBossCam = true;
 	m_pCamera->ActionCamStart("Firsttown_Boss2");
@@ -572,8 +597,8 @@ VOID CSCOriTown::PROC_PT_FTOWN_NPC2_READY_COMP_SC(DWORD dwProtocol, BYTE * Packe
 
 void CSCOriTown::ReadMapData()
 {
-	IMPORTER->Begin("../../Assets/SceneResource/test/test.scn");
-	//IMPORTER->Begin("../../Assets/SceneResource/FirstTown/FirstTown.scn");
+	//IMPORTER->Begin("../../Assets/SceneResource/test/test.scn");
+	IMPORTER->Begin("../../Assets/SceneResource/FirstTown/FirstTown.scn");
 	//IMPORTER->Begin("../../Assets/SceneResource/Aldenard/Aldenard.scn");
 	//IMPORTER->Begin("../../Assets/SceneResource/Sarasen/Sarasen.scn");
 	//output path

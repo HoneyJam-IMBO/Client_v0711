@@ -160,6 +160,7 @@ bool CSCAldenard::End()
 void CSCAldenard::Animate(float fTimeElapsed)
 {
 	BYTE Packet[MAX_BUFFER_LENGTH] = { 0, };
+
 	NetworkProc();
 	CScene::Animate(fTimeElapsed);
 

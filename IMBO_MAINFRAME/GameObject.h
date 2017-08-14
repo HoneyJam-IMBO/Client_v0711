@@ -63,6 +63,7 @@ public:
 	void SetWorldMtx(XMMATRIX mtxWorld);
 	virtual XMMATRIX GetWorldMtx();
 	virtual void SetPosition(XMVECTOR pos);
+	void SetPositionServer(XMVECTOR pos);
 	void SetPositionX(const float pos);
 	void SetPositionY(const float pos);
 	void SetPositionZ(const float pos);

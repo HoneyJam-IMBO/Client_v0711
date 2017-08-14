@@ -239,6 +239,13 @@ void CGameObject::SetPosition(XMVECTOR pos) {
 		m_xmf3Position.y = GetTerrainHeight();
 	}
 }
+void CGameObject::SetPositionServer(XMVECTOR pos) {
+	XMStoreFloat3(&m_xmf3Position, pos);
+
+	m_xmf4x4World._41 = m_xmf3Position.x;
+	m_xmf4x4World._42 = m_xmf3Position.y;
+	m_xmf4x4World._43 = m_xmf3Position.z;
+}
 void CGameObject::SetPositionX(const float pos){
 	m_xmf4x4World._41 = pos;
 	m_xmf3Position.x = pos;

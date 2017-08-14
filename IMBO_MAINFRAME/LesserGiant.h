@@ -18,6 +18,7 @@ private:
 	UINT		m_nAnimNum{ 0 };
 	XMFLOAT3	m_f3Diraction;
 
+	float	    m_fAngleY{ 0.f };
 	float		m_fAccSkillTime{ 0.f };
 	float		m_fSk2Time{ 0.f };
 	float		m_fSk2Speed{ 0.f };
