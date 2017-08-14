@@ -380,7 +380,8 @@ CBard::CBard(string name, tag t, bool bSprit, CGameObject * pWeapon, INT slot_id
 	, m_pWeapon(pWeapon)
 	, m_SLOT_ID(slot_id)
 {
-	ResetHPValues(100, 100);
+	ResetHPValues(1000, 1000);
+
 	m_fSpeed = 14.f;
 	vector<CGameObject*> vecSkill;
 	
@@ -440,11 +441,26 @@ void CBard::PhisicsLogic(map<utag, list<CGameObject*>>& mlpObject, float fDeltaT
 		m_fCollisionTime = 0.f;
 		m_bCollision = false;//2초에 한번씩 다시 맞게 한다.
 	}
+	//int nAplyOtherPlayer = 0;
+	for (auto pPlayer : mlpObject[utag::UTAG_OTHERPLAYER]) {
+		switch (m_nAnimNum) {
+		case BARD_ANIM_SKILL4_FIRE:
+			if (SkillCollision(pPlayer, false)) {//skill4
+				pPlayer->GetHeal(m_iCurAttack);
+				//m_bCollision = true;
+				//nAplyOtherPlayer++;
+			}
+			break;
+		default:
+			break;
+		}
+	}
+	//if(nAplyOtherPlayer > 0) m_bCollision = true;
 	for (auto pPlayer : mlpObject[utag::UTAG_PLAYER]) {
 		switch (m_nAnimNum) {
 		case BARD_ANIM_SKILL4_FIRE:
 			if (SkillCollision(pPlayer, false)) {//skill4
-				pPlayer->GetHeal(100.f);
+				pPlayer->GetHeal(m_iCurAttack);
 				m_bCollision = true;
 			}
 			break;
@@ -457,13 +473,13 @@ void CBard::PhisicsLogic(map<utag, list<CGameObject*>>& mlpObject, float fDeltaT
 
 		case BARD_ANIM_SKILL1_FIRE:
 			if (SkillCollision(pBoss)) {//skill1 boss에게 대미지
-				pBoss->GetDemaged(100.f);
+				pBoss->GetDemaged(m_iCurAttack);
 				m_bCollision = true;
 			}
 			break;
 		case BARD_ANIM_SKILL3_FIRE:
 			if (SkillCollision(pBoss, false)) {//skill4
-				pBoss->GetDemaged(100.f);
+				pBoss->GetDemaged(m_iCurAttack);
 				m_bCollision = true;
 			}
 			break;

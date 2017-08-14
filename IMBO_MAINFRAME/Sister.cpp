@@ -413,7 +413,7 @@ CSister::CSister(string name, tag t, bool bSprit, CGameObject * pWeapon, INT slo
 	//, m_pLeftWeapon(pWeapon)
 	, m_SLOT_ID(slot_id)
 {
-	ResetHPValues(100, 100);
+	ResetHPValues(1000, 1000);
 	m_fSpeed = 10.f;
 	m_pLeftWeapon = new CGameObject("THM", TAG_DYNAMIC_OBJECT);
 	m_pLeftWeapon->Begin();
@@ -442,17 +442,35 @@ void CSister::PhisicsLogic(map<utag, list<CGameObject*>>& mlpObject, float fDelt
 		m_bCollision = false;//2초에 한번씩 다시 맞게 한다.
 	}
 	//skill collision proc
+	for (auto pPlayer : mlpObject[utag::UTAG_OTHERPLAYER]) {
+		switch (m_nAnimNum) {
+		case SISTER_ANIM_SKILL1_FIRE:
+			if (SkillCollision(pPlayer)) {//skill3 boss에게 대미지
+				pPlayer->GetHeal(m_iCurAttack);
+				//m_bCollision = true;
+			}
+			break;
+		case SISTER_ANIM_SKILL3_FIRE:
+			if (SkillCollision(pPlayer, false)) {//skill2 투사체 boss에게 대미지
+				pPlayer->GetHeal(m_iCurAttack * 3);
+				//m_bCollision = true;
+			}
+			break;
+		default:
+			break;
+		}
+	}
 	for (auto pPlayer : mlpObject[utag::UTAG_PLAYER]) {
 		switch (m_nAnimNum) {
 		case SISTER_ANIM_SKILL1_FIRE:
 			if (SkillCollision(pPlayer)) {//skill3 boss에게 대미지
-				pPlayer->GetHeal(100.f);
+				pPlayer->GetHeal(m_iCurAttack);
 				m_bCollision = true;
 			}
 			break;
 		case SISTER_ANIM_SKILL3_FIRE:
 			if (SkillCollision(pPlayer, false)) {//skill2 투사체 boss에게 대미지
-				pPlayer->GetHeal(300.f);
+				pPlayer->GetHeal(m_iCurAttack * 3);
 				m_bCollision = true;
 			}
 			break;
@@ -460,18 +478,17 @@ void CSister::PhisicsLogic(map<utag, list<CGameObject*>>& mlpObject, float fDelt
 			break;
 		}
 	}
-	
 	for (auto pBoss : mlpObject[utag::UTAG_BOSS1]) {
 		switch (m_nAnimNum) {
 		case SISTER_ANIM_SKILL2_FIRE:
 			if (SkillCollision(pBoss, false)) {//skill2 투사체 boss에게 대미지
-				pBoss->GetDemaged(100.f);
+				pBoss->GetDemaged(m_iCurAttack);
 				m_bCollision = true;
 			}
 			break;
 		case SISTER_ANIM_SKILL4_FIRE:
 			if (SkillCollision(pBoss, false)) {//skill2 투사체 boss에게 대미지
-				pBoss->GetDemaged(100.f);
+				pBoss->GetDemaged(m_iCurAttack);
 				m_bCollision = true;
 			}
 			break;

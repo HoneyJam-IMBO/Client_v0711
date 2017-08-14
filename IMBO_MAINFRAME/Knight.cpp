@@ -462,7 +462,7 @@ CKnight::CKnight(string name, tag t, bool bSprit, CGameObject * pWeapon, INT slo
 	, m_pWeapon(pWeapon)
 	, m_SLOT_ID(slot_id)
 {
-	ResetHPValues(100, 100);
+	ResetHPValues(1000, 1000);
 	m_fSpeed = 10.f;
 	m_pLeftWeapon = new CGameObject("OSW", TAG_DYNAMIC_OBJECT);
 	m_pLeftWeapon->Begin();
@@ -512,28 +512,28 @@ void CKnight::PhisicsLogic(map<utag, list<CGameObject*>>& mlpObject, float fDelt
 			break;
 		}
 	}
-	float fDemege = 100.f;
+	m_iCurAttack = m_iAttack;
 	if (m_fSkill1EndTime > m_fSkillTime) {//skill1이 활성화 중이면 대미지 +
-		fDemege *= 1.5f;
+		m_iCurAttack *= 1.5f;
 	}
 	//for (auto pBoss : mlpObject[utag::UTAG_BOSS1]) {
 	for (auto pBoss : mlpObject[utag::UTAG_NPC]) {
 		switch (m_nAnimNum) {
 		case KNIGHT_ANIM_ATTACK:
 			if (SkillCollision(pBoss)) {//char
-				pBoss->GetHeal(fDemege);
+				pBoss->GetDemaged(m_iCurAttack);
 				m_bCollision = true;
 			}
 			break;
 		case KNIGHT_ANIM_ATTACK2:
 			if (SkillCollision(pBoss)) {//boss
-				pBoss->GetDemaged(fDemege);
+				pBoss->GetDemaged(m_iCurAttack);
 				m_bCollision = true;
 			}
 			break;
 		case KNIGHT_ANIM_ATTACK3:
 			if (SkillCollision(pBoss)) {
-				pBoss->GetDemaged(fDemege);
+				pBoss->GetDemaged(m_iCurAttack);
 				m_bCollision = true;
 			}
 			break;

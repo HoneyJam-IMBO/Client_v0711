@@ -94,7 +94,7 @@ bool CSCAldenard::Begin()
 		}
 		else {
 			//다른 player는 충돌처리를 허지 않으심
-			m_ppPawn[i]->SetUTag(utag::UTAG_DEFAULT);
+			m_ppPawn[i]->SetUTag(utag::UTAG_OTHERPLAYER);
 			UPDATER->GetSpaceContainer()->AddObject(m_ppPawn[i]);
 			m_ppPawn[i]->GetAnimater()->SetCurAnimationIndex(0);
 		}

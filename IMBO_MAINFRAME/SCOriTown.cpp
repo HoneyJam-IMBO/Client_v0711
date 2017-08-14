@@ -91,8 +91,8 @@ bool CSCOriTown::Begin() {
 			CAMMGR->GetCamera(CAM_FREE)->SetMode(MODE_FIX);
 		}
 		else {
-			//다른 player는 충돌처리를 허지 않으심
-			m_ppPawn[i]->SetUTag(utag::UTAG_DEFAULT);
+			//다른 플레이어는 
+			m_ppPawn[i]->SetUTag(utag::UTAG_OTHERPLAYER);
 			UPDATER->GetSpaceContainer()->AddObject(m_ppPawn[i]);
 			m_ppPawn[i]->GetAnimater()->SetCurAnimationIndex(0);
 		}
@@ -449,7 +449,7 @@ void CSCOriTown::CreateBoss1()
 {
 	//보스 제작
 	m_pBoss = new CLesserGiant("Boss01L", TAG_DYNAMIC_OBJECT, m_ppPawn[0]);
-	m_pBoss->SetUTag(utag::UTAG_BOSS1);
+	m_pBoss->SetUTag(utag::UTAG_OTHERPLAYER);
 	m_pBoss->Begin();
 	m_pBoss->SetTerrainContainer(UPDATER->GetTerrainContainer());
 	m_pBoss->SetPosition(XMVectorSet(180, 0, 175, 0));

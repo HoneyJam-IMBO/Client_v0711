@@ -1035,11 +1035,10 @@ bool CGameObject::SkillCollision(CGameObject * pPlayer, bool bRelative)
 			DEBUGER->RegistOBB(obb, UTAG_PLAYER);
 
 			XMVECTOR xmvPlayerPos = pPlayer->GetPosition();
-
+			
 			XMFLOAT4 xmf4Result;
 			XMStoreFloat4(&xmf4Result, XMVector3Length(xmvPlayerPos - xmvPos));
 			if (xmf4Result.x < m_fRadius) {
-				m_bCollision = true;
 				return true;
 			}
 		}

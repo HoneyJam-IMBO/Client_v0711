@@ -199,7 +199,7 @@ void CRanger::KeyInput(float fDeltaTime)
 			}
 			CEffectMgr::GetInstance()->Play_Effect(L"Ranger_sk1_efc", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y, m_xmf3Position.z, 1.f),
 				XMVectorSet(0.f, 0.f, 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
-			ResetCollisionValue(XMFLOAT3(0,0,0), 0.f, 0.8f, 10.f);
+			ResetCollisionValue(XMFLOAT3(0,0,0), 0.8f, 1.f, 10.f);
 		}
 		else if (INPUTMGR->KeyDown(VK_2)){				// ½ºÅ³ 2 ------------------------
 			m_bSkill = true;
@@ -531,6 +531,18 @@ void CRanger::PhisicsLogic(map<utag, list<CGameObject*>>& mlpObject, float fDelt
 		}
 	}
 	//skill collision proc
+	for (auto pPlayer : mlpObject[utag::UTAG_OTHERPLAYER]) {
+		switch (m_nAnimNum) {
+		case ANIM_SKILL1_FIRE:
+			if (SkillCollision(pPlayer)) {
+				pPlayer->GetHeal(m_iAttack);
+				//m_bCollision = true;
+			}
+			break;
+		default:
+			break;
+		}
+	}
 	for (auto pPlayer : mlpObject[utag::UTAG_PLAYER]) {
 		switch (m_nAnimNum) {
 		case ANIM_SKILL1_FIRE:
@@ -597,12 +609,11 @@ CRanger::CRanger(string name, tag t, bool bSprit, CGameObject* pWeapon, INT slot
 {
 	m_fSpeed = 10.f;
 
-	ResetHPValues(100, 100);
+	ResetHPValues(1000, 1000);
 
 	utag ut = UTAG_OTHERPLAYER_ARROW;
 	//if (bSprit) ut = UTAG_ARROW;
 	//attack
-	m_iAttack = 1000;
 
 	vector<CGameObject*> vecSkill;
 	for (int i = 0; i < 5; ++i)
