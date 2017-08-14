@@ -56,8 +56,24 @@ void CLesserGiant::Animate(float fTimeElapsed)
 		SetRotation(XMMatrixRotationY(data.fAngleY));
 
 
-		m_pAnimater->SetCurAnimationIndex(data.iAnimNum);
-
+		if (m_pAnimater->SetCurAnimationIndex(data.iAnimNum)) {
+			switch (data.iAnimNum) {
+			case BOSS1_ANI_SKILL1:
+				ResetCollisionValue(XMFLOAT3(0, 1, 5), 1, 1.7, 5);
+				break;
+			case BOSS1_ANI_SKILL2:
+				ResetCollisionValue(XMFLOAT3(0, 1, 5), 4.1, 4.6, 5);
+				break;
+			case BOSS1_ANI_SKILL3:
+				ResetCollisionValue(XMFLOAT3(0, 1, 5), 3.4, 4.5, 5);
+				break;
+			case BOSS1_ANI_SKILL4:
+				ResetCollisionValue(XMFLOAT3(0, 0, 0), 2, 7, 7);
+				break;
+			default:
+				break;
+			}
+		}
 	}
 #endif
 

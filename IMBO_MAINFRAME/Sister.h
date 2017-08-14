@@ -63,6 +63,7 @@ public:
 	//demage proc
 	virtual bool GetDemaged(int iDemage);
 	virtual void GetSkilled(int nSkill);
+	virtual int GetSlotID() { return m_SLOT_ID; }
 public:
 	CSister(string name, tag t = tag::TAG_DEFAULT, bool bSprit = false, CGameObject* pWeapon = nullptr, INT slot_id = 0);
 	virtual ~CSister();

@@ -185,7 +185,15 @@ void CDementor::KeyInput(float fDeltaTime)
 			m_nAnimNum = DEMENTOR_ANIM_DEADBODY;
 			m_pAnimater->SetCurAnimationIndex(DEMENTOR_ANIM_DEADBODY);
 		}
+#ifdef NO_SERVER
 
+#else
+		m_fTranslateTime += fDeltaTime;
+		if (m_fTranslateTime > FREQUENCY_TRANSFER_TIME) {
+			m_fTranslateTime = 0;
+			PushServerData(m_xmf3Position.x, m_xmf3Position.y, m_xmf3Position.z, m_fAngleY, m_pAnimater->GetCurAnimationIndex());
+		}
+#endif
 		m_bCollision = true;
 		return;
 	}
@@ -273,7 +281,20 @@ void CDementor::KeyInput(float fDeltaTime)
 	}
 
 	// 스킬시 이동 점프X
-	if (true == m_bSkill) return;
+	if (true == m_bSkill) {
+#ifdef NO_SERVER
+
+#else
+		m_fTranslateTime += fDeltaTime;
+		if (m_fTranslateTime > FREQUENCY_TRANSFER_TIME) {
+			m_fTranslateTime = 0;
+			PushServerData(m_xmf3Position.x, m_xmf3Position.y, m_xmf3Position.z, m_fAngleY, m_nAnimNum);
+		}
+#endif
+		//60fps로 업데이트, 네트워크 갱신
+
+		return;
+	}
 
 	// 마우스 우클릭회전
 	if (true == INPUTMGR->MouseRightUp() && abs(m_pCamera->m_cxDelta + m_pCamera->m_cyDelta) > 1.f) {
@@ -366,7 +387,7 @@ void CDementor::GetServerData(float fTimeElapsed)
 	//}
 	//m_bJump = data.bJump;
 
-	SetPosition(XMVectorSet(m_xmf3Position.x, m_xmf3Position.y, m_xmf3Position.z, 1.0f));
+	SetPositionServer(XMVectorSet(m_xmf3Position.x, m_xmf3Position.y, m_xmf3Position.z, 1.0f));
 	SetRotation(XMMatrixRotationY(m_fAngleY));
 
 	m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
@@ -570,6 +591,13 @@ void CDementor::RegistToContainer()
 	if (m_pWeapon) m_pWeapon->RegistToContainer();
 }
 
+
+void CDementor::TransferCollisioinData(int target_slot_id, int skillnum) {
+	BYTE Packet[MAX_BUFFER_LENGTH] = { 0, };
+	NETWORKMGR->WritePacket(PT_SKILL_COLLISION_TO_TARGET_CS, Packet, WRITE_PT_SKILL_COLLISION_TO_TARGET_CS(Packet, NETWORKMGR->GetROOM_ID(), NETWORKMGR->GetSLOT_ID(), target_slot_id, 2, skillnum));
+
+}
+
 void CDementor::PhisicsLogic(map<utag, list<CGameObject*>>& mlpObject, float fDeltaTime)
 {
 	//스킬 변수
@@ -638,6 +666,13 @@ bool CDementor::GetDemaged(int iDemage) {
 		m_nAnimNum = DEMENTOR_ANIM_DIE;
 		m_pAnimater->SetCurAnimationIndex(DEMENTOR_ANIM_DIE);
 	}
+
+
+	BYTE Packet[MAX_BUFFER_LENGTH] = { 0, };
+
+	NETWORKMGR->WritePacket(PT_FREQUENCY_MOVE_CS, Packet, WRITE_PT_FREQUENCY_MOVE_CS(Packet, m_xmf3Position.x, m_xmf3Position.y, m_xmf3Position.z, m_fAngleY, m_nAnimNum));
+
+
 	return true;
 }
 

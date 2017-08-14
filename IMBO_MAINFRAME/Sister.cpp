@@ -51,7 +51,15 @@ void CSister::KeyInput(float fDeltaTime)
 			m_nAnimNum = SISTER_ANIM_DEADBODY;
 			m_pAnimater->SetCurAnimationIndex(SISTER_ANIM_DEADBODY);
 		}
+#ifdef NO_SERVER
 
+#else
+		m_fTranslateTime += fDeltaTime;
+		if (m_fTranslateTime > FREQUENCY_TRANSFER_TIME) {
+			m_fTranslateTime = 0;
+			PushServerData(m_xmf3Position.x, m_xmf3Position.y, m_xmf3Position.z, m_fAngleY, m_pAnimater->GetCurAnimationIndex());
+		}
+#endif
 		m_bCollision = true;
 		return;
 	}
@@ -126,7 +134,20 @@ void CSister::KeyInput(float fDeltaTime)
 	}
 
 	// 스킬시 이동 점프X
-	if (true == m_bSkill) return;
+	if (true == m_bSkill) {
+#ifdef NO_SERVER
+
+#else
+		m_fTranslateTime += fDeltaTime;
+		if (m_fTranslateTime > FREQUENCY_TRANSFER_TIME) {
+			m_fTranslateTime = 0;
+			PushServerData(m_xmf3Position.x, m_xmf3Position.y, m_xmf3Position.z, m_fAngleY, m_nAnimNum);
+		}
+#endif
+		//60fps로 업데이트, 네트워크 갱신
+
+		return;
+	}
 
 	// 마우스 우클릭회전
 	if (true == INPUTMGR->MouseRightUp() && abs(m_pCamera->m_cxDelta + m_pCamera->m_cyDelta) > 1.f) {
@@ -219,7 +240,7 @@ void CSister::GetServerData(float fTimeElapsed)
 	//}
 	//m_bJump = data.bJump;
 
-	SetPosition(XMVectorSet(fPosX, fPosY, fPosZ, 1.0f));
+	SetPositionServer(XMVectorSet(fPosX, fPosY, fPosZ, 1.0f));
 	SetRotation(XMMatrixRotationY(fAngleY));
 	
 	if (m_pAnimater->SetCurAnimationIndex(m_nAnimNum)) {
@@ -510,6 +531,11 @@ bool CSister::GetDemaged(int iDemage) {
 		m_nAnimNum = SISTER_ANIM_DIE;
 		m_pAnimater->SetCurAnimationIndex(SISTER_ANIM_DIE);
 	}
+
+	BYTE Packet[MAX_BUFFER_LENGTH] = { 0, };
+
+	NETWORKMGR->WritePacket(PT_FREQUENCY_MOVE_CS, Packet, WRITE_PT_FREQUENCY_MOVE_CS(Packet, m_xmf3Position.x, m_xmf3Position.y, m_xmf3Position.z, m_fAngleY, m_nAnimNum));
+
 	return true;
 }
 

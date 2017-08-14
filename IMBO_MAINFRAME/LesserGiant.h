@@ -40,6 +40,7 @@ public:
 
 	bool GetDemaged(int iDemege);
 	virtual void GetSkilled(int nSkill);
+	virtual int GetSlotID() { return 5; }
 private:
 	void	UpdatePattern(float fTimeElapsed);
 

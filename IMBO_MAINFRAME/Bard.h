@@ -61,6 +61,8 @@ public:
 	virtual void PhisicsLogic(map<utag, list<CGameObject*>>& mlpObject, float fDeltaTime);
 	//demage proc
 	virtual bool GetDemaged(int iDemage);
+	virtual int GetSlotID() { return m_SLOT_ID; }
+
 public:
 	CBard(string name, tag t = tag::TAG_DEFAULT, bool bSprit = false, CGameObject* pWeapon = nullptr, INT slot_id = 0);
 	virtual ~CBard();

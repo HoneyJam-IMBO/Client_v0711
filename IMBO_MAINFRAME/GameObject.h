@@ -157,7 +157,7 @@ public:
 		m_iCurHP = MIN(m_iMaxHP, m_iCurHP + iHeal);
 		return true; 
 	}
-	
+
 public:
 	BoundingBox*	GetBBox() { return &m_OriBoundingBox; }
 
@@ -203,7 +203,8 @@ public:
 		float m_fDefence{ 1.f };
 	}
 	virtual void GetSkilled(int nSkill);
-
+	virtual int GetSlotID();
+	
 protected:
 	//navi mesh index
 	int m_indexNaviMesh{ -1 };
