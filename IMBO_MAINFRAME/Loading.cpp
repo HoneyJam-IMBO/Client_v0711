@@ -296,8 +296,8 @@ void CLoading::LoadScene_ORITOWN()
 	// Boss
 	RESOURCEMGR->CreateMultiMesh("../../Assets/SceneResource/GJM/Boss01L.gjm", "Boss01L");
 
-	//LoadScene("../../Assets/SceneResource/test/test.scn");
-	LoadScene("../../Assets/SceneResource/FirstTown/FirstTown.scn");
+	LoadScene("../../Assets/SceneResource/test/test.scn");
+	//LoadScene("../../Assets/SceneResource/FirstTown/FirstTown.scn");
 	//LoadScene("../../Assets/SceneResource/Aldenard/Aldenard.scn");	
 }
 
@@ -450,9 +450,14 @@ void CLoading::LoadUI_Skill(int cn1, int cn2, int cn3, int cn4)
 			RESOURCEMGR->CreateMultiMesh("../../Assets/SceneResource/GJM/Wizard_Arrow.gjm", "Wizard_Arrow");
 			break;
 		case bard:
-			CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/bard_skill1.dat", L"bard_skill1");
-			CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/bard_skill2.dat", L"bard_skill2");
-			CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/bard_skill3.dat", L"bard_skill3");
+			/*
+			CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/blood2.dat", L"hum2_sk1");
+			CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/heal.dat", L"hum2_sk2");
+			CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/portal.dat", L"hum2_sk3");
+			*/
+			CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/blood2.dat", L"bard_skill1");
+			CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/heal.dat", L"bard_skill2");
+			CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/portal.dat", L"bard_skill3");
 			CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/bard_skill4.dat", L"bard_skill4");
 
 			RESOURCEMGR->CreateTexture("Char_Select_5", _T("../../Assets/Scene_HeroSel/Char_Select_6.jpg"), PS_TEXTURE, BIND_PS);

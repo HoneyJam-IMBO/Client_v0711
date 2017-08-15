@@ -136,7 +136,7 @@ void CDirectXFramework::InitSingleton(HINSTANCE hInstance, HWND hWnd)
 	CPositionInfoManager::Begin();
 
 #ifdef NO_SERVER
-	NETWORKMGR->GetServerPlayerInfos()[NETWORKMGR->GetSLOT_ID()].CHARACTER = 1;
+	NETWORKMGR->GetServerPlayerInfos()[NETWORKMGR->GetSLOT_ID()].CHARACTER = 5;
 	//SCENEMGR->ChangeScene(SCN_ALDENAD);
 	SCENEMGR->ChangeScene(SCN_ORITOWN);
 	//SCENEMGR->ChangeScene(SCN_BOSS);
