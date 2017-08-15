@@ -43,6 +43,7 @@ void CDirectXFramework::End() {
 	CEffectMgr::GetInstance()->ReleseInstance();
 	CNaviObjectManager::End();
 	CPositionInfoManager::End();
+	CSoundManager::End();
 }
 void CDirectXFramework::FrameAdvance()
 {
@@ -134,6 +135,7 @@ void CDirectXFramework::InitSingleton(HINSTANCE hInstance, HWND hWnd)
 
 	CNaviObjectManager::Begin();
 	CPositionInfoManager::Begin();
+	CSoundManager::Begin();
 
 #ifdef NO_SERVER
 	NETWORKMGR->GetServerPlayerInfos()[NETWORKMGR->GetSLOT_ID()].CHARACTER = 5;
