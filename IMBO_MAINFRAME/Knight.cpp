@@ -10,6 +10,9 @@ bool CKnight::Begin()
 void CKnight::Animate(float fTimeElapsed)
 {
 	m_fTime = fTimeElapsed;
+
+	CGameObject::MappingRimLight(fTimeElapsed);
+
 	if (true == m_bSprit) {
 		if (false == m_bDamaged)
 			KeyInput(fTimeElapsed); //KeyInput(fTimeElapsed);
@@ -223,7 +226,7 @@ void CKnight::KeyInput(float fDeltaTime)
 void CKnight::PushServerData(float x, float y, float z, float fAngleY, int nAnimNum){
 	BYTE Packet[MAX_BUFFER_LENGTH] = { 0, };
 
-	NETWORKMGR->WritePacket(PT_FREQUENCY_MOVE_CS, Packet, WRITE_PT_FREQUENCY_MOVE_CS(Packet, x, y, z, fAngleY, nAnimNum));
+	NETWORKMGR->WritePacket(PT_FREQUENCY_MOVE_CS, Packet, WRITE_PT_FREQUENCY_MOVE_CS(Packet, x, y, z, fAngleY, m_pAnimater->GetCurAnimationIndex()));
 }
 
 void CKnight::GetServerData(float fTimeElapsed)
@@ -483,6 +486,8 @@ CKnight::CKnight(string name, tag t, bool bSprit, CGameObject * pWeapon, INT slo
 	, m_pWeapon(pWeapon)
 	, m_SLOT_ID(slot_id)
 {
+	m_xmf4RimColor = XMFLOAT4(1.f, 1.f, 1.f, 1.f);
+
 	ResetHPValues(1000, 1000);
 	m_fSpeed = 10.f;
 	m_pLeftWeapon = new CGameObject("OSW", TAG_DYNAMIC_OBJECT);
@@ -515,7 +520,6 @@ void CKnight::RegistToContainer()
 void CKnight::TransferCollisioinData(int target_slot_id, int skillnum) {
 	BYTE Packet[MAX_BUFFER_LENGTH] = { 0, };
 	NETWORKMGR->WritePacket(PT_SKILL_COLLISION_TO_TARGET_CS, Packet, WRITE_PT_SKILL_COLLISION_TO_TARGET_CS(Packet, NETWORKMGR->GetROOM_ID(), NETWORKMGR->GetSLOT_ID(), target_slot_id, 1, skillnum));
-
 }
 
 void CKnight::PhisicsLogic(map<utag, list<CGameObject*>>& mlpObject, float fDeltaTime)
@@ -553,6 +557,7 @@ void CKnight::PhisicsLogic(map<utag, list<CGameObject*>>& mlpObject, float fDelt
 				pBoss->GetDemaged(m_iCurAttack);
 #else
 				TransferCollisioinData(5, 1);
+				pBoss->SetRimLight();
 #endif
 				m_bCollision = true;
 			}
@@ -563,6 +568,7 @@ void CKnight::PhisicsLogic(map<utag, list<CGameObject*>>& mlpObject, float fDelt
 				pBoss->GetDemaged(m_iCurAttack);
 #else
 				TransferCollisioinData(5, 2);
+				pBoss->SetRimLight();
 #endif
 				m_bCollision = true;
 			}
@@ -573,6 +579,7 @@ void CKnight::PhisicsLogic(map<utag, list<CGameObject*>>& mlpObject, float fDelt
 				pBoss->GetDemaged(m_iCurAttack);
 #else
 				TransferCollisioinData(5, 3);
+				pBoss->SetRimLight();
 #endif
 				m_bCollision = true;
 			}
@@ -598,8 +605,8 @@ bool CKnight::GetDemaged(int iDemage) {
 	}
 
 	m_bDamaged = true;
-	CEffectMgr::GetInstance()->Play_Effect(L"TestBlood", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y + 2.f, m_xmf3Position.z, 1.f),
-		XMVectorSet(0.f, 0.f, 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
+	/*CEffectMgr::GetInstance()->Play_Effect(L"TestBlood", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y + 2.f, m_xmf3Position.z, 1.f),
+		XMVectorSet(0.f, 0.f, 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));*/
 
 	m_nAnimNum = KNIGHT_ANIM_HIT_F;
 	m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
@@ -616,11 +623,13 @@ bool CKnight::GetDemaged(int iDemage) {
 		m_nAnimNum = KNIGHT_ANIM_DIE;
 		m_pAnimater->SetCurAnimationIndex(KNIGHT_ANIM_DIE);
 	}
-
+#ifdef NO_SERVER
+#else
 
 	BYTE Packet[MAX_BUFFER_LENGTH] = { 0, };
 
-	NETWORKMGR->WritePacket(PT_FREQUENCY_MOVE_CS, Packet, WRITE_PT_FREQUENCY_MOVE_CS(Packet, m_xmf3Position.x, m_xmf3Position.y, m_xmf3Position.z, m_fAngleY, m_nAnimNum));
+	NETWORKMGR->WritePacket(PT_FREQUENCY_MOVE_CS, Packet, WRITE_PT_FREQUENCY_MOVE_CS(Packet, m_xmf3Position.x, m_xmf3Position.y, m_xmf3Position.z, m_fAngleY, m_pAnimater->GetCurAnimationIndex()));
+#endif
 
 
 	return true;

@@ -12,6 +12,8 @@ bool CRanger::Begin()
 
 void CRanger::Animate(float fTimeElapsed)
 {
+	CGameObject::MappingRimLight(fTimeElapsed);
+
 	if (true == m_bSprit) {
 		if (false == m_bDamaged)
 			KeyInput(fTimeElapsed); //KeyInput(fTimeElapsed);
@@ -330,7 +332,7 @@ void CRanger::PushServerData(float x, float y, float z, float fAngleY, int nAnim
 { 
 	BYTE Packet[MAX_BUFFER_LENGTH] = { 0, };
 
-	NETWORKMGR->WritePacket(PT_FREQUENCY_MOVE_CS, Packet, WRITE_PT_FREQUENCY_MOVE_CS(Packet, x, y, z, fAngleY, nAnimNum));
+	NETWORKMGR->WritePacket(PT_FREQUENCY_MOVE_CS, Packet, WRITE_PT_FREQUENCY_MOVE_CS(Packet, x, y, z, fAngleY, m_pAnimater->GetCurAnimationIndex()));
 }
 
 void CRanger::GetServerData(float fTimeElapsed) {
@@ -582,6 +584,7 @@ void CRanger::PhisicsLogic(map<utag, list<CGameObject*>>& mlpObject, float fDelt
 				pBoss->GetDemaged(m_iAttack);
 #else
 				TransferCollisioinData(5, 3);
+				pBoss->SetRimLight();
 #endif
 				
 				
@@ -594,6 +597,7 @@ void CRanger::PhisicsLogic(map<utag, list<CGameObject*>>& mlpObject, float fDelt
 				pBoss->GetDemaged(m_iAttack);
 #else
 				TransferCollisioinData(5, 4);
+				pBoss->SetRimLight();
 #endif
 				m_bCollision = true;
 			}
@@ -623,19 +627,19 @@ bool CRanger::GetDemaged(int iDemage) {
 #else
 
 #endif
-		
-
 
 		if (m_iCurHP <= 0) {
 			m_nAnimNum = ANIM_DIE;
 			m_pAnimater->SetCurAnimationIndex(ANIM_DIE);
 		}
 
+#ifdef NO_SERVER
+#else
 
 		BYTE Packet[MAX_BUFFER_LENGTH] = { 0, };
 
-		NETWORKMGR->WritePacket(PT_FREQUENCY_MOVE_CS, Packet, WRITE_PT_FREQUENCY_MOVE_CS(Packet, m_xmf3Position.x, m_xmf3Position.y, m_xmf3Position.z, m_fAngleY, m_nAnimNum));
-
+		NETWORKMGR->WritePacket(PT_FREQUENCY_MOVE_CS, Packet, WRITE_PT_FREQUENCY_MOVE_CS(Packet, m_xmf3Position.x, m_xmf3Position.y, m_xmf3Position.z, m_fAngleY, m_pAnimater->GetCurAnimationIndex()));
+#endif
 
 
 	return true;

@@ -3,11 +3,13 @@
 class CRoisa :
 	public CGameObject
 {
-
+public:
+	CGameObject*	m_pTempPlayer{ nullptr };
 private:
 	float		m_fSpeed{ 0.f };
 	UINT		m_nAnimNum{ 0 };
 	XMFLOAT3	m_f3Diraction;
+	float		m_fMyAngle{ 0.f };
 
 	float		m_fAccSkillTime{ 0.f };
 	float		m_fSk2Time{ 0.f };
@@ -16,7 +18,7 @@ private:
 
 	bool		m_bAttack{ false };
 	bool		m_bSkill{ false };
-	WORD		m_nPatternNum{ 1 };
+	WORD		m_nPatternNum{ 0 };
 public:
 	virtual void Animate(float fTimeElapsed);
 	virtual void RegistToContainer();
@@ -27,6 +29,14 @@ public:
 	virtual void GetSkilled(int nSkill);
 private:
 	void	UpdatePattern(float fTimeElapsed);
+
+private:
+	map<string, vector<CGameObject*>>	m_mapSkill;
+
+private:
+	void	ShootMeteo(float fAngle);
+	void	ShootExplosion();
+	void	ShootBlizzard();
 
 public:
 	CRoisa(string name, tag t = tag::TAG_DEFAULT, CGameObject* pTarget = nullptr);

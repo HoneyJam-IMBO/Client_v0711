@@ -534,6 +534,24 @@
     <Filter Include="1. 소스 파일\05. GameObject\-07. Skill/Effect\4. Bard\1. b_Arrow">
       <UniqueIdentifier>{a82fc242-b7bb-41d0-83fc-68150fcdd988}</UniqueIdentifier>
     </Filter>
+    <Filter Include="1. 소스 파일\05. GameObject\-07. Skill/Effect\2. Dementor">
+      <UniqueIdentifier>{cadc6cf2-70a9-4da9-ad5b-60cdc279a312}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="1. 소스 파일\05. GameObject\-07. Skill/Effect\3. Wizard">
+      <UniqueIdentifier>{a6014543-5acf-48fc-8df4-fa778d777d8a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="1. 소스 파일\05. GameObject\-07. Skill/Effect\5. Boss">
+      <UniqueIdentifier>{5c105572-4ab5-4661-b931-8adde6a3b663}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="1. 소스 파일\05. GameObject\-07. Skill/Effect\5. Boss\-0, Meteo">
+      <UniqueIdentifier>{34b2b419-0868-45f8-8dda-de50173709d5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="1. 소스 파일\05. GameObject\-07. Skill/Effect\5. Boss\-1. Explosion">
+      <UniqueIdentifier>{5af421fe-9631-40a6-9849-09091a40a8cf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="1. 소스 파일\05. GameObject\-07. Skill/Effect\5. Boss\-2. Blizzard">
+      <UniqueIdentifier>{79658562-b2fa-4f72-923e-e6fdd6f353fe}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Light.h">
@@ -932,10 +950,26 @@
     <ClInclude Include="SoundManager.h">
       <Filter>1. 소스 파일\00. Singleton\-14. SoundManager</Filter>
     </ClInclude>
-    <ClInclude Include="DemSkillArrow.h" />
-    <ClInclude Include="WizardSkillArrow.h" />
     <ClInclude Include="BardSkillArrow.h">
       <Filter>1. 소스 파일\05. GameObject\-07. Skill/Effect\4. Bard\1. b_Arrow</Filter>
+    </ClInclude>
+    <ClInclude Include="DemSkillArrow.h">
+      <Filter>1. 소스 파일\05. GameObject\-07. Skill/Effect\2. Dementor</Filter>
+    </ClInclude>
+    <ClInclude Include="WizardSkillArrow.h">
+      <Filter>1. 소스 파일\05. GameObject\-07. Skill/Effect\3. Wizard</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\0. JH%27s Folder\Study\IBClient\ImBo\Client_v0711\IMBO_MAINFRAME\BossMeteo.h">
+      <Filter>1. 소스 파일\05. GameObject\-07. Skill/Effect\5. Boss\-0, Meteo</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\0. JH%27s Folder\Study\IBClient\ImBo\Client_v0711\IMBO_MAINFRAME\BossExplosion.h">
+      <Filter>1. 소스 파일\05. GameObject\-07. Skill/Effect\5. Boss\-1. Explosion</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\0. JH%27s Folder\Study\IBClient\ImBo\Client_v0711\IMBO_MAINFRAME\Blizzard.h">
+      <Filter>1. 소스 파일\05. GameObject\-07. Skill/Effect\5. Boss\-2. Blizzard</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\0. JH%27s Folder\Study\IBClient\ImBo\Client_v0711\IMBO_MAINFRAME\BlizzardEfc.h">
+      <Filter>1. 소스 파일\05. GameObject\-07. Skill/Effect\5. Boss\-2. Blizzard</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1320,14 +1354,26 @@
     <ClCompile Include="SoundManager.cpp">
       <Filter>1. 소스 파일\00. Singleton\-14. SoundManager</Filter>
     </ClCompile>
-    <ClCompile Include="DemSkillArrow.cpp">
-      <Filter>1. 소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="WizardSkillArrow.cpp">
-      <Filter>1. 소스 파일</Filter>
-    </ClCompile>
     <ClCompile Include="BardSkillArrow.cpp">
       <Filter>1. 소스 파일\05. GameObject\-07. Skill/Effect\4. Bard\1. b_Arrow</Filter>
+    </ClCompile>
+    <ClCompile Include="DemSkillArrow.cpp">
+      <Filter>1. 소스 파일\05. GameObject\-07. Skill/Effect\2. Dementor</Filter>
+    </ClCompile>
+    <ClCompile Include="WizardSkillArrow.cpp">
+      <Filter>1. 소스 파일\05. GameObject\-07. Skill/Effect\3. Wizard</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\0. JH%27s Folder\Study\IBClient\ImBo\Client_v0711\IMBO_MAINFRAME\BossMeteo.cpp">
+      <Filter>1. 소스 파일\05. GameObject\-07. Skill/Effect\5. Boss\-0, Meteo</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\0. JH%27s Folder\Study\IBClient\ImBo\Client_v0711\IMBO_MAINFRAME\BossExplosion.cpp">
+      <Filter>1. 소스 파일\05. GameObject\-07. Skill/Effect\5. Boss\-1. Explosion</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\0. JH%27s Folder\Study\IBClient\ImBo\Client_v0711\IMBO_MAINFRAME\Blizzard.cpp">
+      <Filter>1. 소스 파일\05. GameObject\-07. Skill/Effect\5. Boss\-2. Blizzard</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\0. JH%27s Folder\Study\IBClient\ImBo\Client_v0711\IMBO_MAINFRAME\BlizzardEfc.cpp">
+      <Filter>1. 소스 파일\05. GameObject\-07. Skill/Effect\5. Boss\-2. Blizzard</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

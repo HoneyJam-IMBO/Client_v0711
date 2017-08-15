@@ -10,6 +10,8 @@ bool CWizard::Begin()
 
 void CWizard::Animate(float fTimeElapsed)
 {
+	CGameObject::MappingRimLight(fTimeElapsed);
+
 	if (true == m_bSprit) {
 		if (false == m_bDamaged)
 			KeyInput(fTimeElapsed); //KeyInput(fTimeElapsed);
@@ -310,7 +312,7 @@ void CWizard::PushServerData(float x, float y, float z, float fAngleY, int nAnim
 {
 	BYTE Packet[MAX_BUFFER_LENGTH] = { 0, };
 
-	NETWORKMGR->WritePacket(PT_FREQUENCY_MOVE_CS, Packet, WRITE_PT_FREQUENCY_MOVE_CS(Packet, x, y, z, fAngleY, nAnimNum));
+	NETWORKMGR->WritePacket(PT_FREQUENCY_MOVE_CS, Packet, WRITE_PT_FREQUENCY_MOVE_CS(Packet, x, y, z, fAngleY, m_pAnimater->GetCurAnimationIndex()));
 }
 
 void CWizard::GetServerData(float fTimeElapsed)
@@ -544,6 +546,7 @@ void CWizard::PhisicsLogic(map<utag, list<CGameObject*>>& mlpObject, float fDelt
 				pBoss->GetDemaged(m_iCurAttack);
 #else
 				TransferCollisioinData(5, 1);
+				pBoss->SetRimLight();
 #endif
 				m_bCollision = true;
 			}
@@ -555,6 +558,7 @@ void CWizard::PhisicsLogic(map<utag, list<CGameObject*>>& mlpObject, float fDelt
 				pBoss->GetDemaged(m_iCurAttack);
 #else
 				TransferCollisioinData(5, 2);
+				pBoss->SetRimLight();
 #endif
 				m_bCollision = true;
 			}
@@ -564,7 +568,9 @@ void CWizard::PhisicsLogic(map<utag, list<CGameObject*>>& mlpObject, float fDelt
 #ifdef NO_SERVER
 				pBoss->GetDemaged(m_iCurAttack);
 #else
+
 				TransferCollisioinData(5, 4);
+				pBoss->SetRimLight();
 #endif
 				m_bCollision = true;
 			}
@@ -611,9 +617,13 @@ bool CWizard::GetDemaged(int iDemage) {
 	}
 
 
+#ifdef NO_SERVER
+#else
+
 	BYTE Packet[MAX_BUFFER_LENGTH] = { 0, };
 
-	NETWORKMGR->WritePacket(PT_FREQUENCY_MOVE_CS, Packet, WRITE_PT_FREQUENCY_MOVE_CS(Packet, m_xmf3Position.x, m_xmf3Position.y, m_xmf3Position.z, m_fAngleY, m_nAnimNum));
+	NETWORKMGR->WritePacket(PT_FREQUENCY_MOVE_CS, Packet, WRITE_PT_FREQUENCY_MOVE_CS(Packet, m_xmf3Position.x, m_xmf3Position.y, m_xmf3Position.z, m_fAngleY, m_pAnimater->GetCurAnimationIndex()));
+#endif
 
 	return true;
 }

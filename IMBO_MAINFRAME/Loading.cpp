@@ -282,7 +282,8 @@ void CLoading::LoadScene_ORITOWN()
 #ifdef NO_SERVER
 	//LoadUI_Skill(TEST_CHAR, 0, 0, 0);
 	//NETWORKMGR->GetServerPlayerInfos()[0].CHARACTER = TEST_CHAR - 1;
-	LoadUI_Skill(NETWORKMGR->GetServerPlayerInfos()[NETWORKMGR->GetSLOT_ID()].CHARACTER + 1, 0, 0, 0);
+	//LoadUI_Skill(NETWORKMGR->GetServerPlayerInfos()[NETWORKMGR->GetSLOT_ID()].CHARACTER + 1, 0, 0, 0);
+	LoadUI_Skill(2, 0, 0, 0);
 #else
 	for (int i = 0; i < NETWORKMGR->GetServerPlayerInfos().size(); ++i)
 		CHARACTER[i] = NETWORKMGR->GetServerPlayerInfos()[i].CHARACTER + 1;
@@ -295,6 +296,20 @@ void CLoading::LoadScene_ORITOWN()
 
 	// Boss
 	RESOURCEMGR->CreateMultiMesh("../../Assets/SceneResource/GJM/Boss01L.gjm", "Boss01L");
+	//RESOURCEMGR->CreateMultiMesh("../../Assets/SceneResource/GJM/Roisa.gjm", "Boss02R");
+	RESOURCEMGR->CreateMultiMesh("../../Assets/SceneResource/GJM/Wizard_Arrow.gjm", "Meteo");
+	CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/Wizard_shot_trail.dat", L"Wizard_shot_trail", 200);
+	RESOURCEMGR->CreateMultiMesh("../../Assets/SceneResource/GJM/Boss_Skill/boss2_sk2.gjm", "boss2_sk2");
+	RESOURCEMGR->CreateMultiMesh("../../Assets/SceneResource/GJM/Boss_Skill/Boss2_sk3.gjm", "Boss2_sk3");
+	RESOURCEMGR->CreateMultiMesh("../../Assets/SceneResource/GJM/Boss_Skill/boss2_sk3_efc1.gjm", "boss2_sk3_efc1");
+	RESOURCEMGR->CreateMultiMesh("../../Assets/SceneResource/GJM/Boss_Skill/boss2_sk3_efc2.gjm", "boss2_sk3_efc2");
+	RESOURCEMGR->CreateMultiMesh("../../Assets/SceneResource/GJM/Boss_Skill/boss2_sk3_efc3.gjm", "boss2_sk3_efc3");
+	//RESOURCEMGR->CreateMultiMesh("../../Assets/SceneResource/GJM/Boss_Skill/boss2_sk2_expefc.gjm", "boss2_sk2_expefc");
+	CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/boss2_sk2_expefc.dat", L"boss2_sk2_expefc", 40);
+	CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/boss2_sk2_efc.dat", L"boss2_sk2_efc", 40);
+	CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/Boss2_sk3_iceSmoke.dat", L"Boss2_sk3_iceSmoke", 40);
+	
+	
 
 	LoadScene("../../Assets/SceneResource/test/test.scn");
 	//LoadScene("../../Assets/SceneResource/FirstTown/FirstTown.scn");
@@ -474,3 +489,4 @@ void CLoading::LoadUI_Skill(int cn1, int cn2, int cn3, int cn4)
 
 	CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/walk_dust.dat", L"walk_dust", 100);
 }
+

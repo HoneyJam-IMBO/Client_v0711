@@ -68,6 +68,7 @@ int CHpBar::Update(float fTimeElapsed)
 	m_fCurHPLength -= fResuceHP * m_fHPDownSpeed * fTimeElapsed;
 
 	SetSize(XMFLOAT2(m_fCurHPLength, m_f2XYSize.y));
+	m_f2XYPos.x -= fResuceHP * m_fHPDownSpeed * fTimeElapsed;
 
 	if (m_pUIRenderCont) m_pUIRenderCont->SetRenderContainer(3.0f, this);
 	return 0;

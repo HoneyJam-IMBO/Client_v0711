@@ -9,6 +9,8 @@ bool CSister::Begin()
 
 void CSister::Animate(float fTimeElapsed)
 {
+	CGameObject::MappingRimLight(fTimeElapsed);
+
 	m_fTime = fTimeElapsed;
 	if (true == m_bSprit) {
 		if (false == m_bDamaged)
@@ -212,7 +214,7 @@ void CSister::PushServerData(float x, float y, float z, float fAngleY, int nAnim
 {
 	BYTE Packet[MAX_BUFFER_LENGTH] = { 0, };
 
-	NETWORKMGR->WritePacket(PT_FREQUENCY_MOVE_CS, Packet, WRITE_PT_FREQUENCY_MOVE_CS(Packet, x, y, z, fAngleY, nAnimNum));
+	NETWORKMGR->WritePacket(PT_FREQUENCY_MOVE_CS, Packet, WRITE_PT_FREQUENCY_MOVE_CS(Packet, x, y, z, fAngleY, m_pAnimater->GetCurAnimationIndex()));
 }
 
 void CSister::GetServerData(float fTimeElapsed)
@@ -530,6 +532,7 @@ void CSister::PhisicsLogic(map<utag, list<CGameObject*>>& mlpObject, float fDelt
 				pBoss->GetDemaged(m_iCurAttack);
 #else
 				TransferCollisioinData(5, 2);
+				pBoss->SetRimLight();
 #endif
 				m_bCollision = true;
 			}
@@ -540,6 +543,7 @@ void CSister::PhisicsLogic(map<utag, list<CGameObject*>>& mlpObject, float fDelt
 				pBoss->GetDemaged(m_iCurAttack);
 #else
 				TransferCollisioinData(5, 4);
+				pBoss->SetRimLight();
 #endif
 				
 				m_bCollision = true;
@@ -549,6 +553,7 @@ void CSister::PhisicsLogic(map<utag, list<CGameObject*>>& mlpObject, float fDelt
 			if (SkillCollision(pBoss, false)) {//
 				TransferCollisioinData(5, 0);
 				//pBoss->GetDemaged(m_iCurAttack);
+				pBoss->SetRimLight();
 				m_bCollision = true;
 			}
 			break;
@@ -592,10 +597,13 @@ bool CSister::GetDemaged(int iDemage) {
 		m_nAnimNum = SISTER_ANIM_DIE;
 		m_pAnimater->SetCurAnimationIndex(SISTER_ANIM_DIE);
 	}
+#ifdef NO_SERVER
+#else
 
 	BYTE Packet[MAX_BUFFER_LENGTH] = { 0, };
 
-	NETWORKMGR->WritePacket(PT_FREQUENCY_MOVE_CS, Packet, WRITE_PT_FREQUENCY_MOVE_CS(Packet, m_xmf3Position.x, m_xmf3Position.y, m_xmf3Position.z, m_fAngleY, m_nAnimNum));
+	NETWORKMGR->WritePacket(PT_FREQUENCY_MOVE_CS, Packet, WRITE_PT_FREQUENCY_MOVE_CS(Packet, m_xmf3Position.x, m_xmf3Position.y, m_xmf3Position.z, m_fAngleY, m_pAnimater->GetCurAnimationIndex()));
+#endif
 
 	return true;
 }
