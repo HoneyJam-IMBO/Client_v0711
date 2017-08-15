@@ -51,7 +51,15 @@ void CSister::KeyInput(float fDeltaTime)
 			m_nAnimNum = SISTER_ANIM_DEADBODY;
 			m_pAnimater->SetCurAnimationIndex(SISTER_ANIM_DEADBODY);
 		}
+#ifdef NO_SERVER
 
+#else
+		m_fTranslateTime += fDeltaTime;
+		if (m_fTranslateTime > FREQUENCY_TRANSFER_TIME) {
+			m_fTranslateTime = 0;
+			PushServerData(m_xmf3Position.x, m_xmf3Position.y, m_xmf3Position.z, m_fAngleY, m_pAnimater->GetCurAnimationIndex());
+		}
+#endif
 		m_bCollision = true;
 		return;
 	}
@@ -83,7 +91,6 @@ void CSister::KeyInput(float fDeltaTime)
 			m_bSkill = true;
 			m_nAnimNum = SISTER_ANIM_ATTACK;
 			m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
-			ResetCollisionValue(XMFLOAT3(0, 0, 3), 0.f, 0.8f, 2.f);
 			RENDERER->SetRadialBlurTime(true, 0.4f);
 
 			//CEffectMgr::GetInstance()->Play_Effect(L"Arrow_Skill1Shot", this);			
@@ -127,7 +134,20 @@ void CSister::KeyInput(float fDeltaTime)
 	}
 
 	// 스킬시 이동 점프X
-	if (true == m_bSkill) return;
+	if (true == m_bSkill) {
+#ifdef NO_SERVER
+
+#else
+		m_fTranslateTime += fDeltaTime;
+		if (m_fTranslateTime > FREQUENCY_TRANSFER_TIME) {
+			m_fTranslateTime = 0;
+			PushServerData(m_xmf3Position.x, m_xmf3Position.y, m_xmf3Position.z, m_fAngleY, m_nAnimNum);
+		}
+#endif
+		//60fps로 업데이트, 네트워크 갱신
+
+		return;
+	}
 
 	// 마우스 우클릭회전
 	if (true == INPUTMGR->MouseRightUp() && abs(m_pCamera->m_cxDelta + m_pCamera->m_cyDelta) > 1.f) {
@@ -220,7 +240,7 @@ void CSister::GetServerData(float fTimeElapsed)
 	//}
 	//m_bJump = data.bJump;
 
-	SetPosition(XMVectorSet(fPosX, fPosY, fPosZ, 1.0f));
+	SetPositionServer(XMVectorSet(fPosX, fPosY, fPosZ, 1.0f));
 	SetRotation(XMMatrixRotationY(fAngleY));
 	
 	if (m_pAnimater->SetCurAnimationIndex(m_nAnimNum)) {
@@ -434,6 +454,13 @@ void CSister::RegistToContainer()
 	if (m_pLeftWeapon) m_pLeftWeapon->RegistToContainer();
 }
 
+
+void CSister::TransferCollisioinData(int target_slot_id, int skillnum) {
+	BYTE Packet[MAX_BUFFER_LENGTH] = { 0, };
+	NETWORKMGR->WritePacket(PT_SKILL_COLLISION_TO_TARGET_CS, Packet, WRITE_PT_SKILL_COLLISION_TO_TARGET_CS(Packet, NETWORKMGR->GetROOM_ID(), NETWORKMGR->GetSLOT_ID(), target_slot_id, 3, skillnum));
+
+}
+
 void CSister::PhisicsLogic(map<utag, list<CGameObject*>>& mlpObject, float fDeltaTime)
 {
 	m_fCollisionTime += fDeltaTime;
@@ -447,13 +474,15 @@ void CSister::PhisicsLogic(map<utag, list<CGameObject*>>& mlpObject, float fDelt
 		switch (m_nAnimNum) {
 		case SISTER_ANIM_SKILL1_FIRE:
 			if (SkillCollision(pPlayer)) {//skill3 boss에게 대미지
-				pPlayer->GetHeal(m_iCurAttack);
+				TransferCollisioinData(pPlayer->GetSlotID(), 1);
+				//pPlayer->GetHeal(m_iCurAttack);
 				//m_bCollision = true;
 			}
 			break;
 		case SISTER_ANIM_SKILL3_FIRE:
 			if (SkillCollision(pPlayer, false)) {//skill2 투사체 boss에게 대미지
-				pPlayer->GetHeal(m_iCurAttack * 3);
+				TransferCollisioinData(pPlayer->GetSlotID(), 3);
+				//pPlayer->GetHeal(m_iCurAttack * 3);
 				//m_bCollision = true;
 			}
 			break;
@@ -465,13 +494,15 @@ void CSister::PhisicsLogic(map<utag, list<CGameObject*>>& mlpObject, float fDelt
 		switch (m_nAnimNum) {
 		case SISTER_ANIM_SKILL1_FIRE:
 			if (SkillCollision(pPlayer)) {//skill3 boss에게 대미지
-				pPlayer->GetHeal(m_iCurAttack);
+				TransferCollisioinData(pPlayer->GetSlotID(), 1);
+				 //pPlayer->GetHeal(m_iCurAttack);
 				m_bCollision = true;
 			}
 			break;
 		case SISTER_ANIM_SKILL3_FIRE:
 			if (SkillCollision(pPlayer, false)) {//skill2 투사체 boss에게 대미지
-				pPlayer->GetHeal(m_iCurAttack * 3);
+				TransferCollisioinData(pPlayer->GetSlotID(), 3);
+				//pPlayer->GetHeal(m_iCurAttack * 3);
 				m_bCollision = true;
 			}
 			break;
@@ -482,20 +513,16 @@ void CSister::PhisicsLogic(map<utag, list<CGameObject*>>& mlpObject, float fDelt
 	for (auto pBoss : mlpObject[utag::UTAG_BOSS1]) {
 		switch (m_nAnimNum) {
 		case SISTER_ANIM_SKILL2_FIRE:
-			if (SkillCollision(pBoss, false)) {//
-				pBoss->GetDemaged(m_iCurAttack);
+			if (SkillCollision(pBoss, false)) {//skill2 투사체 boss에게 대미지
+				TransferCollisioinData(5, 2);
+				//pBoss->GetDemaged(m_iCurAttack);
 				m_bCollision = true;
 			}
 			break;
 		case SISTER_ANIM_SKILL4_FIRE:
-			if (SkillCollision(pBoss, false)) {//
-				pBoss->GetDemaged(m_iCurAttack);
-				m_bCollision = true;
-			}
-			break;
-		case SISTER_ANIM_ATTACK:
-			if (SkillCollision(pBoss, false)) {//
-				pBoss->GetDemaged(m_iCurAttack);
+			if (SkillCollision(pBoss, false)) {//skill2 투사체 boss에게 대미지
+				TransferCollisioinData(5, 4);
+				//pBoss->GetDemaged(m_iCurAttack);
 				m_bCollision = true;
 			}
 			break;
@@ -529,11 +556,16 @@ bool CSister::GetDemaged(int iDemage) {
 	m_nAnimNum = SISTER_ANIM_HIT_F;
 	m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
 
-	CGameObject::GetDemaged(iDemage);//내 hp 날리고!
+	//CGameObject::GetDemaged(iDemage);//내 hp 날리고!
 	if (m_iCurHP <= 0) {
 		m_nAnimNum = SISTER_ANIM_DIE;
 		m_pAnimater->SetCurAnimationIndex(SISTER_ANIM_DIE);
 	}
+
+	BYTE Packet[MAX_BUFFER_LENGTH] = { 0, };
+
+	NETWORKMGR->WritePacket(PT_FREQUENCY_MOVE_CS, Packet, WRITE_PT_FREQUENCY_MOVE_CS(Packet, m_xmf3Position.x, m_xmf3Position.y, m_xmf3Position.z, m_fAngleY, m_nAnimNum));
+
 	return true;
 }
 

@@ -1,7 +1,7 @@
 #pragma once
 #include "LabClientSession.h"
 #include "SingleTon.h"
-#define NO_SERVER
+//#define NO_SERVER
 
 //protocol
 
@@ -363,6 +363,12 @@ public:
 
 	BOSS_FREQUENCY_DATA GetBossInfo() { return m_tBossInfo; }
 	void SetBossInfo(BOSS_FREQUENCY_DATA data) { m_tBossInfo = data; }
+
+	INT GetBossHP() { return BOSS_HP; }
+	void SetBossHP(INT hp) { BOSS_HP = hp; };
+
+	INT GetPlayerHP(int slot_id) { return PlayerHP[slot_id]; }
+	void SetPlayerHP(int slot_id, int hp) { PlayerHP[slot_id] = hp; }
 	//network pawn input 
 	PLAYR_FREQUENCY_DATA GetPlayerFrequencyData(INT SLOT_ID);
 	
@@ -378,7 +384,8 @@ private:
 	INT ROOM_ID{ 0 };
 	INT SLOT_ID{ 0 };
 	INT CHARACTER{ 0 };
-
+	INT BOSS_HP{ 0 };
+	INT PlayerHP[4]{ 0,0,0,0 };
 	////현재 접속한 적 플레이어를 관리할 객체
 	////<그림그리고, 입력관리> - 쉐이더를 가짐.
 	//COtherPlayerManager* m_pOtherPlayerManager;

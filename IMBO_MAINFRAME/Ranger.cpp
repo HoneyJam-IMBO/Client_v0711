@@ -139,7 +139,15 @@ void CRanger::KeyInput(float fDeltaTime)
 			m_nAnimNum = ANIM_DEADBODY;
 			m_pAnimater->SetCurAnimationIndex(ANIM_DEADBODY);
 		}
+#ifdef NO_SERVER
 
+#else
+		m_fTranslateTime += fDeltaTime;
+		if (m_fTranslateTime > FREQUENCY_TRANSFER_TIME) {
+			m_fTranslateTime = 0;
+			PushServerData(m_xmf3Position.x, m_xmf3Position.y, m_xmf3Position.z, m_fAngleY, m_pAnimater->GetCurAnimationIndex());
+		}
+#endif
 		m_bCollision = true;
 		return;
 	}
@@ -348,7 +356,7 @@ void CRanger::GetServerData(float fTimeElapsed) {
 	//}
 	//m_bJump = data.bJump;
 
-	SetPosition(XMVectorSet(m_xmf3Position.x, m_xmf3Position.y, m_xmf3Position.z, 1.0f));
+	SetPositionServer(XMVectorSet(m_xmf3Position.x, m_xmf3Position.y, m_xmf3Position.z, 1.0f));
 	SetRotation(XMMatrixRotationY(m_fAngleY));
 
 	if (m_pAnimater->SetCurAnimationIndex(m_nAnimNum)) {
@@ -510,9 +518,15 @@ void CRanger::RegistToContainer() {
 	if (m_pWeapon) m_pWeapon->RegistToContainer();
 }
 
+void CRanger::TransferCollisioinData(int target_slot_id, int skillnum) {
+	BYTE Packet[MAX_BUFFER_LENGTH] = { 0, };
+	NETWORKMGR->WritePacket(PT_SKILL_COLLISION_TO_TARGET_CS, Packet, WRITE_PT_SKILL_COLLISION_TO_TARGET_CS(Packet, NETWORKMGR->GetROOM_ID(), NETWORKMGR->GetSLOT_ID(), target_slot_id, 0, skillnum));
+
+}
+
 void CRanger::PhisicsLogic(map<utag, list<CGameObject*>>& mlpObject, float fDeltaTime)
 {
-
+	BYTE Packet[MAX_BUFFER_LENGTH] = { 0, };
 	m_fCollisionTime += fDeltaTime;
 	m_fAnimTime += fDeltaTime;
 	if (m_fCollisionTime > 2.f) {
@@ -535,7 +549,8 @@ void CRanger::PhisicsLogic(map<utag, list<CGameObject*>>& mlpObject, float fDelt
 		switch (m_nAnimNum) {
 		case ANIM_SKILL1_FIRE:
 			if (SkillCollision(pPlayer)) {
-				pPlayer->GetHeal(m_iAttack);
+				TransferCollisioinData(pPlayer->GetSlotID(), 1);
+				//pPlayer->GetHeal(m_iAttack);
 				//m_bCollision = true;
 			}
 			break;
@@ -547,7 +562,8 @@ void CRanger::PhisicsLogic(map<utag, list<CGameObject*>>& mlpObject, float fDelt
 		switch (m_nAnimNum) {
 		case ANIM_SKILL1_FIRE:
 			if (SkillCollision(pPlayer)) {
-				pPlayer->GetHeal(m_iAttack);
+				TransferCollisioinData(pPlayer->GetSlotID(), 1);
+				//pPlayer->GetHeal(m_iAttack);
 				m_bCollision = true;
 			}
 			break;
@@ -559,13 +575,16 @@ void CRanger::PhisicsLogic(map<utag, list<CGameObject*>>& mlpObject, float fDelt
 		switch (m_nAnimNum) {
 		case ANIM_SKILL3_FIRE:
 			if (SkillCollision(pBoss)) {//boss
-				pBoss->GetDemaged(m_iAttack);
+				TransferCollisioinData(5, 3);
+				//pBoss->GetDemaged(m_iAttack);
+				
 				m_bCollision = true;
 			}
 			break;
 		case ANIM_SKILL4_FIRE:
 			if (SkillCollision(pBoss, false)) {
-				pBoss->GetDemaged(m_iAttack);
+				TransferCollisioinData(5,4);
+				//pBoss->GetDemaged(m_iAttack);
 				m_bCollision = true;
 			}
 			break;
@@ -576,23 +595,34 @@ void CRanger::PhisicsLogic(map<utag, list<CGameObject*>>& mlpObject, float fDelt
 }
 
 bool CRanger::GetDemaged(int iDemage) {
-	if (m_pAnimater->GetCurAnimationIndex() == ANIM_DIE || m_pAnimater->GetCurAnimationIndex() == ANIM_DEADBODY) {
-		m_nAnimNum = m_pAnimater->GetCurAnimationIndex();
-		m_bDamaged = false;
-		return false;//죽고있으면 충돌처리 하지 않음
-	}
-	m_bDamaged = true;
-	CEffectMgr::GetInstance()->Play_Effect(L"TestBlood", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y + 2.f, m_xmf3Position.z, 1.f),
-		XMVectorSet(0.f, 0.f, 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
 
-	m_nAnimNum = ANIM_HIT_F;
-	m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
+		if (m_pAnimater->GetCurAnimationIndex() == ANIM_DIE || m_pAnimater->GetCurAnimationIndex() == ANIM_DEADBODY) {
+			m_nAnimNum = m_pAnimater->GetCurAnimationIndex();
+			m_bDamaged = false;
+			return false;//죽고있으면 충돌처리 하지 않음
+		}
+		m_bDamaged = true;
+		CEffectMgr::GetInstance()->Play_Effect(L"TestBlood", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y + 2.f, m_xmf3Position.z, 1.f),
+			XMVectorSet(0.f, 0.f, 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
 
-	CGameObject::GetDemaged(iDemage);//내 hp 날리고!
-	if (m_iCurHP <= 0) {
-		m_nAnimNum = ANIM_DIE;
-		m_pAnimater->SetCurAnimationIndex(ANIM_DIE);
-	}
+		m_nAnimNum = ANIM_HIT_F;
+		m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
+
+		//CGameObject::GetDemaged(iDemage);//내 hp 날리고!
+
+
+		if (m_iCurHP <= 0) {
+			m_nAnimNum = ANIM_DIE;
+			m_pAnimater->SetCurAnimationIndex(ANIM_DIE);
+		}
+
+
+		BYTE Packet[MAX_BUFFER_LENGTH] = { 0, };
+
+		NETWORKMGR->WritePacket(PT_FREQUENCY_MOVE_CS, Packet, WRITE_PT_FREQUENCY_MOVE_CS(Packet, m_xmf3Position.x, m_xmf3Position.y, m_xmf3Position.z, m_fAngleY, m_nAnimNum));
+
+
+
 	return true;
 }
 

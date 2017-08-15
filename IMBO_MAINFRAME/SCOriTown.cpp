@@ -186,12 +186,13 @@ void CSCOriTown::Animate(float fTimeElapsed) {
 		}
 		else {
 			DEBUGER->AddGameText(50, 10, 50 * progress, YT_Color(0, 0, 255), L"대기");
-			DEBUGER->AddGameText(25, 200, 50 * progress, YT_Color(200,200,200), L"%f %f %f", player_info.FREQUENCY_DATA.fPosX, player_info.FREQUENCY_DATA.fPosY, player_info.FREQUENCY_DATA.fPosZ);
+			DEBUGER->AddGameText(50, 100, 50 * progress, YT_Color(0, 0, 255), L"%d", NETWORKMGR->GetPlayerHP(progress));
+			DEBUGER->AddGameText(25, 200, 50 * progress, YT_Color(200,200,200), L"%f %f %f %f %d", player_info.FREQUENCY_DATA.fPosX, player_info.FREQUENCY_DATA.fPosY, player_info.FREQUENCY_DATA.fPosZ, player_info.FREQUENCY_DATA.fAngleY ,player_info.FREQUENCY_DATA.iAnimNum);
 		}
 		progress++;
 	}
 
-	
+	DEBUGER->AddGameText(50, 700, 30, YT_Color(255, 1, 1), L"%d", NETWORKMGR->GetBossHP());
 	
 	for (int i = 0; i < 20; ++i)
 		NetworkProc();
@@ -427,9 +428,13 @@ void CSCOriTown::NetworkProc(){
 			PROC_PT_FTOWN_BOSS_ACTION_CAMERA_READY_COMP_SC(dwProtocol, Packet, dwPacketLength);
 			break;
 		case PT_BOSS_HP_SC:
+			PROC_PT_BOSS_HP_SC(dwProtocol, Packet, dwPacketLength);
 			break;
 		case PT_BOSS_CLEAR_SC:
 			PROC_PT_BOSS_CLEAR_SC(dwProtocol, Packet, dwPacketLength);
+			break;
+		case PT_PLAYER_HP_SC:
+			PROC_PT_PLAYER_HP_SC(dwProtocol, Packet, dwPacketLength);
 			break;
 		}
 	}
@@ -438,8 +443,33 @@ void CSCOriTown::NetworkProc(){
 
 VOID CSCOriTown::PROC_PT_BOSS_CLEAR_SC(DWORD dwProtocol, BYTE * Packet, DWORD dwPacketLength) {
 	// 보스 죽음
-	KillBoss1();
+	NETWORKMGR->SetBossHP(0);
+	m_pBoss->SetCurHP(0);
+	//if(NETWORKMGR->GetSLOT_ID() == 0)
+	m_pBoss->GetDemaged(0);
 
+	return VOID();
+}
+
+VOID CSCOriTown::PROC_PT_BOSS_HP_SC(DWORD dwProtocol, BYTE * Packet, DWORD dwPacketLength) {
+	READ_PACKET(PT_BOSS_HP_SC);
+
+	NETWORKMGR->SetBossHP(Data.BOSS_HP);
+	m_pBoss->SetCurHP(Data.BOSS_HP);
+	m_pBoss->GetDemaged(0);
+	return VOID();
+}
+
+VOID CSCOriTown::PROC_PT_PLAYER_HP_SC(DWORD dwProtocol, BYTE * Packet, DWORD dwPacketLength) {
+	READ_PACKET(PT_PLAYER_HP_SC);
+
+	bool bHeal = false;
+	if (NETWORKMGR->GetPlayerHP(Data.SLOT_ID) <= Data.PLAYER_HP)
+		bHeal = true;
+	NETWORKMGR->SetPlayerHP(Data.SLOT_ID, Data.PLAYER_HP);
+	m_ppPawn[Data.SLOT_ID]->SetCurHP(Data.PLAYER_HP);
+	if (NETWORKMGR->GetSLOT_ID() == Data.SLOT_ID && bHeal == false)
+		m_ppPawn[Data.SLOT_ID]->GetDemaged(0);
 	return VOID();
 }
 

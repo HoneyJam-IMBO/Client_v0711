@@ -51,7 +51,15 @@ void CBard::KeyInput(float fDeltaTime)
 			m_nAnimNum = BARD_ANIM_DEADBODY;
 			m_pAnimater->SetCurAnimationIndex(BARD_ANIM_DEADBODY);
 		}
+#ifdef NO_SERVER
 
+#else
+		m_fTranslateTime += fDeltaTime;
+		if (m_fTranslateTime > FREQUENCY_TRANSFER_TIME) {
+			m_fTranslateTime = 0;
+			PushServerData(m_xmf3Position.x, m_xmf3Position.y, m_xmf3Position.z, m_fAngleY, m_pAnimater->GetCurAnimationIndex());
+		}
+#endif
 		m_bCollision = true;
 		return;
 	}
@@ -118,7 +126,20 @@ void CBard::KeyInput(float fDeltaTime)
 	}
 
 	// 스킬시 이동 점프X
-	if (true == m_bSkill) return;
+	if (true == m_bSkill) {
+#ifdef NO_SERVER
+
+#else
+		m_fTranslateTime += fDeltaTime;
+		if (m_fTranslateTime > FREQUENCY_TRANSFER_TIME) {
+			m_fTranslateTime = 0;
+			PushServerData(m_xmf3Position.x, m_xmf3Position.y, m_xmf3Position.z, m_fAngleY, m_nAnimNum);
+		}
+#endif
+		//60fps로 업데이트, 네트워크 갱신
+
+		return;
+	}
 
 	// 마우스 우클릭회전
 	if (true == INPUTMGR->MouseRightUp() && abs(m_pCamera->m_cxDelta + m_pCamera->m_cyDelta) > 1.f) {
@@ -211,7 +232,7 @@ void CBard::GetServerData(float fTimeElapsed)
 	//}
 	//m_bJump = data.bJump;
 
-	SetPosition(XMVectorSet(fPosX, fPosY, fPosZ, 1.0f));
+	SetPositionServer(XMVectorSet(fPosX, fPosY, fPosZ, 1.0f));
 	SetRotation(XMMatrixRotationY(fAngleY));
 	if (m_pAnimater->SetCurAnimationIndex(m_nAnimNum)) {
 		switch (m_nAnimNum) {
@@ -433,6 +454,13 @@ void CBard::RegistToContainer()
 	if (m_pWeapon) m_pWeapon->RegistToContainer();
 }
 
+
+void CBard::TransferCollisioinData(int target_slot_id, int skillnum) {
+	BYTE Packet[MAX_BUFFER_LENGTH] = { 0, };
+	NETWORKMGR->WritePacket(PT_SKILL_COLLISION_TO_TARGET_CS, Packet, WRITE_PT_SKILL_COLLISION_TO_TARGET_CS(Packet, NETWORKMGR->GetROOM_ID(), NETWORKMGR->GetSLOT_ID(), target_slot_id, 5, skillnum));
+
+}
+
 void CBard::PhisicsLogic(map<utag, list<CGameObject*>>& mlpObject, float fDeltaTime)
 {
 	m_fCollisionTime += fDeltaTime;
@@ -446,7 +474,8 @@ void CBard::PhisicsLogic(map<utag, list<CGameObject*>>& mlpObject, float fDeltaT
 		switch (m_nAnimNum) {
 		case BARD_ANIM_SKILL4_FIRE:
 			if (SkillCollision(pPlayer, false)) {//skill4
-				pPlayer->GetHeal(m_iCurAttack);
+				TransferCollisioinData(pPlayer->GetSlotID(), 4);
+				//pPlayer->GetHeal(m_iCurAttack);
 				//m_bCollision = true;
 				//nAplyOtherPlayer++;
 			}
@@ -460,7 +489,8 @@ void CBard::PhisicsLogic(map<utag, list<CGameObject*>>& mlpObject, float fDeltaT
 		switch (m_nAnimNum) {
 		case BARD_ANIM_SKILL4_FIRE:
 			if (SkillCollision(pPlayer, false)) {//skill4
-				pPlayer->GetHeal(m_iCurAttack);
+				TransferCollisioinData(pPlayer->GetSlotID(), 4);
+				//pPlayer->GetHeal(m_iCurAttack);
 				m_bCollision = true;
 			}
 			break;
@@ -473,13 +503,15 @@ void CBard::PhisicsLogic(map<utag, list<CGameObject*>>& mlpObject, float fDeltaT
 
 		case BARD_ANIM_SKILL1_FIRE:
 			if (SkillCollision(pBoss)) {//skill1 boss에게 대미지
-				pBoss->GetDemaged(m_iCurAttack);
+				TransferCollisioinData(5, 1);
+				//pBoss->GetDemaged(m_iCurAttack);
 				m_bCollision = true;
 			}
 			break;
 		case BARD_ANIM_SKILL3_FIRE:
 			if (SkillCollision(pBoss, false)) {//skill4
-				pBoss->GetDemaged(m_iCurAttack);
+				TransferCollisioinData(5, 3);
+				//pBoss->GetDemaged(m_iCurAttack);
 				m_bCollision = true;
 			}
 			break;
@@ -514,10 +546,16 @@ bool CBard::GetDemaged(int iDemage){
 	m_nAnimNum = BARD_ANIM_HIT_F;
 	m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
 
-	CGameObject::GetDemaged(iDemage);//내 hp 날리고!
+	//CGameObject::GetDemaged(iDemage);//내 hp 날리고!
 	if (m_iCurHP <= 0) {
 		m_nAnimNum = BARD_ANIM_DIE;
 		m_pAnimater->SetCurAnimationIndex(BARD_ANIM_DIE);
 	}
+
+
+	BYTE Packet[MAX_BUFFER_LENGTH] = { 0, };
+
+	NETWORKMGR->WritePacket(PT_FREQUENCY_MOVE_CS, Packet, WRITE_PT_FREQUENCY_MOVE_CS(Packet, m_xmf3Position.x, m_xmf3Position.y, m_xmf3Position.z, m_fAngleY, m_nAnimNum));
+
 	return true;
 }

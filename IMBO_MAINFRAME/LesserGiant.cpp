@@ -17,7 +17,7 @@ CLesserGiant::~CLesserGiant()
 bool CLesserGiant::GetDemaged(int iDemege){
 
 	//뭔가 이팩트가 있으면 좋겠음 ㅠ
-	CGameObject::GetDemaged(iDemege);
+	//CGameObject::GetDemaged(iDemege);
 	if (m_iCurHP == 0) {
 		m_pAnimater->SetCurAnimationIndex(BOSS1_ANI_DYING);
 	}
@@ -56,8 +56,24 @@ void CLesserGiant::Animate(float fTimeElapsed)
 		SetRotation(XMMatrixRotationY(data.fAngleY));
 
 
-		m_pAnimater->SetCurAnimationIndex(data.iAnimNum);
-
+		if (m_pAnimater->SetCurAnimationIndex(data.iAnimNum)) {
+			switch (data.iAnimNum) {
+			case BOSS1_ANI_SKILL1:
+				ResetCollisionValue(XMFLOAT3(0, 1, 5), 1, 1.7, 5);
+				break;
+			case BOSS1_ANI_SKILL2:
+				ResetCollisionValue(XMFLOAT3(0, 1, 5), 4.1, 4.6, 5);
+				break;
+			case BOSS1_ANI_SKILL3:
+				ResetCollisionValue(XMFLOAT3(0, 1, 5), 3.4, 4.5, 5);
+				break;
+			case BOSS1_ANI_SKILL4:
+				ResetCollisionValue(XMFLOAT3(0, 0, 0), 2, 7, 7);
+				break;
+			default:
+				break;
+			}
+		}
 	}
 #endif
 
@@ -77,6 +93,11 @@ void CLesserGiant::RegistToContainer()
 	CGameObject::RegistToContainer();
 }
 
+void CLesserGiant::TransferCollisioinData(int target_slot_id, int skillnum) {
+	BYTE Packet[MAX_BUFFER_LENGTH] = { 0, };
+	NETWORKMGR->WritePacket(PT_SKILL_COLLISION_TO_TARGET_CS, Packet, WRITE_PT_SKILL_COLLISION_TO_TARGET_CS(Packet, NETWORKMGR->GetROOM_ID(), 5, target_slot_id, 6, skillnum));
+
+}
 void CLesserGiant::PhisicsLogic(map<utag, list<CGameObject*>>& mlpObject, float fDeltaTime)
 {
 	for (auto pArrow : mlpObject[utag::UTAG_ARROW]) {
@@ -84,7 +105,9 @@ void CLesserGiant::PhisicsLogic(map<utag, list<CGameObject*>>& mlpObject, float 
 		if (false == pArrow->GetActive()) continue;
 		if (true == IsCollision(pArrow))
 		{
-			GetDemaged(100.f);
+			BYTE Packet[MAX_BUFFER_LENGTH] = { 0, };
+			NETWORKMGR->WritePacket(PT_SKILL_COLLISION_TO_TARGET_CS, Packet, WRITE_PT_SKILL_COLLISION_TO_TARGET_CS(Packet, NETWORKMGR->GetROOM_ID(), NETWORKMGR->GetSLOT_ID(), 5, NETWORKMGR->GetServerPlayerInfos()[NETWORKMGR->GetSLOT_ID()].CHARACTER, 9));
+			//GetDemaged(100.f);
 			pArrow->DisappearSkill();
 			break;
 		}
@@ -104,24 +127,28 @@ void CLesserGiant::PhisicsLogic(map<utag, list<CGameObject*>>& mlpObject, float 
 			switch (m_nAnimNum) {
 			case BOSS1_ANI_SKILL1:
 				if (SkillCollision(pPlayer)) {
+					TransferCollisioinData(pPlayer->GetSlotID(), 1);
 					pPlayer->GetDemaged(m_iAttack);//100
 					m_bCollision = true;
 				}
 				break;
 			case BOSS1_ANI_SKILL2:
 				if (SkillCollision(pPlayer)) {
+					TransferCollisioinData(pPlayer->GetSlotID(), 2);
 					pPlayer->GetDemaged(m_iAttack * 2);//200
 					m_bCollision = true;
 				}
 				break;
 			case BOSS1_ANI_SKILL3:
 				if (SkillCollision(pPlayer)) {
+					TransferCollisioinData(pPlayer->GetSlotID(),3);
 					pPlayer->GetDemaged(m_iAttack * 2);//200
 					m_bCollision = true;
 				}
 				break;
 			case BOSS1_ANI_SKILL4:
 				if (SkillCollision(pPlayer)) {
+					TransferCollisioinData(pPlayer->GetSlotID(), 4);
 					pPlayer->GetDemaged(m_iAttack * 1.5);//150
 					m_bCollision = true;
 				}
