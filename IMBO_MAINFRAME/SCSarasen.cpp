@@ -115,7 +115,7 @@ bool CSCSarasen::Begin()
 
 	while (false == m_bGameStart) {
 		NetworkProc();
-		Sleep(100);
+		Sleep(1);
 	}
 	return CScene::Begin();
 }
@@ -198,7 +198,8 @@ void CSCSarasen::Animate(float fTimeElapsed)
 		}
 	}
 #endif
-	NetworkProc();
+	for (int i = 0; i < 20; ++i)
+		NetworkProc();
 	CScene::Animate(fTimeElapsed);
 
 	size_t iVecSize = m_vecUI.size();
@@ -311,6 +312,9 @@ void CSCSarasen::NetworkProc()
 		case PT_FREQUENCY_MOVE_SC:
 			PROC_PT_FREQUENCY_MOVE_SC(dwProtocol, Packet, dwPacketLength);
 			break;
+		case PT_BOSS_FREQUENCY_MOVE_SC:
+			PROC_PT_BOSS_FREQUENCY_MOVE_SC(dwProtocol, Packet, dwPacketLength);
+			break;
 		case PT_MOUSE_LEFT_ATTACK_SC:
 			PROC_PT_MOUSE_LEFT_ATTACK_SC(dwProtocol, Packet, dwPacketLength);
 			break;
@@ -329,9 +333,36 @@ void CSCSarasen::NetworkProc()
 		case PT_SARASEN_BOSS_ACTION_CAMERA_READY_COMP_SC:
 			PROC_PT_SARASEN_BOSS_ACTION_CAMERA_READY_COMP_SC(dwProtocol, Packet, dwPacketLength);
 			break;
-		
+		case PT_BOSS_HP_SC:
+			PROC_PT_BOSS_HP_SC(dwProtocol, Packet, dwPacketLength);
+			break;
+		case PT_PLAYER_HP_SC:
+			PROC_PT_PLAYER_HP_SC(dwProtocol, Packet, dwPacketLength);
+			break;
 		}
 	}
+}
+
+VOID CSCSarasen::PROC_PT_BOSS_HP_SC(DWORD dwProtocol, BYTE * Packet, DWORD dwPacketLength) {
+	READ_PACKET(PT_BOSS_HP_SC);
+
+	NETWORKMGR->SetBossHP(Data.BOSS_HP);
+	m_pBoss->SetCurHP(Data.BOSS_HP);
+	m_pBoss->GetDemaged(0);
+	return VOID();
+}
+
+VOID CSCSarasen::PROC_PT_PLAYER_HP_SC(DWORD dwProtocol, BYTE * Packet, DWORD dwPacketLength) {
+	READ_PACKET(PT_PLAYER_HP_SC);
+
+	bool bHeal = false;
+	if (NETWORKMGR->GetPlayerHP(Data.SLOT_ID) <= Data.PLAYER_HP)
+		bHeal = true;
+	NETWORKMGR->SetPlayerHP(Data.SLOT_ID, Data.PLAYER_HP);
+	m_ppPawn[Data.SLOT_ID]->SetCurHP(Data.PLAYER_HP);
+	if (NETWORKMGR->GetSLOT_ID() == Data.SLOT_ID && bHeal == false)
+		m_ppPawn[Data.SLOT_ID]->GetDemaged(0);
+	return VOID();
 }
 
 VOID CSCSarasen::PROC_PT_SARASEN_READY_SC(DWORD dwProtocol, BYTE * Packet, DWORD dwPacketLength)
@@ -406,6 +437,28 @@ VOID CSCSarasen::PROC_PT_FREQUENCY_MOVE_SC(DWORD dwProtocol, BYTE * Packet, DWOR
 	return VOID();
 }
 
+VOID CSCSarasen::PROC_PT_BOSS_FREQUENCY_MOVE_SC(DWORD dwProtocol, BYTE * Packet, DWORD dwPacketLength) {
+	READ_PACKET(PT_BOSS_FREQUENCY_MOVE_SC);
+
+
+	BOSS_FREQUENCY_DATA data;
+	data.fPosX = Data.POSX;
+	data.fPosY = Data.POSY;
+	data.fPosZ = Data.POSZ;
+
+	data.fAngleY = Data.ANGLEY;
+	data.iAnimNum = Data.ANIMNUM;
+	//CPawn* pPawn = (CPawn*)m_ppPawn[Data.SLOT_ID];
+	//pPawn->NetworkInput(data.dwDirection, data.fAngleY);
+	//network queue에 입력하구 대기한다.
+	//NETWORKMGR->GetServerPlayerInfos()[Data.SLOT_ID].m_qFREQUENCY_DATA.push(data);
+	//DEBUGER->AddGameText(25, 10, 300, YT_Color(0, 0, 200), L"%f %f %f %f %f", data.fPosX, data.fPosY, data.fPosZ, data.fAngleY, data.iAnimNum);
+
+	NETWORKMGR->SetBossInfo(data);
+	//BYTE PacketT[MAX_BUFFER_LENGTH] = { 0, };
+	//NETWORKMGR->WritePacket(PT_TEMP, PacketT, WRITE_PT_TEMP(PacketT));
+	return VOID();
+}
 VOID CSCSarasen::PROC_PT_MOUSE_LEFT_ATTACK_SC(DWORD dwProtocol, BYTE * Packet, DWORD dwPacketLength)
 {
 	READ_PACKET(PT_MOUSE_LEFT_ATTACK_SC);

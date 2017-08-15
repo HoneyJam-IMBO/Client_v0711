@@ -125,7 +125,7 @@ bool CSCAldenard::Begin()
 
 	while (false == m_bGameStart) {
 		NetworkProc();
-		Sleep(100);
+		Sleep(1);
 	}
 	return CScene::Begin();
 }
@@ -173,8 +173,8 @@ void CSCAldenard::Animate(float fTimeElapsed)
 		CSoundManager::Play_3Dsound("bgm_gate_loop", 1, &xmf3Pos, 1.f, 10.f, 200.f);
 	}
 	BYTE Packet[MAX_BUFFER_LENGTH] = { 0, };
-
-	NetworkProc();
+	for (int i = 0; i < 20; ++i)
+		NetworkProc();
 	CScene::Animate(fTimeElapsed);
 
 

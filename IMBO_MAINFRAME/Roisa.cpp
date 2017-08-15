@@ -151,6 +151,7 @@ void CRoisa::Animate(float fTimeElapsed)
 
 	CGameObject::MappingRimLight(fTimeElapsed);
 
+#ifdef NO_SERVER
 	UpdatePattern(fTimeElapsed);
 	//Move(XMVector3Normalize(XMLoadFloat3(&m_f3Diraction)), (m_fSpeed)* fTimeElapsed);
 
@@ -161,6 +162,59 @@ void CRoisa::Animate(float fTimeElapsed)
 	for (auto i : m_mapComponents) {
 		i.second->Update(fTimeElapsed);
 	}
+#else
+	if (NETWORKMGR->GetSLOT_ID() == 0) {
+		UpdatePattern(fTimeElapsed);
+		//Move(XMVector3Normalize(XMLoadFloat3(&m_f3Diraction)), (m_fSpeed)* fTimeElapsed);
+	}
+	if (m_pAnimater) m_pAnimater->Update(TIMEMGR->GetTimeElapsed());
+	ActionMoveProc();
+
+	//모든 컴포넌트를 돌면서 Update실행
+	for (auto i : m_mapComponents) {
+		i.second->Update(fTimeElapsed);
+	}
+
+	if (NETWORKMGR->GetSLOT_ID() == 0) {
+
+
+		BYTE Packet[MAX_BUFFER_LENGTH] = { 0, };
+		NETWORKMGR->WritePacket(PT_BOSS_FREQUENCY_MOVE_CS, Packet, WRITE_PT_BOSS_FREQUENCY_MOVE_CS(Packet, m_xmf3Position.x, m_xmf3Position.y, m_xmf3Position.z, m_fAngleY, m_pAnimater->GetCurAnimationIndex()));
+	}
+
+
+	else {
+		BOSS_FREQUENCY_DATA data = NETWORKMGR->GetBossInfo();
+		DEBUGER->AddGameText(25, 10, 350, YT_Color(0, 0, 200), L"%f %f %f %f %f", data.fPosX, data.fPosY, data.fPosZ, data.fAngleY, data.iAnimNum);
+
+		SetPositionServer(XMVectorSet(data.fPosX, data.fPosY, data.fPosZ, 1.0f));
+		SetRotation(XMMatrixRotationY(data.fAngleY));
+
+
+		if (m_pAnimater->SetCurAnimationIndex(data.iAnimNum)) {
+			switch (data.iAnimNum) {
+			case BOSS2_ANI_SKILL1:
+				ShootMeteo(data.fAngleY);
+				break;
+			case BOSS2_ANI_SKILL2:
+				for (int i = 0; i < 18; ++i)
+				{
+					ShootMeteo((XM_2PI / 18.f) * i);
+				}
+				break;
+			case BOSS2_ANI_SKILL3:
+				ShootExplosion();
+				break;
+			case BOSS2_ANI_SKILL4:
+				ShootBlizzard();
+				break;
+			default:
+				break;
+			}
+		}
+	}
+
+#endif
 
 	DEBUGER->RegistCoordinateSys(GetWorldMtx());
 }
@@ -171,8 +225,26 @@ void CRoisa::RegistToContainer()
 }
 
 bool CRoisa::GetDemaged(int iDemege) {
+	//뭔가 이팩트가 있으면 좋겠음 ㅠ
 
-	return false;
+#ifdef NO_SERVER
+	CGameObject::GetDemaged(iDemege);//내 hp 날리고!
+#else
+
+#endif
+
+	if (m_iCurHP == 0) {
+		m_pAnimater->SetCurAnimationIndex(BOSS2_ANI_DIE);
+	}
+	//BYTE Packet[MAX_BUFFER_LENGTH] = { 0, };
+	//NETWORKMGR->WritePacket(PT_BOSS_FREQUENCY_MOVE_CS, Packet, WRITE_PT_BOSS_FREQUENCY_MOVE_CS(Packet, m_xmf3Position.x, m_xmf3Position.y, m_xmf3Position.z, m_fAngleY, m_nAnimNum));
+	return true;
+}
+void CRoisa::TransferCollisioinData(int target_slot_id, int skillnum) {
+	BYTE Packet[MAX_BUFFER_LENGTH] = { 0, };
+	NETWORKMGR->WritePacket(PT_SKILL_COLLISION_TO_TARGET_CS, Packet, WRITE_PT_SKILL_COLLISION_TO_TARGET_CS(Packet, NETWORKMGR->GetROOM_ID(), 5, target_slot_id, 6, skillnum));
+
+
 }
 
 void CRoisa::PhisicsLogic(map<utag, list<CGameObject*>>& mlpObject, float fDeltaTime)
@@ -182,8 +254,16 @@ void CRoisa::PhisicsLogic(map<utag, list<CGameObject*>>& mlpObject, float fDelta
 		if (false == pArrow->GetActive()) continue;
 		if (true == IsCollision(pArrow))
 		{
+#ifdef NO_SERVER
 			GetDemaged(100.f);
 			pArrow->DisappearSkill();
+#else
+			BYTE Packet[MAX_BUFFER_LENGTH] = { 0, };
+			NETWORKMGR->WritePacket(PT_SKILL_COLLISION_TO_TARGET_CS, Packet, WRITE_PT_SKILL_COLLISION_TO_TARGET_CS(Packet, NETWORKMGR->GetROOM_ID(), NETWORKMGR->GetSLOT_ID(), 5, NETWORKMGR->GetServerPlayerInfos()[NETWORKMGR->GetSLOT_ID()].CHARACTER, 9));
+			SetRimLight();
+			pArrow->DisappearSkill();
+#endif
+			
 			break;
 		}
 	}
@@ -192,6 +272,7 @@ void CRoisa::PhisicsLogic(map<utag, list<CGameObject*>>& mlpObject, float fDelta
 		if (false == pArrow->GetActive()) continue;
 		if (true == IsCollision(pArrow))
 		{
+			SetRimLight();
 			pArrow->DisappearSkill();
 			break;
 		}
@@ -224,6 +305,14 @@ void CRoisa::UpdatePattern(float fTimeElapsed)
 		float fDirAngle = acosf(xmf3DotValue.x);
 		if (m_f3Diraction.x < 0.f) fDirAngle = XM_PI * 2.f - fDirAngle;
 		m_fMyAngle = fDirAngle;
+
+		if (m_pAnimater->GetCurAnimationIndex() == BOSS2_ANI_DEADBODY || m_pAnimater->GetCurAnimationIndex() == BOSS2_ANI_DIE) {
+			if (m_pAnimater->GetCurAnimationInfo()->GetLoopDone()) {
+				m_pAnimater->SetCurAnimationIndex(BOSS2_ANI_DEADBODY);
+			}
+			m_bCollision = true;
+			return;
+		}
 
 		if (true == m_bSkill)
 		{
@@ -287,8 +376,11 @@ void CRoisa::UpdatePattern(float fTimeElapsed)
 			m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
 			++m_nPatternNum;
 			if (m_nPatternNum == 4) m_nPatternNum = 0;
+			
 		}
+		m_fAngleY = fDirAngle;
 	}
+
 }
 
 

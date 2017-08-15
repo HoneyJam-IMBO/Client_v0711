@@ -563,6 +563,25 @@ void CKnight::PhisicsLogic(map<utag, list<CGameObject*>>& mlpObject, float fDelt
 	if (m_fSkill1EndTime > m_fSkillTime) {//skill1이 활성화 중이면 대미지 +
 		m_iCurAttack *= 1.5f;
 	}
+	for (auto pArrow : mlpObject[utag::UTAG_BOSS2]) {
+		//내가쏜 화살만 데미지를 입음
+		if (false == pArrow->GetActive()) continue;
+		if (true == IsCollision(pArrow))
+		{
+#ifdef NO_SERVER
+			GetDemaged(100.f);
+			SetRimLight();
+#else
+			BYTE Packet[MAX_BUFFER_LENGTH] = { 0, };
+			NETWORKMGR->WritePacket(PT_SKILL_COLLISION_TO_TARGET_CS, Packet, WRITE_PT_SKILL_COLLISION_TO_TARGET_CS(Packet, NETWORKMGR->GetROOM_ID(), 5, NETWORKMGR->GetSLOT_ID(), 6, 9));
+			SetRimLight();
+			pArrow->DisappearSkill();
+#endif
+
+
+			break;
+		}
+	}
 	for (auto pBoss : mlpObject[utag::UTAG_BOSS1]) {
 	//for (auto pBoss : mlpObject[utag::UTAG_NPC]) {
 		switch (m_nAnimNum) {
