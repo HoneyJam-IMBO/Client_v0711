@@ -1058,7 +1058,6 @@ void CGameObject::GetSkilled(int nSkill){
 
 }
 
-
 //생성자는 위에서부터 
 CGameObject::CGameObject(string name, tag t) : CObject(name, t) {
 	XMStoreFloat4x4(&m_xmf4x4World, XMMatrixIdentity());
