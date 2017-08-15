@@ -562,8 +562,11 @@ void CRanger::PhisicsLogic(map<utag, list<CGameObject*>>& mlpObject, float fDelt
 		switch (m_nAnimNum) {
 		case ANIM_SKILL1_FIRE:
 			if (SkillCollision(pPlayer)) {
+	#ifdef NO_SERVER
+				pPlayer->GetHeal(m_iAttack);
+	#else
 				TransferCollisioinData(pPlayer->GetSlotID(), 1);
-				//pPlayer->GetHeal(m_iAttack);
+	#endif
 				m_bCollision = true;
 			}
 			break;
@@ -575,16 +578,23 @@ void CRanger::PhisicsLogic(map<utag, list<CGameObject*>>& mlpObject, float fDelt
 		switch (m_nAnimNum) {
 		case ANIM_SKILL3_FIRE:
 			if (SkillCollision(pBoss)) {//boss
+#ifdef NO_SERVER
+				pBoss->GetDemaged(m_iAttack);
+#else
 				TransferCollisioinData(5, 3);
-				//pBoss->GetDemaged(m_iAttack);
+#endif
+				
 				
 				m_bCollision = true;
 			}
 			break;
 		case ANIM_SKILL4_FIRE:
 			if (SkillCollision(pBoss, false)) {
-				TransferCollisioinData(5,4);
-				//pBoss->GetDemaged(m_iAttack);
+#ifdef NO_SERVER
+				pBoss->GetDemaged(m_iAttack);
+#else
+				TransferCollisioinData(5, 4);
+#endif
 				m_bCollision = true;
 			}
 			break;
@@ -608,7 +618,12 @@ bool CRanger::GetDemaged(int iDemage) {
 		m_nAnimNum = ANIM_HIT_F;
 		m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
 
-		//CGameObject::GetDemaged(iDemage);//내 hp 날리고!
+#ifdef NO_SERVER
+		CGameObject::GetDemaged(iDemage);//내 hp 날리고!
+#else
+
+#endif
+		
 
 
 		if (m_iCurHP <= 0) {

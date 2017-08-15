@@ -474,8 +474,11 @@ void CBard::PhisicsLogic(map<utag, list<CGameObject*>>& mlpObject, float fDeltaT
 		switch (m_nAnimNum) {
 		case BARD_ANIM_SKILL4_FIRE:
 			if (SkillCollision(pPlayer, false)) {//skill4
+#ifdef NO_SERVER
+				pPlayer->GetHeal(m_iCurAttack);
+#else
 				TransferCollisioinData(pPlayer->GetSlotID(), 4);
-				//pPlayer->GetHeal(m_iCurAttack);
+#endif
 				//m_bCollision = true;
 				//nAplyOtherPlayer++;
 			}
@@ -489,8 +492,11 @@ void CBard::PhisicsLogic(map<utag, list<CGameObject*>>& mlpObject, float fDeltaT
 		switch (m_nAnimNum) {
 		case BARD_ANIM_SKILL4_FIRE:
 			if (SkillCollision(pPlayer, false)) {//skill4
+#ifdef NO_SERVER
+				pPlayer->GetHeal(m_iCurAttack);
+#else
 				TransferCollisioinData(pPlayer->GetSlotID(), 4);
-				//pPlayer->GetHeal(m_iCurAttack);
+#endif
 				m_bCollision = true;
 			}
 			break;
@@ -503,15 +509,21 @@ void CBard::PhisicsLogic(map<utag, list<CGameObject*>>& mlpObject, float fDeltaT
 
 		case BARD_ANIM_SKILL1_FIRE:
 			if (SkillCollision(pBoss)) {//skill1 boss에게 대미지
+#ifdef NO_SERVER
+				pBoss->GetDemaged(m_iCurAttack);
+#else
 				TransferCollisioinData(5, 1);
-				//pBoss->GetDemaged(m_iCurAttack);
+#endif
 				m_bCollision = true;
 			}
 			break;
 		case BARD_ANIM_SKILL3_FIRE:
 			if (SkillCollision(pBoss, false)) {//skill4
+#ifdef NO_SERVER
+				pBoss->GetDemaged(m_iCurAttack);
+#else
 				TransferCollisioinData(5, 3);
-				//pBoss->GetDemaged(m_iCurAttack);
+#endif
 				m_bCollision = true;
 			}
 			break;
@@ -546,7 +558,12 @@ bool CBard::GetDemaged(int iDemage){
 	m_nAnimNum = BARD_ANIM_HIT_F;
 	m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
 
-	//CGameObject::GetDemaged(iDemage);//내 hp 날리고!
+#ifdef NO_SERVER
+	CGameObject::GetDemaged(iDemage);//내 hp 날리고!
+#else
+
+#endif
+
 	if (m_iCurHP <= 0) {
 		m_nAnimNum = BARD_ANIM_DIE;
 		m_pAnimater->SetCurAnimationIndex(BARD_ANIM_DIE);

@@ -549,22 +549,31 @@ void CKnight::PhisicsLogic(map<utag, list<CGameObject*>>& mlpObject, float fDelt
 		switch (m_nAnimNum) {
 		case KNIGHT_ANIM_ATTACK:
 			if (SkillCollision(pBoss)) {//char
+#ifdef NO_SERVER
+				pBoss->GetDemaged(m_iCurAttack);
+#else
 				TransferCollisioinData(5, 1);
-				//pBoss->GetDemaged(m_iCurAttack);
+#endif
 				m_bCollision = true;
 			}
 			break;
 		case KNIGHT_ANIM_ATTACK2:
 			if (SkillCollision(pBoss)) {//boss
+#ifdef NO_SERVER
+				pBoss->GetDemaged(m_iCurAttack);
+#else
 				TransferCollisioinData(5, 2);
-				//pBoss->GetDemaged(m_iCurAttack);
+#endif
 				m_bCollision = true;
 			}
 			break;
 		case KNIGHT_ANIM_ATTACK3:
 			if (SkillCollision(pBoss)) {
+#ifdef NO_SERVER
+				pBoss->GetDemaged(m_iCurAttack);
+#else
 				TransferCollisioinData(5, 3);
-				//pBoss->GetDemaged(m_iCurAttack);
+#endif
 				m_bCollision = true;
 			}
 			break;
@@ -597,7 +606,12 @@ bool CKnight::GetDemaged(int iDemage) {
 
 
 
-	//CGameObject::GetDemaged(iDemage);//내 hp 날리고!
+#ifdef NO_SERVER
+	CGameObject::GetDemaged(iDemage);//내 hp 날리고!
+#else
+
+#endif
+
 	if (m_iCurHP <= 0) {
 		m_nAnimNum = KNIGHT_ANIM_DIE;
 		m_pAnimater->SetCurAnimationIndex(KNIGHT_ANIM_DIE);
