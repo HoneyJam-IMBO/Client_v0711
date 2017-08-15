@@ -93,6 +93,7 @@ void CRenderContainer::UpdateShaderState( CCamera* pCamera) {
 	}*/
 
 	//if (m_pGlobalBuffer) m_pGlobalBuffer->UpdateShaderState();
+	if(m_pRimColorBuffer) m_pRimColorBuffer->UpdateShaderState();
 
 }
 void CRenderContainer::SetShaderState() {
@@ -115,7 +116,7 @@ void CRenderContainer::SetShaderState() {
 	}
 
 	if (m_pAnimater)m_pAnimater->SetShaderState();
-
+	if (m_pRimColorBuffer) m_pRimColorBuffer->SetShaderState();
 }
 
 void CRenderContainer::ClearVolatileResources() {
@@ -170,6 +171,7 @@ void CRenderContainer::CleanShaderState() {
 		p->CleanShaderState();
 	}
 	if (m_pAnimater)m_pAnimater->CleanShaderState();
+	if (m_pRimColorBuffer) m_pRimColorBuffer->CleanShaderState();
 	//if (m_pGlobalBuffer) m_pGlobalBuffer->CleanShaderState();//global buffer
 }
 

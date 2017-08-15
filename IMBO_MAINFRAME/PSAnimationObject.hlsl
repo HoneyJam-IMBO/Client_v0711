@@ -20,6 +20,9 @@ cbuffer cbPsCameraDynamic : register(b12) {
 	float4x4 ViewInv : packoffset(c0);
 	float4 EyePosition : packoffset(c4);
 }
+cbuffer gRimInfo : register(b6) {
+	float4 gRimColor : packoffset(c0);
+}
 
 //texture
 Texture2D    gtxtDefault : register(t0);
@@ -54,8 +57,10 @@ PS_GBUFFER_OUT main(PixelShaderInput input)
 	clip(cCPColor.g < 0.05f ? -1 : 1);
 
 	float4	vLook = float4(normalize(EyePosition.xyz - input.positionW.xyz), 1.f);
-	float	fRimLight = smoothstep(0.94f, 1.f, 1 - max(0, dot(input.normalW, vLook)));
+	float4	fRimLight = smoothstep(0.94f - (1.f - gRimColor.y) * 0.03f , 1.f, 1 - max(0, dot(input.normalW, vLook)));
+	//fRimLight.z = 0.f;
 
+	fRimLight *= gRimColor;
 	float4 cColor = gtxtDefault.Sample(gssWRAP_LINEAR, input.uv) * gMaterialColor + (fRimLight * 0.5f);
 	float4 cSpec = gtxtSpec.Sample(gssWRAP_LINEAR, input.uv);
 

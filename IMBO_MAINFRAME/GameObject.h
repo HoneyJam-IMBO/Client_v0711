@@ -152,6 +152,7 @@ public:
 	
 	virtual bool GetDemaged(int iDemage) { 
 		m_iCurHP = MAX(0, m_iCurHP - iDemage);
+
 		return true; 
 	};
 	virtual bool GetHeal(int iHeal) { 
@@ -234,6 +235,20 @@ protected:
 	//animater
 	 CAnimater* m_pAnimater{ nullptr };
 	vector<BoundingOrientedBox> m_vObjectActiveOBBs;
+
+protected:
+	bool		m_bStrong{ false };
+	XMFLOAT4	m_xmf4RimColor;
+	CBuffer*	m_pRimCBuffer{ nullptr };
+	bool		m_bRimSwitch{ false };
+	float		m_fRimAccTime{ 0.f };
+public:
+	void	SetStrong(bool bStrong) { m_bStrong = bStrong; };
+	void	MappingRimLight(float fDeltaTime);
+	void	SetRimLight(){
+		m_fRimAccTime = 0.f;
+		m_bRimSwitch = true;
+	}
 
 
 protected:

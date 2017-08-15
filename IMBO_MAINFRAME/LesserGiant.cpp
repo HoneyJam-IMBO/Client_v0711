@@ -39,6 +39,7 @@ void CLesserGiant::GetSkilled(int nSkill)
 
 void CLesserGiant::Animate(float fTimeElapsed)
 {
+	CGameObject::MappingRimLight(fTimeElapsed);
 
 	if(false == m_bAttack && false == m_bSkill)
 		m_fAccSkillTime += fTimeElapsed;
@@ -119,6 +120,7 @@ void CLesserGiant::TransferCollisioinData(int target_slot_id, int skillnum) {
 	BYTE Packet[MAX_BUFFER_LENGTH] = { 0, };
 	NETWORKMGR->WritePacket(PT_SKILL_COLLISION_TO_TARGET_CS, Packet, WRITE_PT_SKILL_COLLISION_TO_TARGET_CS(Packet, NETWORKMGR->GetROOM_ID(), 5, target_slot_id, 6, skillnum));
 
+
 }
 void CLesserGiant::PhisicsLogic(map<utag, list<CGameObject*>>& mlpObject, float fDeltaTime)
 {
@@ -132,6 +134,7 @@ void CLesserGiant::PhisicsLogic(map<utag, list<CGameObject*>>& mlpObject, float 
 #else
 			BYTE Packet[MAX_BUFFER_LENGTH] = { 0, };
 			NETWORKMGR->WritePacket(PT_SKILL_COLLISION_TO_TARGET_CS, Packet, WRITE_PT_SKILL_COLLISION_TO_TARGET_CS(Packet, NETWORKMGR->GetROOM_ID(), NETWORKMGR->GetSLOT_ID(), 5, NETWORKMGR->GetServerPlayerInfos()[NETWORKMGR->GetSLOT_ID()].CHARACTER, 9));
+			SetRimLight();
 #endif
 			
 			pArrow->DisappearSkill();
@@ -144,6 +147,7 @@ void CLesserGiant::PhisicsLogic(map<utag, list<CGameObject*>>& mlpObject, float 
 		if (true == IsCollision(pArrow))
 		{
 			pArrow->DisappearSkill();
+			SetRimLight();
 			break;
 		}
 	}
@@ -157,6 +161,7 @@ void CLesserGiant::PhisicsLogic(map<utag, list<CGameObject*>>& mlpObject, float 
 					pPlayer->GetDemaged(m_iAttack);//100
 #else
 					TransferCollisioinData(pPlayer->GetSlotID(), 1);
+					pPlayer->SetRimLight();
 #endif
 					m_bCollision = true;
 				}
@@ -167,6 +172,7 @@ void CLesserGiant::PhisicsLogic(map<utag, list<CGameObject*>>& mlpObject, float 
 					pPlayer->GetDemaged(m_iAttack * 2);//200
 #else
 					TransferCollisioinData(pPlayer->GetSlotID(), 2);
+					pPlayer->SetRimLight();
 #endif
 					m_bCollision = true;
 				}
@@ -177,6 +183,7 @@ void CLesserGiant::PhisicsLogic(map<utag, list<CGameObject*>>& mlpObject, float 
 					pPlayer->GetDemaged(m_iAttack * 2);//200
 #else
 					TransferCollisioinData(pPlayer->GetSlotID(), 3);
+					pPlayer->SetRimLight();
 #endif
 					m_bCollision = true;
 				}
@@ -187,6 +194,7 @@ void CLesserGiant::PhisicsLogic(map<utag, list<CGameObject*>>& mlpObject, float 
 					pPlayer->GetDemaged(m_iAttack * 1.5);//150
 #else
 					TransferCollisioinData(pPlayer->GetSlotID(), 4);
+					pPlayer->SetRimLight();
 #endif
 					m_bCollision = true;
 				}

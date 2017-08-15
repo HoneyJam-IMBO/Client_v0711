@@ -101,6 +101,9 @@ protected:
 	//--------------------------관리 대상------------------------------
 
 	void** m_ppBufferData{ nullptr };
+
+public:
+	CBuffer*	m_pRimColorBuffer{ nullptr };
 public:
 	CRenderContainer();
 	virtual ~CRenderContainer();

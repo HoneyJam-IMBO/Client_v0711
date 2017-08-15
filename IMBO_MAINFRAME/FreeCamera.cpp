@@ -92,7 +92,8 @@ void CFreeCamera::CameraInputProcess(float fTimeDelta)
 	if (nullptr != m_pTarget)
 	{
 		XMMATRIX xmmtxFrame = m_pTarget->GetAnimater()->GetCurAnimationInfo()->GetCurFrameMtx(m_pTarget->GetAnimater()->GetHead());
-		XMMATRIX xmmtxFinal = xmmtxFrame * m_pTarget->GetAnimater()->GetMeshOffsetMtx() * m_pTarget->GetWorldMtx();
+		XMMATRIX xmmtxFinal = xmmtxFrame * m_pTarget->GetAnimater()->GetMeshOffsetMtx() 
+			* XMMatrixTranslation(0.f, 0.5f, 0.f) * m_pTarget->GetWorldMtx();
 		//DEBUGER->RegistCoordinateSys(xmmtxFinal);
 		XMFLOAT4X4 xmf4x4Final;
 		XMStoreFloat4x4(&xmf4x4Final, xmmtxFinal);

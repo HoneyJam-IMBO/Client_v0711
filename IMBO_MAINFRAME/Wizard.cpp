@@ -10,6 +10,8 @@ bool CWizard::Begin()
 
 void CWizard::Animate(float fTimeElapsed)
 {
+	CGameObject::MappingRimLight(fTimeElapsed);
+
 	if (true == m_bSprit) {
 		if (false == m_bDamaged)
 			KeyInput(fTimeElapsed); //KeyInput(fTimeElapsed);
@@ -544,6 +546,7 @@ void CWizard::PhisicsLogic(map<utag, list<CGameObject*>>& mlpObject, float fDelt
 				pBoss->GetDemaged(m_iCurAttack);
 #else
 				TransferCollisioinData(5, 1);
+				pBoss->SetRimLight();
 #endif
 				m_bCollision = true;
 			}
@@ -555,6 +558,7 @@ void CWizard::PhisicsLogic(map<utag, list<CGameObject*>>& mlpObject, float fDelt
 				pBoss->GetDemaged(m_iCurAttack);
 #else
 				TransferCollisioinData(5, 2);
+				pBoss->SetRimLight();
 #endif
 				m_bCollision = true;
 			}
@@ -564,7 +568,9 @@ void CWizard::PhisicsLogic(map<utag, list<CGameObject*>>& mlpObject, float fDelt
 #ifdef NO_SERVER
 				pBoss->GetDemaged(m_iCurAttack);
 #else
+
 				TransferCollisioinData(5, 4);
+				pBoss->SetRimLight();
 #endif
 				m_bCollision = true;
 			}

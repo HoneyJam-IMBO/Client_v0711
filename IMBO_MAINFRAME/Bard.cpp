@@ -9,7 +9,7 @@ bool CBard::Begin()
 
 void CBard::Animate(float fTimeElapsed)
 {
-	
+	CGameObject::MappingRimLight(fTimeElapsed);
 	if (true == m_bSprit) {
 		if(false == m_bDamaged)
 			KeyInput(fTimeElapsed); //KeyInput(fTimeElapsed);
@@ -513,6 +513,7 @@ void CBard::PhisicsLogic(map<utag, list<CGameObject*>>& mlpObject, float fDeltaT
 				pBoss->GetDemaged(m_iCurAttack);
 #else
 				TransferCollisioinData(5, 1);
+				pBoss->SetRimLight();
 #endif
 				m_bCollision = true;
 			}
@@ -523,6 +524,7 @@ void CBard::PhisicsLogic(map<utag, list<CGameObject*>>& mlpObject, float fDeltaT
 				pBoss->GetDemaged(m_iCurAttack);
 #else
 				TransferCollisioinData(5, 3);
+				pBoss->SetRimLight();
 #endif
 				m_bCollision = true;
 			}

@@ -10,6 +10,8 @@ bool CDementor::Begin()
 
 void CDementor::Animate(float fTimeElapsed)
 {
+	CGameObject::MappingRimLight(fTimeElapsed);
+
 	if (true == m_bSprit) {
 		if (false == m_bDamaged)
 			KeyInput(fTimeElapsed); //KeyInput(fTimeElapsed);
@@ -630,6 +632,7 @@ void CDementor::PhisicsLogic(map<utag, list<CGameObject*>>& mlpObject, float fDe
 				pBoss->GetDemaged(m_iCurAttack);
 #else
 				TransferCollisioinData(5, 3);
+				pBoss->SetRimLight();
 #endif
 				m_bCollision = true;
 			}
@@ -641,6 +644,7 @@ void CDementor::PhisicsLogic(map<utag, list<CGameObject*>>& mlpObject, float fDe
 				pBoss->GetDemaged(m_iCurAttack);
 #else
 				TransferCollisioinData(5, 2);
+				pBoss->SetRimLight();
 #endif
 				m_bCollision = true;
 			}

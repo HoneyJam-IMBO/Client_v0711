@@ -3,6 +3,8 @@
 
 #include "ElfSkillArrow.h"
 #include "LesserGiant.h"
+#include "Roisa.h"
+
 #include "HpBar.h"
 #include "ImageUI.h"
 
@@ -103,15 +105,15 @@ bool CSCOriTown::Begin() {
 	}
 
 	//보스 제작
-	//CGameObject*	pBoss = new CLesserGiant("Boss01L", TAG_DYNAMIC_OBJECT, m_ppPawn[0]);
-	//pBoss->SetUTag(utag::UTAG_BOSS1);
-	//pBoss->Begin();
-	//pBoss->SetTerrainContainer(UPDATER->GetTerrainContainer());
-	//pBoss->SetPosition(XMVectorSet(200, 0, 250, 0));
-	//pBoss->SetNaviMeshIndex();
-	//pBoss->SetScale(XMVectorSet(1, 1, 1, 1));
-	//UPDATER->GetSpaceContainer()->AddObject(pBoss);
-	//pBoss->GetAnimater()->SetCurAnimationIndex(0);
+	m_pBoss = new CLesserGiant("Boss01L", TAG_DYNAMIC_OBJECT, m_ppPawn[0]);
+	m_pBoss->SetUTag(utag::UTAG_BOSS1);
+	m_pBoss->Begin();
+	m_pBoss->SetTerrainContainer(UPDATER->GetTerrainContainer());
+	m_pBoss->SetPosition(XMVectorSet(512, 0, 768, 0));
+	m_pBoss->SetNaviMeshIndex();
+	m_pBoss->SetScale(XMVectorSet(1.f, 1.f, 1.f, 1));		//roisa
+	UPDATER->GetSpaceContainer()->AddObject(m_pBoss);
+	m_pBoss->GetAnimater()->SetCurAnimationIndex(0);
 
 #ifdef NO_SERVER
 	return CScene::Begin();
@@ -200,7 +202,7 @@ void CSCOriTown::Animate(float fTimeElapsed) {
 	if (m_bStartBossCam) {
 		if (false == m_pCamera->m_bActionCam) {
 			int boss_fight_start = 0;
-			m_pBoss->SetFirstAction(false); 
+//			m_pBoss->SetFirstAction(false); 
 		}
 	}
 	if (m_bFinalProc) {
@@ -540,8 +542,8 @@ void CSCOriTown::CreateBoss1()
 	m_pBoss->SetNaviMeshIndex();
 	m_pBoss->SetScale(XMVectorSet(1, 1, 1, 1));
 	UPDATER->GetSpaceContainer()->AddObject(m_pBoss);
-	m_pBoss->SetFirstAction(true);
-	m_pBoss->SetAnimNum(BOSS1_ANI_SKILL2);
+	//m_pBoss->SetFirstAction(true);
+	//m_pBoss->SetAnimNum(BOSS1_ANI_SKILL2);
 	m_pBoss->GetAnimater()->SetCurAnimationIndex(BOSS1_ANI_SKILL2);
 }
 
@@ -685,9 +687,9 @@ void CSCOriTown::LoadSkillObjects()
 void CSCOriTown::CreateUI()
 {
 	//RCSELLER->TestingRCAdd();
-	m_pPlayerHPUI = CHpBar::Create(XMLoadFloat2(&XMFLOAT2(WINSIZEX * 0.24f, WINSIZEY * 0.77f)), XMLoadFloat2(&XMFLOAT2(190.f, 6.f)));
+	m_pPlayerHPUI = CHpBar::Create(XMLoadFloat2(&XMFLOAT2(WINSIZEX * 0.3f, WINSIZEY * 0.77f)), XMLoadFloat2(&XMFLOAT2(190.f, 10.f)));
 	m_vecUI.push_back(m_pPlayerHPUI);
-	m_pBossHPUI = CHpBar::Create(XMLoadFloat2(&XMFLOAT2(WINSIZEX * 0.5f, WINSIZEY * 0.2f)), XMLoadFloat2(&XMFLOAT2(380.f, 12.f)));
+	m_pBossHPUI = CHpBar::Create(XMLoadFloat2(&XMFLOAT2(WINSIZEX * 0.5f, WINSIZEY * 0.1f)), XMLoadFloat2(&XMFLOAT2(380.f, 12.f)));
 	m_vecUI.push_back(m_pBossHPUI);
 
 	string sCharSelect;
@@ -745,19 +747,19 @@ void CSCOriTown::CreateUI()
 	}
 
 	//player icon
-	CUIObject* pUI = CImageUI::Create(XMLoadFloat2(&XMFLOAT2(132.f, WINSIZEY * 0.8f)), XMLoadFloat2(&XMFLOAT2(50.f, 50.f)), sCharSelect, 10.f);
+	CUIObject* pUI = CImageUI::Create(XMLoadFloat2(&XMFLOAT2(132.f, WINSIZEY * 0.8f)), XMLoadFloat2(&XMFLOAT2(40.f, 50.f)), sCharSelect, 10.f);
 	m_vecUI.push_back(pUI);
 
 	//skill back
 	string sSkillBack;
 	sSkillBack = "SkillBack";
-	pUI = CImageUI::Create(XMLoadFloat2(&XMFLOAT2(217.f, WINSIZEY * 0.82f)), XMLoadFloat2(&XMFLOAT2(30.f, 30.f)), sSkillBack, 9.f);
+	pUI = CImageUI::Create(XMLoadFloat2(&XMFLOAT2(217.f, WINSIZEY * 0.82f)), XMLoadFloat2(&XMFLOAT2(20.f, 30.f)), sSkillBack, 9.f);
 	m_vecUI.push_back(pUI);
-	pUI = CImageUI::Create(XMLoadFloat2(&XMFLOAT2(277.f, WINSIZEY * 0.82f)), XMLoadFloat2(&XMFLOAT2(30.f, 30.f)), sSkillBack, 9.f);
+	pUI = CImageUI::Create(XMLoadFloat2(&XMFLOAT2(277.f, WINSIZEY * 0.82f)), XMLoadFloat2(&XMFLOAT2(20.f, 30.f)), sSkillBack, 9.f);
 	m_vecUI.push_back(pUI);
-	pUI = CImageUI::Create(XMLoadFloat2(&XMFLOAT2(337.f, WINSIZEY * 0.82f)), XMLoadFloat2(&XMFLOAT2(30.f, 30.f)), sSkillBack, 9.f);
+	pUI = CImageUI::Create(XMLoadFloat2(&XMFLOAT2(337.f, WINSIZEY * 0.82f)), XMLoadFloat2(&XMFLOAT2(20.f, 30.f)), sSkillBack, 9.f);
 	m_vecUI.push_back(pUI);
-	pUI = CImageUI::Create(XMLoadFloat2(&XMFLOAT2(397.f, WINSIZEY * 0.82f)), XMLoadFloat2(&XMFLOAT2(30.f, 30.f)), sSkillBack, 9.f);
+	pUI = CImageUI::Create(XMLoadFloat2(&XMFLOAT2(397.f, WINSIZEY * 0.82f)), XMLoadFloat2(&XMFLOAT2(20.f, 30.f)), sSkillBack, 9.f);
 	m_vecUI.push_back(pUI);
 
 	//skill icon

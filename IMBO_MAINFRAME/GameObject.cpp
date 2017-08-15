@@ -88,7 +88,21 @@ bool CGameObject::Begin() {
 		//m_pAnimater->GetAnimationInfo()->InitCurFrame();
 	}
 
+
+
 	XMStoreFloat4(&m_xmf4Quaternion, XMQuaternionIdentity());
+
+	m_xmf4RimColor = XMFLOAT4(1.f, 1.f, 1.f, 1.f);
+	if (m_tag == TAG_DYNAMIC_OBJECT)
+	{
+		m_pRimCBuffer = CBuffer::CreateConstantBuffer(1, sizeof(XMFLOAT4), 6, BIND_PS, NULL);
+		if (m_pRimCBuffer)
+		{
+			//m_pRenderContainer->AddBuffer(m_pRimCBuffer);
+			m_pRenderContainer->m_pRimColorBuffer = m_pRimCBuffer;
+		}
+	}
+
 	return true;
 }
 bool CGameObject::End() {
@@ -96,11 +110,16 @@ bool CGameObject::End() {
 	//-------------------------------component---------------------------
 	ClearComponents();
 	//-------------------------------component---------------------------
+
+	if (nullptr != m_pRimCBuffer)
+	{
+		delete m_pRimCBuffer;
+		m_pRimCBuffer = nullptr;
+	}
 	return true;
 }
 
 void CGameObject::Animate(float fTimeElapsed) {
-
 	if(m_pAnimater) m_pAnimater->Update(fTimeElapsed);
 	ActionMoveProc();
 
@@ -853,6 +872,7 @@ void CGameObject::SetBufferInfo(void** ppMappedResources, int& nInstance,  CCame
 
 }
 void CGameObject::RegistToContainer() {
+
 	m_pRenderContainer->AddObject(this);
 }
 
@@ -1058,9 +1078,38 @@ void CGameObject::GetSkilled(int nSkill){
 
 }
 
+void CGameObject::MappingRimLight(float fDeltaTime)
+{
+	if (m_pRimCBuffer)
+	{
+		if (true == m_bRimSwitch)
+		{
+			m_fRimAccTime += fDeltaTime;
+			if (m_fRimAccTime < 1.4f)
+			{
+				m_xmf4RimColor = XMFLOAT4(1.f, m_fRimAccTime / 1.4f, 0.f, 1.f);
+			}
+			else
+			{
+				m_xmf4RimColor = XMFLOAT4(1.f, 1.f, 1.f, 1.f);
+				m_fRimAccTime = 0.f;
+				m_bRimSwitch = false;
+			}
+		}
+
+		XMFLOAT4* pdata = (XMFLOAT4*)m_pRimCBuffer->Map();
+		pdata->x = m_xmf4RimColor.x;
+		pdata->y = m_xmf4RimColor.y;
+		pdata->z = m_xmf4RimColor.z;
+		pdata->w = m_xmf4RimColor.w;
+		m_pRimCBuffer->Unmap();
+	}
+}
+
 //생성자는 위에서부터 
 CGameObject::CGameObject(string name, tag t) : CObject(name, t) {
 	XMStoreFloat4x4(&m_xmf4x4World, XMMatrixIdentity());
+	m_xmf4RimColor = XMFLOAT4(1.f, 1.f, 1.f, 1.f);
 }
 CGameObject ::~CGameObject() {
 	CGameObject* p = this;

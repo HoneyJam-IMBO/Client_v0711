@@ -9,6 +9,8 @@ bool CSister::Begin()
 
 void CSister::Animate(float fTimeElapsed)
 {
+	CGameObject::MappingRimLight(fTimeElapsed);
+
 	m_fTime = fTimeElapsed;
 	if (true == m_bSprit) {
 		if (false == m_bDamaged)
@@ -530,6 +532,7 @@ void CSister::PhisicsLogic(map<utag, list<CGameObject*>>& mlpObject, float fDelt
 				pBoss->GetDemaged(m_iCurAttack);
 #else
 				TransferCollisioinData(5, 2);
+				pBoss->SetRimLight();
 #endif
 				m_bCollision = true;
 			}
@@ -540,6 +543,7 @@ void CSister::PhisicsLogic(map<utag, list<CGameObject*>>& mlpObject, float fDelt
 				pBoss->GetDemaged(m_iCurAttack);
 #else
 				TransferCollisioinData(5, 4);
+				pBoss->SetRimLight();
 #endif
 				
 				m_bCollision = true;
@@ -549,6 +553,7 @@ void CSister::PhisicsLogic(map<utag, list<CGameObject*>>& mlpObject, float fDelt
 			if (SkillCollision(pBoss, false)) {//
 				TransferCollisioinData(5, 0);
 				//pBoss->GetDemaged(m_iCurAttack);
+				pBoss->SetRimLight();
 				m_bCollision = true;
 			}
 			break;

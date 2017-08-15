@@ -12,6 +12,8 @@ bool CRanger::Begin()
 
 void CRanger::Animate(float fTimeElapsed)
 {
+	CGameObject::MappingRimLight(fTimeElapsed);
+
 	if (true == m_bSprit) {
 		if (false == m_bDamaged)
 			KeyInput(fTimeElapsed); //KeyInput(fTimeElapsed);
@@ -582,6 +584,7 @@ void CRanger::PhisicsLogic(map<utag, list<CGameObject*>>& mlpObject, float fDelt
 				pBoss->GetDemaged(m_iAttack);
 #else
 				TransferCollisioinData(5, 3);
+				pBoss->SetRimLight();
 #endif
 				
 				
@@ -594,6 +597,7 @@ void CRanger::PhisicsLogic(map<utag, list<CGameObject*>>& mlpObject, float fDelt
 				pBoss->GetDemaged(m_iAttack);
 #else
 				TransferCollisioinData(5, 4);
+				pBoss->SetRimLight();
 #endif
 				m_bCollision = true;
 			}
@@ -623,8 +627,6 @@ bool CRanger::GetDemaged(int iDemage) {
 #else
 
 #endif
-		
-
 
 		if (m_iCurHP <= 0) {
 			m_nAnimNum = ANIM_DIE;
