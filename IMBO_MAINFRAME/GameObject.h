@@ -149,6 +149,7 @@ public:
 	void SetNaviMeshIndex();
 
 	//demage proc
+	
 	virtual bool GetDemaged(int iDemage) { 
 		m_iCurHP = MAX(0, m_iCurHP - iDemage);
 		return true; 
@@ -157,6 +158,7 @@ public:
 		m_iCurHP = MIN(m_iMaxHP, m_iCurHP + iHeal);
 		return true; 
 	}
+	int SetHP(int hp) { m_iCurHP = hp; return m_iCurHP; }
 	bool GetbCollision() { return m_bCollision; }
 	void SetbCollision(bool b) { m_bCollision = b; }
 public:
@@ -206,6 +208,7 @@ public:
 	}
 	virtual void GetSkilled(int nSkill);
 
+	virtual int GetSlotID() { return 0; };
 protected:
 	//navi mesh index
 	int m_indexNaviMesh{ -1 };

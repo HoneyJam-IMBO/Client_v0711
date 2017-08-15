@@ -58,6 +58,7 @@ public:
 	virtual void RegistToContainer();
 
 public:
+	void TransferCollisioinData(int target_slot_id, int skillnum);
 	virtual void PhisicsLogic(map<utag, list<CGameObject*>>& mlpObject, float fDeltaTime);
 	//demage proc
 	virtual bool GetDemaged(int iDemage);

@@ -549,7 +549,8 @@ void CRanger::PhisicsLogic(map<utag, list<CGameObject*>>& mlpObject, float fDelt
 		switch (m_nAnimNum) {
 		case ANIM_SKILL1_FIRE:
 			if (SkillCollision(pPlayer)) {
-				pPlayer->GetHeal(m_iAttack);
+				TransferCollisioinData(pPlayer->GetSlotID(), 1);
+				//pPlayer->GetHeal(m_iAttack);
 				//m_bCollision = true;
 			}
 			break;
@@ -594,28 +595,33 @@ void CRanger::PhisicsLogic(map<utag, list<CGameObject*>>& mlpObject, float fDelt
 }
 
 bool CRanger::GetDemaged(int iDemage) {
-	if (m_pAnimater->GetCurAnimationIndex() == ANIM_DIE || m_pAnimater->GetCurAnimationIndex() == ANIM_DEADBODY) {
-		m_nAnimNum = m_pAnimater->GetCurAnimationIndex();
-		m_bDamaged = false;
-		return false;//죽고있으면 충돌처리 하지 않음
-	}
-	m_bDamaged = true;
-	CEffectMgr::GetInstance()->Play_Effect(L"TestBlood", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y + 2.f, m_xmf3Position.z, 1.f),
-		XMVectorSet(0.f, 0.f, 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
 
-	m_nAnimNum = ANIM_HIT_F;
-	m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
+		if (m_pAnimater->GetCurAnimationIndex() == ANIM_DIE || m_pAnimater->GetCurAnimationIndex() == ANIM_DEADBODY) {
+			m_nAnimNum = m_pAnimater->GetCurAnimationIndex();
+			m_bDamaged = false;
+			return false;//죽고있으면 충돌처리 하지 않음
+		}
+		m_bDamaged = true;
+		CEffectMgr::GetInstance()->Play_Effect(L"TestBlood", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y + 2.f, m_xmf3Position.z, 1.f),
+			XMVectorSet(0.f, 0.f, 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
 
-	CGameObject::GetDemaged(iDemage);//내 hp 날리고!
-	if (m_iCurHP <= 0) {
-		m_nAnimNum = ANIM_DIE;
-		m_pAnimater->SetCurAnimationIndex(ANIM_DIE);
-	}
+		m_nAnimNum = ANIM_HIT_F;
+		m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
+
+		//CGameObject::GetDemaged(iDemage);//내 hp 날리고!
 
 
-	BYTE Packet[MAX_BUFFER_LENGTH] = { 0, };
+		if (m_iCurHP <= 0) {
+			m_nAnimNum = ANIM_DIE;
+			m_pAnimater->SetCurAnimationIndex(ANIM_DIE);
+		}
 
-	NETWORKMGR->WritePacket(PT_FREQUENCY_MOVE_CS, Packet, WRITE_PT_FREQUENCY_MOVE_CS(Packet, m_xmf3Position.x, m_xmf3Position.y, m_xmf3Position.z, m_fAngleY, m_nAnimNum));
+
+		BYTE Packet[MAX_BUFFER_LENGTH] = { 0, };
+
+		NETWORKMGR->WritePacket(PT_FREQUENCY_MOVE_CS, Packet, WRITE_PT_FREQUENCY_MOVE_CS(Packet, m_xmf3Position.x, m_xmf3Position.y, m_xmf3Position.z, m_fAngleY, m_nAnimNum));
+
+
 
 	return true;
 }

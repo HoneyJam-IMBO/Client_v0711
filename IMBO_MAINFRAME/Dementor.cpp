@@ -626,14 +626,16 @@ void CDementor::PhisicsLogic(map<utag, list<CGameObject*>>& mlpObject, float fDe
 		
 		case DEMENTOR_ANIM_SKILL3_FIRE:
 			if (SkillCollision(pBoss)) {//skill3 boss에게 대미지
-				pBoss->GetDemaged(m_iCurAttack);
+				TransferCollisioinData(5, 3);
+				//pBoss->GetDemaged(m_iCurAttack);
 				m_bCollision = true;
 			}
 			break;
 
 		case DEMENTOR_ANIM_SKILL2_FIRE:
 			if (SkillCollision(pBoss, false)) {//skill2 투사체 boss에게 대미지
-				pBoss->GetDemaged(m_iCurAttack);
+				TransferCollisioinData(5, 2);
+				//pBoss->GetDemaged(m_iCurAttack);
 				m_bCollision = true;
 			}
 			break;

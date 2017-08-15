@@ -519,6 +519,13 @@ void CWizard::RegistToContainer()
 	if (m_pWeapon) m_pWeapon->RegistToContainer();
 }
 
+
+void CWizard::TransferCollisioinData(int target_slot_id, int skillnum) {
+	BYTE Packet[MAX_BUFFER_LENGTH] = { 0, };
+	NETWORKMGR->WritePacket(PT_SKILL_COLLISION_TO_TARGET_CS, Packet, WRITE_PT_SKILL_COLLISION_TO_TARGET_CS(Packet, NETWORKMGR->GetROOM_ID(), NETWORKMGR->GetSLOT_ID(), target_slot_id, 4, skillnum));
+
+}
+
 void CWizard::PhisicsLogic(map<utag, list<CGameObject*>>& mlpObject, float fDeltaTime)
 {
 	m_fCollisionTime += fDeltaTime;
@@ -533,20 +540,23 @@ void CWizard::PhisicsLogic(map<utag, list<CGameObject*>>& mlpObject, float fDelt
 
 		case WIZARD_ANIM_SKILL1_FIRE:
 			if (SkillCollision(pBoss)) {//skill1 boss에게 대미지
-				pBoss->GetDemaged(m_iCurAttack);
+				TransferCollisioinData(5, 1);
+				//pBoss->GetDemaged(m_iCurAttack);
 				m_bCollision = true;
 			}
 			break;
 
 		case WIZARD_ANIM_SKILL2_FIRE:
 			if (SkillCollision(pBoss, false)) {//skill2
-				pBoss->GetDemaged(m_iCurAttack);
+				TransferCollisioinData(5, 2);
+				//pBoss->GetDemaged(m_iCurAttack);
 				m_bCollision = true;
 			}
 			break;
 		case WIZARD_ANIM_SKILL4_FIRE:
 			if (SkillCollision(pBoss, false)) {//skill4
-				pBoss->GetDemaged(m_iCurAttack);
+				TransferCollisioinData(5, 4);
+				//pBoss->GetDemaged(m_iCurAttack);
 				m_bCollision = true;
 			}
 			break;
@@ -580,7 +590,7 @@ bool CWizard::GetDemaged(int iDemage) {
 	m_nAnimNum = WIZARD_ANIM_HIT_F;
 	m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
 
-	CGameObject::GetDemaged(iDemage);//내 hp 날리고!
+	//CGameObject::GetDemaged(iDemage);//내 hp 날리고!
 	if (m_iCurHP <= 0) {
 		m_nAnimNum = WIZARD_ANIM_DIE;
 		m_pAnimater->SetCurAnimationIndex(WIZARD_ANIM_DIE);
