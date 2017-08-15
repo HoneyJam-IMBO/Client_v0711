@@ -102,7 +102,9 @@ void CKnight::KeyInput(float fDeltaTime)
 			m_bSkill = true;
 			m_nAnimNum = KNIGHT_ANIM_ATTACK;
 			m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
+			
 			//기본공격 충돌체 생성
+			CSoundManager::Play_3Dsound("knight_attack1", 1, &m_xmf3Position, 5.f, 5.f, 500.f);
 			ResetCollisionValue(XMFLOAT3(0, 0, 3), 0.f, 0.8f, 2.f);
 			INPUTMGR->SetMouseLeft(false);
 			RENDERER->SetRadialBlurTime(true, 0.3f);
@@ -116,7 +118,7 @@ void CKnight::KeyInput(float fDeltaTime)
 			m_pCamera->CameraStartVibration(1.5f, 10.f);
 
 			m_pWeaponTrail->PlayOnKnightSkill1();
-
+			CSoundManager::Play_3Dsound("knight_skill1", 1, &m_xmf3Position, 5.f, 5.f, 500.f);
 			CEffectMgr::GetInstance()->Play_Effect(L"Knight_sk1_con", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y + 1.f, m_xmf3Position.z, 1.f),
 				XMVectorSet(0.f, 0.f, 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
 		}
@@ -125,14 +127,14 @@ void CKnight::KeyInput(float fDeltaTime)
 			m_bSkill = true;
 			m_nAnimNum = KNIGHT_ANIM_SKILL2_FIRE;
 			m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
-
+			CSoundManager::Play_3Dsound("knight_skill2", 1, &m_xmf3Position, 5.f, 5.f, 500.f);
 			CEffectMgr::GetInstance()->Play_Effect(L"Knight_sk2_Shield", this);
 		}
 		else if (INPUTMGR->KeyDown(VK_3)) {				// 스킬 3 ------------------------
 			m_bSkill = true;
 			m_nAnimNum = KNIGHT_ANIM_SKILL3_FIRE;
 			m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
-
+			CSoundManager::Play_3Dsound("knight_skill3", 1, &m_xmf3Position, 5.f, 5.f, 500.f);
 			CEffectMgr::GetInstance()->Play_Effect(L"Knight_sk3_con", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y + 1.f, m_xmf3Position.z, 1.f),
 				XMVectorSet(0.f, 0.f, 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
 		}
@@ -141,7 +143,7 @@ void CKnight::KeyInput(float fDeltaTime)
 			m_bSkill = true;
 			m_nAnimNum = KNIGHT_ANIM_SKILL4_FIRE;
 			m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
-
+			CSoundManager::Play_3Dsound("knight_skill4", 1, &m_xmf3Position, 5.f, 5.f, 500.f);
 			CEffectMgr::GetInstance()->Play_Effect(L"Knight_sk4_con", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y + 1.f, m_xmf3Position.z, 1.f),
 				XMVectorSet(0.f, 0.f, 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
 		}
@@ -260,29 +262,40 @@ void CKnight::GetServerData(float fTimeElapsed)
 	if (m_pAnimater->SetCurAnimationIndex(m_nAnimNum)) {
 		switch (m_nAnimNum) {
 		case KNIGHT_ANIM_ATTACK:
+			CSoundManager::Play_3Dsound("knight_attack1", 1, &m_xmf3Position, 5.f, 5.f, 500.f);
 			break;
 		case KNIGHT_ANIM_ATTACK2:
+			CSoundManager::Play_3Dsound("knight_attack2", 1, &m_xmf3Position, 5.f, 5.f, 500.f);
 			break;
 		case KNIGHT_ANIM_ATTACK3:
+			CSoundManager::Play_3Dsound("knight_attack3", 1, &m_xmf3Position, 5.f, 5.f, 500.f);
 			break;
 		case KNIGHT_ANIM_SKILL1_FIRE:
+			CSoundManager::Play_3Dsound("knight_skill1", 1, &m_xmf3Position, 5.f, 5.f, 500.f);
 			CEffectMgr::GetInstance()->Play_Effect(L"Knight_sk1_con", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y + 1.f, m_xmf3Position.z, 1.f),
 				XMVectorSet(0.f, 0.f, 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
 			break;
 		case KNIGHT_ANIM_SKILL2_FIRE:
+			CSoundManager::Play_3Dsound("knight_skill2", 1, &m_xmf3Position, 5.f, 5.f, 500.f);
 			CEffectMgr::GetInstance()->Play_Effect(L"Knight_sk2_Shield", this);
 			break;
 		case KNIGHT_ANIM_SKILL3_FIRE:
+			CSoundManager::Play_3Dsound("knight_skill3", 1, &m_xmf3Position, 5.f, 5.f, 500.f);
 			CEffectMgr::GetInstance()->Play_Effect(L"Knight_sk3_con", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y + 1.f, m_xmf3Position.z, 1.f),
 				XMVectorSet(0.f, 0.f, 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
 			break;
 		case KNIGHT_ANIM_SKILL4_FIRE:
+			CSoundManager::Play_3Dsound("knight_skill4", 1, &m_xmf3Position, 5.f, 5.f, 500.f);
 			CEffectMgr::GetInstance()->Play_Effect(L"Knight_sk4_con", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y + 1.f, m_xmf3Position.z, 1.f),
 				XMVectorSet(0.f, 0.f, 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
 			break;
 		case KNIGHT_ANIM_HIT_F:
+			CSoundManager::Play_3Dsound("knight_hurt", 1, &m_xmf3Position, 5.f, 5.f, 500.f);
 			CEffectMgr::GetInstance()->Play_Effect(L"TestBlood", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y + 2.f, m_xmf3Position.z, 1.f),
 				XMVectorSet(0.f, 0.f, 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
+			break;
+		case KNIGHT_ANIM_DIE:
+			CSoundManager::Play_3Dsound("knight_die", 1, &m_xmf3Position, 5.f, 5.f, 500.f);
 			break;
 		default:
 			break;
@@ -458,6 +471,7 @@ void CKnight::UpdateSkill()
 			{
 				m_nAnimNum = KNIGHT_ANIM_ATTACK2;
 				//기본공격 충돌체 생성
+				CSoundManager::Play_3Dsound("knight_attack2", 1, &m_xmf3Position, 5.f, 5.f, 500.f);
 				ResetCollisionValue(XMFLOAT3(0, 0, 3), 0.f, 0.8f, 2.f);
 				RENDERER->SetRadialBlurTime(true, 0.3f);
 			}
@@ -465,6 +479,7 @@ void CKnight::UpdateSkill()
 			{
 				m_nAnimNum = KNIGHT_ANIM_ATTACK3;
 				//기본공격 충돌체 생성
+				CSoundManager::Play_3Dsound("knight_attack3", 1, &m_xmf3Position, 5.f, 5.f, 500.f);
 				ResetCollisionValue(XMFLOAT3(0, 0, 3), 0.f, 0.8f, 2.f);
 				RENDERER->SetRadialBlurTime(true, 0.4f);
 			}
@@ -609,6 +624,7 @@ bool CKnight::GetDemaged(int iDemage) {
 		XMVectorSet(0.f, 0.f, 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));*/
 
 	m_nAnimNum = KNIGHT_ANIM_HIT_F;
+	CSoundManager::Play_3Dsound("knight_hurt", 1, &m_xmf3Position, 5.f, 5.f, 500.f);
 	m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
 
 
@@ -621,6 +637,7 @@ bool CKnight::GetDemaged(int iDemage) {
 
 	if (m_iCurHP <= 0) {
 		m_nAnimNum = KNIGHT_ANIM_DIE;
+		CSoundManager::Play_3Dsound("knight_die", 1, &m_xmf3Position, 5.f, 5.f, 500.f);
 		m_pAnimater->SetCurAnimationIndex(KNIGHT_ANIM_DIE);
 	}
 #ifdef NO_SERVER

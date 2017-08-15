@@ -959,16 +959,16 @@
     <ClInclude Include="WizardSkillArrow.h">
       <Filter>1. 소스 파일\05. GameObject\-07. Skill/Effect\3. Wizard</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\..\..\..\0. JH%27s Folder\Study\IBClient\ImBo\Client_v0711\IMBO_MAINFRAME\BossMeteo.h">
+    <ClInclude Include="BossMeteo.h">
       <Filter>1. 소스 파일\05. GameObject\-07. Skill/Effect\5. Boss\-0, Meteo</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\..\..\..\0. JH%27s Folder\Study\IBClient\ImBo\Client_v0711\IMBO_MAINFRAME\BossExplosion.h">
+    <ClInclude Include="BossExplosion.h">
       <Filter>1. 소스 파일\05. GameObject\-07. Skill/Effect\5. Boss\-1. Explosion</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\..\..\..\0. JH%27s Folder\Study\IBClient\ImBo\Client_v0711\IMBO_MAINFRAME\Blizzard.h">
+    <ClInclude Include="Blizzard.h">
       <Filter>1. 소스 파일\05. GameObject\-07. Skill/Effect\5. Boss\-2. Blizzard</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\..\..\..\0. JH%27s Folder\Study\IBClient\ImBo\Client_v0711\IMBO_MAINFRAME\BlizzardEfc.h">
+    <ClInclude Include="BlizzardEfc.h">
       <Filter>1. 소스 파일\05. GameObject\-07. Skill/Effect\5. Boss\-2. Blizzard</Filter>
     </ClInclude>
   </ItemGroup>
@@ -1363,16 +1363,16 @@
     <ClCompile Include="WizardSkillArrow.cpp">
       <Filter>1. 소스 파일\05. GameObject\-07. Skill/Effect\3. Wizard</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\..\..\0. JH%27s Folder\Study\IBClient\ImBo\Client_v0711\IMBO_MAINFRAME\BossMeteo.cpp">
+    <ClCompile Include="BossMeteo.cpp">
       <Filter>1. 소스 파일\05. GameObject\-07. Skill/Effect\5. Boss\-0, Meteo</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\..\..\0. JH%27s Folder\Study\IBClient\ImBo\Client_v0711\IMBO_MAINFRAME\BossExplosion.cpp">
+    <ClCompile Include="BossExplosion.cpp">
       <Filter>1. 소스 파일\05. GameObject\-07. Skill/Effect\5. Boss\-1. Explosion</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\..\..\0. JH%27s Folder\Study\IBClient\ImBo\Client_v0711\IMBO_MAINFRAME\Blizzard.cpp">
+    <ClCompile Include="Blizzard.cpp">
       <Filter>1. 소스 파일\05. GameObject\-07. Skill/Effect\5. Boss\-2. Blizzard</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\..\..\0. JH%27s Folder\Study\IBClient\ImBo\Client_v0711\IMBO_MAINFRAME\BlizzardEfc.cpp">
+    <ClCompile Include="BlizzardEfc.cpp">
       <Filter>1. 소스 파일\05. GameObject\-07. Skill/Effect\5. Boss\-2. Blizzard</Filter>
     </ClCompile>
   </ItemGroup>

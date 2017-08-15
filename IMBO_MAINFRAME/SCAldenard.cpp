@@ -18,6 +18,7 @@
 
 bool CSCAldenard::Begin()
 {
+	CSoundManager::Play_bgm("bgm_aldenard");
 	//----------------------------------camera-------------------------------------
 	m_pCamera = m_pFrameWork->GetCamera();
 	ReadMapData();
@@ -143,6 +144,7 @@ void CSCAldenard::AldenardFly() {
 }
 bool CSCAldenard::End()
 {
+	CSoundManager::Stop_bgm("bgm_aldenard");
 	int nPawn = NETWORKMGR->GetServerPlayerInfos().size();
 	for (int i = 0; i < nPawn; ++i)
 	{
@@ -159,6 +161,17 @@ bool CSCAldenard::End()
 
 void CSCAldenard::Animate(float fTimeElapsed)
 {
+	XMFLOAT3 xmf3Pos;
+	int slot_id = NETWORKMGR->GetSLOT_ID();
+	XMStoreFloat3(&xmf3Pos, m_ppPawn[slot_id]->GetPosition());
+	DEBUGER->AddGameText(25, 100, 100, YT_Color(200, 200, 0), L"%d %d %d", (int)xmf3Pos.x , (int)xmf3Pos.y, (int)xmf3Pos.z);
+	m_fGateSoundLoop += fTimeElapsed;
+	m_fBirdSoundLoop += fTimeElapsed;
+	if (m_fGateSoundLoop > 5.f) {
+		m_fGateSoundLoop = 0.f;
+		XMFLOAT3 xmf3Pos = XMFLOAT3(192, 30, 304);
+		CSoundManager::Play_3Dsound("bgm_gate_loop", 1, &xmf3Pos, 1.f, 10.f, 200.f);
+	}
 	BYTE Packet[MAX_BUFFER_LENGTH] = { 0, };
 
 	NetworkProc();
@@ -170,7 +183,7 @@ void CSCAldenard::Animate(float fTimeElapsed)
 	{
 		m_vecUI[i]->Update(fTimeElapsed);
 	}
-	int slot_id = NETWORKMGR->GetSLOT_ID();
+	//int slot_id = NETWORKMGR->GetSLOT_ID();
 //flag인 부분 충돌 처리
 	if (FlagCollision(m_ppPawn[slot_id])) {
 		//flag인 부분과 충돌했다면!

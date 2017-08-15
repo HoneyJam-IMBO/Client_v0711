@@ -67,6 +67,7 @@ void CDementor::UpdateSkill()
 		if (true == m_pAnimater->GetCurAnimationInfo()->GetLoopDone()) {
 			m_fSkill1EndTime = m_fSkillTime + 10.f;
 			m_nAnimNum = DEMENTOR_ANIM_SKILL1_FIRE;
+			CSoundManager::Play_3Dsound("dementor_skill1", 1, &m_xmf3Position, 5.f, 5.f, 500.f);
 			m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
 		}
 		return;
@@ -86,7 +87,7 @@ void CDementor::UpdateSkill()
 		if (true == m_pAnimater->GetCurAnimationInfo()->GetLoopDone()) {
 			m_nAnimNum = DEMENTOR_ANIM_SKILL2_FIRE;
 			m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
-
+			CSoundManager::Play_3Dsound("dementor_skill2", 1, &m_xmf3Position, 5.f, 5.f, 500.f);
 			CEffectMgr::GetInstance()->Play_Effect(L"Dementor_sk2_Shoot", XMVectorSet(m_xmf3ClickPos.x, m_xmf3ClickPos.y , m_xmf3ClickPos.z, 1.f),
 				XMVectorSet(0.f, XMConvertToDegrees(m_fAngleY), 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
 
@@ -117,6 +118,7 @@ void CDementor::UpdateSkill()
 	}
 	if (DEMENTOR_ANIM_SKILL4_CHARGING == m_nAnimNum) {
 		if (true == m_pAnimater->GetCurAnimationInfo()->GetLoopDone()) {
+			CSoundManager::Play_3Dsound("dementor_skill4", 1, &m_xmf3Position, 5.f, 5.f, 500.f);
 			m_nAnimNum = DEMENTOR_ANIM_SKILL4_FIRE;
 			m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
 		}
@@ -217,6 +219,7 @@ void CDementor::KeyInput(float fDeltaTime)
 			m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
 
 			if (m_bSelRangeMode == false) {
+				CSoundManager::Play_3Dsound("dementor_attack", 1, &m_xmf3Position, 5.f, 5.f, 500.f);
 				CEffectMgr::GetInstance()->Play_Effect(L"Dementor_Shot", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y + 2.f, m_xmf3Position.z, 1.f),
 					XMVectorSet(0.f, XMConvertToDegrees(m_fAngleY), 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
 
@@ -243,13 +246,14 @@ void CDementor::KeyInput(float fDeltaTime)
 			m_bSkill = true;
 			m_nAnimNum = DEMENTOR_ANIM_SKILL3_FIRE;
 			m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
-
+			CSoundManager::Play_3Dsound("dementor_skill3", 1, &m_xmf3Position, 5.f, 5.f, 500.f);
 			ResetCollisionValue(XMFLOAT3(0,0,0), 0.f, 5.0f, 5.f);
 			CEffectMgr::GetInstance()->Play_Effect(L"Dementor_sk3_con", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y + 1.f, m_xmf3Position.z, 1.f),
 				XMVectorSet(0.f, XMConvertToDegrees(m_fAngleY), 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
 		}
 		else if (INPUTMGR->KeyDown(VK_4)) {				// ½ºÅ³ 4 ------------------------
 			m_bSkill = true;
+			CSoundManager::Play_3Dsound("dementor_skill4", 1, &m_xmf3Position, 5.f, 5.f, 500.f);
 			m_nAnimNum = DEMENTOR_ANIM_SKILL4_START;
 			m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
 
@@ -402,6 +406,7 @@ void CDementor::GetServerData(float fTimeElapsed)
 			XMVectorSet(0.f, 0.f, 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
 		break;
 	case DEMENTOR_ANIM_SKILL2_FIRE:
+		CSoundManager::Play_3Dsound("dementor_skill2", 1, &m_xmf3Position, 5.f, 5.f, 500.f);
 		CEffectMgr::GetInstance()->Play_Effect(L"Dementor_sk2_Shoot", XMVectorSet(m_xmf3ClickPos.x, m_xmf3ClickPos.y, m_xmf3ClickPos.z, 1.f),
 			XMVectorSet(0.f, XMConvertToDegrees(m_fAngleY), 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
 		break;
@@ -410,14 +415,19 @@ void CDementor::GetServerData(float fTimeElapsed)
 		CEffectMgr::GetInstance()->Play_Effect(L"Dementor_Shot", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y + 2.f, m_xmf3Position.z, 1.f),
 			XMVectorSet(0.f, XMConvertToDegrees(m_fAngleY), 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
 		break;
+	case DEMENTOR_ANIM_SKILL1_FIRE:
+		CSoundManager::Play_3Dsound("dementor_skill1", 1, &m_xmf3Position, 5.f, 5.f, 500.f);
+		break;
 	case DEMENTOR_ANIM_SKILL1_START:
 		CEffectMgr::GetInstance()->Play_Effect(L"Dementor_sk1_Shield", this);
 		break;
 	case DEMENTOR_ANIM_SKILL3_FIRE:
+		CSoundManager::Play_3Dsound("dementor_skill3", 1, &m_xmf3Position, 5.f, 5.f, 500.f);
 		CEffectMgr::GetInstance()->Play_Effect(L"Dementor_sk3_con", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y + 1.f, m_xmf3Position.z, 1.f),
 			XMVectorSet(0.f, XMConvertToDegrees(m_fAngleY), 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
 		break;
 	case DEMENTOR_ANIM_SKILL4_START:
+		CSoundManager::Play_3Dsound("dementor_skill4", 1, &m_xmf3Position, 5.f, 5.f, 500.f);
 		ShootArrow(false);
 		ShootArrow(false, XM_PI * 0.5f);
 		ShootArrow(false, XM_PI);
@@ -440,8 +450,12 @@ void CDementor::GetServerData(float fTimeElapsed)
 			XMVectorSet(0.f, XMConvertToDegrees(m_fAngleY) - 180.f, 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
 		break;
 	case DEMENTOR_ANIM_HIT_F:
+		CSoundManager::Play_3Dsound("dementor_hurt", 1, &m_xmf3Position, 5.f, 5.f, 500.f);
 		CEffectMgr::GetInstance()->Play_Effect(L"TestBlood", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y + 2.f, m_xmf3Position.z, 1.f),
 			XMVectorSet(0.f, 0.f, 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
+		break;
+	case DEMENTOR_ANIM_DIE:
+		CSoundManager::Play_3Dsound("dementor_die", 1, &m_xmf3Position, 5.f, 5.f, 500.f);
 		break;
 	default:
 		break;
@@ -670,6 +684,7 @@ bool CDementor::GetDemaged(int iDemage) {
 	CEffectMgr::GetInstance()->Play_Effect(L"TestBlood", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y + 2.f, m_xmf3Position.z, 1.f),
 		XMVectorSet(0.f, 0.f, 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
 
+	CSoundManager::Play_3Dsound("dementor_hurt", 1, &m_xmf3Position, 5.f, 5.f, 500.f);
 	m_nAnimNum = DEMENTOR_ANIM_HIT_F;
 	m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
 
@@ -680,6 +695,7 @@ bool CDementor::GetDemaged(int iDemage) {
 #endif
 
 	if (m_iCurHP <= 0) {
+		CSoundManager::Play_3Dsound("dementor_die", 1, &m_xmf3Position, 5.f, 5.f, 500.f);
 		m_nAnimNum = DEMENTOR_ANIM_DIE;
 		m_pAnimater->SetCurAnimationIndex(DEMENTOR_ANIM_DIE);
 	}

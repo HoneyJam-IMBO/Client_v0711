@@ -19,7 +19,7 @@
 
 bool CSCSarasen::Begin()
 {
-
+	CSoundManager::Play_bgm("bgm_boss2_balcony");
 	//----------------------------------camera-------------------------------------
 	m_pCamera = m_pFrameWork->GetCamera();
 	ReadMapData();
@@ -122,6 +122,7 @@ bool CSCSarasen::Begin()
 
 bool CSCSarasen::End()
 {
+	CSoundManager::Stop_bgm("bgm_boss2_balcony");
 	int nPawn = NETWORKMGR->GetServerPlayerInfos().size();
 	for (int i = 0; i < nPawn; ++i)
 	{
@@ -152,6 +153,8 @@ void CSCSarasen::Animate(float fTimeElapsed)
 
 	//flag인 부분 충돌 처리
 	if (FlagCollision(m_ppPawn[slot_id])) {
+		CSoundManager::Stop_bgm("bgm_boss2_balcony");
+		CSoundManager::Play_bgm("bgm_boss2_battle");
 		StartBoss2ActionCam();
 		//flag인 부분과 충돌했다면!
 		m_ppPawn[slot_id]->SetbStay(true);//나 stay!

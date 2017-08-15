@@ -38,6 +38,8 @@ public:
 	CGameObject* GetPlayer() { return m_ppPawn ? m_ppPawn[NETWORKMGR->GetSLOT_ID()] : nullptr; }
 
 private:
+	float m_fGateSoundLoop{ 0.f };
+	float m_fBirdSoundLoop{ 0.f };
 	void ReadMapData();
 	void LoadSkillObjects();
 	void CreateUI();

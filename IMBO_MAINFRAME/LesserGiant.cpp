@@ -15,7 +15,7 @@ CLesserGiant::~CLesserGiant()
 }
 
 bool CLesserGiant::GetDemaged(int iDemege){
-
+	if (m_pAnimater->GetCurAnimationIndex() == BOSS1_ANI_DIE) return false;
 	//뭔가 이팩트가 있으면 좋겠음 ㅠ
 
 #ifdef NO_SERVER
@@ -23,9 +23,10 @@ bool CLesserGiant::GetDemaged(int iDemege){
 #else
 
 #endif
-
 	if (m_iCurHP == 0) {
-		m_pAnimater->SetCurAnimationIndex(BOSS1_ANI_DYING);
+		if (m_pAnimater->SetCurAnimationIndex(BOSS1_ANI_DYING)) {
+			CSoundManager::Play_3Dsound("boss1_die", 1, &m_xmf3Position, 5.f, 5.f, 500.f);
+		}
 	}
 	//BYTE Packet[MAX_BUFFER_LENGTH] = { 0, };
 	//NETWORKMGR->WritePacket(PT_BOSS_FREQUENCY_MOVE_CS, Packet, WRITE_PT_BOSS_FREQUENCY_MOVE_CS(Packet, m_xmf3Position.x, m_xmf3Position.y, m_xmf3Position.z, m_fAngleY, m_nAnimNum));
@@ -90,16 +91,26 @@ void CLesserGiant::Animate(float fTimeElapsed)
 		if (m_pAnimater->SetCurAnimationIndex(data.iAnimNum)) {
 			switch (data.iAnimNum) {
 			case BOSS1_ANI_SKILL1:
+				CSoundManager::Play_3Dsound("boss1_skill1", 1, &m_xmf3Position, 5.f, 5.f, 500.f);
 				ResetCollisionValue(XMFLOAT3(0, 1, 5), 1, 1.7, 5);
 				break;
 			case BOSS1_ANI_SKILL2:
+				CSoundManager::Play_3Dsound("boss1_skill2", 1, &m_xmf3Position, 5.f, 5.f, 500.f);
 				ResetCollisionValue(XMFLOAT3(0, 1, 5), 4.1, 4.6, 5);
 				break;
 			case BOSS1_ANI_SKILL3:
+				CSoundManager::Play_3Dsound("boss1_skill3", 1, &m_xmf3Position, 5.f, 5.f, 500.f);
 				ResetCollisionValue(XMFLOAT3(0, 1, 5), 3.4, 4.5, 5);
 				break;
 			case BOSS1_ANI_SKILL4:
+				CSoundManager::Play_3Dsound("boss1_skill4", 1, &m_xmf3Position, 5.f, 5.f, 500.f);
 				ResetCollisionValue(XMFLOAT3(0, 0, 0), 2, 7, 7);
+				break;
+			case BOSS1_ANI_DYING:
+				CSoundManager::Play_3Dsound("boss1_die", 1, &m_xmf3Position, 5.f, 5.f, 500.f);
+				break;
+			case BOSS1_ANI_DIE:
+				CSoundManager::Stop_bgm("bgm_firsttown_battle");
 				break;
 			default:
 				break;
@@ -124,6 +135,15 @@ void CLesserGiant::TransferCollisioinData(int target_slot_id, int skillnum) {
 }
 void CLesserGiant::PhisicsLogic(map<utag, list<CGameObject*>>& mlpObject, float fDeltaTime)
 {
+
+	if (m_pAnimater->GetCurAnimationIndex() == BOSS1_ANI_DYING || m_pAnimater->GetCurAnimationIndex() == BOSS1_ANI_DIE) {
+		if (m_pAnimater->GetCurAnimationInfo()->GetLoopDone()) {
+			m_pAnimater->SetCurAnimationIndex(BOSS1_ANI_DIE);
+		}
+		m_bCollision = true;
+		return;
+	}
+
 	for (auto pArrow : mlpObject[utag::UTAG_ARROW]) {
 		//내가쏜 화살만 데미지를 입음
 		if (false == pArrow->GetActive()) continue;
@@ -316,11 +336,17 @@ void CLesserGiant::UpdatePattern(float fTimeElapsed)
 			switch (m_nPatternNum) {
 			case 0:
 				m_nAnimNum = BOSS1_ANI_SKILL2;
-				if (m_pAnimater->SetCurAnimationIndex(m_nAnimNum)) ResetCollisionValue(XMFLOAT3(0, 1, 5), 4.1, 4.6, 5);
+				if (m_pAnimater->SetCurAnimationIndex(m_nAnimNum)) {
+					CSoundManager::Play_3Dsound("boss1_skill2", 1, &m_xmf3Position, 5.f, 5.f, 500.f);
+					ResetCollisionValue(XMFLOAT3(0, 1, 5), 4.1, 4.6, 5);
+				}
 				break;
 			case 1:
 				m_nAnimNum = BOSS1_ANI_SKILL3;
-				if (m_pAnimater->SetCurAnimationIndex(m_nAnimNum)) ResetCollisionValue(XMFLOAT3(0, 1, 5), 3.4, 4.5, 5);
+				if (m_pAnimater->SetCurAnimationIndex(m_nAnimNum)) {
+					CSoundManager::Play_3Dsound("boss1_skill3", 1, &m_xmf3Position, 5.f, 5.f, 500.f);
+					ResetCollisionValue(XMFLOAT3(0, 1, 5), 3.4, 4.5, 5);
+				}
 				
 				m_fSk2Speed = xmf3Distance.x;
 				XMStoreFloat3(&m_xmf3Sk2Dir, XMLoadFloat3(&m_f3Diraction));
@@ -331,7 +357,10 @@ void CLesserGiant::UpdatePattern(float fTimeElapsed)
 
 				m_fSk2Speed = xmf3Distance.x;
 				//XMStoreFloat3(&m_xmf3Sk2Dir, XMLoadFloat3(&m_f3Diraction));
-				if (m_pAnimater->SetCurAnimationIndex(m_nAnimNum)) ResetCollisionValue(XMFLOAT3(0, 0, 0), 2, 7, 7);
+				if (m_pAnimater->SetCurAnimationIndex(m_nAnimNum)) {
+					CSoundManager::Play_3Dsound("boss1_skill4", 1, &m_xmf3Position, 5.f, 5.f, 500.f);
+					ResetCollisionValue(XMFLOAT3(0, 0, 0), 2, 7, 7);
+				}
 				break;
 			}			
 			++m_nPatternNum;
@@ -346,7 +375,10 @@ void CLesserGiant::UpdatePattern(float fTimeElapsed)
 			}
 			m_f3Diraction = XMFLOAT3(0.f, 0.f, 0.f);
 			m_nAnimNum = BOSS1_ANI_SKILL1;
-			if(m_pAnimater->SetCurAnimationIndex(m_nAnimNum))ResetCollisionValue(XMFLOAT3(0,1,5), 1, 1.7, 5);
+			if (m_pAnimater->SetCurAnimationIndex(m_nAnimNum)) {
+				CSoundManager::Play_3Dsound("boss1_skill1", 1, &m_xmf3Position, 5.f, 5.f, 500.f);
+				ResetCollisionValue(XMFLOAT3(0, 1, 5), 1, 1.7, 5);
+			}
 			m_bAttack = true;
 		}
 		else {

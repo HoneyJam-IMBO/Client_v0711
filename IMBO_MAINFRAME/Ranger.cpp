@@ -107,6 +107,7 @@ void CRanger::UpdateSkill()
 			CEffectMgr::GetInstance()->Play_Effect(L"Ranger_sk4_Shoot", XMVectorSet(m_xmf3ClickPos.x, m_xmf3ClickPos.y, m_xmf3ClickPos.z, 1.f),
 				XMVectorSet(0.f, 0.f, 0.f, 0.f), XMVectorSet(1.f, 1.f, 1.f, 1.f));
 
+			CSoundManager::Play_3Dsound("ranger_skill4", 1, &m_xmf3Position, 5.f, 5.f, 500.f);
 			m_bSelRangeMode = false;
 			pCam->SetFixCamera(true);
 
@@ -185,6 +186,7 @@ void CRanger::KeyInput(float fDeltaTime)
 				CEffectMgr::GetInstance()->Play_Effect(L"Arrow_Skill1Shot", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y + 2.f, m_xmf3Position.z, 1.f),
 						XMVectorSet(0.f, XMConvertToDegrees(m_fAngleY), 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
 
+				CSoundManager::Play_3Dsound("ranger_attack", 1, &m_xmf3Position, 5.f, 5.f, 500.f);
 				RENDERER->SetRadialBlurTime(true, 0.5f);
 				ShootArrow(false);
 			}
@@ -209,6 +211,7 @@ void CRanger::KeyInput(float fDeltaTime)
 			}
 			CEffectMgr::GetInstance()->Play_Effect(L"Ranger_sk1_efc", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y, m_xmf3Position.z, 1.f),
 				XMVectorSet(0.f, 0.f, 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
+			CSoundManager::Play_3Dsound("ranger_skill1", 1, &m_xmf3Position, 5.f, 5.f, 500.f);
 			ResetCollisionValue(XMFLOAT3(0,0,0), 0.8f, 1.f, 10.f);
 		}
 		else if (INPUTMGR->KeyDown(VK_2)){				// 스킬 2 ------------------------
@@ -222,6 +225,7 @@ void CRanger::KeyInput(float fDeltaTime)
 			CEffectMgr::GetInstance()->Play_Effect(L"Ranger_sk2_con", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y + 2.f, m_xmf3Position.z, 1.f),
 				XMVectorSet(0.f, 0.f, 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
 			//m_pCamera->CameraStartVibration(1.5f, 10.f);
+			CSoundManager::Play_3Dsound("ranger_skill2", 1, &m_xmf3Position, 5.f, 5.f, 500.f);
 		}
 		else if (INPUTMGR->KeyDown(VK_3)){				// 스킬 3 ------------------------
 			m_bSkill = true;
@@ -232,6 +236,7 @@ void CRanger::KeyInput(float fDeltaTime)
 			CEffectMgr::GetInstance()->Play_Effect(L"Ranger_sk3_wheelwind", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y + 1.f, m_xmf3Position.z, 1.f),
 				XMVectorSet(0.f, 0.f, 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
 			ResetCollisionValue(XMFLOAT3(0, 0, 0), 0.f, 0.5f, 10.f);
+			CSoundManager::Play_3Dsound("ranger_skill3", 1, &m_xmf3Position, 5.f, 5.f, 500.f);
 		}
 		else if (INPUTMGR->KeyDown(VK_4)){				// 스킬 3 ------------------------
 			m_bSkill = true;
@@ -239,7 +244,7 @@ void CRanger::KeyInput(float fDeltaTime)
 			m_nAnimNum = /*ANIM_SKILL2_FIRE*/ANIM_IDLE;
 			//m_nAnimNum = ANIM_SKILL4_FIRE;
 			m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
-			
+		
 		}
 	}
 
@@ -364,24 +369,35 @@ void CRanger::GetServerData(float fTimeElapsed) {
 	if (m_pAnimater->SetCurAnimationIndex(m_nAnimNum)) {
 		switch (m_nAnimNum) {
 		case ANIM_ATTACK:
+			CSoundManager::Play_3Dsound("ranger_attack", 1, &m_xmf3Position, 5.f, 5.f, 500.f);
 			CEffectMgr::GetInstance()->Play_Effect(L"Arrow_Skill1Shot", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y + 2.f, m_xmf3Position.z, 1.f),
 				XMVectorSet(0.f, XMConvertToDegrees(m_fAngleY), 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
 			break;
 		case ANIM_SKILL1_FIRE:
+			CSoundManager::Play_3Dsound("ranger_skill1", 1, &m_xmf3Position, 5.f, 5.f, 500.f);
 			CEffectMgr::GetInstance()->Play_Effect(L"Ranger_sk1_efc", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y, m_xmf3Position.z, 1.f),
 				XMVectorSet(0.f, 0.f, 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
 			break;
 		case ANIM_SKILL2_START:
+			CSoundManager::Play_3Dsound("ranger_skill2", 1, &m_xmf3Position, 5.f, 5.f, 500.f);
 			CEffectMgr::GetInstance()->Play_Effect(L"Ranger_sk2_con", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y + 2.f, m_xmf3Position.z, 1.f),
 				XMVectorSet(0.f, 0.f, 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
 			break;
 		case ANIM_SKILL3_FIRE:
+			CSoundManager::Play_3Dsound("ranger_skill3", 1, &m_xmf3Position, 5.f, 5.f, 500.f);
 			CEffectMgr::GetInstance()->Play_Effect(L"Ranger_sk3_wheelwind", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y + 1.f, m_xmf3Position.z, 1.f),
 				XMVectorSet(0.f, 0.f, 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
 			break;
 		case ANIM_HIT_F:
+			CSoundManager::Play_3Dsound("ranger_hurt", 1, &m_xmf3Position, 5.f, 5.f, 500.f);
 			CEffectMgr::GetInstance()->Play_Effect(L"TestBlood", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y + 2.f, m_xmf3Position.z, 1.f),
 				XMVectorSet(0.f, 0.f, 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
+			break;
+		case ANIM_SKILL4_FIRE:
+			CSoundManager::Play_3Dsound("ranger_skill4", 1, &m_xmf3Position, 5.f, 5.f, 500.f);
+			break;
+		case ANIM_DIE:
+			CSoundManager::Play_3Dsound("ranger_die", 1, &m_xmf3Position, 5.f, 5.f, 500.f);
 			break;
 		default:
 			break;
@@ -620,6 +636,7 @@ bool CRanger::GetDemaged(int iDemage) {
 			XMVectorSet(0.f, 0.f, 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
 
 		m_nAnimNum = ANIM_HIT_F;
+		CSoundManager::Play_3Dsound("ranger_hurt", 1, &m_xmf3Position, 5.f, 5.f, 500.f);
 		m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
 
 #ifdef NO_SERVER
@@ -630,7 +647,9 @@ bool CRanger::GetDemaged(int iDemage) {
 
 		if (m_iCurHP <= 0) {
 			m_nAnimNum = ANIM_DIE;
-			m_pAnimater->SetCurAnimationIndex(ANIM_DIE);
+			if (m_pAnimater->SetCurAnimationIndex(ANIM_DIE)) {
+				CSoundManager::Play_3Dsound("ranger_die", 1, &m_xmf3Position, 5.f, 5.f, 500.f);
+			}
 		}
 
 #ifdef NO_SERVER
