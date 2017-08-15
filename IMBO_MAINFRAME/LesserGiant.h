@@ -12,7 +12,7 @@ public:
 	UINT GetAnimNum() { return m_nAnimNum; }
 	void SetFirstAction(bool b) { m_bFirstAction = b; }
 	bool GetFirstAction() { return m_bFirstAction; }
-	//void SetCurHP(int hp) { m_iCurHP = hp; }
+
 	void SetTarget(CGameObject* pTarget) { m_pTempPlayer = pTarget;	};
 private:
 
@@ -36,7 +36,6 @@ public:
 	virtual void RegistToContainer();
 
 public:
-	void TransferCollisioinData(int target_slot_id, int skillnum);
 	virtual void PhisicsLogic(map<utag, list<CGameObject*>>& mlpObject, float fDeltaTime);
 
 	bool GetDemaged(int iDemege);

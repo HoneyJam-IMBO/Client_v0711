@@ -414,10 +414,7 @@ void CSCOriTown::NetworkProc(){
 
 VOID CSCOriTown::PROC_PT_BOSS_CLEAR_SC(DWORD dwProtocol, BYTE * Packet, DWORD dwPacketLength) {
 	// º¸½º Á×À½
-	NETWORKMGR->SetBossHP(0);
-	m_pBoss->SetCurHP(0);
-	//if(NETWORKMGR->GetSLOT_ID() == 0)
-	m_pBoss->GetDemaged(0);
+	KillBoss1();
 
 	return VOID();
 }
@@ -426,21 +423,15 @@ VOID CSCOriTown::PROC_PT_BOSS_HP_SC(DWORD dwProtocol, BYTE * Packet, DWORD dwPac
 	READ_PACKET(PT_BOSS_HP_SC);
 
 	NETWORKMGR->SetBossHP(Data.BOSS_HP);
-	m_pBoss->SetCurHP(Data.BOSS_HP);
-	m_pBoss->GetDemaged(0);
+
 	return VOID();
 }
 
 VOID CSCOriTown::PROC_PT_PLAYER_HP_SC(DWORD dwProtocol, BYTE * Packet, DWORD dwPacketLength) {
 	READ_PACKET(PT_PLAYER_HP_SC);
 
-	bool bHeal = false;
-	if (NETWORKMGR->GetPlayerHP(Data.SLOT_ID) <= Data.PLAYER_HP)
-		bHeal = true;
 	NETWORKMGR->SetPlayerHP(Data.SLOT_ID, Data.PLAYER_HP);
-	m_ppPawn[Data.SLOT_ID]->SetCurHP(Data.PLAYER_HP);
-	if (NETWORKMGR->GetSLOT_ID() == Data.SLOT_ID && bHeal == false)
-		m_ppPawn[Data.SLOT_ID]->GetDemaged(0);
+
 	return VOID();
 }
 

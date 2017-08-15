@@ -454,13 +454,6 @@ void CBard::RegistToContainer()
 	if (m_pWeapon) m_pWeapon->RegistToContainer();
 }
 
-
-void CBard::TransferCollisioinData(int target_slot_id, int skillnum) {
-	BYTE Packet[MAX_BUFFER_LENGTH] = { 0, };
-	NETWORKMGR->WritePacket(PT_SKILL_COLLISION_TO_TARGET_CS, Packet, WRITE_PT_SKILL_COLLISION_TO_TARGET_CS(Packet, NETWORKMGR->GetROOM_ID(), NETWORKMGR->GetSLOT_ID(), target_slot_id, 5, skillnum));
-
-}
-
 void CBard::PhisicsLogic(map<utag, list<CGameObject*>>& mlpObject, float fDeltaTime)
 {
 	m_fCollisionTime += fDeltaTime;
@@ -474,8 +467,7 @@ void CBard::PhisicsLogic(map<utag, list<CGameObject*>>& mlpObject, float fDeltaT
 		switch (m_nAnimNum) {
 		case BARD_ANIM_SKILL4_FIRE:
 			if (SkillCollision(pPlayer, false)) {//skill4
-				TransferCollisioinData(pPlayer->GetSlotID(), 4);
-				//pPlayer->GetHeal(m_iCurAttack);
+				pPlayer->GetHeal(m_iCurAttack);
 				//m_bCollision = true;
 				//nAplyOtherPlayer++;
 			}
@@ -489,8 +481,7 @@ void CBard::PhisicsLogic(map<utag, list<CGameObject*>>& mlpObject, float fDeltaT
 		switch (m_nAnimNum) {
 		case BARD_ANIM_SKILL4_FIRE:
 			if (SkillCollision(pPlayer, false)) {//skill4
-				TransferCollisioinData(pPlayer->GetSlotID(), 4);
-				//pPlayer->GetHeal(m_iCurAttack);
+				pPlayer->GetHeal(m_iCurAttack);
 				m_bCollision = true;
 			}
 			break;
@@ -503,15 +494,13 @@ void CBard::PhisicsLogic(map<utag, list<CGameObject*>>& mlpObject, float fDeltaT
 
 		case BARD_ANIM_SKILL1_FIRE:
 			if (SkillCollision(pBoss)) {//skill1 boss에게 대미지
-				TransferCollisioinData(5, 1);
-				//pBoss->GetDemaged(m_iCurAttack);
+				pBoss->GetDemaged(m_iCurAttack);
 				m_bCollision = true;
 			}
 			break;
 		case BARD_ANIM_SKILL3_FIRE:
 			if (SkillCollision(pBoss, false)) {//skill4
-				TransferCollisioinData(5, 3);
-				//pBoss->GetDemaged(m_iCurAttack);
+				pBoss->GetDemaged(m_iCurAttack);
 				m_bCollision = true;
 			}
 			break;
@@ -546,7 +535,7 @@ bool CBard::GetDemaged(int iDemage){
 	m_nAnimNum = BARD_ANIM_HIT_F;
 	m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
 
-	//CGameObject::GetDemaged(iDemage);//내 hp 날리고!
+	CGameObject::GetDemaged(iDemage);//내 hp 날리고!
 	if (m_iCurHP <= 0) {
 		m_nAnimNum = BARD_ANIM_DIE;
 		m_pAnimater->SetCurAnimationIndex(BARD_ANIM_DIE);

@@ -549,22 +549,19 @@ void CKnight::PhisicsLogic(map<utag, list<CGameObject*>>& mlpObject, float fDelt
 		switch (m_nAnimNum) {
 		case KNIGHT_ANIM_ATTACK:
 			if (SkillCollision(pBoss)) {//char
-				TransferCollisioinData(5, 1);
-				//pBoss->GetDemaged(m_iCurAttack);
+				pBoss->GetDemaged(m_iCurAttack);
 				m_bCollision = true;
 			}
 			break;
 		case KNIGHT_ANIM_ATTACK2:
 			if (SkillCollision(pBoss)) {//boss
-				TransferCollisioinData(5, 2);
-				//pBoss->GetDemaged(m_iCurAttack);
+				pBoss->GetDemaged(m_iCurAttack);
 				m_bCollision = true;
 			}
 			break;
 		case KNIGHT_ANIM_ATTACK3:
 			if (SkillCollision(pBoss)) {
-				TransferCollisioinData(5, 3);
-				//pBoss->GetDemaged(m_iCurAttack);
+				pBoss->GetDemaged(m_iCurAttack);
 				m_bCollision = true;
 			}
 			break;
@@ -597,7 +594,7 @@ bool CKnight::GetDemaged(int iDemage) {
 
 
 
-	//CGameObject::GetDemaged(iDemage);//내 hp 날리고!
+	CGameObject::GetDemaged(iDemage);//내 hp 날리고!
 	if (m_iCurHP <= 0) {
 		m_nAnimNum = KNIGHT_ANIM_DIE;
 		m_pAnimater->SetCurAnimationIndex(KNIGHT_ANIM_DIE);
