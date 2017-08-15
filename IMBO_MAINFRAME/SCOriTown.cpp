@@ -404,6 +404,7 @@ void CSCOriTown::NetworkProc(){
 			break;
 		case PT_BOSS_CLEAR_SC:
 			PROC_PT_BOSS_CLEAR_SC(dwProtocol, Packet, dwPacketLength);
+			break;
 		case PT_PLAYER_HP_SC:
 			PROC_PT_PLAYER_HP_SC(dwProtocol, Packet, dwPacketLength);
 			break;

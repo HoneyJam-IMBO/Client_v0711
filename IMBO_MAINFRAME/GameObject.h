@@ -205,6 +205,7 @@ public:
 		float m_fDefence{ 1.f };
 	}
 	virtual void GetSkilled(int nSkill);
+	virtual int GetSlotID() { return 0; }
 
 protected:
 	//navi mesh index

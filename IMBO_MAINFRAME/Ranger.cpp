@@ -549,7 +549,7 @@ void CRanger::PhisicsLogic(map<utag, list<CGameObject*>>& mlpObject, float fDelt
 		switch (m_nAnimNum) {
 		case ANIM_SKILL1_FIRE:
 			if (SkillCollision(pPlayer)) {
-				pPlayer->GetHeal(m_iAttack);
+				TransferCollisioinData(pPlayer->GetSlotID(), 1);
 				//m_bCollision = true;
 			}
 			break;

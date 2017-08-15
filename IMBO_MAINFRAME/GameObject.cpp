@@ -1058,10 +1058,6 @@ void CGameObject::GetSkilled(int nSkill){
 
 }
 
-int CGameObject::GetSlotID()
-{
-	return 0;
-}
 
 //생성자는 위에서부터 
 CGameObject::CGameObject(string name, tag t) : CObject(name, t) {
