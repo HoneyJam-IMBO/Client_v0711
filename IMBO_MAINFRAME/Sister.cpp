@@ -92,7 +92,7 @@ void CSister::KeyInput(float fDeltaTime)
 			m_nAnimNum = SISTER_ANIM_ATTACK;
 			m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
 			RENDERER->SetRadialBlurTime(true, 0.4f);
-
+			ResetCollisionValue(XMFLOAT3(0, 0, 3), 0.f, 0.8f, 2.f);
 			//CEffectMgr::GetInstance()->Play_Effect(L"Arrow_Skill1Shot", this);			
 		}
 		else if (INPUTMGR->KeyDown(VK_1)) {				// 스킬 1 ------------------------
@@ -522,6 +522,13 @@ void CSister::PhisicsLogic(map<utag, list<CGameObject*>>& mlpObject, float fDelt
 		case SISTER_ANIM_SKILL4_FIRE:
 			if (SkillCollision(pBoss, false)) {//skill2 투사체 boss에게 대미지
 				TransferCollisioinData(5, 4);
+				//pBoss->GetDemaged(m_iCurAttack);
+				m_bCollision = true;
+			}
+			break;
+		case SISTER_ANIM_ATTACK:
+			if (SkillCollision(pBoss, false)) {//
+				TransferCollisioinData(5, 0);
 				//pBoss->GetDemaged(m_iCurAttack);
 				m_bCollision = true;
 			}
