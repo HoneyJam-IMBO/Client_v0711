@@ -471,6 +471,26 @@ void CSister::PhisicsLogic(map<utag, list<CGameObject*>>& mlpObject, float fDelt
 		m_fCollisionTime = 0.f;
 		m_bCollision = false;//2초에 한번씩 다시 맞게 한다.
 	}
+
+	for (auto pArrow : mlpObject[utag::UTAG_BOSS2]) {
+		//내가쏜 화살만 데미지를 입음
+		if (false == pArrow->GetActive()) continue;
+		if (true == IsCollision(pArrow))
+		{
+#ifdef NO_SERVER
+			GetDemaged(100.f);
+			SetRimLight();
+#else
+			BYTE Packet[MAX_BUFFER_LENGTH] = { 0, };
+			NETWORKMGR->WritePacket(PT_SKILL_COLLISION_TO_TARGET_CS, Packet, WRITE_PT_SKILL_COLLISION_TO_TARGET_CS(Packet, NETWORKMGR->GetROOM_ID(), 5, NETWORKMGR->GetSLOT_ID(), 6, 9));
+			SetRimLight();
+			pArrow->DisappearSkill();
+#endif
+
+
+			break;
+		}
+	}
 	//skill collision proc
 	for (auto pPlayer : mlpObject[utag::UTAG_OTHERPLAYER]) {
 		switch (m_nAnimNum) {

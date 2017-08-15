@@ -546,12 +546,36 @@ void CRanger::PhisicsLogic(map<utag, list<CGameObject*>>& mlpObject, float fDelt
 			break;
 		}
 	}
+
+	for (auto pArrow : mlpObject[utag::UTAG_BOSS2]) {
+		//내가쏜 화살만 데미지를 입음
+		if (false == pArrow->GetActive()) continue;
+		if (true == IsCollision(pArrow))
+		{
+#ifdef NO_SERVER
+			GetDemaged(100.f);
+			SetRimLight();
+#else
+			BYTE Packet[MAX_BUFFER_LENGTH] = { 0, };
+			NETWORKMGR->WritePacket(PT_SKILL_COLLISION_TO_TARGET_CS, Packet, WRITE_PT_SKILL_COLLISION_TO_TARGET_CS(Packet, NETWORKMGR->GetROOM_ID(),5, NETWORKMGR->GetSLOT_ID(), 6, 9));
+			SetRimLight();
+			pArrow->DisappearSkill();
+#endif
+
+
+			break;
+		}
+	}
 	//skill collision proc
 	for (auto pPlayer : mlpObject[utag::UTAG_OTHERPLAYER]) {
 		switch (m_nAnimNum) {
 		case ANIM_SKILL1_FIRE:
 			if (SkillCollision(pPlayer)) {
+#ifdef NO_SERVER
+				pPlayer->GetHeal(m_iAttack);
+#else
 				TransferCollisioinData(pPlayer->GetSlotID(), 1);
+#endif
 				//pPlayer->GetHeal(m_iAttack);
 				//m_bCollision = true;
 			}

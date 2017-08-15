@@ -136,7 +136,7 @@ void CDirectXFramework::InitSingleton(HINSTANCE hInstance, HWND hWnd)
 	CPositionInfoManager::Begin();
 
 #ifdef NO_SERVER
-	//SCENEMGR->ChangeScene(SCN_ORITOWN);
+	SCENEMGR->ChangeScene(SCN_ORITOWN);
 	//SCENEMGR->ChangeScene(SCN_ALDENAD);
 	//SCENEMGR->ChangeScene(SCN_ALDENAD);	//SCENEMGR->ChangeScene(SCN_BOSS);
 	//SCENEMGR->ChangeScene(SCN_TITLE);

@@ -104,16 +104,16 @@ bool CSCOriTown::Begin() {
 			m_ppPawn[i]->SetNaviMeshIndex();
 	}
 
-	//보스 제작
-	m_pBoss = new CLesserGiant("Boss01L", TAG_DYNAMIC_OBJECT, m_ppPawn[0]);
-	m_pBoss->SetUTag(utag::UTAG_BOSS1);
-	m_pBoss->Begin();
-	m_pBoss->SetTerrainContainer(UPDATER->GetTerrainContainer());
-	m_pBoss->SetPosition(XMVectorSet(512, 0, 768, 0));
-	m_pBoss->SetNaviMeshIndex();
-	m_pBoss->SetScale(XMVectorSet(1.f, 1.f, 1.f, 1));		//roisa
-	UPDATER->GetSpaceContainer()->AddObject(m_pBoss);
-	m_pBoss->GetAnimater()->SetCurAnimationIndex(0);
+	////보스 제작
+	//m_pBoss = new CLesserGiant("Boss01L", TAG_DYNAMIC_OBJECT, m_ppPawn[0]);
+	//m_pBoss->SetUTag(utag::UTAG_BOSS1);
+	//m_pBoss->Begin();
+	//m_pBoss->SetTerrainContainer(UPDATER->GetTerrainContainer());
+	//m_pBoss->SetPosition(XMVectorSet(512, 0, 768, 0));
+	//m_pBoss->SetNaviMeshIndex();
+	//m_pBoss->SetScale(XMVectorSet(1.f, 1.f, 1.f, 1));		//roisa
+	//UPDATER->GetSpaceContainer()->AddObject(m_pBoss);
+	//m_pBoss->GetAnimater()->SetCurAnimationIndex(0);
 
 #ifdef NO_SERVER
 	return CScene::Begin();

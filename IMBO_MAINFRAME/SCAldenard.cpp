@@ -124,7 +124,7 @@ bool CSCAldenard::Begin()
 
 	while (false == m_bGameStart) {
 		NetworkProc();
-		Sleep(100);
+		Sleep(1);
 	}
 	return CScene::Begin();
 }
@@ -160,8 +160,8 @@ bool CSCAldenard::End()
 void CSCAldenard::Animate(float fTimeElapsed)
 {
 	BYTE Packet[MAX_BUFFER_LENGTH] = { 0, };
-
-	NetworkProc();
+	for (int i = 0; i < 20; ++i)
+		NetworkProc();
 	CScene::Animate(fTimeElapsed);
 
 

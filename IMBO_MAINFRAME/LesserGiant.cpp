@@ -75,7 +75,7 @@ void CLesserGiant::Animate(float fTimeElapsed)
 
 
 		BYTE Packet[MAX_BUFFER_LENGTH] = { 0, };
-		NETWORKMGR->WritePacket(PT_BOSS_FREQUENCY_MOVE_CS, Packet, WRITE_PT_BOSS_FREQUENCY_MOVE_CS(Packet, m_xmf3Position.x, m_xmf3Position.y, m_xmf3Position.z, m_fAngleY, m_nAnimNum));
+		NETWORKMGR->WritePacket(PT_BOSS_FREQUENCY_MOVE_CS, Packet, WRITE_PT_BOSS_FREQUENCY_MOVE_CS(Packet, m_xmf3Position.x, m_xmf3Position.y, m_xmf3Position.z, m_fAngleY, m_pAnimater->GetCurAnimationIndex()));
 	}
 
 
@@ -131,13 +131,15 @@ void CLesserGiant::PhisicsLogic(map<utag, list<CGameObject*>>& mlpObject, float 
 		{
 #ifdef NO_SERVER
 			GetDemaged(100.f);
+			SetRimLight();
 #else
 			BYTE Packet[MAX_BUFFER_LENGTH] = { 0, };
 			NETWORKMGR->WritePacket(PT_SKILL_COLLISION_TO_TARGET_CS, Packet, WRITE_PT_SKILL_COLLISION_TO_TARGET_CS(Packet, NETWORKMGR->GetROOM_ID(), NETWORKMGR->GetSLOT_ID(), 5, NETWORKMGR->GetServerPlayerInfos()[NETWORKMGR->GetSLOT_ID()].CHARACTER, 9));
 			SetRimLight();
+			pArrow->DisappearSkill();
 #endif
 			
-			pArrow->DisappearSkill();
+		
 			break;
 		}
 	}
@@ -361,6 +363,7 @@ void CLesserGiant::UpdatePattern(float fTimeElapsed)
 				}
 				return;
 			}
+			m_fAngleY = fDirAngle;
 			SetRotation(DirectX::XMMatrixRotationY(fDirAngle));
 		}
 	}

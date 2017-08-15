@@ -11,6 +11,7 @@ private:
 	XMFLOAT3	m_f3Diraction;
 	float		m_fMyAngle{ 0.f };
 
+	float	    m_fAngleY{ 0.f };
 	float		m_fAccSkillTime{ 0.f };
 	float		m_fSk2Time{ 0.f };
 	float		m_fSk2Speed{ 0.f };
@@ -24,6 +25,7 @@ public:
 	virtual void RegistToContainer();
 
 	bool GetDemaged(int iDemege);
+	void TransferCollisioinData(int target_slot_id, int skillnum);
 public:
 	virtual void PhisicsLogic(map<utag, list<CGameObject*>>& mlpObject, float fDeltaTime);
 	virtual void GetSkilled(int nSkill);
