@@ -657,7 +657,7 @@ CRanger::CRanger(string name, tag t, bool bSprit, CGameObject* pWeapon, INT slot
 	ResetHPValues(1000, 1000);
 
 	utag ut = UTAG_OTHERPLAYER_ARROW;
-	//if (bSprit) ut = UTAG_ARROW;
+	if (bSprit) ut = UTAG_ARROW;
 	//attack
 
 	vector<CGameObject*> vecSkill;

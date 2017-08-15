@@ -193,6 +193,7 @@ public:
 		m_iMaxHP = fMaxHP;
 	};
 	int GetCurHp() { return m_iCurHP; }
+	int GetMaxHp() { return m_iMaxHP; }
 	void SetCurHP(int hp){ 
 		if (hp < 0) m_iCurHP = 0;
 		else if (hp > m_iMaxHP)m_iCurHP = m_iMaxHP;

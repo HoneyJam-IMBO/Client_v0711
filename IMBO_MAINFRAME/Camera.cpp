@@ -208,10 +208,10 @@ void CCamera::UpdateReflectionViewMtx(XMVECTOR xmvReflectePlane)
 	ref는 position을 반사시킨 위치로 이동하는 것이다.
 	*/
 	XMVECTOR xmvPos = XMLoadFloat3(&m_xmf3Pos);
-	XMVECTOR xmvLook = XMLoadFloat3(&m_xmf3At);//카메라 기준 look벡터
+	XMVECTOR xmvLookAt = XMLoadFloat3(&m_xmf3At);//카메라 기준 look벡터
 	XMVECTOR xmvUp = XMLoadFloat3(&m_xmf3Up);
 
-	XMVECTOR xmvLookAt = xmvLook;//pos + look은 내가 보고있는 방향의 살짝 앞 포지션
+	//XMVECTOR xmvLookAt = xmvLook;//pos + look은 내가 보고있는 방향의 살짝 앞 포지션
 	XMVECTOR xmvUpAt = xmvPos + xmvUp;//pos + look은 내가 보고있는 방향의 살짝 앞 포지션
 
 
