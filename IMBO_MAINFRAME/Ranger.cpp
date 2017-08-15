@@ -332,7 +332,7 @@ void CRanger::PushServerData(float x, float y, float z, float fAngleY, int nAnim
 { 
 	BYTE Packet[MAX_BUFFER_LENGTH] = { 0, };
 
-	NETWORKMGR->WritePacket(PT_FREQUENCY_MOVE_CS, Packet, WRITE_PT_FREQUENCY_MOVE_CS(Packet, x, y, z, fAngleY, nAnimNum));
+	NETWORKMGR->WritePacket(PT_FREQUENCY_MOVE_CS, Packet, WRITE_PT_FREQUENCY_MOVE_CS(Packet, x, y, z, fAngleY, m_pAnimater->GetCurAnimationIndex()));
 }
 
 void CRanger::GetServerData(float fTimeElapsed) {
@@ -633,11 +633,13 @@ bool CRanger::GetDemaged(int iDemage) {
 			m_pAnimater->SetCurAnimationIndex(ANIM_DIE);
 		}
 
+#ifdef NO_SERVER
+#else
 
 		BYTE Packet[MAX_BUFFER_LENGTH] = { 0, };
 
-		NETWORKMGR->WritePacket(PT_FREQUENCY_MOVE_CS, Packet, WRITE_PT_FREQUENCY_MOVE_CS(Packet, m_xmf3Position.x, m_xmf3Position.y, m_xmf3Position.z, m_fAngleY, m_nAnimNum));
-
+		NETWORKMGR->WritePacket(PT_FREQUENCY_MOVE_CS, Packet, WRITE_PT_FREQUENCY_MOVE_CS(Packet, m_xmf3Position.x, m_xmf3Position.y, m_xmf3Position.z, m_fAngleY, m_pAnimater->GetCurAnimationIndex()));
+#endif
 
 
 	return true;
