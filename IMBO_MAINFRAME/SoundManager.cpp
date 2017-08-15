@@ -17,6 +17,109 @@ void CSoundManager::Begin()
 		, FMOD_INIT_NORMAL
 		, nullptr
 	);
+
+	Add_sound("../../Assets/Sound/game/bgm/bgm_aldenard.mp3", "bgm_aldenard", FMOD_LOOP_NORMAL | FMOD_2D);
+	Add_sound("../../Assets/Sound/game/bgm/bgm_boss1_appear.wav", "bgm_boss1_appear", FMOD_LOOP_NORMAL | FMOD_2D);
+	Add_sound("../../Assets/Sound/game/bgm/bgm_boss2_balcony.wav", "bgm_boss2_balcony", FMOD_LOOP_NORMAL | FMOD_2D);
+	Add_sound("../../Assets/Sound/game/bgm/bgm_boss2_battle.mp3", "bgm_boss2_battle", FMOD_LOOP_NORMAL | FMOD_2D);
+	Add_sound("../../Assets/Sound/game/bgm/bgm_boss2_cam.mp3", "bgm_boss2_cam", FMOD_LOOP_NORMAL | FMOD_2D);
+	Add_sound("../../Assets/Sound/game/bgm/bgm_firsttown_battle.wav", "bgm_firsttown_battle", FMOD_LOOP_NORMAL | FMOD_2D);
+	Add_sound("../../Assets/Sound/game/bgm/bgm_fly_loop1.mp3", "bgm_fly_loop1", FMOD_LOOP_NORMAL | FMOD_2D);
+	Add_sound("../../Assets/Sound/game/bgm/bgm_fly_loop2.wav", "bgm_fly_loop2", FMOD_LOOP_NORMAL | FMOD_2D);
+	Add_sound("../../Assets/Sound/game/bgm/bgm_gate_loop.wav", "bgm_gate_loop", FMOD_LOOP_NORMAL | FMOD_2D);
+	Add_sound("../../Assets/Sound/game/bgm/bgm_victory.wav", "bgm_victory", FMOD_LOOP_NORMAL | FMOD_2D);
+
+	//Add_3Dsound("../../Assets/Sound/bgm/bird_03", "bird_03", FMOD_LOOP_OFF | FMOD_3D_LINEARROLLOFF);
+	//Add_3Dsound("../../Assets/Sound/bgm/bird_04", "bird_04", FMOD_LOOP_OFF | FMOD_3D_LINEARROLLOFF);
+	//Add_3Dsound("../../Assets/Sound/bgm/cat_01", "cat_01", FMOD_LOOP_OFF | FMOD_3D_LINEARROLLOFF);
+	//Add_3Dsound("../../Assets/Sound/bgm/cat_02", "cat_02", FMOD_LOOP_OFF | FMOD_3D_LINEARROLLOFF);
+	//Add_3Dsound("../../Assets/Sound/bgm/env_bird_one", "env_bird_one", FMOD_LOOP_OFF | FMOD_3D_LINEARROLLOFF);
+	//Add_3Dsound("../../Assets/Sound/bgm/env_bird_two", "env_bird_two", FMOD_LOOP_OFF | FMOD_3D_LINEARROLLOFF);
+	//Add_3Dsound("../../Assets/Sound/bgm/env_bird_three", "env_bird_three", FMOD_LOOP_OFF | FMOD_3D_LINEARROLLOFF);
+	//Add_3Dsound("../../Assets/Sound/bgm/regina_camera_1", "regina_camera_1", FMOD_LOOP_OFF | FMOD_3D_LINEARROLLOFF);
+	//Add_3Dsound("../../Assets/Sound/bgm/regina_camera_2", "regina_camera_2", FMOD_LOOP_OFF | FMOD_3D_LINEARROLLOFF);
+	//Add_3Dsound("../../Assets/Sound/bgm/regina_camera_3", "regina_camera_3", FMOD_LOOP_OFF | FMOD_3D_LINEARROLLOFF);
+
+	//boss1
+	Add_3Dsound("../../Assets/Sound/game/boss1/boss1_die", "boss1_die", FMOD_LOOP_OFF | FMOD_3D_LINEARROLLOFF);
+	Add_3Dsound("../../Assets/Sound/game/boss1/boss1_hurt", "boss1_hurt", FMOD_LOOP_OFF | FMOD_3D_LINEARROLLOFF);
+	Add_3Dsound("../../Assets/Sound/game/boss1/boss1_skill1", "boss1_skill1", FMOD_LOOP_OFF | FMOD_3D_LINEARROLLOFF);
+	Add_3Dsound("../../Assets/Sound/game/boss1/boss1_skill2", "boss1_skill2", FMOD_LOOP_OFF | FMOD_3D_LINEARROLLOFF);
+	Add_3Dsound("../../Assets/Sound/game/boss1/boss1_skill3", "boss1_skill3", FMOD_LOOP_OFF | FMOD_3D_LINEARROLLOFF);
+	Add_3Dsound("../../Assets/Sound/game/boss1/boss1_skill4", "boss1_skill4", FMOD_LOOP_OFF | FMOD_3D_LINEARROLLOFF);
+	
+	//boss2
+	Add_3Dsound("../../Assets/Sound/game/boss2/boss2_die", "boss2_die", FMOD_LOOP_OFF | FMOD_3D_LINEARROLLOFF);
+	Add_3Dsound("../../Assets/Sound/game/boss2/boss2_hurt", "boss2_hurt", FMOD_LOOP_OFF | FMOD_3D_LINEARROLLOFF);
+	Add_3Dsound("../../Assets/Sound/game/boss2/boss2_skill1", "boss2_skill1", FMOD_LOOP_OFF | FMOD_3D_LINEARROLLOFF);
+	Add_3Dsound("../../Assets/Sound/game/boss2/boss2_skill2", "boss2_skill2", FMOD_LOOP_OFF | FMOD_3D_LINEARROLLOFF);
+	Add_3Dsound("../../Assets/Sound/game/boss2/boss2_skill3", "boss2_skill3", FMOD_LOOP_OFF | FMOD_3D_LINEARROLLOFF);
+	Add_3Dsound("../../Assets/Sound/game/boss2/boss2_skill4", "boss2_skill4", FMOD_LOOP_OFF | FMOD_3D_LINEARROLLOFF);
+	Add_3Dsound("../../Assets/Sound/game/boss2/boss2_skill_sound1", "boss2_skill_sound1", FMOD_LOOP_OFF | FMOD_3D_LINEARROLLOFF);
+	Add_3Dsound("../../Assets/Sound/game/boss2/boss2_skill_sound2", "boss2_skill_sound2", FMOD_LOOP_OFF | FMOD_3D_LINEARROLLOFF);
+	Add_3Dsound("../../Assets/Sound/game/boss2/boss2_skill_sound3", "boss2_skill_sound3", FMOD_LOOP_OFF | FMOD_3D_LINEARROLLOFF);
+	Add_3Dsound("../../Assets/Sound/game/boss2/boss2_skill_sound4", "boss2_skill_sound4", FMOD_LOOP_OFF | FMOD_3D_LINEARROLLOFF);
+
+	//ranger
+	Add_3Dsound("../../Assets/Sound/game/c0_ranger/ranger_attack", "ranger_attack", FMOD_LOOP_OFF | FMOD_3D_LINEARROLLOFF);
+	Add_3Dsound("../../Assets/Sound/game/c0_ranger/ranger_die", "ranger_die", FMOD_LOOP_OFF | FMOD_3D_LINEARROLLOFF);
+	Add_3Dsound("../../Assets/Sound/game/c0_ranger/ranger_hurt", "ranger_hurt", FMOD_LOOP_OFF | FMOD_3D_LINEARROLLOFF);
+	Add_3Dsound("../../Assets/Sound/game/c0_ranger/ranger_skill1", "ranger_skill1", FMOD_LOOP_OFF | FMOD_3D_LINEARROLLOFF);
+	Add_3Dsound("../../Assets/Sound/game/c0_ranger/ranger_skill2", "ranger_skill2", FMOD_LOOP_OFF | FMOD_3D_LINEARROLLOFF);
+	Add_3Dsound("../../Assets/Sound/game/c0_ranger/ranger_skill3", "ranger_skill3", FMOD_LOOP_OFF | FMOD_3D_LINEARROLLOFF);
+	Add_3Dsound("../../Assets/Sound/game/c0_ranger/ranger_skill4", "ranger_skill4", FMOD_LOOP_OFF | FMOD_3D_LINEARROLLOFF);
+
+	//knight
+	Add_3Dsound("../../Assets/Sound/game/c1_knight/knight_attack", "knight_attack", FMOD_LOOP_OFF | FMOD_3D_LINEARROLLOFF);
+	Add_3Dsound("../../Assets/Sound/game/c1_knight/knight_die", "knight_die", FMOD_LOOP_OFF | FMOD_3D_LINEARROLLOFF);
+	Add_3Dsound("../../Assets/Sound/game/c1_knight/knight_hurt", "knight_hurt", FMOD_LOOP_OFF | FMOD_3D_LINEARROLLOFF);
+	Add_3Dsound("../../Assets/Sound/game/c1_knight/knight_skill1", "knight_skill1", FMOD_LOOP_OFF | FMOD_3D_LINEARROLLOFF);
+	Add_3Dsound("../../Assets/Sound/game/c1_knight/knight_skill2", "knight_skill2", FMOD_LOOP_OFF | FMOD_3D_LINEARROLLOFF);
+	Add_3Dsound("../../Assets/Sound/game/c1_knight/knight_skill3", "knight_skill3", FMOD_LOOP_OFF | FMOD_3D_LINEARROLLOFF);
+	Add_3Dsound("../../Assets/Sound/game/c1_knight/knight_skill4", "knight_skill4", FMOD_LOOP_OFF | FMOD_3D_LINEARROLLOFF);
+	Add_3Dsound("../../Assets/Sound/game/c1_knight/knight_attack1", "knight_attack1", FMOD_LOOP_OFF | FMOD_3D_LINEARROLLOFF);
+	Add_3Dsound("../../Assets/Sound/game/c1_knight/knight_attack2", "knight_attack2", FMOD_LOOP_OFF | FMOD_3D_LINEARROLLOFF);
+	Add_3Dsound("../../Assets/Sound/game/c1_knight/knight_attack3", "knight_attack3", FMOD_LOOP_OFF | FMOD_3D_LINEARROLLOFF);
+
+	//dementor
+	Add_3Dsound("../../Assets/Sound/game/c2_dementor/dementor_attack", "dementor_attack", FMOD_LOOP_OFF | FMOD_3D_LINEARROLLOFF);
+	Add_3Dsound("../../Assets/Sound/game/c2_dementor/dementor_die", "dementor_die", FMOD_LOOP_OFF | FMOD_3D_LINEARROLLOFF);
+	Add_3Dsound("../../Assets/Sound/game/c2_dementor/dementor_hurt", "dementor_hurt", FMOD_LOOP_OFF | FMOD_3D_LINEARROLLOFF);
+	Add_3Dsound("../../Assets/Sound/game/c2_dementor/dementor_skill1", "dementor_skill1", FMOD_LOOP_OFF | FMOD_3D_LINEARROLLOFF);
+	Add_3Dsound("../../Assets/Sound/game/c2_dementor/dementor_skill2", "dementor_skill2", FMOD_LOOP_OFF | FMOD_3D_LINEARROLLOFF);
+	Add_3Dsound("../../Assets/Sound/game/c2_dementor/dementor_skill3", "dementor_skill3", FMOD_LOOP_OFF | FMOD_3D_LINEARROLLOFF);
+	Add_3Dsound("../../Assets/Sound/game/c2_dementor/dementor_skill4", "dementor_skill4", FMOD_LOOP_OFF | FMOD_3D_LINEARROLLOFF);
+
+	//sister
+	Add_3Dsound("../../Assets/Sound/game/c3_sister/sister_attack", "sister_attack", FMOD_LOOP_OFF | FMOD_3D_LINEARROLLOFF);
+	Add_3Dsound("../../Assets/Sound/game/c3_sister/sister_die", "sister_die", FMOD_LOOP_OFF | FMOD_3D_LINEARROLLOFF);
+	Add_3Dsound("../../Assets/Sound/game/c3_sister/sister_hurt", "sister_hurt", FMOD_LOOP_OFF | FMOD_3D_LINEARROLLOFF);
+	Add_3Dsound("../../Assets/Sound/game/c3_sister/sister_skill1", "sister_skill1", FMOD_LOOP_OFF | FMOD_3D_LINEARROLLOFF);
+	Add_3Dsound("../../Assets/Sound/game/c3_sister/sister_skill2", "sister_skill2", FMOD_LOOP_OFF | FMOD_3D_LINEARROLLOFF);
+	Add_3Dsound("../../Assets/Sound/game/c3_sister/sister_skill3", "sister_skill3", FMOD_LOOP_OFF | FMOD_3D_LINEARROLLOFF);
+	Add_3Dsound("../../Assets/Sound/game/c3_sister/sister_skill4", "sister_skill4", FMOD_LOOP_OFF | FMOD_3D_LINEARROLLOFF);
+
+	//wizard
+	Add_3Dsound("../../Assets/Sound/game/c4_wizard/wizard_attack", "wizard_attack", FMOD_LOOP_OFF | FMOD_3D_LINEARROLLOFF);
+	Add_3Dsound("../../Assets/Sound/game/c4_wizard/wizard_die", "wizard_die", FMOD_LOOP_OFF | FMOD_3D_LINEARROLLOFF);
+	Add_3Dsound("../../Assets/Sound/game/c4_wizard/wizard_hurt", "wizard_hurt", FMOD_LOOP_OFF | FMOD_3D_LINEARROLLOFF);
+	Add_3Dsound("../../Assets/Sound/game/c4_wizard/wizard_skill1", "wizard_skill1", FMOD_LOOP_OFF | FMOD_3D_LINEARROLLOFF);
+	Add_3Dsound("../../Assets/Sound/game/c4_wizard/wizard_skill2", "wizard_skill2", FMOD_LOOP_OFF | FMOD_3D_LINEARROLLOFF);
+	Add_3Dsound("../../Assets/Sound/game/c4_wizard/wizard_skill3", "wizard_skill3", FMOD_LOOP_OFF | FMOD_3D_LINEARROLLOFF);
+	Add_3Dsound("../../Assets/Sound/game/c4_wizard/wizard_skill4", "wizard_skill4", FMOD_LOOP_OFF | FMOD_3D_LINEARROLLOFF);
+
+	//bard
+	Add_3Dsound("../../Assets/Sound/game/c4_bard/bard_attack", "bard_attack", FMOD_LOOP_OFF | FMOD_3D_LINEARROLLOFF);
+	Add_3Dsound("../../Assets/Sound/game/c4_bard/bard_die", "bard_die", FMOD_LOOP_OFF | FMOD_3D_LINEARROLLOFF);
+	Add_3Dsound("../../Assets/Sound/game/c4_bard/bard_hurt", "bard_hurt", FMOD_LOOP_OFF | FMOD_3D_LINEARROLLOFF);
+	Add_3Dsound("../../Assets/Sound/game/c4_bard/bard_skill1", "bard_skill1", FMOD_LOOP_OFF | FMOD_3D_LINEARROLLOFF);
+	Add_3Dsound("../../Assets/Sound/game/c4_bard/bard_skill2", "bard_skill2", FMOD_LOOP_OFF | FMOD_3D_LINEARROLLOFF);
+	Add_3Dsound("../../Assets/Sound/game/c4_bard/bard_skill3", "bard_skill3", FMOD_LOOP_OFF | FMOD_3D_LINEARROLLOFF);
+	Add_3Dsound("../../Assets/Sound/game/c4_bard/bard_skill4", "bard_skill4", FMOD_LOOP_OFF | FMOD_3D_LINEARROLLOFF);
+
+	//other masic eff
+	Add_3Dsound("../../Assets/Sound/game/other_eff/magic_healing_accept", "magic_healing_accept", FMOD_LOOP_OFF | FMOD_3D_LINEARROLLOFF);
+
 }
 
 void CSoundManager::End()

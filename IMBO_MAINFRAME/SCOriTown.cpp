@@ -160,12 +160,14 @@ void CSCOriTown::HPBarProc(){
 			m_pBossHPUI->SetCurHPRate((float)iCurHP / (float)iMaxHP);
 		}
 		else if (bBossDead && bIsHPUILengthZero) {
+			CSoundManager::Stop_bgm("bgm_firsttown_battle");
 			//보스 죽고 cur hp가 0이면 그리면 안되는데..
 			//m_pBossHPUI->Ge 
 			m_pBossHPUI->SetCurHPRate(0);
 		}
 	}
 	else {
+		
 		//보스 죽고 cur hp가 0이면 그리면 안되는데..
 		m_pBossHPUI->SetCurHPRate(0);
 	}
@@ -533,6 +535,7 @@ void CSCOriTown::StartBoss1ActionCam(){
 
 void CSCOriTown::CreateBoss1()
 {
+	CSoundManager::Play_bgm("bgm_firsttown_battle");
 	//보스 제작
 	m_pBoss = new CLesserGiant("Boss01L", TAG_DYNAMIC_OBJECT, m_ppPawn[0]);
 	m_pBoss->SetUTag(utag::UTAG_BOSS1);
@@ -548,7 +551,10 @@ void CSCOriTown::CreateBoss1()
 }
 
 void CSCOriTown::KillBoss1(){
-	if(m_pBoss) m_pBoss->GetAnimater()->SetCurAnimationIndex(BOSS1_ANI_DYING);
+	if (m_pBoss) {
+		m_pBoss->GetAnimater()->SetCurAnimationIndex(BOSS1_ANI_DYING);
+		m_pBoss->SetCurHP(0);
+	}
 }
 
 void CSCOriTown::FirstTownFly(){
