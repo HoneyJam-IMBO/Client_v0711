@@ -30,15 +30,6 @@ void CFreeCamera::Rotate(float x, float y, float z) {
 }
 
 void CFreeCamera::Update(float fTimeElapsed) {
-
-	UpdateShaderState();
-
-}
-
-//상수버퍼 갱신
-void CFreeCamera::UpdateShaderState() {
-	//정보 갱신
-
 	float fTimeDelta = TIMEMGR->GetTimeElapsed();
 	CalcultateMouseMoveValue();
 	FixCamera();
@@ -49,8 +40,7 @@ void CFreeCamera::UpdateShaderState() {
 		CameraVibration(fTimeDelta);
 	}
 
-	CCamera::UpdateShaderState();
-
+	UpdateShaderState();
 	if (true == m_bFix && MODE_FIX == m_eMode)
 	{
 		INPUTMGR->SetCheckMouse(false);
@@ -59,6 +49,16 @@ void CFreeCamera::UpdateShaderState() {
 		SetCursorPos(ptMouse.x, ptMouse.y);
 		m_ptOldMousePos = ptMouse;
 	}
+}
+
+//상수버퍼 갱신
+void CFreeCamera::UpdateShaderState() {
+	//정보 갱신
+
+	
+	CCamera::UpdateShaderState();
+
+	
 }
 
 void CFreeCamera::ProcessInput(float fTimeElapsed) {

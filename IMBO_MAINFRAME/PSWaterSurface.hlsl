@@ -134,4 +134,5 @@ float4 main(DS_OUT input) : SV_TARGET
 	combinedColor.xyz += DirLightColor * pow(NDotH, specExp) * specIntensity;
 
 	return combinedColor;
+	//return float4(1,1,1,1);
 }

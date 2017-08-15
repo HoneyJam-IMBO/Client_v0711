@@ -216,7 +216,7 @@ void CCamera::UpdateReflectionViewMtx(XMVECTOR xmvReflectePlane)
 
 
 	XMMATRIX xmmtxReflect = XMMatrixReflect(xmvReflectePlane);
-	XMMATRIX xmmtxReflectCamera = XMMatrixMultiply(GetWorldMtx(), xmmtxReflect);//카메라와 ref를 곱해서 카메라를 이동시킨다.
+	//XMMATRIX xmmtxReflectCamera = XMMatrixMultiply(GetWorldMtx(), xmmtxReflect);//카메라와 ref를 곱해서 카메라를 이동시킨다.
 
 	XMVECTOR xmvRefPos = XMVector3Transform(xmvPos, xmmtxReflect);
 	XMVECTOR xmvRefLookAt = XMVector3Transform(xmvLookAt, xmmtxReflect);//내가 보고있는 방향의 살짝 앞 포지션
