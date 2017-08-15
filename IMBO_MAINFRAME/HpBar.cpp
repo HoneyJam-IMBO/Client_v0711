@@ -35,6 +35,18 @@ void CHpBar::SetInfo(XMVECTOR xyPos, XMVECTOR xySize)
 
 	XMStoreFloat2(&m_f2XYPos, xyPos);
 	XMStoreFloat2(&m_f2XYSize, xySize);
+	m_fCurHPLength = m_f2XYSize.x;//초기화 할 때 현재 길이도 초기화 한다.
+	m_fMaxHPLength = m_fCurHPLength;//max는 처음 set한 그 길이다.
+}
+
+void CHpBar::SetPosition(XMFLOAT2 xyPos)
+{
+	m_f2XYPos = xyPos;
+}
+
+void CHpBar::SetSize(XMFLOAT2 xySize)
+{
+	m_f2XYSize = xySize;
 }
 
 HRESULT CHpBar::Initialize()
@@ -50,6 +62,13 @@ HRESULT CHpBar::Initialize()
 
 int CHpBar::Update(float fTimeElapsed)
 {
+	float m_fGoalHPBarLength = m_fMaxHPLength * m_fCurHPRate;
+
+	float fResuceHP = m_fCurHPLength - m_fGoalHPBarLength;
+	m_fCurHPLength -= fResuceHP * m_fHPDownSpeed * fTimeElapsed;
+
+	SetSize(XMFLOAT2(m_fCurHPLength, m_f2XYSize.y));
+
 	if (m_pUIRenderCont) m_pUIRenderCont->SetRenderContainer(3.0f, this);
 	return 0;
 }

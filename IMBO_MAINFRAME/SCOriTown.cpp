@@ -141,8 +141,36 @@ bool CSCOriTown::End() {
 	//Safe_EndDelete(m_pObject);
 	return CScene::End();
 }
+void CSCOriTown::HPBarProc(){
+	float fTimeElapsed = TIMEMGR->GetTimeElapsed();
+	int slot_id = NETWORKMGR->GetSLOT_ID();
+	int iCurHP = m_ppPawn[slot_id]->GetCurHp();
+	int iMaxHP = m_ppPawn[slot_id]->GetMaxHp();
+	m_pPlayerHPUI->SetCurHPRate((float)iCurHP / (float)iMaxHP);
 
+	if (m_pBoss) {
+		bool bBossDead = m_pBoss->GetAnimater()->GetCurAnimationIndex() == BOSS1_ANI_DIE || m_pBoss->GetAnimater()->GetCurAnimationIndex() == BOSS1_ANI_DYING;
+		float fCurBossHPLength = m_pBossHPUI->GetCurHPLength();
+		bool bIsHPUILengthZero = fCurBossHPLength > -0.0001f && fCurBossHPLength < 0.0001f;
+		if (!bBossDead || !bIsHPUILengthZero) {//죽은 애니메이션이 돌고있어도 hp bar가 줄고있으면 갱신
+			iCurHP = m_pBoss->GetCurHp();
+			iMaxHP = m_pBoss->GetMaxHp();
+			m_pBossHPUI->SetCurHPRate((float)iCurHP / (float)iMaxHP);
+		}
+		else if (bBossDead && bIsHPUILengthZero) {
+			//보스 죽고 cur hp가 0이면 그리면 안되는데..
+			//m_pBossHPUI->Ge 
+			m_pBossHPUI->SetCurHPRate(0);
+		}
+	}
+	else {
+		//보스 죽고 cur hp가 0이면 그리면 안되는데..
+		m_pBossHPUI->SetCurHPRate(0);
+	}
+}
 void CSCOriTown::Animate(float fTimeElapsed) {
+	//hp bar proc
+	HPBarProc();
 
 	XMFLOAT3 xmf3Pos;
 	int slot_id = NETWORKMGR->GetSLOT_ID();
@@ -465,6 +493,7 @@ VOID CSCOriTown::PROC_PT_BOSS_FREQUENCY_MOVE_SC(DWORD dwProtocol, BYTE * Packet,
 	//NETWORKMGR->WritePacket(PT_TEMP, PacketT, WRITE_PT_TEMP(PacketT));
 	return VOID();
 }
+
 void CSCOriTown::StartBoss1ActionCam(){
 	m_bStartBossCam = true;
 	m_pCamera->ActionCamStart("Firsttown_Boss2");
@@ -626,9 +655,10 @@ void CSCOriTown::LoadSkillObjects()
 void CSCOriTown::CreateUI()
 {
 	//RCSELLER->TestingRCAdd();
-	CUIObject* pUI;
-	pUI = CHpBar::Create(XMLoadFloat2(&XMFLOAT2(WINSIZEX * 0.24f, WINSIZEY * 0.77f)), XMLoadFloat2(&XMFLOAT2(190.f, 6.f)));
-	m_vecUI.push_back(pUI);
+	m_pPlayerHPUI = CHpBar::Create(XMLoadFloat2(&XMFLOAT2(WINSIZEX * 0.24f, WINSIZEY * 0.77f)), XMLoadFloat2(&XMFLOAT2(190.f, 6.f)));
+	m_vecUI.push_back(m_pPlayerHPUI);
+	m_pBossHPUI = CHpBar::Create(XMLoadFloat2(&XMFLOAT2(WINSIZEX * 0.5f, WINSIZEY * 0.2f)), XMLoadFloat2(&XMFLOAT2(380.f, 12.f)));
+	m_vecUI.push_back(m_pBossHPUI);
 
 	string sCharSelect;
 	string sSkill1;
@@ -685,7 +715,7 @@ void CSCOriTown::CreateUI()
 	}
 
 	//player icon
-	pUI = CImageUI::Create(XMLoadFloat2(&XMFLOAT2(132.f, WINSIZEY * 0.8f)), XMLoadFloat2(&XMFLOAT2(50.f, 50.f)), sCharSelect, 10.f);
+	CUIObject* pUI = CImageUI::Create(XMLoadFloat2(&XMFLOAT2(132.f, WINSIZEY * 0.8f)), XMLoadFloat2(&XMFLOAT2(50.f, 50.f)), sCharSelect, 10.f);
 	m_vecUI.push_back(pUI);
 
 	//skill back

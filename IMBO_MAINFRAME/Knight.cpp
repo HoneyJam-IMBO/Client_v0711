@@ -92,7 +92,7 @@ void CKnight::KeyInput(float fDeltaTime)
 			m_nAnimNum = KNIGHT_ANIM_ATTACK;
 			m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
 			//기본공격 충돌체 생성
-			ResetCollisionValue(XMFLOAT3(0, 0, 1), 0.f, 0.8f, 2.f);
+			ResetCollisionValue(XMFLOAT3(0, 0, 3), 0.f, 0.8f, 2.f);
 			INPUTMGR->SetMouseLeft(false);
 			RENDERER->SetRadialBlurTime(true, 0.3f);
 		}
@@ -413,8 +413,8 @@ void CKnight::UpdateSkill()
 			m_bSkill = false;
 		}
 	}
-	if (KNIGHT_ANIM_ATTACK2 == m_nAnimNum)
-	{
+	if (KNIGHT_ANIM_ATTACK2 == m_nAnimNum){
+	
 		if (false == m_bAttak && INPUTMGR->MouseLeftDown())
 			m_bAttak = true;
 	}
@@ -434,14 +434,14 @@ void CKnight::UpdateSkill()
 			{
 				m_nAnimNum = KNIGHT_ANIM_ATTACK2;
 				//기본공격 충돌체 생성
-				ResetCollisionValue(XMFLOAT3(0, 0, 1), 0.f, 0.8f, 2.f);
+				ResetCollisionValue(XMFLOAT3(0, 0, 3), 0.f, 0.8f, 2.f);
 				RENDERER->SetRadialBlurTime(true, 0.3f);
 			}
 			else if (true == m_bAttak && KNIGHT_ANIM_ATTACK2 == m_nAnimNum)
 			{
 				m_nAnimNum = KNIGHT_ANIM_ATTACK3;
 				//기본공격 충돌체 생성
-				ResetCollisionValue(XMFLOAT3(0, 0, 1), 0.f, 0.8f, 2.f);
+				ResetCollisionValue(XMFLOAT3(0, 0, 3), 0.f, 0.8f, 2.f);
 				RENDERER->SetRadialBlurTime(true, 0.4f);
 			}
 
@@ -516,8 +516,8 @@ void CKnight::PhisicsLogic(map<utag, list<CGameObject*>>& mlpObject, float fDelt
 	if (m_fSkill1EndTime > m_fSkillTime) {//skill1이 활성화 중이면 대미지 +
 		m_iCurAttack *= 1.5f;
 	}
-	//for (auto pBoss : mlpObject[utag::UTAG_BOSS1]) {
-	for (auto pBoss : mlpObject[utag::UTAG_NPC]) {
+	for (auto pBoss : mlpObject[utag::UTAG_BOSS1]) {
+	//for (auto pBoss : mlpObject[utag::UTAG_NPC]) {
 		switch (m_nAnimNum) {
 		case KNIGHT_ANIM_ATTACK:
 			if (SkillCollision(pBoss)) {//char

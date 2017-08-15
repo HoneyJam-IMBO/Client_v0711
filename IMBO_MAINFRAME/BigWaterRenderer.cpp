@@ -252,7 +252,7 @@ void CBigWaterRenderer::RenderWaterSurface(CCamera* pCamera) {
 
 	//카메라의 행렬을 임시로 저장한다.
 	XMVECTOR xmvPos = pCamera->GetPosition();
-	XMVECTOR xmvLookAt = pCamera->GetLook();
+	XMVECTOR xmvLookAt = xmvPos + pCamera->GetLook();//현재 위치에서 look벡터 방향으로 1크기만큼 전진한 장소가 look at
 
 	//bigwater의 위치를 이용해 plane을 제작한다.
 	//auto pBigWater = RCSELLER->GetTagRenderContainer()[tag::TAG_BIGWATER]["bigwater"]->GetObjectList().begin();

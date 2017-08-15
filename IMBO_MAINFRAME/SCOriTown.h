@@ -6,6 +6,8 @@
 #include "FreeCamera.h"
 class CLesserGiant;
 class CSCOriTown;
+class CHpBar;
+
 class CSCOriTown :public CScene{
 
 public:
@@ -44,6 +46,19 @@ public:
 	CGameObject** m_ppPawn{ nullptr };
 	//CPlayer* m_pPlayer{ nullptr };
 private:
+	void HPBarProc();
+	//float m_fHPDownSpeed{ 1.f };
+
+	CHpBar* m_pPlayerHPUI;
+	//float m_fCurPlayerHPRate{ 1.f };
+	//float m_fCurPlayerHPLength{ 190.f };
+	//XMFLOAT2 m_xmf2PlayerHPBarLength{XMFLOAT2(190.f, 6.f)};
+
+	CHpBar* m_pBossHPUI;
+	//float m_fCurBossHPRate{ 1.f };
+	//float m_fCurBossHPLength{ 190.f };
+	//XMFLOAT2 m_xmf2BossHPBarLength{ XMFLOAT2(190.f, 6.f) };
+
 	CLesserGiant*	m_pBoss{ nullptr };
 	void StartBoss1ActionCam();
 	void CreateBoss1();
