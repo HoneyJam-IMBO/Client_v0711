@@ -74,6 +74,23 @@ enum eVK {
 	
 	VK_SHIFT_	= 0x10,
 	VK_CONTROL_ = 0x11,
+
+	VK_NUMPAD0_   = 0x60,
+	VK_NUMPAD1_   = 0x61,
+	VK_NUMPAD2_   = 0x62,
+	VK_NUMPAD3_   = 0x63,
+	VK_NUMPAD4_   = 0x64,
+	VK_NUMPAD5_   = 0x65,
+	VK_NUMPAD6_   = 0x66,
+	VK_NUMPAD7_   = 0x67,
+	VK_NUMPAD8_   = 0x68,
+	VK_NUMPAD9_   = 0x69,
+	VK_MULTIPLY_  = 0x6A,
+	VK_ADD_       = 0x6B,
+	VK_SEPARATOR_ = 0x6C,
+	VK_SUBTRACT_  = 0x6D,
+	VK_DECIMAL_   = 0x6E,
+	VK_DIVIDE_    = 0x6F
 };
 
 class CInputManager : public CSingleTonBase<CInputManager> {

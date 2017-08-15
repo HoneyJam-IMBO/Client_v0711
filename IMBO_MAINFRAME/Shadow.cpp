@@ -47,11 +47,18 @@ bool CShadow::End()
 void CShadow::SetShaderState() {
 
 
-	//resourece
-	ID3D11ShaderResourceView* pSRV[] = { m_pd3dsrvShadow };
-	GLOBALVALUEMGR->GetDeviceContext()->PSSetShaderResources(5, 1, pSRV);
-	GLOBALVALUEMGR->GetDeviceContext()->PSSetShaderResources(6, 1, &m_pd3dsrvStaticShadow);
 
+	//resourece
+	if (m_bShadow) {
+		ID3D11ShaderResourceView* pSRV[] = { m_pd3dsrvShadow };
+		GLOBALVALUEMGR->GetDeviceContext()->PSSetShaderResources(5, 1, pSRV);
+		GLOBALVALUEMGR->GetDeviceContext()->PSSetShaderResources(6, 1, &m_pd3dsrvStaticShadow);
+	}
+	else {
+		ID3D11ShaderResourceView* pSRV[] = { RESOURCEMGR->GetTexture("DEFAULT")->GetShaderResourceView() };
+		GLOBALVALUEMGR->GetDeviceContext()->PSSetShaderResources(5, 1, pSRV);
+		GLOBALVALUEMGR->GetDeviceContext()->PSSetShaderResources(6, 1, pSRV);
+	}
 	stShadowInfo* pData = (stShadowInfo*)m_pShadowBuf->Map();
 	//이건 동적 그림자 카메라
 	pData->xmmtxViewProj = XMMatrixTranspose(m_pCamera->GetViewMtx()*m_pCamera->GetProjectionMtx());
@@ -83,119 +90,124 @@ void CShadow::UpdateShaderState() {
 }
 
 ID3D11ShaderResourceView * CShadow::RenderShadowMap( CCamera* pCamera) {
-	
-	bool bStartScene = SCENEMGR->GetSceneStart();
-	if (true == bStartScene)
-	{
-		float offset = UPDATER->GetDirectionalLight()->GetOffsetLength();
-		offset = -1500.f;
-		XMVECTOR xmvDirectionalLightDir = UPDATER->GetDirectionalLight()->GetLook();
+	if (m_bShadow) {
+		bool bStartScene = SCENEMGR->GetSceneStart();
+		if (true == bStartScene)
+		{
 
-		UINT nSpace = UPDATER->GetSpaceContainer()->GetSpaceNum();
-		XMVECTOR at;
-		XMFLOAT3 xmf3Pos;
+			float offset = UPDATER->GetDirectionalLight()->GetOffsetLength();
+			offset = -1500.f;
+			XMVECTOR xmvDirectionalLightDir = UPDATER->GetDirectionalLight()->GetLook();
 
-		float space_size = UPDATER->GetSpaceContainer()->GetSize();
-		XMVECTOR xmPos = XMVectorSet(space_size / 2, 0.f, space_size / 2, 0.f);
-		XMStoreFloat3(&xmf3Pos, xmPos);
-		at = XMVectorSet(xmf3Pos.x, xmf3Pos.y, xmf3Pos.z, 0);
+			UINT nSpace = UPDATER->GetSpaceContainer()->GetSpaceNum();
+			XMVECTOR at;
+			XMFLOAT3 xmf3Pos;
 
-		XMVECTOR eye = at + xmvDirectionalLightDir*offset * 1.5f;
-		XMVECTOR up = { 0.0f, 1.0f, 0.0f, 0.0f };
-		m_pCamera->SetLookAt(eye, xmPos, up);
-		m_pCamera->SetViewport(0, 0, 4096, 4096, 0.0f, 1.0f);
+			float space_size = UPDATER->GetSpaceContainer()->GetSize();
+			XMVECTOR xmPos = XMVectorSet(space_size / 2, 0.f, space_size / 2, 0.f);
+			XMStoreFloat3(&xmf3Pos, xmPos);
+			at = XMVectorSet(xmf3Pos.x, xmf3Pos.y, xmf3Pos.z, 0);
 
-		m_pCamera->UpdateShaderState();
-		m_pCamera->SetShaderState();
+			XMVECTOR eye = at + xmvDirectionalLightDir*offset * 1.5f;
+			XMVECTOR up = { 0.0f, 1.0f, 0.0f, 0.0f };
+			m_pCamera->SetLookAt(eye, xmPos, up);
+			m_pCamera->SetViewport(0, 0, 4096, 4096, 0.0f, 1.0f);
 
-		UPDATER->GetSpaceContainer()->PrepareRender(m_pCamera, TAG_STATIC_OBJECT | TAG_TERRAIN);
-		SCENEMGR->SetSceneStart(false);
-		GLOBALVALUEMGR->GetDeviceContext()->ClearDepthStencilView(m_pd3ddsvStaticShadow, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
+			m_pCamera->UpdateShaderState();
+			m_pCamera->SetShaderState();
+
+			UPDATER->GetSpaceContainer()->PrepareRender(m_pCamera, TAG_STATIC_OBJECT | TAG_TERRAIN);
+			SCENEMGR->SetSceneStart(false);
+			GLOBALVALUEMGR->GetDeviceContext()->ClearDepthStencilView(m_pd3ddsvStaticShadow, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
+		}
+		else
+			UPDATER->GetSpaceContainer()->PrepareRender(m_pCamera, TAG_DYNAMIC_OBJECT);
+
+		DEBUGER->start_Timemeasurement();
+		//if (m_pShadowTexture) m_pShadowTexture->SetShaderState();
+		GLOBALVALUEMGR->GetDeviceContext()->ClearDepthStencilView(m_pd3ddsvShadow, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
+
+		ID3D11RasterizerState* pPrevRSState;
+		GLOBALVALUEMGR->GetDeviceContext()->RSGetState(&pPrevRSState);
+		GLOBALVALUEMGR->GetDeviceContext()->RSSetState(m_pd3dRSShader);
+
+		if (true == bStartScene)
+		{
+			float offset = UPDATER->GetDirectionalLight()->GetOffsetLength();
+			XMVECTOR xmvDirectionalLightDir = UPDATER->GetDirectionalLight()->GetLook();
+
+			UINT nSpace = UPDATER->GetSpaceContainer()->GetSpaceNum();
+			XMVECTOR at;
+			XMFLOAT3 xmf3Pos;
+
+			float space_size = UPDATER->GetSpaceContainer()->GetSize();
+			XMVECTOR xmPos = XMVectorSet(space_size / 2, 0.f, space_size / 2, 0.f);
+			XMStoreFloat3(&xmf3Pos, xmPos);
+			at = XMVectorSet(xmf3Pos.x, xmf3Pos.y, xmf3Pos.z, 0);
+
+			XMVECTOR eye = at + xmvDirectionalLightDir*offset * 1.5f;
+			XMVECTOR up = { 0.0f, 1.0f, 0.0f, 0.0f };
+			m_pCamera->SetLookAt(eye, xmPos, up);
+			m_pCamera->SetViewport(0, 0, 4096, 4096, 0.0f, 1.0f);
+
+			m_pCamera->UpdateShaderState();
+			m_pCamera->SetShaderState();
+			m_xmmtxStaticShadowVP = m_pCamera->GetViewMtx() * m_pCamera->GetProjectionMtx();
+			ID3D11RenderTargetView*   rtNULL = nullptr;
+			GLOBALVALUEMGR->GetDeviceContext()->OMSetRenderTargets(1, &rtNULL, m_pd3ddsvStaticShadow);
+
+			RENDERER->GetObjectRenderer()->ExcuteShadowRender(m_pCamera);
+
+			m_pCamera->SetViewport(0, 0, GLOBALVALUEMGR->GetrcClient().right, GLOBALVALUEMGR->GetrcClient().bottom, 0.0f, 1.0f);
+
+			GLOBALVALUEMGR->GetDeviceContext()->RSSetState(pPrevRSState);
+			DEBUGER->end_Timemeasurement(L"shadow");
+		}
+		else
+		{
+			float offset = UPDATER->GetDirectionalLight()->GetOffsetLength();
+			offset = -50.f;
+			XMVECTOR xmvDirectionalLightDir = UPDATER->GetDirectionalLight()->GetLook();
+
+			UINT nSpace = UPDATER->GetSpaceContainer()->GetSpaceNum();
+			XMVECTOR at;
+			XMFLOAT3 xmf3Pos;
+
+			float space_size = UPDATER->GetSpaceContainer()->GetSize();
+			XMVECTOR xmPos = XMVectorSet(space_size / 2, 0.f, space_size / 2, 0.f);
+			if (CCameraMgr::GetInstance()->GetCamera(CAM_FREE)->IsTarget())
+				xmPos = CCameraMgr::GetInstance()->GetCamera(CAM_FREE)->GetTarget()->GetPosition();
+
+			XMStoreFloat3(&xmf3Pos, xmPos);
+			at = XMVectorSet(xmf3Pos.x, xmf3Pos.y, xmf3Pos.z, 0);
+
+			XMVECTOR eye = at + xmvDirectionalLightDir*offset * 1.5f;
+			XMVECTOR up = { 0.0f, 1.0f, 0.0f, 0.0f };
+			m_pCamera->SetLookAt(eye, xmPos, up);
+			m_pCamera->SetViewport(0, 0, 4096, 4096, 0.0f, 1.0f);
+
+			m_pCamera->UpdateShaderState();
+			m_pCamera->SetShaderState();
+
+
+			ID3D11RenderTargetView*   rtNULL = nullptr;
+			GLOBALVALUEMGR->GetDeviceContext()->OMSetRenderTargets(1, &rtNULL, m_pd3ddsvShadow);
+
+			RENDERER->GetObjectRenderer()->ExcuteShadowRender(m_pCamera);
+
+			//DEBUGER->AddDepthTexture(XMFLOAT2(500, 150), XMFLOAT2(750, 300), m_pd3dsrvShadow);
+			m_pCamera->SetViewport(0, 0, GLOBALVALUEMGR->GetrcClient().right, GLOBALVALUEMGR->GetrcClient().bottom, 0.0f, 1.0f);
+
+			GLOBALVALUEMGR->GetDeviceContext()->RSSetState(pPrevRSState);
+			DEBUGER->end_Timemeasurement(L"shadow");
+		}
+		//DEBUGER->AddDepthTexture(XMFLOAT2(750, 150), XMFLOAT2(900, 300), m_pd3dsrvStaticShadow);
+		return m_pd3dsrvShadow;
 	}
-	else
-		UPDATER->GetSpaceContainer()->PrepareRender(m_pCamera, TAG_DYNAMIC_OBJECT);
-
-	DEBUGER->start_Timemeasurement();
-	//if (m_pShadowTexture) m_pShadowTexture->SetShaderState();
-	GLOBALVALUEMGR->GetDeviceContext()->ClearDepthStencilView(m_pd3ddsvShadow, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
-
-	ID3D11RasterizerState* pPrevRSState;
-	GLOBALVALUEMGR->GetDeviceContext()->RSGetState(&pPrevRSState);
-	GLOBALVALUEMGR->GetDeviceContext()->RSSetState(m_pd3dRSShader);
-
-	if (true == bStartScene)
-	{
-		float offset = UPDATER->GetDirectionalLight()->GetOffsetLength();
-		XMVECTOR xmvDirectionalLightDir = UPDATER->GetDirectionalLight()->GetLook();
-
-		UINT nSpace = UPDATER->GetSpaceContainer()->GetSpaceNum();
-		XMVECTOR at;
-		XMFLOAT3 xmf3Pos;
-
-		float space_size = UPDATER->GetSpaceContainer()->GetSize();
-		XMVECTOR xmPos = XMVectorSet(space_size / 2, 0.f, space_size / 2, 0.f);
-		XMStoreFloat3(&xmf3Pos, xmPos);
-		at = XMVectorSet(xmf3Pos.x, xmf3Pos.y, xmf3Pos.z, 0);
-
-		XMVECTOR eye = at + xmvDirectionalLightDir*offset * 1.5f;
-		XMVECTOR up = { 0.0f, 1.0f, 0.0f, 0.0f };
-		m_pCamera->SetLookAt(eye, xmPos, up);
-		m_pCamera->SetViewport(0, 0, 4096, 4096, 0.0f, 1.0f);
-
-		m_pCamera->UpdateShaderState();
-		m_pCamera->SetShaderState();
-		m_xmmtxStaticShadowVP = m_pCamera->GetViewMtx() * m_pCamera->GetProjectionMtx();
-		ID3D11RenderTargetView*   rtNULL = nullptr;
-		GLOBALVALUEMGR->GetDeviceContext()->OMSetRenderTargets(1, &rtNULL, m_pd3ddsvStaticShadow);
-
-		RENDERER->GetObjectRenderer()->ExcuteShadowRender(m_pCamera);
-
-		m_pCamera->SetViewport(0, 0, GLOBALVALUEMGR->GetrcClient().right, GLOBALVALUEMGR->GetrcClient().bottom, 0.0f, 1.0f);
-
-		GLOBALVALUEMGR->GetDeviceContext()->RSSetState(pPrevRSState);
-		DEBUGER->end_Timemeasurement(L"shadow");
+	else {
+		return RESOURCEMGR->GetTexture("DEFAULT")->GetShaderResourceView();
 	}
-	else
-	{
-		float offset = UPDATER->GetDirectionalLight()->GetOffsetLength();
-		offset = -50.f;
-		XMVECTOR xmvDirectionalLightDir = UPDATER->GetDirectionalLight()->GetLook();
-
-		UINT nSpace = UPDATER->GetSpaceContainer()->GetSpaceNum();
-		XMVECTOR at;
-		XMFLOAT3 xmf3Pos;
-
-		float space_size = UPDATER->GetSpaceContainer()->GetSize();
-		XMVECTOR xmPos = XMVectorSet(space_size / 2, 0.f, space_size / 2, 0.f);
-		if (CCameraMgr::GetInstance()->GetCamera(CAM_FREE)->IsTarget())
-			xmPos = CCameraMgr::GetInstance()->GetCamera(CAM_FREE)->GetTarget()->GetPosition();
-
-		XMStoreFloat3(&xmf3Pos, xmPos);
-		at = XMVectorSet(xmf3Pos.x, xmf3Pos.y, xmf3Pos.z, 0);
-
-		XMVECTOR eye = at + xmvDirectionalLightDir*offset * 1.5f;
-		XMVECTOR up = { 0.0f, 1.0f, 0.0f, 0.0f };
-		m_pCamera->SetLookAt(eye, xmPos, up);
-		m_pCamera->SetViewport(0, 0, 4096, 4096, 0.0f, 1.0f);
-
-		m_pCamera->UpdateShaderState();
-		m_pCamera->SetShaderState();
 	
-
-		ID3D11RenderTargetView*   rtNULL = nullptr;
-		GLOBALVALUEMGR->GetDeviceContext()->OMSetRenderTargets(1, &rtNULL, m_pd3ddsvShadow);
-
-		RENDERER->GetObjectRenderer()->ExcuteShadowRender(m_pCamera);
-
-		//DEBUGER->AddDepthTexture(XMFLOAT2(500, 150), XMFLOAT2(750, 300), m_pd3dsrvShadow);
-		m_pCamera->SetViewport(0, 0, GLOBALVALUEMGR->GetrcClient().right, GLOBALVALUEMGR->GetrcClient().bottom, 0.0f, 1.0f);
-
-		GLOBALVALUEMGR->GetDeviceContext()->RSSetState(pPrevRSState);
-		DEBUGER->end_Timemeasurement(L"shadow");
-	}
-	//DEBUGER->AddDepthTexture(XMFLOAT2(750, 150), XMFLOAT2(900, 300), m_pd3dsrvStaticShadow);
-	
-	return m_pd3dsrvShadow;
 }
 
 void CShadow::ResizeBuffer()

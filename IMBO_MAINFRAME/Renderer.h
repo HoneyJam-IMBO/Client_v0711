@@ -142,6 +142,16 @@ private:
 	float	m_fBlurStart{ 0.f };
 	float	m_fBlurWitdh{ 0.f };
 
+	bool m_bDIFFUSE{ false };
+	bool m_bLIGHTMAP{ false };
+	bool m_bAO{ true };
+	bool m_bShadow{ true };
+	bool m_bSSLR{ true };
+	bool m_bBLOOM{ true };
+
+	bool m_bPresentaition{ false };
+	UINT m_nPresentaition{ 0 };
+
 public:
 	void	SetRadialBlurTime(bool bBlurSwitch, float fTime) { 
 		m_bRadialBlur = bBlurSwitch; m_fRBlurMaxTime = fTime;

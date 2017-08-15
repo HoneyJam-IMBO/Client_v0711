@@ -31,6 +31,9 @@ public:
 	void SetBiasOffset(float bias_offset) { m_pShadowInfo->bias_offset = bias_offset; }
 
 	void LoadShadow(wstring wsOutputPath, wstring wsSceneName);
+
+	void SetbShadow(bool b) { m_bShadow = b; }
+	bool GetbShadow() { return m_bShadow; }
 private:
 	 CTexture*	m_pShadowTexture{ nullptr };
 	ID3D11Texture2D			 *m_pd3dtxtShadow{ nullptr };
@@ -49,6 +52,8 @@ private:
 	stShadowInfo* m_pShadowInfo{ nullptr };
 
 private:
+	bool m_bShadow{ true };
+
 	XMFLOAT4X4			m_xmmtxShadowVP;
 	XMMATRIX			m_xmmtxStaticShadowVP;
 	 CBuffer*	m_pShadowVPBuffer;

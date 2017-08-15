@@ -249,8 +249,8 @@ void CRenderer::Render( CCamera* pCamera) {
 	RESOURCEMGR->GetSampler("CLAMP_POINT")->SetShaderState();
 	RESOURCEMGR->GetSampler("SHADOW")->SetShaderState();
 
-	// shadow render
 
+	// shadow render
 	m_pShadow->RenderShadowMap(pCamera);
 
 	UPDATER->GetSpaceContainer()->PrepareRender(pCamera);
@@ -294,11 +294,16 @@ void CRenderer::Render( CCamera* pCamera) {
 	for (size_t i = 0; i < iVecSize; ++i) {
 		m_vObjectLayerResultTexture[i]->SetShaderState();
 	}
-
-	ID3D11ShaderResourceView* pAmbientOcclution = m_pAORenderer->Excute(pCamera);
-	pAmbientOcclution = m_p4to1Blur->Excute(pAmbientOcclution);
-	if (true == bDebug) DEBUGER->end_Timemeasurement(L"ssao");
-	GLOBALVALUEMGR->GetDeviceContext()->PSSetShaderResources(4, 1, &pAmbientOcclution);
+	ID3D11ShaderResourceView* pAmbientOcclution;
+	if (m_bAO) {
+		pAmbientOcclution = m_pAORenderer->Excute(pCamera);
+		pAmbientOcclution = m_p4to1Blur->Excute(pAmbientOcclution);
+		GLOBALVALUEMGR->GetDeviceContext()->PSSetShaderResources(4, 1, &pAmbientOcclution);
+	}
+	else {
+		pAmbientOcclution = RESOURCEMGR->GetTexture("DEFAULT")->GetShaderResourceView();
+		GLOBALVALUEMGR->GetDeviceContext()->PSSetShaderResources(4, 1, &pAmbientOcclution);
+	}
 	if (true == bDebug) DEBUGER->AddDepthTexture(XMFLOAT2(500, 500), XMFLOAT2(600, 600), pAmbientOcclution);
 
 	// LIGHT RENDER
@@ -313,7 +318,11 @@ void CRenderer::Render( CCamera* pCamera) {
 
 	// debug object redner
 	SetRenderTargetViews(1, &m_pd3drtvLight, m_pd3ddsvReadOnlyDepthStencil);
-	if (true == bDebug) { DEBUGER->DebugRender(pCamera); }
+	if (true == bDebug) {
+		if (false == m_bDIFFUSE && false == m_bLIGHTMAP) {
+			{ DEBUGER->DebugRender(pCamera); }
+		}
+	}
 	for (size_t i = 0; i < iVecSize; ++i) {
 		m_vObjectLayerResultTexture[i]->CleanShaderState();
 	}
@@ -327,36 +336,43 @@ void CRenderer::Render( CCamera* pCamera) {
 	DEBUGER->end_Timemeasurement(L"ssrf");
 
 	//// SSLR render
-	if (true == bDebug) DEBUGER->start_Timemeasurement();
-	m_pSSLR->Excute(pCamera, m_pd3drtvLight, pAmbientOcclution);
-	if (true == bDebug) DEBUGER->end_Timemeasurement(L"sslr");
+	if (m_bSSLR) {
+		if (true == bDebug) DEBUGER->start_Timemeasurement();
+		m_pSSLR->Excute(pCamera, m_pd3drtvLight, pAmbientOcclution);
+		if (true == bDebug) DEBUGER->end_Timemeasurement(L"sslr");
+	}
 
-	/*DEBUGER->start_Timemeasurement();
-	m_pRefrectionRenderer->Excute(pCamera, m_pd3dRenderTargetView, m_pd3ddsvReadOnlyDepthStencil, m_pd3dsrvLight, m_pd3dsrvDepthStencil, m_pd3dsrvNormal);
-	DEBUGER->end_Timemeasurement(L"ssrf");*/
+	if (false == m_bLIGHTMAP) {
 
-	// effect blend
-	ID3D11ShaderResourceView* pBlendSrv = m_pEffectRenderer->BlendingDistortion(m_pd3dsrvLight, m_pd3dsrvDepthStencil);
+		/*DEBUGER->start_Timemeasurement();
+		m_pRefrectionRenderer->Excute(pCamera, m_pd3dRenderTargetView, m_pd3ddsvReadOnlyDepthStencil, m_pd3dsrvLight, m_pd3dsrvDepthStencil, m_pd3dsrvNormal);
+		DEBUGER->end_Timemeasurement(L"ssrf");*/
 
-	// POST PROCESSING
-	GLOBALVALUEMGR->GetDeviceContext()->OMSetRenderTargets(1, &m_pd3drtvPostProcess, m_pd3ddsvReadOnlyDepthStencil);
-	if (true == bDebug) DEBUGER->start_Timemeasurement();
-	GLOBALVALUEMGR->GetDeviceContext()->PSSetShaderResources(0, 1, &pBlendSrv);
-	GLOBALVALUEMGR->GetDeviceContext()->CSSetShaderResources(0, 1, &pBlendSrv);
-	PostProcessing(pCamera);
-	size_t iLightVecSize = m_vLightLayerResultTexture.size();
+		// effect blend
+		ID3D11ShaderResourceView* pBlendSrv = m_pEffectRenderer->BlendingDistortion(m_pd3dsrvLight, m_pd3dsrvDepthStencil);
 
-	ID3D11ShaderResourceView* pNull = nullptr;
-	GLOBALVALUEMGR->GetDeviceContext()->PSSetShaderResources(0, 1, &pNull);
-	GLOBALVALUEMGR->GetDeviceContext()->CSSetShaderResources(0, 1, &pNull);
-	if (true == bDebug) DEBUGER->end_Timemeasurement(L"postprocessing");
-	pCamera->SetShaderState();
+		// POST PROCESSING
+		GLOBALVALUEMGR->GetDeviceContext()->OMSetRenderTargets(1, &m_pd3drtvPostProcess, m_pd3ddsvReadOnlyDepthStencil);
+		if (true == bDebug) DEBUGER->start_Timemeasurement();
+		GLOBALVALUEMGR->GetDeviceContext()->PSSetShaderResources(0, 1, &pBlendSrv);
+		GLOBALVALUEMGR->GetDeviceContext()->CSSetShaderResources(0, 1, &pBlendSrv);
+		PostProcessing(pCamera);
+		size_t iLightVecSize = m_vLightLayerResultTexture.size();
 
-	// final
-	SetMainRenderTargetView();
-	m_pFinalRenderer->RenderFinalPass(m_pd3dsrvPostProcess, m_pEffectRenderer->GetAlphaSRV(), m_pd3dsrvSkyBox, srvDistortion,
-		m_bRadialBlur, m_fBlurStart, m_fBlurWitdh);
+		ID3D11ShaderResourceView* pNull = nullptr;
+		GLOBALVALUEMGR->GetDeviceContext()->PSSetShaderResources(0, 1, &pNull);
+		GLOBALVALUEMGR->GetDeviceContext()->CSSetShaderResources(0, 1, &pNull);
+		if (true == bDebug) DEBUGER->end_Timemeasurement(L"postprocessing");
+		pCamera->SetShaderState();
 
+		// final
+		SetMainRenderTargetView();
+		m_pFinalRenderer->RenderFinalPass(m_pd3dsrvPostProcess, m_pEffectRenderer->GetAlphaSRV(), m_pd3dsrvSkyBox, srvDistortion,
+			m_bRadialBlur, m_fBlurStart, m_fBlurWitdh);
+	}
+	else {
+		SetMainRenderTargetView();
+	}
 	if (nullptr != m_pUIRederer) {
 		m_pUIRederer->RenderUI();
 	}
@@ -369,37 +385,23 @@ void CRenderer::Render( CCamera* pCamera) {
 		DEBUGER->AddTexture(XMFLOAT2(0, 200), XMFLOAT2(200, 400), m_vObjectLayerResultTexture[2]->GetShaderResourceView());
 		DEBUGER->AddTexture(XMFLOAT2(0, 400), XMFLOAT2(200, 600), m_vObjectLayerResultTexture[3]->GetShaderResourceView());
 		DEBUGER->AddTexture(XMFLOAT2(0, 600), XMFLOAT2(200, 800), m_vLightLayerResultTexture[0]->GetShaderResourceView());
-		
+	
 		DEBUGER->AddTexture(XMFLOAT2(200, 400), XMFLOAT2(400, 600), m_pd3dsrvPostProcess);
 
+		if (m_bDIFFUSE) {
+			RECT rcClient = GLOBALVALUEMGR->GetrcClient();
+			DEBUGER->AddTexture(XMFLOAT2(0, 0), XMFLOAT2(rcClient.right, rcClient.bottom), m_vObjectLayerResultTexture[1]->GetShaderResourceView());
+		}
+		if (m_bLIGHTMAP) {
+			RECT rcClient = GLOBALVALUEMGR->GetrcClient();
+			DEBUGER->AddTexture(XMFLOAT2(0, 0), XMFLOAT2(rcClient.right, rcClient.bottom), m_vLightLayerResultTexture[0]->GetShaderResourceView());
+		}
 
-		//if (INPUTMGR->KeyDown(VK_F2_)) {
-		//	//bSSAO = (bSSAO + 1) % 2; 
-		//	++m_iOption;
-		//} 
-		//
-		//switch (m_iOption)
-		//{
-		//case 0:
-		//	DEBUGER->AddTexture(XMFLOAT2(0, 0), XMFLOAT2(GLOBALVALUEMGR->GetrcClient().right, GLOBALVALUEMGR->GetrcClient().bottom), m_vObjectLayerResultTexture[1]->GetShaderResourceView());
-		//	break;
-		//case 1:
-		//	DEBUGER->AddTexture(XMFLOAT2(0, 0), XMFLOAT2(GLOBALVALUEMGR->GetrcClient().right, GLOBALVALUEMGR->GetrcClient().bottom), m_vLightLayerResultTexture[0]->GetShaderResourceView());
-		//	break;
-		//case 2:	break;
-		//case 3:
-		//	DEBUGER->AddTexture(XMFLOAT2(0, 0), XMFLOAT2(GLOBALVALUEMGR->GetrcClient().right, GLOBALVALUEMGR->GetrcClient().bottom), m_pd3dsrvPostProcess);
-		//	break;
-		//case 4:
-		//	DEBUGER->AddTexture(XMFLOAT2(0, 0), XMFLOAT2(GLOBALVALUEMGR->GetrcClient().right, GLOBALVALUEMGR->GetrcClient().bottom), m_pEffectRenderer->GetDistortionSRV());
-		//	break;
-		//case 5:
-		//	m_iOption = 0;
-		//	break;
-		//}
-		//이건 꼭 여기서 해줘야함.
 		DEBUGER->RenderTexture();
-		DEBUGER->RenderText();
+		if (false == m_bDIFFUSE && false == m_bLIGHTMAP) {
+			DEBUGER->RenderText();
+		}
+
 	}
 	//DEBUGER->AddGameText(100, 100, 100, YT_Color(), L"TEST");
 	DEBUGER->RenderGameText();
@@ -415,6 +417,96 @@ void CRenderer::Render( CCamera* pCamera) {
 	}
 }
 void CRenderer::Update(float fTimeElapsed) {
+	if (m_bPresentaition) {
+		switch (m_nPresentaition) {
+		case 0:
+			//difuse
+			INPUTMGR->SetDebugMode(true);
+			m_bDIFFUSE = true;
+			m_bLIGHTMAP = false;
+			m_bAO = false;
+			m_pShadow->SetbShadow(false);
+			m_bSSLR = false;
+			m_bBLOOM = false;
+			break;
+		case 1:
+			//light
+			INPUTMGR->SetDebugMode(true);
+			m_bDIFFUSE = false;
+			m_bLIGHTMAP = true;
+			m_bAO = false;
+			m_pShadow->SetbShadow(false);
+			m_bSSLR = false;
+			m_bBLOOM = false;
+			break;
+		case 2:
+			//light + ssao
+			INPUTMGR->SetDebugMode(true);
+			m_bDIFFUSE = false;
+			m_bLIGHTMAP = true;
+			m_bAO = true;
+			m_pShadow->SetbShadow(false);
+			m_bSSLR = false;
+			m_bBLOOM = false;
+			break;
+		case 3:
+			//light + ssao + shadow
+			INPUTMGR->SetDebugMode(true);
+			m_bDIFFUSE = false;
+			m_bLIGHTMAP = true;
+			m_bAO = true;
+			m_pShadow->SetbShadow(true);
+			m_bSSLR = false;
+			m_bBLOOM = false;
+			break;
+		case 4:
+			//light + ssao + shadow + sslr
+			INPUTMGR->SetDebugMode(true);
+			m_bDIFFUSE = false;
+			m_bLIGHTMAP = true;
+			m_bAO = true;
+			m_pShadow->SetbShadow(true);
+			m_bSSLR = true;
+			m_bBLOOM = false;
+			break;
+		case 5:
+			//light + ssao + shadow + sslr + bloom
+			INPUTMGR->SetDebugMode(false);
+			m_bDIFFUSE = false;
+			m_bLIGHTMAP = false;
+			m_bAO = true;
+			m_pShadow->SetbShadow(true);
+			m_bSSLR = true;
+			m_bBLOOM = true;
+			break;
+		default:
+			break;
+		}
+	}
+	if (INPUTMGR->KeyDown(VK_MULTIPLY_)) {
+		m_bPresentaition = (m_bPresentaition + 1) % 2;
+		if (m_bPresentaition) {
+			//시연 on
+			INPUTMGR->SetDebugMode(true);
+			m_nPresentaition = 0;
+		}
+		else {
+			//시연 off
+			INPUTMGR->SetDebugMode(false);
+			m_bDIFFUSE	= false;
+			m_bLIGHTMAP	= false;
+			m_bAO		= true;
+			m_pShadow->SetbShadow(true);
+			m_bSSLR		= true;
+			m_bBLOOM	= true;
+		}
+	}
+	else if (INPUTMGR->KeyDown(VK_ADD_)) {
+		m_nPresentaition = MIN(5, m_nPresentaition + 1);
+	}
+	else if (INPUTMGR->KeyDown(VK_SUBTRACT_)) {
+		m_nPresentaition = MAX(0, m_nPresentaition - 1);
+	}
 	m_pBloomDownScale->SetAdaptation(fTimeElapsed);
 	m_fTimeDelta = fTimeElapsed;
 }
