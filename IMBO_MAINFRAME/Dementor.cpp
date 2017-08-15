@@ -626,16 +626,22 @@ void CDementor::PhisicsLogic(map<utag, list<CGameObject*>>& mlpObject, float fDe
 		
 		case DEMENTOR_ANIM_SKILL3_FIRE:
 			if (SkillCollision(pBoss)) {//skill3 boss에게 대미지
+#ifdef NO_SERVER
+				pBoss->GetDemaged(m_iCurAttack);
+#else
 				TransferCollisioinData(5, 3);
-				//pBoss->GetDemaged(m_iCurAttack);
+#endif
 				m_bCollision = true;
 			}
 			break;
 
 		case DEMENTOR_ANIM_SKILL2_FIRE:
 			if (SkillCollision(pBoss, false)) {//skill2 투사체 boss에게 대미지
+#ifdef NO_SERVER
+				pBoss->GetDemaged(m_iCurAttack);
+#else
 				TransferCollisioinData(5, 2);
-				//pBoss->GetDemaged(m_iCurAttack);
+#endif
 				m_bCollision = true;
 			}
 			break;
@@ -663,7 +669,12 @@ bool CDementor::GetDemaged(int iDemage) {
 	m_nAnimNum = DEMENTOR_ANIM_HIT_F;
 	m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
 
+#ifdef NO_SERVER
 	CGameObject::GetDemaged(iDemage);//내 hp 날리고!
+#else
+
+#endif
+
 	if (m_iCurHP <= 0) {
 		m_nAnimNum = DEMENTOR_ANIM_DIE;
 		m_pAnimater->SetCurAnimationIndex(DEMENTOR_ANIM_DIE);

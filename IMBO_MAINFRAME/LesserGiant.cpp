@@ -17,10 +17,18 @@ CLesserGiant::~CLesserGiant()
 bool CLesserGiant::GetDemaged(int iDemege){
 
 	//뭔가 이팩트가 있으면 좋겠음 ㅠ
-	//CGameObject::GetDemaged(iDemege);
+
+#ifdef NO_SERVER
+	CGameObject::GetDemaged(iDemege);//내 hp 날리고!
+#else
+
+#endif
+
 	if (m_iCurHP == 0) {
 		m_pAnimater->SetCurAnimationIndex(BOSS1_ANI_DYING);
 	}
+	//BYTE Packet[MAX_BUFFER_LENGTH] = { 0, };
+	//NETWORKMGR->WritePacket(PT_BOSS_FREQUENCY_MOVE_CS, Packet, WRITE_PT_BOSS_FREQUENCY_MOVE_CS(Packet, m_xmf3Position.x, m_xmf3Position.y, m_xmf3Position.z, m_fAngleY, m_nAnimNum));
 	return true;
 }
 
@@ -37,10 +45,32 @@ void CLesserGiant::Animate(float fTimeElapsed)
 #ifdef NO_SERVER
 	UpdatePattern(fTimeElapsed);
 	Move(XMVector3Normalize(XMLoadFloat3(&m_f3Diraction)), (m_fSpeed)* fTimeElapsed);
+
+	if (m_pAnimater) m_pAnimater->Update(TIMEMGR->GetTimeElapsed());
+	ActionMoveProc();
+
+	//모든 컴포넌트를 돌면서 Update실행
+	for (auto i : m_mapComponents) {
+		i.second->Update(fTimeElapsed);
+	}
+
 #else
 	if (NETWORKMGR->GetSLOT_ID() == 0) {
 		UpdatePattern(fTimeElapsed);
 		Move(XMVector3Normalize(XMLoadFloat3(&m_f3Diraction)), (m_fSpeed)* fTimeElapsed);
+
+	}
+
+
+	if (m_pAnimater) m_pAnimater->Update(TIMEMGR->GetTimeElapsed());
+	ActionMoveProc();
+
+	//모든 컴포넌트를 돌면서 Update실행
+	for (auto i : m_mapComponents) {
+		i.second->Update(fTimeElapsed);
+	}
+
+	if (NETWORKMGR->GetSLOT_ID() == 0) {
 
 
 		BYTE Packet[MAX_BUFFER_LENGTH] = { 0, };
@@ -75,16 +105,8 @@ void CLesserGiant::Animate(float fTimeElapsed)
 			}
 		}
 	}
+
 #endif
-
-	if (m_pAnimater) m_pAnimater->Update(TIMEMGR->GetTimeElapsed());
-	ActionMoveProc();
-
-	//모든 컴포넌트를 돌면서 Update실행
-	for (auto i : m_mapComponents) {
-		i.second->Update(fTimeElapsed);
-	}
-
 	DEBUGER->RegistCoordinateSys(GetWorldMtx());
 }
 
@@ -105,9 +127,13 @@ void CLesserGiant::PhisicsLogic(map<utag, list<CGameObject*>>& mlpObject, float 
 		if (false == pArrow->GetActive()) continue;
 		if (true == IsCollision(pArrow))
 		{
+#ifdef NO_SERVER
+			GetDemaged(100.f);
+#else
 			BYTE Packet[MAX_BUFFER_LENGTH] = { 0, };
 			NETWORKMGR->WritePacket(PT_SKILL_COLLISION_TO_TARGET_CS, Packet, WRITE_PT_SKILL_COLLISION_TO_TARGET_CS(Packet, NETWORKMGR->GetROOM_ID(), NETWORKMGR->GetSLOT_ID(), 5, NETWORKMGR->GetServerPlayerInfos()[NETWORKMGR->GetSLOT_ID()].CHARACTER, 9));
-			//GetDemaged(100.f);
+#endif
+			
 			pArrow->DisappearSkill();
 			break;
 		}
@@ -127,29 +153,41 @@ void CLesserGiant::PhisicsLogic(map<utag, list<CGameObject*>>& mlpObject, float 
 			switch (m_nAnimNum) {
 			case BOSS1_ANI_SKILL1:
 				if (SkillCollision(pPlayer)) {
-					TransferCollisioinData(pPlayer->GetSlotID(), 1);
+#ifdef NO_SERVER
 					pPlayer->GetDemaged(m_iAttack);//100
+#else
+					TransferCollisioinData(pPlayer->GetSlotID(), 1);
+#endif
 					m_bCollision = true;
 				}
 				break;
 			case BOSS1_ANI_SKILL2:
 				if (SkillCollision(pPlayer)) {
-					TransferCollisioinData(pPlayer->GetSlotID(), 2);
+#ifdef NO_SERVER
 					pPlayer->GetDemaged(m_iAttack * 2);//200
+#else
+					TransferCollisioinData(pPlayer->GetSlotID(), 2);
+#endif
 					m_bCollision = true;
 				}
 				break;
 			case BOSS1_ANI_SKILL3:
 				if (SkillCollision(pPlayer)) {
-					TransferCollisioinData(pPlayer->GetSlotID(),3);
+#ifdef NO_SERVER
 					pPlayer->GetDemaged(m_iAttack * 2);//200
+#else
+					TransferCollisioinData(pPlayer->GetSlotID(), 3);
+#endif
 					m_bCollision = true;
 				}
 				break;
 			case BOSS1_ANI_SKILL4:
 				if (SkillCollision(pPlayer)) {
-					TransferCollisioinData(pPlayer->GetSlotID(), 4);
+#ifdef NO_SERVER
 					pPlayer->GetDemaged(m_iAttack * 1.5);//150
+#else
+					TransferCollisioinData(pPlayer->GetSlotID(), 4);
+#endif
 					m_bCollision = true;
 				}
 				break;

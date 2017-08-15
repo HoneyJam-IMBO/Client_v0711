@@ -540,23 +540,32 @@ void CWizard::PhisicsLogic(map<utag, list<CGameObject*>>& mlpObject, float fDelt
 
 		case WIZARD_ANIM_SKILL1_FIRE:
 			if (SkillCollision(pBoss)) {//skill1 boss에게 대미지
+#ifdef NO_SERVER
+				pBoss->GetDemaged(m_iCurAttack);
+#else
 				TransferCollisioinData(5, 1);
-				//pBoss->GetDemaged(m_iCurAttack);
+#endif
 				m_bCollision = true;
 			}
 			break;
 
 		case WIZARD_ANIM_SKILL2_FIRE:
 			if (SkillCollision(pBoss, false)) {//skill2
+#ifdef NO_SERVER
+				pBoss->GetDemaged(m_iCurAttack);
+#else
 				TransferCollisioinData(5, 2);
-				//pBoss->GetDemaged(m_iCurAttack);
+#endif
 				m_bCollision = true;
 			}
 			break;
 		case WIZARD_ANIM_SKILL4_FIRE:
 			if (SkillCollision(pBoss, false)) {//skill4
+#ifdef NO_SERVER
+				pBoss->GetDemaged(m_iCurAttack);
+#else
 				TransferCollisioinData(5, 4);
-				//pBoss->GetDemaged(m_iCurAttack);
+#endif
 				m_bCollision = true;
 			}
 			break;
@@ -590,7 +599,12 @@ bool CWizard::GetDemaged(int iDemage) {
 	m_nAnimNum = WIZARD_ANIM_HIT_F;
 	m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
 
-	//CGameObject::GetDemaged(iDemage);//내 hp 날리고!
+#ifdef NO_SERVER
+	CGameObject::GetDemaged(iDemage);//내 hp 날리고!
+#else
+
+#endif
+
 	if (m_iCurHP <= 0) {
 		m_nAnimNum = WIZARD_ANIM_DIE;
 		m_pAnimater->SetCurAnimationIndex(WIZARD_ANIM_DIE);

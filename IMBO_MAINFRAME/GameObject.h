@@ -209,7 +209,6 @@ public:
 	virtual void GetSkilled(int nSkill);
 	virtual int GetSlotID() { return 0; }
 
-	virtual int GetSlotID() { return 0; };
 protected:
 	//navi mesh index
 	int m_indexNaviMesh{ -1 };
