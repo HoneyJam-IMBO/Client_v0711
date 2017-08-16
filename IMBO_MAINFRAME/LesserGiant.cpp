@@ -87,7 +87,7 @@ void CLesserGiant::Animate(float fTimeElapsed)
 		SetPositionServer(XMVectorSet(data.fPosX, data.fPosY, data.fPosZ, 1.0f));
 		SetRotation(XMMatrixRotationY(data.fAngleY));
 
-
+		m_nAnimNum = data.iAnimNum;
 		if (m_pAnimater->SetCurAnimationIndex(data.iAnimNum)) {
 			switch (data.iAnimNum) {
 			case BOSS1_ANI_SKILL1:

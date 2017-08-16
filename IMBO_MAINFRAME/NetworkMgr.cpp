@@ -7,7 +7,7 @@ void clienterror()
 	exit(-1);
 }
 
-#define USE_LOCAL_IP
+//#define USE_LOCAL_IP
 
 bool CNetworkManager::Begin() {
 #ifdef NO_SERVER
