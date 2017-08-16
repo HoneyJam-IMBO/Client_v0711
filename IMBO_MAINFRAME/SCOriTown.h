@@ -7,7 +7,7 @@
 class CLesserGiant;
 class CSCOriTown;
 class CHpBar;
-class CRoisa;
+
 class CSCOriTown :public CScene{
 
 public:
@@ -53,17 +53,14 @@ private:
 	//float m_fHPDownSpeed{ 1.f };
 
 	CHpBar* m_pPlayerHPUI;
-	//float m_fCurPlayerHPRate{ 1.f };
-	//float m_fCurPlayerHPLength{ 190.f };
-	//XMFLOAT2 m_xmf2PlayerHPBarLength{XMFLOAT2(190.f, 6.f)};
-
 	CHpBar* m_pBossHPUI;
-	//float m_fCurBossHPRate{ 1.f };
-	//float m_fCurBossHPLength{ 190.f };
-	//XMFLOAT2 m_xmf2BossHPBarLength{ XMFLOAT2(190.f, 6.f) };
+	CImageUI* m_pBossHPacc;
 
-	//CLesserGiant*	m_pBoss{ nullptr };
-	CGameObject*	m_pBoss{ nullptr };
+	CHpBar* m_pTeamNoHPUI[2];
+	//CHpBar* m_pTeamNo2HPUI;
+
+	CLesserGiant*	m_pBoss{ nullptr };
+	//CGameObject*	m_pBoss{ nullptr };
 
 
 	void StartBoss1ActionCam();

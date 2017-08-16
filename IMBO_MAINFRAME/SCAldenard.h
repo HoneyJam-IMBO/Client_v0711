@@ -48,6 +48,10 @@ private:
 	bool m_bGameStart{ false };
 
 private:
+	CHpBar* m_pTeamNo1HPUI;
+	CHpBar* m_pTeamNo2HPUI;
+
+private:
 	CGameObject** m_ppPawn{ nullptr };
 };
 

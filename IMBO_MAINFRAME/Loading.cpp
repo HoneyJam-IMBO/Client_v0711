@@ -308,8 +308,8 @@ void CLoading::LoadScene_ORITOWN()
 	
 	
 
-	//LoadScene("../../Assets/SceneResource/test/test.scn");
-	LoadScene("../../Assets/SceneResource/FirstTown/FirstTown.scn");
+	LoadScene("../../Assets/SceneResource/test/test.scn");
+	//LoadScene("../../Assets/SceneResource/FirstTown/FirstTown.scn");
 	//LoadScene("../../Assets/SceneResource/Aldenard/Aldenard.scn");	
 }
 
@@ -373,6 +373,9 @@ void CLoading::LoadScene_BOSS()
 	CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/Boss2_sk3_iceSmoke.dat", L"Boss2_sk3_iceSmoke", 40);
 
 	LoadScene("../../Assets/SceneResource/Sarasen/Sarasen.scn");
+
+	RESOURCEMGR->CreateTexture("UI_Game_Clear", _T("../../Assets/Game_UI/UI_Game_Clear.tga"), PS_TEXTURE, BIND_PS);
+	RESOURCEMGR->CreateTexture("UI_Game_Over", _T("../../Assets/Game_UI/UI_Game_Over.tga"), PS_TEXTURE, BIND_PS);
 }
 
 void CLoading::LoadUI_Skill(int cn1, int cn2, int cn3, int cn4)

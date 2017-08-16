@@ -160,6 +160,18 @@ void CSCOriTown::HPBarProc(){
 	int iMaxHP = m_ppPawn[slot_id]->GetMaxHp();
 	m_pPlayerHPUI->SetCurHPRate((float)iCurHP / (float)iMaxHP);
 
+	//m_pTeamNo1HPUI
+	int iSize = NETWORKMGR->GetServerPlayerInfos().size();
+	for (int i = 0, int j = 0; i < iSize; ++i)
+	{
+		if (i == slot_id) continue;
+
+		int iCurHP = m_ppPawn[j]->GetCurHp();
+		int iMaxHP = m_ppPawn[j]->GetMaxHp();
+		m_pTeamNoHPUI[++j]->SetCurHPRate((float)iCurHP / (float)iMaxHP);
+	}
+	
+
 	if (m_pBoss) {
 		bool bBossDead = m_pBoss->GetAnimater()->GetCurAnimationIndex() == BOSS1_ANI_DIE || m_pBoss->GetAnimater()->GetCurAnimationIndex() == BOSS1_ANI_DYING;
 		float fCurBossHPLength = m_pBossHPUI->GetCurHPLength();
@@ -214,7 +226,8 @@ void CSCOriTown::Animate(float fTimeElapsed) {
 	if (m_bStartBossCam) {
 		if (false == m_pCamera->m_bActionCam) {
 			int boss_fight_start = 0;
-//			m_pBoss->SetFirstAction(false); 
+			m_bStartBossCam = false;
+			m_pBoss->SetFirstAction(false); 
 		}
 	}
 	if (m_bFinalProc) {
@@ -572,9 +585,11 @@ void CSCOriTown::CreateBoss1()
 	m_pBoss->SetNaviMeshIndex();
 	m_pBoss->SetScale(XMVectorSet(1, 1, 1, 1));
 	UPDATER->GetSpaceContainer()->AddObject(m_pBoss);
-	//m_pBoss->SetFirstAction(true);
-	//m_pBoss->SetAnimNum(BOSS1_ANI_SKILL2);
+	m_pBoss->SetFirstAction(true);
+	m_pBoss->SetAnimNum(BOSS1_ANI_SKILL2);
 	m_pBoss->GetAnimater()->SetCurAnimationIndex(BOSS1_ANI_SKILL2);
+	m_pBossHPUI->SetRender(true);
+	m_pBossHPacc->SetRender(true);
 }
 
 void CSCOriTown::KillBoss1(){
@@ -691,8 +706,8 @@ VOID CSCOriTown::PROC_PT_FTOWN_NPC2_READY_COMP_SC(DWORD dwProtocol, BYTE * Packe
 
 void CSCOriTown::ReadMapData()
 {
-	//IMPORTER->Begin("../../Assets/SceneResource/test/test.scn");
-	IMPORTER->Begin("../../Assets/SceneResource/FirstTown/FirstTown.scn");
+	IMPORTER->Begin("../../Assets/SceneResource/test/test.scn");
+	//IMPORTER->Begin("../../Assets/SceneResource/FirstTown/FirstTown.scn");
 	//IMPORTER->Begin("../../Assets/SceneResource/Aldenard/Aldenard.scn");
 	//IMPORTER->Begin("../../Assets/SceneResource/Sarasen/Sarasen.scn");
 	//output path
@@ -720,23 +735,21 @@ void CSCOriTown::LoadSkillObjects()
 void CSCOriTown::CreateUI()
 {
 	//RCSELLER->TestingRCAdd();
-	CUIObject* pUI = CImageUI::Create(XMLoadFloat2(&XMFLOAT2(WINSIZEX * 0.5f, WINSIZEY * 0.1f)), XMLoadFloat2(&XMFLOAT2(45.f, 65.f)), "Boss_Icon", 9.f);
-	m_vecUI.push_back(pUI);
+	CUIObject* pUI;
+	m_pBossHPacc = CImageUI::Create(XMLoadFloat2(&XMFLOAT2(WINSIZEX * 0.5f, WINSIZEY * 0.1f)), XMLoadFloat2(&XMFLOAT2(45.f, 65.f)), "Boss_Icon", 9.f);
+	m_vecUI.push_back(m_pBossHPacc);
 
 	m_pPlayerHPUI = CHpBar::Create(XMLoadFloat2(&XMFLOAT2(312.f, 745.f)), XMLoadFloat2(&XMFLOAT2(132.f, 8.f)));
 	m_vecUI.push_back(m_pPlayerHPUI);
 	m_pBossHPUI = CHpBar::Create(XMLoadFloat2(&XMFLOAT2(WINSIZEX * 0.5f, WINSIZEY * 0.1f)), XMLoadFloat2(&XMFLOAT2(200.f, 10.f)));
 	m_vecUI.push_back(m_pBossHPUI);
+	m_pBossHPUI->SetRender(false);
 
-	pUI = CHpBar::Create(XMLoadFloat2(&XMFLOAT2(WINSIZEX * 0.12f, WINSIZEY * 0.25f)), XMLoadFloat2(&XMFLOAT2(60.f, 5.f)));
-	m_vecUI.push_back(pUI);
+	m_pTeamNoHPUI[0] = CHpBar::Create(XMLoadFloat2(&XMFLOAT2(WINSIZEX * 0.12f, WINSIZEY * 0.25f)), XMLoadFloat2(&XMFLOAT2(60.f, 5.f)));
+	m_vecUI.push_back(m_pTeamNoHPUI[0]);
 
-	pUI = CHpBar::Create(XMLoadFloat2(&XMFLOAT2(WINSIZEX * 0.12f, WINSIZEY * 0.3f)), XMLoadFloat2(&XMFLOAT2(60.f, 5.f)));
-	m_vecUI.push_back(pUI);
-
-	pUI = CHpBar::Create(XMLoadFloat2(&XMFLOAT2(WINSIZEX * 0.12f, WINSIZEY * 0.35f)), XMLoadFloat2(&XMFLOAT2(60.f, 5.f)));
-	m_vecUI.push_back(pUI);
-
+	m_pTeamNoHPUI[1] = CHpBar::Create(XMLoadFloat2(&XMFLOAT2(WINSIZEX * 0.12f, WINSIZEY * 0.3f)), XMLoadFloat2(&XMFLOAT2(60.f, 5.f)));
+	m_vecUI.push_back(m_pTeamNoHPUI[1]);
 	
 
 

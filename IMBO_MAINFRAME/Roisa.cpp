@@ -180,18 +180,26 @@ void CRoisa::Animate(float fTimeElapsed)
 		if (m_pAnimater->SetCurAnimationIndex(data.iAnimNum)) {
 			switch (data.iAnimNum) {
 			case BOSS2_ANI_SKILL1:
+				CSoundManager::Play_3Dsound("boss2_skill1", 1, &m_xmf3Position, 5.f, 5.f, 500.f);
+				CSoundManager::Play_3Dsound("boss2_skill_sound1", 1, &m_xmf3Position, 5.f, 5.f, 500.f);
 				ShootMeteo(data.fAngleY);
 				break;
 			case BOSS2_ANI_SKILL2:
+				CSoundManager::Play_3Dsound("boss2_skill2", 1, &m_xmf3Position, 5.f, 5.f, 500.f);
+				CSoundManager::Play_3Dsound("boss2_skill_sound2", 1, &m_xmf3Position, 5.f, 5.f, 500.f);
 				for (int i = 0; i < 18; ++i)
 				{
 					ShootMeteo((XM_2PI / 18.f) * i);
 				}
 				break;
 			case BOSS2_ANI_SKILL3:
+				CSoundManager::Play_3Dsound("boss2_skill3", 1, &m_xmf3Position, 5.f, 5.f, 500.f);
+				CSoundManager::Play_3Dsound("boss2_skill_sound3", 1, &m_xmf3Position, 5.f, 5.f, 500.f);
 				ShootExplosion();
 				break;
 			case BOSS2_ANI_SKILL4:
+				CSoundManager::Play_3Dsound("boss2_skill4", 1, &m_xmf3Position, 5.f, 5.f, 500.f);
+				CSoundManager::Play_3Dsound("boss2_skill_sound4", 1, &m_xmf3Position, 5.f, 5.f, 500.f);
 				ShootBlizzard();
 				break;
 			default:
@@ -229,7 +237,13 @@ void CRoisa::RegistToContainer()
 
 bool CRoisa::GetDemaged(int iDemege) {
 	//뭔가 이팩트가 있으면 좋겠음 ㅠ
-
+	if (m_pAnimater->GetCurAnimationIndex() == BOSS2_ANI_DIE || m_pAnimater->GetCurAnimationIndex() == BOSS2_ANI_DEADBODY) {
+		if (m_pAnimater->GetCurAnimationInfo()->GetLoopDone()) {
+			m_pAnimater->SetCurAnimationIndex(BOSS2_ANI_DEADBODY);
+		}
+		m_bCollision = true;
+		return false;
+	}
 #ifdef NO_SERVER
 	CGameObject::GetDemaged(iDemege);//내 hp 날리고!
 #else
@@ -238,6 +252,7 @@ bool CRoisa::GetDemaged(int iDemege) {
 
 	if (m_iCurHP == 0) {
 		m_pAnimater->SetCurAnimationIndex(BOSS2_ANI_DIE);
+		CSoundManager::Play_3Dsound("boss2_die", 1, &m_xmf3Position, 5.f, 5.f, 500.f);
 	}
 	//BYTE Packet[MAX_BUFFER_LENGTH] = { 0, };
 	//NETWORKMGR->WritePacket(PT_BOSS_FREQUENCY_MOVE_CS, Packet, WRITE_PT_BOSS_FREQUENCY_MOVE_CS(Packet, m_xmf3Position.x, m_xmf3Position.y, m_xmf3Position.z, m_fAngleY, m_nAnimNum));
@@ -252,6 +267,13 @@ void CRoisa::TransferCollisioinData(int target_slot_id, int skillnum) {
 
 void CRoisa::PhisicsLogic(map<utag, list<CGameObject*>>& mlpObject, float fDeltaTime)
 {
+	if (m_pAnimater->GetCurAnimationIndex() == BOSS2_ANI_DIE || m_pAnimater->GetCurAnimationIndex() == BOSS2_ANI_DEADBODY) {
+		if (m_pAnimater->GetCurAnimationInfo()->GetLoopDone()) {
+			m_pAnimater->SetCurAnimationIndex(BOSS2_ANI_DEADBODY);
+		}
+		m_bCollision = true;
+		return;
+	}
 	for (auto pArrow : mlpObject[utag::UTAG_ARROW]) {
 		//내가쏜 화살만 데미지를 입음
 		if (false == pArrow->GetActive()) continue;
@@ -289,6 +311,14 @@ void CRoisa::GetSkilled(int nSkill)
 
 void CRoisa::UpdatePattern(float fTimeElapsed)
 {
+	if (m_pAnimater->GetCurAnimationIndex() == BOSS2_ANI_DIE || m_pAnimater->GetCurAnimationIndex() == BOSS2_ANI_DEADBODY) {
+		if (m_pAnimater->GetCurAnimationInfo()->GetLoopDone()) {
+			m_pAnimater->SetCurAnimationIndex(BOSS2_ANI_DEADBODY);
+		}
+		m_bCollision = true;
+		return;
+	}
+
 	m_f3Diraction = XMFLOAT3(0.f, 0.f, 0.f);
 	float fDistance = 0.f;
 	if (nullptr != m_pTempPlayer)
@@ -352,10 +382,14 @@ void CRoisa::UpdatePattern(float fTimeElapsed)
 			switch (m_nPatternNum) {
 			case 0:
 				m_nAnimNum = BOSS2_ANI_SKILL1;
+				CSoundManager::Play_3Dsound("boss2_skill1", 1, &m_xmf3Position, 5.f, 5.f, 500.f);
+				CSoundManager::Play_3Dsound("boss2_skill_sound1", 1, &m_xmf3Position, 5.f, 5.f, 500.f);
 				ShootMeteo(m_fMyAngle);
 				break;
 			case 1:
 				m_nAnimNum = BOSS2_ANI_SKILL2;
+				CSoundManager::Play_3Dsound("boss2_skill2", 1, &m_xmf3Position, 5.f, 5.f, 500.f);
+				CSoundManager::Play_3Dsound("boss2_skill_sound2", 1, &m_xmf3Position, 5.f, 5.f, 500.f);
 				for (int i = 0; i < 18; ++i)
 				{
 					ShootMeteo((XM_2PI / 18.f) * i);
@@ -363,10 +397,14 @@ void CRoisa::UpdatePattern(float fTimeElapsed)
 				break;
 			case 2:
 				m_nAnimNum = BOSS2_ANI_SKILL3;
+				CSoundManager::Play_3Dsound("boss2_skill3", 1, &m_xmf3Position, 5.f, 5.f, 500.f);
+				CSoundManager::Play_3Dsound("boss2_skill_sound2", 1, &m_xmf3Position, 5.f, 5.f, 500.f);
 				ShootExplosion();
 				break;
 			case 3:
 				m_nAnimNum = BOSS2_ANI_SKILL4;
+				CSoundManager::Play_3Dsound("boss2_skill4", 1, &m_xmf3Position, 5.f, 5.f, 500.f);
+				CSoundManager::Play_3Dsound("boss2_skill_sound2", 1, &m_xmf3Position, 5.f, 5.f, 500.f);
 				ShootBlizzard();
 				break;
 	/*		case 4:
