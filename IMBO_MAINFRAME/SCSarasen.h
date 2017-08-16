@@ -3,6 +3,10 @@
 #include "FreeCamera.h"
 
 class CRoisa;
+class CHpBar;
+class CImageUI;
+class CGameObject;
+
 class CSCSarasen :
 	public CScene
 {
