@@ -36,13 +36,28 @@ public:
 	VOID PROC_PT_SARASEN_BOSS_ACTION_CAMERA_READY_SC(DWORD dwProtocol, BYTE * Packet, DWORD dwPacketLength);
 
 	VOID PROC_PT_SARASEN_BOSS_ACTION_CAMERA_READY_COMP_SC(DWORD dwProtocol, BYTE * Packet, DWORD dwPacketLength);
-	
+
 	//주기적 위치 동기화
 	VOID PROC_PT_FREQUENCY_MOVE_SC(DWORD dwProtocol, BYTE *Packet, DWORD dwPacketLength);
 	VOID PROC_PT_BOSS_FREQUENCY_MOVE_SC(DWORD dwProtocol, BYTE * Packet, DWORD dwPacketLength);
 	VOID PROC_PT_MOUSE_LEFT_ATTACK_SC(DWORD dwProtocol, BYTE * Packet, DWORD dwPacketLength);
 
 	CGameObject* GetPlayer() { return m_ppPawn ? m_ppPawn[NETWORKMGR->GetSLOT_ID()] : nullptr; }
+
+private:
+	void HPBarProc();
+
+private:
+	CHpBar* m_pPlayerHPUI{ nullptr };
+	CHpBar* m_pBossHPUI{ nullptr };
+	CImageUI* m_pBossHPacc{ nullptr };
+
+	CHpBar* m_pTeamNoHPUI[2];
+
+	CImageUI*	m_pResult{ nullptr };
+	bool		m_bResult{ false };
+	float		m_fResultAccTime{ 0.f };
+	string		m_strResultName{};
 
 	//cam
 private:

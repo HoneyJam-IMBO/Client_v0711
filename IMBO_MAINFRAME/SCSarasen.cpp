@@ -14,9 +14,6 @@
 #include "Wizard.h"
 #include "Bard.h"
 
-
-
-
 bool CSCSarasen::Begin()
 {
 	CSoundManager::Play_bgm("bgm_boss2_balcony");
@@ -139,6 +136,17 @@ bool CSCSarasen::End()
 
 void CSCSarasen::Animate(float fTimeElapsed)
 {
+	HPBarProc();
+	if (true == m_bResult)
+	{
+		m_fResultAccTime += fTimeElapsed;
+		if (m_fResultAccTime > 3.f)
+		{
+			CSceneMgr::GetInstance()->ChangeScene(SCN_TITLE);
+			return;
+		}
+	}
+
 	BYTE Packet[MAX_BUFFER_LENGTH] = { 0, };
 	int slot_id = NETWORKMGR->GetSLOT_ID();
 	wchar_t wcPosition[126];
@@ -482,6 +490,69 @@ VOID CSCSarasen::PROC_PT_MOUSE_LEFT_ATTACK_SC(DWORD dwProtocol, BYTE * Packet, D
 	return VOID();
 }
 
+void CSCSarasen::HPBarProc()
+{
+	float fTimeElapsed = TIMEMGR->GetTimeElapsed();
+	int slot_id = NETWORKMGR->GetSLOT_ID();
+	int iCurHP = m_ppPawn[slot_id]->GetCurHp();
+	int iMaxHP = m_ppPawn[slot_id]->GetMaxHp();
+	m_pPlayerHPUI->SetCurHPRate((float)iCurHP / (float)iMaxHP);
+
+	//m_pTeamNo1HPUI
+	int iSize = NETWORKMGR->GetServerPlayerInfos().size();
+	int iCheckAlldie = 0;
+	for (int i = 0, int j = 0; i < iSize; ++i)
+	{
+		if (m_ppPawn[i]->GetCurHp() <= 0.f)
+		{
+			++iCheckAlldie;
+		}
+		if (i == slot_id) continue;
+
+		int iCurHP = m_ppPawn[j]->GetCurHp();
+		int iMaxHP = m_ppPawn[j]->GetMaxHp();
+		m_pTeamNoHPUI[++j]->SetCurHPRate((float)iCurHP / (float)iMaxHP);
+	}
+
+
+	if (m_pBoss) {
+		bool bBossDead = m_pBoss->GetAnimater()->GetCurAnimationIndex() == BOSS1_ANI_DIE || m_pBoss->GetAnimater()->GetCurAnimationIndex() == BOSS1_ANI_DYING;
+		float fCurBossHPLength = m_pBossHPUI->GetCurHPLength();
+		bool bIsHPUILengthZero = fCurBossHPLength > -0.0001f && fCurBossHPLength < 0.0001f;
+		if (!bBossDead || !bIsHPUILengthZero) {//죽은 애니메이션이 돌고있어도 hp bar가 줄고있으면 갱신
+			iCurHP = m_pBoss->GetCurHp();
+			iMaxHP = m_pBoss->GetMaxHp();
+			m_pBossHPUI->SetCurHPRate((float)iCurHP / (float)iMaxHP);
+		}
+		else if (bBossDead && bIsHPUILengthZero) {
+			CSoundManager::Stop_bgm("bgm_firsttown_battle");
+			//보스 죽고 cur hp가 0이면 그리면 안되는데..
+			//m_pBossHPUI->Ge 
+			m_pBossHPUI->SetCurHPRate(0);
+		}
+	}
+	else {
+
+		//보스 죽고 cur hp가 0이면 그리면 안되는데..
+		m_pBossHPUI->SetCurHPRate(0);
+	}
+
+	if (m_bResult ==false && m_pBossHPUI->GetCurHPRate() <= 0.f)
+	{
+		m_bResult = true;
+		m_strResultName = "UI_Game_Clear";
+		m_pResult->SetImageName(m_strResultName);
+		m_pResult->SetRender(true);
+	}
+	if (m_bResult == false && iCheckAlldie == iSize)
+	{
+		m_bResult = true;
+		m_strResultName = "UI_Game_Over";
+		m_pResult->SetImageName(m_strResultName);
+		m_pResult->SetRender(true);
+	}
+}
+
 void CSCSarasen::ReadMapData()
 {
 	//IMPORTER->Begin("../../Assets/SceneResource/Aldenard/Aldenard.scn");
@@ -510,8 +581,22 @@ void CSCSarasen::CreateUI()
 {
 	//RCSELLER->TestingRCAdd();
 	CUIObject* pUI;
-	pUI = CHpBar::Create(XMLoadFloat2(&XMFLOAT2(WINSIZEX * 0.24f, WINSIZEY * 0.77f)), XMLoadFloat2(&XMFLOAT2(190.f, 6.f)));
+	m_pBossHPacc = CImageUI::Create(XMLoadFloat2(&XMFLOAT2(WINSIZEX * 0.5f, WINSIZEY * 0.1f)), XMLoadFloat2(&XMFLOAT2(45.f, 65.f)), "Boss_Icon", 9.f);
+	m_pBossHPacc->SetRender(false);
+	m_vecUI.push_back(m_pBossHPacc);
+
+	m_pPlayerHPUI = CHpBar::Create(XMLoadFloat2(&XMFLOAT2(312.f, 745.f)), XMLoadFloat2(&XMFLOAT2(132.f, 8.f)));
+	m_vecUI.push_back(m_pPlayerHPUI);
+	m_pBossHPUI = CHpBar::Create(XMLoadFloat2(&XMFLOAT2(WINSIZEX * 0.5f, WINSIZEY * 0.1f)), XMLoadFloat2(&XMFLOAT2(200.f, 10.f)));
+	m_pBossHPUI->SetRender(false);
+	m_vecUI.push_back(m_pBossHPUI);
+
+	m_pTeamNoHPUI[0] = CHpBar::Create(XMLoadFloat2(&XMFLOAT2(WINSIZEX * 0.12f, WINSIZEY * 0.25f)), XMLoadFloat2(&XMFLOAT2(60.f, 5.f)));
 	m_vecUI.push_back(pUI);
+
+	m_pTeamNoHPUI[1] = CHpBar::Create(XMLoadFloat2(&XMFLOAT2(WINSIZEX * 0.12f, WINSIZEY * 0.3f)), XMLoadFloat2(&XMFLOAT2(60.f, 5.f)));
+	m_vecUI.push_back(pUI);
+
 
 	string sCharSelect;
 	string sSkill1;
@@ -568,29 +653,33 @@ void CSCSarasen::CreateUI()
 	}
 
 	//player icon
-	pUI = CImageUI::Create(XMLoadFloat2(&XMFLOAT2(132.f, WINSIZEY * 0.8f)), XMLoadFloat2(&XMFLOAT2(50.f, 50.f)), sCharSelect, 10.f);
+	pUI = CImageUI::Create(XMLoadFloat2(&XMFLOAT2(140.f, 787.f)), XMLoadFloat2(&XMFLOAT2(40.f, 50.f)), sCharSelect, 10.f);
 	m_vecUI.push_back(pUI);
 
+	m_strResultName = "UI_Game_Clear";
+	m_pResult = CImageUI::Create(XMLoadFloat2(&XMFLOAT2(WINSIZEX * 0.5f, WINSIZEY * 0.5f)), XMLoadFloat2(&XMFLOAT2(450.f, 350.f)), m_strResultName, 11.f);
+	m_pResult->SetRender(false);
+	m_vecUI.push_back(m_pResult);
+
 	//skill back
-	string sSkillBack;
-	sSkillBack = "SkillBack";
-	pUI = CImageUI::Create(XMLoadFloat2(&XMFLOAT2(217.f, WINSIZEY * 0.82f)), XMLoadFloat2(&XMFLOAT2(30.f, 30.f)), sSkillBack, 9.f);
+	string sSkillBack = "SkillBack_tr";
+	pUI = CImageUI::Create(XMLoadFloat2(&XMFLOAT2(202.f, 786.f)), XMLoadFloat2(&XMFLOAT2(22.f, 30.f)), sSkillBack, 9.f);
 	m_vecUI.push_back(pUI);
-	pUI = CImageUI::Create(XMLoadFloat2(&XMFLOAT2(277.f, WINSIZEY * 0.82f)), XMLoadFloat2(&XMFLOAT2(30.f, 30.f)), sSkillBack, 9.f);
+	pUI = CImageUI::Create(XMLoadFloat2(&XMFLOAT2(246.f, 786.f)), XMLoadFloat2(&XMFLOAT2(22.f, 30.f)), sSkillBack, 9.f);
 	m_vecUI.push_back(pUI);
-	pUI = CImageUI::Create(XMLoadFloat2(&XMFLOAT2(337.f, WINSIZEY * 0.82f)), XMLoadFloat2(&XMFLOAT2(30.f, 30.f)), sSkillBack, 9.f);
+	pUI = CImageUI::Create(XMLoadFloat2(&XMFLOAT2(290.f, 786.f)), XMLoadFloat2(&XMFLOAT2(22.f, 30.f)), sSkillBack, 9.f);
 	m_vecUI.push_back(pUI);
-	pUI = CImageUI::Create(XMLoadFloat2(&XMFLOAT2(397.f, WINSIZEY * 0.82f)), XMLoadFloat2(&XMFLOAT2(30.f, 30.f)), sSkillBack, 9.f);
+	pUI = CImageUI::Create(XMLoadFloat2(&XMFLOAT2(334.f, 786.f)), XMLoadFloat2(&XMFLOAT2(22.f, 30.f)), sSkillBack, 9.f);
 	m_vecUI.push_back(pUI);
 
 	//skill icon
-	pUI = CImageUI::Create(XMLoadFloat2(&XMFLOAT2(217.f, WINSIZEY * 0.82f)), XMLoadFloat2(&XMFLOAT2(23.f, 23.f)), sSkill1, 9.5f);
+	pUI = CImageUI::Create(XMLoadFloat2(&XMFLOAT2(202.f, 786.f)), XMLoadFloat2(&XMFLOAT2(20.f, 28.f)), sSkill1, 9.5f);
 	m_vecUI.push_back(pUI);
-	pUI = CImageUI::Create(XMLoadFloat2(&XMFLOAT2(277.f, WINSIZEY * 0.82f)), XMLoadFloat2(&XMFLOAT2(23.f, 23.f)), sSkill2, 9.5f);
+	pUI = CImageUI::Create(XMLoadFloat2(&XMFLOAT2(246.f, 786.f)), XMLoadFloat2(&XMFLOAT2(20.f, 28.f)), sSkill2, 9.5f);
 	m_vecUI.push_back(pUI);
-	pUI = CImageUI::Create(XMLoadFloat2(&XMFLOAT2(337.f, WINSIZEY * 0.82f)), XMLoadFloat2(&XMFLOAT2(23.f, 23.f)), sSkill3, 9.5f);
+	pUI = CImageUI::Create(XMLoadFloat2(&XMFLOAT2(290.f, 786.f)), XMLoadFloat2(&XMFLOAT2(20.f, 28.f)), sSkill3, 9.5f);
 	m_vecUI.push_back(pUI);
-	pUI = CImageUI::Create(XMLoadFloat2(&XMFLOAT2(397.f, WINSIZEY * 0.82f)), XMLoadFloat2(&XMFLOAT2(23.f, 23.f)), sSkill4, 9.5f);
+	pUI = CImageUI::Create(XMLoadFloat2(&XMFLOAT2(334.f, 786.f)), XMLoadFloat2(&XMFLOAT2(20.f, 28.f)), sSkill4, 9.5f);
 	m_vecUI.push_back(pUI);
 }
 
@@ -614,6 +703,9 @@ void CSCSarasen::CreateBoss2()
 	m_pBoss->SetScale(XMVectorSet(3, 3, 3, 1));
 	UPDATER->GetSpaceContainer()->AddObject(m_pBoss);
 	m_pBoss->GetAnimater()->SetCurAnimationIndex(0);
+
+	m_pBossHPacc->SetRender(true);
+	m_pBossHPUI->SetRender(true);
 }
 
 void CSCSarasen::KillBoss2()
