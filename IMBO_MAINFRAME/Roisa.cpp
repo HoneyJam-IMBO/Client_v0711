@@ -57,6 +57,7 @@ void CRoisa::ShootBlizzard()
 			m_mapSkill[strName][i]->SetPosition(XMVectorSet(m_xmf3Position.x, m_xmf3Position.y, m_xmf3Position.z, 1.f));
 			//m_mapSkill[strName][i]->Rotate(XMMatrixRotationY(m_fAngleY));
 			m_mapSkill[strName][i]->SetActive(true);
+			
 			break;
 		}
 	}

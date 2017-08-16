@@ -450,8 +450,23 @@ void CSCOriTown::NetworkProc(){
 		case PT_PLAYER_HP_SC:
 			PROC_PT_PLAYER_HP_SC(dwProtocol, Packet, dwPacketLength);
 			break;
+		case PT_RANGE_SKILL_INFO_SC:
+			PROC_PT_RANGE_SKILL_INFO_SC(dwProtocol, Packet, dwPacketLength);
+			break;
 		}
 	}
+}
+
+VOID CSCOriTown::PROC_PT_RANGE_SKILL_INFO_SC(DWORD dwProtocol, BYTE * Packet, DWORD dwPacketLength) {
+	READ_PACKET(PT_RANGE_SKILL_INFO_SC);
+
+	//Data.SLOT_ID
+	//Data.Xyz
+
+	NETWORKMGR->GetServerPlayerInfos()[Data.SLOT_ID].CLICK_DATA.fX = Data.X;
+	NETWORKMGR->GetServerPlayerInfos()[Data.SLOT_ID].CLICK_DATA.fY = Data.Y;
+	NETWORKMGR->GetServerPlayerInfos()[Data.SLOT_ID].CLICK_DATA.fZ = Data.Z;
+	return VOID();
 }
 
 

@@ -110,6 +110,8 @@ void CRanger::UpdateSkill()
 			CEffectMgr::GetInstance()->Play_Effect(L"Ranger_sk4_Shoot", XMVectorSet(m_xmf3ClickPos.x, m_xmf3ClickPos.y, m_xmf3ClickPos.z, 1.f),
 				XMVectorSet(0.f, 0.f, 0.f, 0.f), XMVectorSet(1.f, 1.f, 1.f, 1.f));
 
+			BYTE Packet[MAX_BUFFER_LENGTH] = { 0, };
+			NETWORKMGR->WritePacket(PT_RANGE_SKILL_INFO_CS, Packet, WRITE_PT_RANGE_SKILL_INFO_CS(Packet, NETWORKMGR->GetSLOT_ID(), m_xmf3ClickPos.x, m_xmf3ClickPos.y, m_xmf3ClickPos.z));
 			CSoundManager::Play_3Dsound("ranger_skill4", 1, &m_xmf3Position, 5.f, 5.f, 500.f);
 			m_bSelRangeMode = false;
 			pCam->SetFixCamera(true);
@@ -400,6 +402,10 @@ void CRanger::GetServerData(float fTimeElapsed) {
 			break;
 		case ANIM_SKILL4_FIRE:
 			CSoundManager::Play_3Dsound("ranger_skill4", 1, &m_xmf3Position, 5.f, 5.f, 500.f);
+			CEffectMgr::GetInstance()->Play_Effect(L"Ranger_sk4_con", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y + 1.f, m_xmf3Position.z, 1.f),
+				XMVectorSet(0.f, XMConvertToDegrees(m_fAngleY), 0.f, 0.f), XMVectorSet(2.f, 2.f, 0.f, 1.f));
+			CEffectMgr::GetInstance()->Play_Effect(L"Ranger_sk4_Shoot", XMVectorSet(NETWORKMGR->GetServerPlayerInfo(GetSlotID()).CLICK_DATA.fX, NETWORKMGR->GetServerPlayerInfo(GetSlotID()).CLICK_DATA.fY, NETWORKMGR->GetServerPlayerInfo(GetSlotID()).CLICK_DATA.fZ, 1.f),
+				XMVectorSet(0.f, 0.f, 0.f, 0.f), XMVectorSet(1.f, 1.f, 1.f, 1.f));
 			break;
 		case ANIM_DIE:
 			CSoundManager::Play_3Dsound("ranger_die", 1, &m_xmf3Position, 5.f, 5.f, 500.f);
