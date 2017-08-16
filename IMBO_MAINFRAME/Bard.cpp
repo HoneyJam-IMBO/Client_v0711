@@ -66,9 +66,7 @@ void CBard::KeyInput(float fDeltaTime)
 		m_bCollision = true;
 		return;
 	}
-	if(INPUTMGR->KeyDown(VK_G) ){
-		if (m_bStay) m_bStay = false;
-	}
+
 	if (m_bStay) return;
 
 	DWORD dwDirection = 0;
