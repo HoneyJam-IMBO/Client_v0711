@@ -260,14 +260,18 @@ struct BOSS_FREQUENCY_DATA {
 	//bool bJump{ false };
 	INT iAnimNum{ 0 };
 };
-
+struct PLAYER_CLICK_DATA {
+	float fX, fY, fZ;
+};
 struct ServerPlayerInfo {
 	BOOL READY{ 0 };
 	BOOL ACTIONCAM{ 0 };
 	INT CHARACTER{ 0 };
 	//std::queue<PLAYR_FREQUENCY_DATA> m_qFREQUENCY_DATA;
 	PLAYR_FREQUENCY_DATA FREQUENCY_DATA;
+	PLAYER_CLICK_DATA CLICK_DATA;
 	BOOL ATTACK{ false };
+
 	ServerPlayerInfo(INT c) : CHARACTER(c) {}
 };
 

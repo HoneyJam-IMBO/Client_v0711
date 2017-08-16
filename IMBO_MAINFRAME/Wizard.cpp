@@ -74,7 +74,8 @@ void CWizard::UpdateSkill()
 			CSoundManager::Play_3Dsound("wizard_skill4", 1, &m_xmf3Position, 5.f, 5.f, 500.f);
 			CEffectMgr::GetInstance()->Play_Effect(L"Wizard_sk24_shot", XMVectorSet(m_xmf3ClickPos.x, m_xmf3ClickPos.y, m_xmf3ClickPos.z, 1.f),
 				XMVectorSet(0.f, 0.f, 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
-
+			BYTE Packet[MAX_BUFFER_LENGTH] = { 0, };
+			NETWORKMGR->WritePacket(PT_RANGE_SKILL_INFO_CS, Packet, WRITE_PT_RANGE_SKILL_INFO_CS(Packet, NETWORKMGR->GetSLOT_ID(), m_xmf3ClickPos.x, m_xmf3ClickPos.y, m_xmf3ClickPos.z));
 			XMVECTOR xmvClickPos;
 			xmvClickPos = XMLoadFloat3(&m_xmf3ClickPos);
 			XMVECTOR xmvPos = GetPosition();
@@ -389,6 +390,8 @@ void CWizard::GetServerData(float fTimeElapsed)
 				XMVectorSet(0.f, XMConvertToDegrees(m_fAngleY), 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
 			break;
 		case WIZARD_ANIM_SKILL4_FIRE:
+			CEffectMgr::GetInstance()->Play_Effect(L"Wizard_sk24_shot", XMVectorSet(NETWORKMGR->GetServerPlayerInfo(GetSlotID()).CLICK_DATA.fX, NETWORKMGR->GetServerPlayerInfo(GetSlotID()).CLICK_DATA.fY, NETWORKMGR->GetServerPlayerInfo(GetSlotID()).CLICK_DATA.fZ, 1.f),
+				XMVectorSet(0.f, 0.f, 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
 			CSoundManager::Play_3Dsound("wizard_skill4", 1, &m_xmf3Position, 5.f, 5.f, 500.f);
 			break;
 		case WIZARD_ANIM_HIT_F:

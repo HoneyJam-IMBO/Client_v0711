@@ -160,6 +160,18 @@ void CSCOriTown::HPBarProc(){
 	int iMaxHP = m_ppPawn[slot_id]->GetMaxHp();
 	m_pPlayerHPUI->SetCurHPRate((float)iCurHP / (float)iMaxHP);
 
+	//m_pTeamNo1HPUI
+	int iSize = NETWORKMGR->GetServerPlayerInfos().size();
+	for (int i = 0, int j = 0; i < iSize; ++i)
+	{
+		if (i == slot_id) continue;
+
+		int iCurHP = m_ppPawn[j]->GetCurHp();
+		int iMaxHP = m_ppPawn[j]->GetMaxHp();
+		m_pTeamNoHPUI[++j]->SetCurHPRate((float)iCurHP / (float)iMaxHP);
+	}
+	
+
 	if (m_pBoss) {
 		bool bBossDead = m_pBoss->GetAnimater()->GetCurAnimationIndex() == BOSS1_ANI_DIE || m_pBoss->GetAnimater()->GetCurAnimationIndex() == BOSS1_ANI_DYING;
 		float fCurBossHPLength = m_pBossHPUI->GetCurHPLength();
@@ -451,8 +463,23 @@ void CSCOriTown::NetworkProc(){
 		case PT_PLAYER_HP_SC:
 			PROC_PT_PLAYER_HP_SC(dwProtocol, Packet, dwPacketLength);
 			break;
+		case PT_RANGE_SKILL_INFO_SC:
+			PROC_PT_RANGE_SKILL_INFO_SC(dwProtocol, Packet, dwPacketLength);
+			break;
 		}
 	}
+}
+
+VOID CSCOriTown::PROC_PT_RANGE_SKILL_INFO_SC(DWORD dwProtocol, BYTE * Packet, DWORD dwPacketLength) {
+	READ_PACKET(PT_RANGE_SKILL_INFO_SC);
+
+	//Data.SLOT_ID
+	//Data.Xyz
+
+	NETWORKMGR->GetServerPlayerInfos()[Data.SLOT_ID].CLICK_DATA.fX = Data.X;
+	NETWORKMGR->GetServerPlayerInfos()[Data.SLOT_ID].CLICK_DATA.fY = Data.Y;
+	NETWORKMGR->GetServerPlayerInfos()[Data.SLOT_ID].CLICK_DATA.fZ = Data.Z;
+	return VOID();
 }
 
 
@@ -561,6 +588,8 @@ void CSCOriTown::CreateBoss1()
 	m_pBoss->SetFirstAction(true);
 	m_pBoss->SetAnimNum(BOSS1_ANI_SKILL2);
 	m_pBoss->GetAnimater()->SetCurAnimationIndex(BOSS1_ANI_SKILL2);
+	m_pBossHPUI->SetRender(true);
+	m_pBossHPacc->SetRender(true);
 }
 
 void CSCOriTown::KillBoss1(){
@@ -706,23 +735,21 @@ void CSCOriTown::LoadSkillObjects()
 void CSCOriTown::CreateUI()
 {
 	//RCSELLER->TestingRCAdd();
-	CUIObject* pUI = CImageUI::Create(XMLoadFloat2(&XMFLOAT2(WINSIZEX * 0.5f, WINSIZEY * 0.1f)), XMLoadFloat2(&XMFLOAT2(45.f, 65.f)), "Boss_Icon", 9.f);
-	m_vecUI.push_back(pUI);
+	CUIObject* pUI;
+	m_pBossHPacc = CImageUI::Create(XMLoadFloat2(&XMFLOAT2(WINSIZEX * 0.5f, WINSIZEY * 0.1f)), XMLoadFloat2(&XMFLOAT2(45.f, 65.f)), "Boss_Icon", 9.f);
+	m_vecUI.push_back(m_pBossHPacc);
 
 	m_pPlayerHPUI = CHpBar::Create(XMLoadFloat2(&XMFLOAT2(312.f, 745.f)), XMLoadFloat2(&XMFLOAT2(132.f, 8.f)));
 	m_vecUI.push_back(m_pPlayerHPUI);
 	m_pBossHPUI = CHpBar::Create(XMLoadFloat2(&XMFLOAT2(WINSIZEX * 0.5f, WINSIZEY * 0.1f)), XMLoadFloat2(&XMFLOAT2(200.f, 10.f)));
 	m_vecUI.push_back(m_pBossHPUI);
+	m_pBossHPUI->SetRender(false);
 
-	pUI = CHpBar::Create(XMLoadFloat2(&XMFLOAT2(WINSIZEX * 0.12f, WINSIZEY * 0.25f)), XMLoadFloat2(&XMFLOAT2(60.f, 5.f)));
-	m_vecUI.push_back(pUI);
+	m_pTeamNoHPUI[0] = CHpBar::Create(XMLoadFloat2(&XMFLOAT2(WINSIZEX * 0.12f, WINSIZEY * 0.25f)), XMLoadFloat2(&XMFLOAT2(60.f, 5.f)));
+	m_vecUI.push_back(m_pTeamNoHPUI[0]);
 
-	pUI = CHpBar::Create(XMLoadFloat2(&XMFLOAT2(WINSIZEX * 0.12f, WINSIZEY * 0.3f)), XMLoadFloat2(&XMFLOAT2(60.f, 5.f)));
-	m_vecUI.push_back(pUI);
-
-	pUI = CHpBar::Create(XMLoadFloat2(&XMFLOAT2(WINSIZEX * 0.12f, WINSIZEY * 0.35f)), XMLoadFloat2(&XMFLOAT2(60.f, 5.f)));
-	m_vecUI.push_back(pUI);
-
+	m_pTeamNoHPUI[1] = CHpBar::Create(XMLoadFloat2(&XMFLOAT2(WINSIZEX * 0.12f, WINSIZEY * 0.3f)), XMLoadFloat2(&XMFLOAT2(60.f, 5.f)));
+	m_vecUI.push_back(m_pTeamNoHPUI[1]);
 	
 
 

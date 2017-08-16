@@ -25,6 +25,7 @@ public:
 
 	//network
 	void NetworkProc();
+	VOID PROC_PT_RANGE_SKILL_INFO_SC(DWORD dwProtocol, BYTE * Packet, DWORD dwPacketLength);
 	VOID PROC_PT_ALDENARD_READY_SC(DWORD dwProtocol, BYTE * Packet, DWORD dwPacketLength);
 	
 	//주기적 위치 동기화
@@ -45,6 +46,10 @@ private:
 	void CreateUI();
 
 	bool m_bGameStart{ false };
+
+private:
+	CHpBar* m_pTeamNo1HPUI;
+	CHpBar* m_pTeamNo2HPUI;
 
 private:
 	CGameObject** m_ppPawn{ nullptr };
