@@ -214,9 +214,9 @@ void CSCOriTown::Animate(float fTimeElapsed) {
 		m_fResultAccTime += fTimeElapsed;
 		if (m_fResultAccTime > 3.f)
 		{
-			NETWORKMGR->End();
-			CSceneMgr::GetInstance()->ChangeScene(SCN_TITLE);
-			return;
+			//NETWORKMGR->End();
+			//CSceneMgr::GetInstance()->ChangeScene(SCN_TITLE);
+			//return;
 		}
 	}
 
