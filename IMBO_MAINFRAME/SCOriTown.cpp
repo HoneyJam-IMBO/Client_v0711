@@ -165,6 +165,10 @@ void CSCOriTown::HPBarProc(){
 	int iCheckAlldie = 0;
 	for (int i = 0, j = 0; i < iSize; ++i, ++j)
 	{
+		if (m_ppPawn[i]->GetCurHp() <= 0.f)
+		{
+			++iCheckAlldie;
+		}
 		if (i == slot_id) continue;
 
 		int iCurHP = m_ppPawn[j]->GetCurHp();

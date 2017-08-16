@@ -374,7 +374,7 @@ void CLoading::LoadScene_BOSS()
 	CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/boss2_sk2_expefc.dat", L"boss2_sk2_expefc", 40);
 	CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/boss2_sk2_efc.dat", L"boss2_sk2_efc", 40);
 	CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/Boss2_sk3_iceSmoke.dat", L"Boss2_sk3_iceSmoke", 40);
-
+	
 	LoadScene("../../Assets/SceneResource/Sarasen/Sarasen.scn");
 
 	RESOURCEMGR->CreateTexture("UI_Game_Clear", _T("../../Assets/Game_UI/UI_Game_Clear.png"), PS_TEXTURE, BIND_PS);
