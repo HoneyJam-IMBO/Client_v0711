@@ -18,6 +18,9 @@ void CWizard::Animate(float fTimeElapsed)
 	}
 	else	GetServerData(fTimeElapsed);
 
+	//점프
+	if (true == m_bJump)	Jumping(fTimeElapsed);
+
 	// 애니메이션 업데이트함수
 	if (m_pAnimater) m_pAnimater->Update(TIMEMGR->GetTimeElapsed());
 
@@ -68,6 +71,7 @@ void CWizard::UpdateSkill()
 			m_nAnimNum = WIZARD_ANIM_SKILL4_FIRE;
 			m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
 
+			CSoundManager::Play_3Dsound("wizard_skill4", 1, &m_xmf3Position, 5.f, 5.f, 500.f);
 			CEffectMgr::GetInstance()->Play_Effect(L"Wizard_sk24_shot", XMVectorSet(m_xmf3ClickPos.x, m_xmf3ClickPos.y, m_xmf3ClickPos.z, 1.f),
 				XMVectorSet(0.f, 0.f, 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
 
@@ -185,6 +189,7 @@ void CWizard::KeyInput(float fDeltaTime)
 			m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
 
 			if (m_bSelRangeMode == false) {
+				CSoundManager::Play_3Dsound("wizard_attack", 1, &m_xmf3Position, 5.f, 5.f, 500.f);
 				CEffectMgr::GetInstance()->Play_Effect(L"Wizard_Shot", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y + 3.f, m_xmf3Position.z, 1.f),
 					XMVectorSet(0.f, XMConvertToDegrees(m_fAngleY), 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
 
@@ -196,6 +201,7 @@ void CWizard::KeyInput(float fDeltaTime)
 			m_nAnimNum = WIZARD_ANIM_SKILL1_FIRE;
 			m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
 
+			CSoundManager::Play_3Dsound("wizard_skill1", 1, &m_xmf3Position, 5.f, 5.f, 500.f);
 			CEffectMgr::GetInstance()->Play_Effect(L"Wizard_sk1_con", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y, m_xmf3Position.z, 1.f),
 				XMVectorSet(0.f, 0.f, 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
 
@@ -206,6 +212,7 @@ void CWizard::KeyInput(float fDeltaTime)
 			m_nAnimNum = WIZARD_ANIM_SKILL2_FIRE;
 			m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
 
+			CSoundManager::Play_3Dsound("wizard_skill2", 1, &m_xmf3Position, 5.f, 5.f, 500.f);
 			CEffectMgr::GetInstance()->Play_Effect(L"Wizard_sk24_shot", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y, m_xmf3Position.z, 1.f),
 				XMVectorSet(0.f, 0.f, 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
 
@@ -216,7 +223,7 @@ void CWizard::KeyInput(float fDeltaTime)
 			m_nAnimNum = WIZARD_ANIM_SKILL3_START;
 			m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
 
-
+			CSoundManager::Play_3Dsound("wizard_skill3", 1, &m_xmf3Position, 5.f, 5.f, 500.f);
 			ShootArrow(false, 0.f);
 			ShootArrow(false, 25.f);
 			ShootArrow(false, -25.f);
@@ -285,6 +292,16 @@ void CWizard::KeyInput(float fDeltaTime)
 		Move(XMVector3Normalize(m_xmvShift), (m_fSpeed * fSpdX) * fDeltaTime);
 
 		m_bIdle = false;
+
+		//walk effect
+		if (!m_bJump) {
+			m_fWalkEffectTime += fDeltaTime;
+			if (m_fWalkEffectTime > 0.15f) {
+				CEffectMgr::GetInstance()->Play_Effect(L"walk_dust", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y + 0.5f, m_xmf3Position.z, 1.f),
+					XMVectorSet(0.f, 0.f, 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
+				m_fWalkEffectTime = 0.f;
+			}
+		}
 	}
 	else {
 		if (false == m_bJump) {
@@ -294,8 +311,8 @@ void CWizard::KeyInput(float fDeltaTime)
 			}
 		}
 	}
-	//점프
-	if (true == m_bJump)	Jumping(fDeltaTime);
+	////점프
+	//if (true == m_bJump)	Jumping(fDeltaTime);
 
 #ifdef NO_SERVER
 	return;
@@ -345,29 +362,40 @@ void CWizard::GetServerData(float fTimeElapsed)
 	if (m_pAnimater->SetCurAnimationIndex(m_nAnimNum)) {
 		switch (m_nAnimNum) {
 		case WIZARD_ANIM_ATTACK:
+			CSoundManager::Play_3Dsound("wizard_attack", 1, &m_xmf3Position, 5.f, 5.f, 500.f);
 			CEffectMgr::GetInstance()->Play_Effect(L"Wizard_Shot", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y + 3.f, m_xmf3Position.z, 1.f),
 				XMVectorSet(0.f, XMConvertToDegrees(m_fAngleY), 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
 
 			ShootArrow(false);
 			break;
 		case WIZARD_ANIM_SKILL1_FIRE:
+			CSoundManager::Play_3Dsound("wizard_skill1", 1, &m_xmf3Position, 5.f, 5.f, 500.f);
 			CEffectMgr::GetInstance()->Play_Effect(L"Wizard_sk1_con", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y, m_xmf3Position.z, 1.f),
 				XMVectorSet(0.f, 0.f, 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
 			break;
 		case WIZARD_ANIM_SKILL2_FIRE:
+			CSoundManager::Play_3Dsound("wizard_skill2", 1, &m_xmf3Position, 5.f, 5.f, 500.f);
 			CEffectMgr::GetInstance()->Play_Effect(L"Wizard_sk24_shot", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y, m_xmf3Position.z, 1.f),
 				XMVectorSet(0.f, 0.f, 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
 			break;
 		case WIZARD_ANIM_SKILL3_START:
+			CSoundManager::Play_3Dsound("wizard_skill3", 1, &m_xmf3Position, 5.f, 5.f, 500.f);
 			ShootArrow(false, 0.f);
 			ShootArrow(false, 25.f);
 			ShootArrow(false, -25.f);
 			CEffectMgr::GetInstance()->Play_Effect(L"Wizard_sk3_con", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y + 3.f, m_xmf3Position.z, 1.f),
 				XMVectorSet(0.f, XMConvertToDegrees(m_fAngleY), 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
 			break;
+		case WIZARD_ANIM_SKILL4_FIRE:
+			CSoundManager::Play_3Dsound("wizard_skill4", 1, &m_xmf3Position, 5.f, 5.f, 500.f);
+			break;
 		case WIZARD_ANIM_HIT_F:
+			CSoundManager::Play_3Dsound("wizard_hurt", 1, &m_xmf3Position, 5.f, 5.f, 500.f);
 			CEffectMgr::GetInstance()->Play_Effect(L"TestBlood", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y + 2.f, m_xmf3Position.z, 1.f),
 				XMVectorSet(0.f, 0.f, 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
+			break;
+		case WIZARD_ANIM_DIE:
+			CSoundManager::Play_3Dsound("wizard_die", 1, &m_xmf3Position, 5.f, 5.f, 500.f);
 			break;
 		default:
 			break;
@@ -621,6 +649,7 @@ bool CWizard::GetDemaged(int iDemage) {
 		XMVectorSet(0.f, 0.f, 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
 
 	m_nAnimNum = WIZARD_ANIM_HIT_F;
+	CSoundManager::Play_3Dsound("wizard_hurt", 1, &m_xmf3Position, 5.f, 5.f, 500.f);
 	m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
 
 #ifdef NO_SERVER
@@ -631,6 +660,7 @@ bool CWizard::GetDemaged(int iDemage) {
 
 	if (m_iCurHP <= 0) {
 		m_nAnimNum = WIZARD_ANIM_DIE;
+		CSoundManager::Play_3Dsound("wizard_die", 1, &m_xmf3Position, 5.f, 5.f, 500.f);
 		m_pAnimater->SetCurAnimationIndex(WIZARD_ANIM_DIE);
 	}
 

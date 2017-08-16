@@ -109,13 +109,13 @@ void CSoundManager::Begin()
 	Add_3Dsound("../../Assets/Sound/game/c4_wizard/wizard_skill4.wav", "wizard_skill4", FMOD_LOOP_OFF | FMOD_3D_LINEARROLLOFF);
 
 	//bard
-	Add_3Dsound("../../Assets/Sound/game/c4_bard/bard_attack.wav", "bard_attack", FMOD_LOOP_OFF | FMOD_3D_LINEARROLLOFF);
-	Add_3Dsound("../../Assets/Sound/game/c4_bard/bard_die.wav", "bard_die", FMOD_LOOP_OFF | FMOD_3D_LINEARROLLOFF);
-	Add_3Dsound("../../Assets/Sound/game/c4_bard/bard_hurt.wav", "bard_hurt", FMOD_LOOP_OFF | FMOD_3D_LINEARROLLOFF);
-	Add_3Dsound("../../Assets/Sound/game/c4_bard/bard_skill1.wav", "bard_skill1", FMOD_LOOP_OFF | FMOD_3D_LINEARROLLOFF);
-	Add_3Dsound("../../Assets/Sound/game/c4_bard/bard_skill2.wav", "bard_skill2", FMOD_LOOP_OFF | FMOD_3D_LINEARROLLOFF);
-	Add_3Dsound("../../Assets/Sound/game/c4_bard/bard_skill3.wav", "bard_skill3", FMOD_LOOP_OFF | FMOD_3D_LINEARROLLOFF);
-	Add_3Dsound("../../Assets/Sound/game/c4_bard/bard_skill4.wav", "bard_skill4", FMOD_LOOP_OFF | FMOD_3D_LINEARROLLOFF);
+	Add_3Dsound("../../Assets/Sound/game/c5_bard/bard_attack.wav", "bard_attack", FMOD_LOOP_OFF | FMOD_3D_LINEARROLLOFF);
+	Add_3Dsound("../../Assets/Sound/game/c5_bard/bard_die.wav", "bard_die", FMOD_LOOP_OFF | FMOD_3D_LINEARROLLOFF);
+	Add_3Dsound("../../Assets/Sound/game/c5_bard/bard_hurt.wav", "bard_hurt", FMOD_LOOP_OFF | FMOD_3D_LINEARROLLOFF);
+	Add_3Dsound("../../Assets/Sound/game/c5_bard/bard_skill1.wav", "bard_skill1", FMOD_LOOP_OFF | FMOD_3D_LINEARROLLOFF);
+	Add_3Dsound("../../Assets/Sound/game/c5_bard/bard_skill2.wav", "bard_skill2", FMOD_LOOP_OFF | FMOD_3D_LINEARROLLOFF);
+	Add_3Dsound("../../Assets/Sound/game/c5_bard/bard_skill3.wav", "bard_skill3", FMOD_LOOP_OFF | FMOD_3D_LINEARROLLOFF);
+	Add_3Dsound("../../Assets/Sound/game/c5_bard/bard_skill4.wav", "bard_skill4", FMOD_LOOP_OFF | FMOD_3D_LINEARROLLOFF);
 
 	//other masic eff
 	Add_3Dsound("../../Assets/Sound/game/other_eff/magic_healing_accept.wav", "magic_healing_accept", FMOD_LOOP_OFF | FMOD_3D_LINEARROLLOFF);

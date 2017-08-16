@@ -67,6 +67,7 @@ void CDirectXFramework::Update(float fTimeElapsed) {
 			UPDATER->PreUpdate(fTimeElapsed);
 		}
 
+		CSoundManager::Update();
 		SCENEMGR->GetPresentScene()->Animate(fTimeElapsed);
 		if (false == SCENEMGR->GetPresentScene()->GetIsLoading())
 		{
@@ -138,9 +139,8 @@ void CDirectXFramework::InitSingleton(HINSTANCE hInstance, HWND hWnd)
 	CSoundManager::Begin();
 
 #ifdef NO_SERVER
-	NETWORKMGR->GetServerPlayerInfos()[NETWORKMGR->GetSLOT_ID()].CHARACTER = 3;
-	SCENEMGR->ChangeScene(SCN_ORITOWN);
-	//SCENEMGR->ChangeScene(SCN_ALDENAD);
+	NETWORKMGR->GetServerPlayerInfos()[NETWORKMGR->GetSLOT_ID()].CHARACTER = 5;
+	SCENEMGR->ChangeScene(SCN_ORITOWN);	//SCENEMGR->ChangeScene(SCN_ALDENAD);
 	//SCENEMGR->ChangeScene(SCN_BOSS);
 	//SCENEMGR->ChangeScene(SCN_TITLE);
 	return;

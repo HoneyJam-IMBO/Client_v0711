@@ -28,6 +28,9 @@ private:
 	float m_fMaxHPLength{ 1.f };
 	float m_fCurHPLength{ 0.f };
 	float m_fHPDownSpeed{ 1.f };
+
+	float m_fInitPosX{ 0.f };
+	float m_fInitSizeX{ 0.f };
 public:
 	void	SetID(int nID) { m_nID = nID; }
 	int		GetID() { return m_nID; }
@@ -41,4 +44,5 @@ public:
 private:
 	void	SetParameter();
 };
+
 

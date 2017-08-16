@@ -19,6 +19,9 @@ void CRanger::Animate(float fTimeElapsed)
 			KeyInput(fTimeElapsed); //KeyInput(fTimeElapsed);
 	}
 	else	GetServerData(fTimeElapsed);
+
+	//점프
+	if (true == m_bJump)	Jumping(fTimeElapsed);
 	
 	// 애니메이션 업데이트함수
 	if (m_pAnimater) m_pAnimater->Update(TIMEMGR->GetTimeElapsed());
@@ -304,7 +307,7 @@ void CRanger::KeyInput(float fDeltaTime)
 		if (!m_bJump) {
 			m_fWalkEffectTime += fDeltaTime;
 			if (m_fWalkEffectTime > 0.15f) {
-				CEffectMgr::GetInstance()->Play_Effect(L"walk_dust", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y + 0.3f, m_xmf3Position.z, 1.f),
+				CEffectMgr::GetInstance()->Play_Effect(L"walk_dust", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y + 0.5f, m_xmf3Position.z, 1.f),
 					XMVectorSet(0.f, 0.f, 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
 				m_fWalkEffectTime = 0.f;
 			}
@@ -318,8 +321,7 @@ void CRanger::KeyInput(float fDeltaTime)
 			}
 		}
 	}
-	//점프
-	if (true == m_bJump)	Jumping(fDeltaTime);
+	
 
 #ifdef NO_SERVER
 	return;
@@ -389,8 +391,7 @@ void CRanger::GetServerData(float fTimeElapsed) {
 				XMVectorSet(0.f, 0.f, 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
 			break;
 		case ANIM_HIT_F:
-			CSoundManager::Play_3Dsound("ranger_hurt", 1, &m_xmf3Position, 5.f, 5.f, 500.f);
-			CEffectMgr::GetInstance()->Play_Effect(L"TestBlood", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y + 2.f, m_xmf3Position.z, 1.f),
+			CEffectMgr::GetInstance()->Play_Effect(L"blood2", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y + 2.f, m_xmf3Position.z, 1.f),
 				XMVectorSet(0.f, 0.f, 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
 			break;
 		case ANIM_SKILL4_FIRE:
@@ -594,6 +595,10 @@ void CRanger::PhisicsLogic(map<utag, list<CGameObject*>>& mlpObject, float fDelt
 #endif
 				//pPlayer->GetHeal(m_iAttack);
 				//m_bCollision = true;
+				XMFLOAT3 xmf3pPos;
+				XMStoreFloat3(&xmf3pPos, pPlayer->GetPosition());
+				CEffectMgr::GetInstance()->Play_Effect(L"Heal", XMVectorSet(xmf3pPos.x, xmf3pPos.y + 2.f, xmf3pPos.z, 1.f),
+					XMVectorSet(0.f, 0.f, 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
 			}
 			break;
 		default:
@@ -608,6 +613,10 @@ void CRanger::PhisicsLogic(map<utag, list<CGameObject*>>& mlpObject, float fDelt
 				pPlayer->GetHeal(m_iAttack);
 	#else
 				TransferCollisioinData(pPlayer->GetSlotID(), 1);
+				XMFLOAT3 xmf3pPos;
+				XMStoreFloat3(&xmf3pPos, pPlayer->GetPosition());
+				CEffectMgr::GetInstance()->Play_Effect(L"Heal", XMVectorSet(xmf3pPos.x, xmf3pPos.y + 2.f, xmf3pPos.z, 1.f),
+					XMVectorSet(0.f, 0.f, 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
 	#endif
 				m_bCollision = true;
 			}
@@ -656,7 +665,7 @@ bool CRanger::GetDemaged(int iDemage) {
 			return false;//죽고있으면 충돌처리 하지 않음
 		}
 		m_bDamaged = true;
-		CEffectMgr::GetInstance()->Play_Effect(L"TestBlood", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y + 2.f, m_xmf3Position.z, 1.f),
+		CEffectMgr::GetInstance()->Play_Effect(L"blood2", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y + 2.f, m_xmf3Position.z, 1.f),
 			XMVectorSet(0.f, 0.f, 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
 
 		m_nAnimNum = ANIM_HIT_F;

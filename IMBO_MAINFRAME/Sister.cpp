@@ -18,6 +18,9 @@ void CSister::Animate(float fTimeElapsed)
 	}
 	else	GetServerData(fTimeElapsed);
 
+	//점프
+	if (true == m_bJump)	Jumping(fTimeElapsed);
+
 	// 애니메이션 업데이트함수
 	if (m_pAnimater) m_pAnimater->Update(TIMEMGR->GetTimeElapsed());
 
@@ -94,6 +97,7 @@ void CSister::KeyInput(float fDeltaTime)
 			m_nAnimNum = SISTER_ANIM_ATTACK;
 			m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
 			RENDERER->SetRadialBlurTime(true, 0.4f);
+			CSoundManager::Play_3Dsound("sister_attack", 1, &m_xmf3Position, 5.f, 5.f, 500.f);
 			ResetCollisionValue(XMFLOAT3(0, 0, 3), 0.f, 0.8f, 2.f);
 			//CEffectMgr::GetInstance()->Play_Effect(L"Arrow_Skill1Shot", this);			
 		}
@@ -101,7 +105,7 @@ void CSister::KeyInput(float fDeltaTime)
 			m_bSkill = true;
 			m_nAnimNum = SISTER_ANIM_SKILL1_FIRE;
 			m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
-
+			CSoundManager::Play_3Dsound("sister_skill1", 1, &m_xmf3Position, 5.f, 5.f, 500.f);
 			CEffectMgr::GetInstance()->Play_Effect(L"sister_skill1", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y + 1.f, m_xmf3Position.z, 1.f),
 				XMVectorSet(0.f, XMConvertToDegrees(m_fAngleY), 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
 			ResetCollisionValue(XMFLOAT3(0,0,0), 1.f, 2.0f, 8.f);
@@ -110,7 +114,7 @@ void CSister::KeyInput(float fDeltaTime)
 			m_bSkill = true;
 			m_nAnimNum = SISTER_ANIM_SKILL2_FIRE;
 			m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
-
+			CSoundManager::Play_3Dsound("sister_skill2", 1, &m_xmf3Position, 5.f, 5.f, 500.f);
 			CEffectMgr::GetInstance()->Play_Effect(L"sister_skill2", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y + 1.f, m_xmf3Position.z, 1.f),
 				XMVectorSet(0.f, XMConvertToDegrees(m_fAngleY), 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
 			ResetCollisionValue(XMFLOAT3(0, 0, 0), 1.f, 2.0f, 8.f);
@@ -119,7 +123,7 @@ void CSister::KeyInput(float fDeltaTime)
 			m_bSkill = true;
 			m_nAnimNum = SISTER_ANIM_SKILL3_CHARGING;
 			m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
-
+			CSoundManager::Play_3Dsound("sister_skill3", 1, &m_xmf3Position, 5.f, 5.f, 500.f);
 			CEffectMgr::GetInstance()->Play_Effect(L"sister_skill3", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y + 1.f, m_xmf3Position.z, 1.f),
 				XMVectorSet(0.f, XMConvertToDegrees(m_fAngleY), 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
 			
@@ -128,7 +132,7 @@ void CSister::KeyInput(float fDeltaTime)
 			m_bSkill = true;
 			m_nAnimNum = SISTER_ANIM_SKILL4_FIRE;
 			m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
-
+			CSoundManager::Play_3Dsound("sister_skill4", 1, &m_xmf3Position, 5.f, 5.f, 500.f);
 			CEffectMgr::GetInstance()->Play_Effect(L"sister_skill4", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y + 1.f, m_xmf3Position.z, 1.f),
 				XMVectorSet(0.f, XMConvertToDegrees(m_fAngleY), 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
 			ResetCollisionValue(XMFLOAT3(0, 0, 0), 0.5f, 1.2f, 8.f);
@@ -187,6 +191,16 @@ void CSister::KeyInput(float fDeltaTime)
 		Move(XMVector3Normalize(m_xmvShift), (m_fSpeed * fSpdX) * fDeltaTime);
 
 		m_bIdle = false;
+
+		//walk effect
+		if (!m_bJump) {
+			m_fWalkEffectTime += fDeltaTime;
+			if (m_fWalkEffectTime > 0.15f) {
+				CEffectMgr::GetInstance()->Play_Effect(L"walk_dust", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y + 0.5f, m_xmf3Position.z, 1.f),
+					XMVectorSet(0.f, 0.f, 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
+				m_fWalkEffectTime = 0.f;
+			}
+		}
 	}
 	else {
 		if (false == m_bJump) {
@@ -196,8 +210,8 @@ void CSister::KeyInput(float fDeltaTime)
 			}
 		}
 	}
-	//점프
-	if (true == m_bJump)	Jumping(fDeltaTime);
+	////점프
+	//if (true == m_bJump)	Jumping(fDeltaTime);
 
 #ifdef NO_SERVER
 	return;
@@ -248,24 +262,38 @@ void CSister::GetServerData(float fTimeElapsed)
 	if (m_pAnimater->SetCurAnimationIndex(m_nAnimNum)) {
 		switch (m_nAnimNum) {
 		case SISTER_ANIM_SKILL1_FIRE:
+			CSoundManager::Play_3Dsound("sister_skill1", 1, &m_xmf3Position, 5.f, 5.f, 500.f);
 			CEffectMgr::GetInstance()->Play_Effect(L"sister_skill1", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y + 1.f, m_xmf3Position.z, 1.f),
 				XMVectorSet(0.f, XMConvertToDegrees(m_fAngleY), 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
 			break;
 		case SISTER_ANIM_SKILL2_FIRE:
+			CSoundManager::Play_3Dsound("sister_skill2", 1, &m_xmf3Position, 5.f, 5.f, 500.f);
 			CEffectMgr::GetInstance()->Play_Effect(L"sister_skill2", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y + 1.f, m_xmf3Position.z, 1.f),
 				XMVectorSet(0.f, XMConvertToDegrees(m_fAngleY), 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
 			break;
 		case SISTER_ANIM_SKILL3_CHARGING:
+			CSoundManager::Play_3Dsound("sister_skill3", 1, &m_xmf3Position, 5.f, 5.f, 500.f);
 			CEffectMgr::GetInstance()->Play_Effect(L"sister_skill3", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y + 1.f, m_xmf3Position.z, 1.f),
 				XMVectorSet(0.f, XMConvertToDegrees(m_fAngleY), 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
 			break;
+		case SISTER_ANIM_SKILL3_FIRE:
+			CSoundManager::Play_3Dsound("sister_skill1", 1, &m_xmf3Position, 5.f, 5.f, 500.f);
+			break;
 		case SISTER_ANIM_SKILL4_FIRE:
+			CSoundManager::Play_3Dsound("sister_skill4", 1, &m_xmf3Position, 5.f, 5.f, 500.f);
 			CEffectMgr::GetInstance()->Play_Effect(L"sister_skill4", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y + 1.f, m_xmf3Position.z, 1.f),
 				XMVectorSet(0.f, XMConvertToDegrees(m_fAngleY), 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
 			break;
 		case SISTER_ANIM_HIT_F:
+			CSoundManager::Play_3Dsound("sister_hurt", 1, &m_xmf3Position, 5.f, 5.f, 500.f);
 			CEffectMgr::GetInstance()->Play_Effect(L"TestBlood", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y + 2.f, m_xmf3Position.z, 1.f),
 				XMVectorSet(0.f, 0.f, 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
+			break;
+		case SISTER_ANIM_ATTACK:
+			CSoundManager::Play_3Dsound("sister_attack", 1, &m_xmf3Position, 5.f, 5.f, 500.f);
+			break;
+		case SISTER_ANIM_DIE:
+			CSoundManager::Play_3Dsound("sister_die", 1, &m_xmf3Position, 5.f, 5.f, 500.f);
 			break;
 		default:
 			break;
@@ -413,6 +441,7 @@ void CSister::UpdateSkill()
 		if (true == m_pAnimater->GetCurAnimationInfo()->GetLoopDone()) {
 			m_nAnimNum = SISTER_ANIM_SKILL3_FIRE;
 			m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
+			CSoundManager::Play_3Dsound("sister_skill1", 1, &m_xmf3Position, 5.f, 5.f, 500.f);
 			ResetCollisionValue(XMFLOAT3(0, 0, 0), 0.f, 1.0f, 8.f);
 		}
 		return;
@@ -576,8 +605,6 @@ void CSister::PhisicsLogic(map<utag, list<CGameObject*>>& mlpObject, float fDelt
 #else
 				TransferCollisioinData(5, 0);
 #endif
-				
-				
 				pBoss->SetRimLight();
 				m_bCollision = true;
 			}
@@ -609,6 +636,7 @@ bool CSister::GetDemaged(int iDemage) {
 	CEffectMgr::GetInstance()->Play_Effect(L"TestBlood", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y + 2.f, m_xmf3Position.z, 1.f),
 		XMVectorSet(0.f, 0.f, 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
 
+	CSoundManager::Play_3Dsound("sister_hurt", 1, &m_xmf3Position, 5.f, 5.f, 500.f);
 	m_nAnimNum = SISTER_ANIM_HIT_F;
 	m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
 
@@ -619,6 +647,7 @@ bool CSister::GetDemaged(int iDemage) {
 #endif
 
 	if (m_iCurHP <= 0) {
+		CSoundManager::Play_3Dsound("sister_die", 1, &m_xmf3Position, 5.f, 5.f, 500.f);
 		m_nAnimNum = SISTER_ANIM_DIE;
 		m_pAnimater->SetCurAnimationIndex(SISTER_ANIM_DIE);
 	}

@@ -19,6 +19,9 @@ void CKnight::Animate(float fTimeElapsed)
 	}
 	else	GetServerData(fTimeElapsed);
 
+	//점프
+	if (true == m_bJump)	Jumping(fTimeElapsed);
+
 	// 애니메이션 업데이트함수
 	if (m_pAnimater) m_pAnimater->Update(TIMEMGR->GetTimeElapsed());
 
@@ -84,14 +87,8 @@ void CKnight::KeyInput(float fDeltaTime)
 #else
 
 #endif
-	if (GetAsyncKeyState(VK_SHIFT))
-	{
-		m_fSpeed = 50.f;
-	}
-	else
-	{
-		m_fSpeed = 10.f;
-	}
+	if (GetAsyncKeyState(VK_SHIFT)){m_fSpeed = 50.f;}
+	else{	m_fSpeed = 10.f;}
 
 	if (m_bSkill)	m_pCamera->AttackStartZoomInOut(true);
 	else			m_pCamera->AttackStartZoomInOut(false);
@@ -201,6 +198,16 @@ void CKnight::KeyInput(float fDeltaTime)
 		Move(XMVector3Normalize(m_xmvShift), (m_fSpeed * fSpdX) * fDeltaTime);
 
 		m_bIdle = false;
+
+		//walk effect
+		if (!m_bJump) {
+			m_fWalkEffectTime += fDeltaTime;
+			if (m_fWalkEffectTime > 0.15f) {
+				CEffectMgr::GetInstance()->Play_Effect(L"walk_dust", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y + 0.5f, m_xmf3Position.z, 1.f),
+					XMVectorSet(0.f, 0.f, 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
+				m_fWalkEffectTime = 0.f;
+			}
+		}
 	}
 	else {
 		if (false == m_bJump) {
@@ -210,8 +217,8 @@ void CKnight::KeyInput(float fDeltaTime)
 			}
 		}
 	}
-	//점프
-	if (true == m_bJump)	Jumping(fDeltaTime);
+	////점프
+	//if (true == m_bJump)	Jumping(fDeltaTime);
 
 
 #ifdef NO_SERVER
@@ -274,6 +281,8 @@ void CKnight::GetServerData(float fTimeElapsed)
 			CSoundManager::Play_3Dsound("knight_skill1", 1, &m_xmf3Position, 5.f, 5.f, 500.f);
 			CEffectMgr::GetInstance()->Play_Effect(L"Knight_sk1_con", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y + 1.f, m_xmf3Position.z, 1.f),
 				XMVectorSet(0.f, 0.f, 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
+
+			m_pWeaponTrail->PlayOnKnightSkill1();
 			break;
 		case KNIGHT_ANIM_SKILL2_FIRE:
 			CSoundManager::Play_3Dsound("knight_skill2", 1, &m_xmf3Position, 5.f, 5.f, 500.f);
@@ -423,7 +432,6 @@ void CKnight::SetWeapon()
 		m_pWeaponTrail->SetStartPos(XMLoadFloat4(&xmStart), XMLoadFloat4(&xmEnd));
 		m_pWeaponTrail->Update(m_fTime);
 		m_pWeaponTrail->SetRenderSwitch(m_bSkill);
-
 		//void GetMainBoundingBox(BoundingBox& out);
 	}
 

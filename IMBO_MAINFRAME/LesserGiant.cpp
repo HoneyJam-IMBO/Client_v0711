@@ -71,7 +71,7 @@ void CLesserGiant::Animate(float fTimeElapsed)
 		SetPositionServer(XMVectorSet(data.fPosX, data.fPosY, data.fPosZ, 1.0f));
 		SetRotation(XMMatrixRotationY(data.fAngleY));
 
-
+		m_nAnimNum = data.iAnimNum;
 		if (m_pAnimater->SetCurAnimationIndex(data.iAnimNum)) {
 			switch (data.iAnimNum) {
 			case BOSS1_ANI_SKILL1:
@@ -153,6 +153,7 @@ void CLesserGiant::PhisicsLogic(map<utag, list<CGameObject*>>& mlpObject, float 
 #ifdef NO_SERVER
 			GetDemaged(100.f);
 			SetRimLight();
+			pArrow->DisappearSkill();
 #else
 			BYTE Packet[MAX_BUFFER_LENGTH] = { 0, };
 			NETWORKMGR->WritePacket(PT_SKILL_COLLISION_TO_TARGET_CS, Packet, WRITE_PT_SKILL_COLLISION_TO_TARGET_CS(Packet, NETWORKMGR->GetROOM_ID(), NETWORKMGR->GetSLOT_ID(), 5, NETWORKMGR->GetServerPlayerInfos()[NETWORKMGR->GetSLOT_ID()].CHARACTER, 9));

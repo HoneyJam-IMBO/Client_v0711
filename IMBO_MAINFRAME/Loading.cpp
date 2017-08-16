@@ -220,7 +220,13 @@ void LoadCharUI() {
 	RESOURCEMGR->CreateTexture("Bar", _T("../../Assets/Game_UI/HpBar.png"), PS_TEXTURE, BIND_PS);
 	RESOURCEMGR->CreateTexture("Bar_Fill", _T("../../Assets/Game_UI/HpPoint.png"), PS_TEXTURE, BIND_PS);
 	RESOURCEMGR->CreateTexture("SkillBack", _T("../../Assets/Game_UI/SkillBack.png"), PS_TEXTURE, BIND_PS);
-	
+
+	RESOURCEMGR->CreateTexture("Bar_tr", _T("../../Assets/Game_UI/Bar_tr.png"), PS_TEXTURE, BIND_PS);
+	RESOURCEMGR->CreateTexture("Bar_Fill_tr", _T("../../Assets/Game_UI/Bar_Fill_tr.png"), PS_TEXTURE, BIND_PS);
+	RESOURCEMGR->CreateTexture("SkillBack_tr", _T("../../Assets/Game_UI/SkillBack_tr.png"), PS_TEXTURE, BIND_PS);
+
+	RESOURCEMGR->CreateTexture("Boss_Icon", _T("../../Assets/Game_UI/Boss_Icon.png"), PS_TEXTURE, BIND_PS);
+
 	int nChracter = NETWORKMGR->GetServerPlayerInfo(NETWORKMGR->GetSLOT_ID()).CHARACTER;
 	switch (nChracter) {
 	case 0:
@@ -283,8 +289,8 @@ void CLoading::LoadScene_ORITOWN()
 #ifdef NO_SERVER
 	//LoadUI_Skill(TEST_CHAR, 0, 0, 0);
 	//NETWORKMGR->GetServerPlayerInfos()[0].CHARACTER = TEST_CHAR - 1;
-	LoadUI_Skill(NETWORKMGR->GetServerPlayerInfos()[NETWORKMGR->GetSLOT_ID()].CHARACTER + 1, 0, 0, 0);
-	//LoadUI_Skill(2, 0, 0, 0);
+	//LoadUI_Skill(NETWORKMGR->GetServerPlayerInfos()[NETWORKMGR->GetSLOT_ID()].CHARACTER + 1, 0, 0, 0);
+	LoadUI_Skill(1, 0, 0, 0);
 #else
 	for (int i = 0; i < NETWORKMGR->GetServerPlayerInfos().size(); ++i)
 		CHARACTER[i] = NETWORKMGR->GetServerPlayerInfos()[i].CHARACTER + 1;
@@ -294,9 +300,24 @@ void CLoading::LoadScene_ORITOWN()
 
 	CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/TestBlood.dat", L"TestBlood");
 	CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/SparkTest.dat", L"SparkTest");
+	CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/blood2.dat", L"blood2");
+	CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/Heal.dat", L"Heal");
 
 	// Boss
 	RESOURCEMGR->CreateMultiMesh("../../Assets/SceneResource/GJM/Boss01L.gjm", "Boss01L");
+	//RESOURCEMGR->CreateMultiMesh("../../Assets/SceneResource/GJM/Roisa.gjm", "Boss02R");
+	RESOURCEMGR->CreateMultiMesh("../../Assets/SceneResource/GJM/Wizard_Arrow.gjm", "Meteo");
+	CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/Wizard_shot_trail.dat", L"Wizard_shot_trail", 200);
+	RESOURCEMGR->CreateMultiMesh("../../Assets/SceneResource/GJM/Boss_Skill/boss2_sk2.gjm", "boss2_sk2");
+	RESOURCEMGR->CreateMultiMesh("../../Assets/SceneResource/GJM/Boss_Skill/Boss2_sk3.gjm", "Boss2_sk3");
+	RESOURCEMGR->CreateMultiMesh("../../Assets/SceneResource/GJM/Boss_Skill/boss2_sk3_efc1.gjm", "boss2_sk3_efc1");
+	RESOURCEMGR->CreateMultiMesh("../../Assets/SceneResource/GJM/Boss_Skill/boss2_sk3_efc2.gjm", "boss2_sk3_efc2");
+	RESOURCEMGR->CreateMultiMesh("../../Assets/SceneResource/GJM/Boss_Skill/boss2_sk3_efc3.gjm", "boss2_sk3_efc3");
+	//RESOURCEMGR->CreateMultiMesh("../../Assets/SceneResource/GJM/Boss_Skill/boss2_sk2_expefc.gjm", "boss2_sk2_expefc");
+	CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/boss2_sk2_expefc.dat", L"boss2_sk2_expefc", 40);
+	CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/boss2_sk2_efc.dat", L"boss2_sk2_efc", 40);
+	CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/Boss2_sk3_iceSmoke.dat", L"Boss2_sk3_iceSmoke", 40);
+	
 	
 
 	LoadScene("../../Assets/SceneResource/test/test.scn");
@@ -350,18 +371,6 @@ void CLoading::LoadScene_BOSS()
 	CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/SparkTest.dat", L"SparkTest");
 
 	RESOURCEMGR->CreateMultiMesh("../../Assets/SceneResource/GJM/Roisa.gjm", "Boss02R");
-	RESOURCEMGR->CreateMultiMesh("../../Assets/SceneResource/GJM/Wizard_Arrow.gjm", "Meteo");
-	CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/Wizard_shot_trail.dat", L"Wizard_shot_trail", 200);
-	RESOURCEMGR->CreateMultiMesh("../../Assets/SceneResource/GJM/Boss_Skill/boss2_sk2.gjm", "boss2_sk2");
-	RESOURCEMGR->CreateMultiMesh("../../Assets/SceneResource/GJM/Boss_Skill/Boss2_sk3.gjm", "Boss2_sk3");
-	RESOURCEMGR->CreateMultiMesh("../../Assets/SceneResource/GJM/Boss_Skill/boss2_sk3_efc1.gjm", "boss2_sk3_efc1");
-	RESOURCEMGR->CreateMultiMesh("../../Assets/SceneResource/GJM/Boss_Skill/boss2_sk3_efc2.gjm", "boss2_sk3_efc2");
-	RESOURCEMGR->CreateMultiMesh("../../Assets/SceneResource/GJM/Boss_Skill/boss2_sk3_efc3.gjm", "boss2_sk3_efc3");
-	//RESOURCEMGR->CreateMultiMesh("../../Assets/SceneResource/GJM/Boss_Skill/boss2_sk2_expefc.gjm", "boss2_sk2_expefc");
-	CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/boss2_sk2_expefc.dat", L"boss2_sk2_expefc", 40);
-	CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/boss2_sk2_efc.dat", L"boss2_sk2_efc", 40);
-	CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/Boss2_sk3_iceSmoke.dat", L"Boss2_sk3_iceSmoke", 40);
-
 
 	LoadScene("../../Assets/SceneResource/Sarasen/Sarasen.scn");
 }
@@ -470,9 +479,9 @@ void CLoading::LoadUI_Skill(int cn1, int cn2, int cn3, int cn4)
 			CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/heal.dat", L"hum2_sk2");
 			CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/portal.dat", L"hum2_sk3");
 			*/
-			CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/bard_skill1.dat", L"bard_skill1");
-			CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/bard_skill2.dat", L"bard_skill2");
-			CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/bard_skill3.dat", L"bard_skill3");
+			CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/blood2.dat", L"bard_skill1");
+			CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/heal.dat", L"bard_skill2");
+			CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/portal.dat", L"bard_skill3");
 			CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/bard_skill4.dat", L"bard_skill4");
 
 			RESOURCEMGR->CreateTexture("Char_Select_5", _T("../../Assets/Scene_HeroSel/Char_Select_6.jpg"), PS_TEXTURE, BIND_PS);

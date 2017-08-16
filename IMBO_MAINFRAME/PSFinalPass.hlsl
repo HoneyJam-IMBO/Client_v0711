@@ -13,7 +13,7 @@ struct VS_TEXTURED_OUTPUT {
 
 cbuffer OptInfo : register(b5)
 {
-	int			g_iOpt;	// 0 - noRadial | 1 - Radial
+	int			g_iOpt;	// 0 - noRadial | 1 - Radial | 2 - Gray
 	float		g_BlurStart;
 	float		g_BlurWidth;
 	int			noUse;
@@ -73,5 +73,12 @@ float4 main(VS_TEXTURED_OUTPUT input) : SV_TARGET
 	if (Alpha == 0)		{	outColor = SkyboxColor;	}
 	else if (Alpha == 1){	outColor = AlbedoColor;	}
 	else {	outColor = SkyboxColor + AlbedoColor * (Alpha + 0.01);}
+
+
+	if (g_iOpt == 2)
+	{
+		float3 fAvgColor = (outColor.r + outColor.g + outColor.b) / 3.f;
+		outColor = float4(fAvgColor, 1.f);
+	}
 	return outColor;
 }

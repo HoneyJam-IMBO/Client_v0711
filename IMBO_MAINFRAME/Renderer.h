@@ -157,6 +157,8 @@ public:
 		m_bRadialBlur = bBlurSwitch; m_fRBlurMaxTime = fTime;
 		m_fRBlurAccTime = 0.f;
 	}
+	void	SetMissionFail();
+	void	SetMissionSuccess();
 
 	//effects
 	//back  buffer color
