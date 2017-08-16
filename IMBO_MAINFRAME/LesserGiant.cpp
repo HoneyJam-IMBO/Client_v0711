@@ -152,6 +152,7 @@ void CLesserGiant::PhisicsLogic(map<utag, list<CGameObject*>>& mlpObject, float 
 #ifdef NO_SERVER
 			GetDemaged(100.f);
 			SetRimLight();
+			pArrow->DisappearSkill();
 #else
 			BYTE Packet[MAX_BUFFER_LENGTH] = { 0, };
 			NETWORKMGR->WritePacket(PT_SKILL_COLLISION_TO_TARGET_CS, Packet, WRITE_PT_SKILL_COLLISION_TO_TARGET_CS(Packet, NETWORKMGR->GetROOM_ID(), NETWORKMGR->GetSLOT_ID(), 5, NETWORKMGR->GetServerPlayerInfos()[NETWORKMGR->GetSLOT_ID()].CHARACTER, 9));

@@ -82,6 +82,7 @@ void CBard::KeyInput(float fDeltaTime)
 		if (INPUTMGR->MouseLeftDown()) {					// 기본공격 ----------------------
 			m_bSkill = true;
 			m_nAnimNum = BARD_ANIM_ATTACK;
+			CSoundManager::Play_3Dsound("bard_attack", 1, &m_xmf3Position, 5.f, 5.f, 500.f);
 			ShootArrow(false, 0.f);
 			m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
 		}
@@ -89,7 +90,7 @@ void CBard::KeyInput(float fDeltaTime)
 			m_bSkill = true;
 			m_nAnimNum = BARD_ANIM_SKILL1_FIRE;
 			m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
-
+			CSoundManager::Play_3Dsound("bard_skill1", 1, &m_xmf3Position, 5.f, 5.f, 500.f);
 			CEffectMgr::GetInstance()->Play_Effect(L"bard_skill1", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y + 1.f, m_xmf3Position.z, 1.f),
 				XMVectorSet(0.f, 0, 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
 			ResetCollisionValue(XMFLOAT3(0, 0, 0), 1.f, 10.f, 8.f);
@@ -98,7 +99,7 @@ void CBard::KeyInput(float fDeltaTime)
 			m_bSkill = true;
 			m_nAnimNum = BARD_ANIM_SKILL2_FIRE;
 			m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
-
+			CSoundManager::Play_3Dsound("bard_skill2", 1, &m_xmf3Position, 5.f, 5.f, 500.f);
 			ShootArrow(false, 0.f);
 			ShootArrow(false, 25.f);
 			ShootArrow(false, -25.f);
@@ -109,7 +110,7 @@ void CBard::KeyInput(float fDeltaTime)
 			m_bSkill = true;
 			m_nAnimNum = BARD_ANIM_SKILL3_FIRE;
 			m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
-
+			CSoundManager::Play_3Dsound("bard_skill3", 1, &m_xmf3Position, 5.f, 5.f, 500.f);
 			CEffectMgr::GetInstance()->Play_Effect(L"bard_skill3", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y + 1.f, m_xmf3Position.z, 1.f),
 				XMVectorSet(0.f, XMConvertToDegrees(m_fAngleY), 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
 			ResetCollisionValue(XMFLOAT3(0, 0, 0), 0.3f, 0.8f, 7.f);
@@ -118,7 +119,7 @@ void CBard::KeyInput(float fDeltaTime)
 			m_bSkill = true;
 			m_nAnimNum = BARD_ANIM_SKILL4_FIRE;
 			m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
-
+			CSoundManager::Play_3Dsound("bard_skill4", 1, &m_xmf3Position, 5.f, 5.f, 500.f);
 			CEffectMgr::GetInstance()->Play_Effect(L"bard_skill4", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y + 1.f, m_xmf3Position.z, 1.f),
 				XMVectorSet(0.f, 0, 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
 			ResetCollisionValue(XMFLOAT3(0, 0, 0), 1.f, 10.f, 8.f);
@@ -236,11 +237,16 @@ void CBard::GetServerData(float fTimeElapsed)
 	SetRotation(XMMatrixRotationY(fAngleY));
 	if (m_pAnimater->SetCurAnimationIndex(m_nAnimNum)) {
 		switch (m_nAnimNum) {
+		case BARD_ANIM_ATTACK:
+			CSoundManager::Play_3Dsound("bard_attack", 1, &m_xmf3Position, 5.f, 5.f, 500.f);
+			break;
 		case BARD_ANIM_SKILL1_FIRE:
+			CSoundManager::Play_3Dsound("bard_skill1", 1, &m_xmf3Position, 5.f, 5.f, 500.f);
 			CEffectMgr::GetInstance()->Play_Effect(L"bard_skill1", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y + 1.f, m_xmf3Position.z, 1.f),
 				XMVectorSet(0.f, 0, 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
 			break;
 		case BARD_ANIM_SKILL2_FIRE:
+			CSoundManager::Play_3Dsound("bard_skill2", 1, &m_xmf3Position, 5.f, 5.f, 500.f);
 			ShootArrow(false, 0.f);
 			ShootArrow(false, 25.f);
 			ShootArrow(false, -25.f);
@@ -248,16 +254,22 @@ void CBard::GetServerData(float fTimeElapsed)
 				XMVectorSet(0.f, XMConvertToDegrees(m_fAngleY), 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
 			break;
 		case BARD_ANIM_SKILL3_FIRE:
+			CSoundManager::Play_3Dsound("bard_skill3", 1, &m_xmf3Position, 5.f, 5.f, 500.f);
 			CEffectMgr::GetInstance()->Play_Effect(L"bard_skill3", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y + 1.f, m_xmf3Position.z, 1.f),
 				XMVectorSet(0.f, XMConvertToDegrees(m_fAngleY), 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
 			break;
 		case BARD_ANIM_SKILL4_FIRE:
+			CSoundManager::Play_3Dsound("bard_skill4", 1, &m_xmf3Position, 5.f, 5.f, 500.f);
 			CEffectMgr::GetInstance()->Play_Effect(L"bard_skill4", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y + 1.f, m_xmf3Position.z, 1.f),
 				XMVectorSet(0.f, 0, 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
 			break;
 		case BARD_ANIM_HIT_F:
+			CSoundManager::Play_3Dsound("bard_hurt", 1, &m_xmf3Position, 5.f, 5.f, 500.f);
 			CEffectMgr::GetInstance()->Play_Effect(L"TestBlood", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y + 2.f, m_xmf3Position.z, 1.f),
 				XMVectorSet(0.f, 0.f, 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
+			break;
+		case BARD_ANIM_DIE:
+			CSoundManager::Play_3Dsound("bard_die", 1, &m_xmf3Position, 5.f, 5.f, 500.f);
 			break;
 		default:
 			break;
@@ -578,6 +590,7 @@ bool CBard::GetDemaged(int iDemage){
 		XMVectorSet(0.f, 0.f, 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
 
 	m_nAnimNum = BARD_ANIM_HIT_F;
+	CSoundManager::Play_3Dsound("bard_hurt", 1, &m_xmf3Position, 5.f, 5.f, 500.f);
 	m_pAnimater->SetCurAnimationIndex(m_nAnimNum);
 
 #ifdef NO_SERVER
@@ -588,6 +601,7 @@ bool CBard::GetDemaged(int iDemage){
 
 	if (m_iCurHP <= 0) {
 		m_nAnimNum = BARD_ANIM_DIE;
+		CSoundManager::Play_3Dsound("bard_die", 1, &m_xmf3Position, 5.f, 5.f, 500.f);
 		m_pAnimater->SetCurAnimationIndex(BARD_ANIM_DIE);
 	}
 
