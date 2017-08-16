@@ -37,6 +37,9 @@ void CHpBar::SetInfo(XMVECTOR xyPos, XMVECTOR xySize)
 	XMStoreFloat2(&m_f2XYSize, xySize);
 	m_fCurHPLength = m_f2XYSize.x;//초기화 할 때 현재 길이도 초기화 한다.
 	m_fMaxHPLength = m_fCurHPLength;//max는 처음 set한 그 길이다.
+
+	m_fInitPosX = m_f2XYPos.x;
+	m_fInitSizeX = m_f2XYSize.x;
 }
 
 void CHpBar::SetPosition(XMFLOAT2 xyPos)
@@ -54,8 +57,8 @@ HRESULT CHpBar::Initialize()
 	XMStoreFloat4x4(&m_f4x4View, XMMatrixIdentity());
 	XMStoreFloat4x4(&m_f4x4Proj, XMMatrixOrthographicLH(WINSIZEX, WINSIZEY, 0.f, 1.f));
 
-	m_pTexture = RESOURCEMGR->GetTexture("Bar_Fill");
-	m_pBarTexture = RESOURCEMGR->GetTexture("Bar");
+	m_pTexture = RESOURCEMGR->GetTexture("Bar_Fill_tr");
+	m_pBarTexture = RESOURCEMGR->GetTexture("Bar_tr");
 
 	return S_OK;
 }
@@ -86,7 +89,7 @@ void CHpBar::Render()
 	/////////////////////////////////////////////////////////
 	m_pTexture->SetShaderState();
 
-	m_f4x4View._11 = m_f2XYSize.x * 0.95f;
+	m_f4x4View._11 = m_f2XYSize.x;
 	m_f4x4View._22 = m_f2XYSize.y;
 	m_f4x4View._33 = 1.f;
 
@@ -117,11 +120,11 @@ void CHpBar::Release(){
 
 void CHpBar::SetParameter()
 {
-	m_f4x4View._11 = m_f2XYSize.x;
+	m_f4x4View._11 = m_fInitSizeX;
 	m_f4x4View._22 = m_f2XYSize.y;
 	m_f4x4View._33 = 1.f;
 
-	m_f4x4View._41 = m_f2XYPos.x - WINSIZEX * 0.5f;
+	m_f4x4View._41 = m_fInitPosX - WINSIZEX * 0.5f;
 	m_f4x4View._42 = -m_f2XYPos.y + WINSIZEY * 0.5f;
 
 	tUImatVP* pdata = (tUImatVP*)m_pCBuffer->Map();

@@ -861,6 +861,14 @@ void CRenderer::LoadEffectInfo(wstring wsOutputPath, wstring wsSceneName) {
 	m_pBigWaterRenderer->LoadBigWaterInfo();
 }
 
+void CRenderer::SetMissionFail()
+{
+}
+
+void CRenderer::SetMissionSuccess()
+{
+}
+
 CRenderer::CRenderer() :CSingleTonBase<CRenderer>("rendereringleton") {
 
 }

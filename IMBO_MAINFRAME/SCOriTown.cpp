@@ -115,6 +115,16 @@ bool CSCOriTown::Begin() {
 	//UPDATER->GetSpaceContainer()->AddObject(m_pBoss);
 	//m_pBoss->GetAnimater()->SetCurAnimationIndex(0);
 
+	//m_pBoss = new CRoisa("Boss02R", TAG_DYNAMIC_OBJECT, m_ppPawn[0]);
+	//m_pBoss->SetUTag(utag::UTAG_BOSS1);
+	//m_pBoss->Begin();
+	//m_pBoss->SetTerrainContainer(UPDATER->GetTerrainContainer());
+	//m_pBoss->SetPosition(XMVectorSet(512, 0, 768, 0));
+	//m_pBoss->SetNaviMeshIndex();
+	//m_pBoss->SetScale(XMVectorSet(3.f, 3.f, 3.f, 1));		//roisa
+	//UPDATER->GetSpaceContainer()->AddObject(m_pBoss);
+	//m_pBoss->GetAnimater()->SetCurAnimationIndex(0);
+
 #ifdef NO_SERVER
 	return CScene::Begin();
 #endif
@@ -693,10 +703,25 @@ void CSCOriTown::LoadSkillObjects()
 void CSCOriTown::CreateUI()
 {
 	//RCSELLER->TestingRCAdd();
-	m_pPlayerHPUI = CHpBar::Create(XMLoadFloat2(&XMFLOAT2(WINSIZEX * 0.3f, WINSIZEY * 0.77f)), XMLoadFloat2(&XMFLOAT2(190.f, 10.f)));
+	CUIObject* pUI = CImageUI::Create(XMLoadFloat2(&XMFLOAT2(WINSIZEX * 0.5f, WINSIZEY * 0.1f)), XMLoadFloat2(&XMFLOAT2(45.f, 65.f)), "Boss_Icon", 9.f);
+	m_vecUI.push_back(pUI);
+
+	m_pPlayerHPUI = CHpBar::Create(XMLoadFloat2(&XMFLOAT2(312.f, 745.f)), XMLoadFloat2(&XMFLOAT2(132.f, 8.f)));
 	m_vecUI.push_back(m_pPlayerHPUI);
-	m_pBossHPUI = CHpBar::Create(XMLoadFloat2(&XMFLOAT2(WINSIZEX * 0.5f, WINSIZEY * 0.1f)), XMLoadFloat2(&XMFLOAT2(380.f, 12.f)));
+	m_pBossHPUI = CHpBar::Create(XMLoadFloat2(&XMFLOAT2(WINSIZEX * 0.5f, WINSIZEY * 0.1f)), XMLoadFloat2(&XMFLOAT2(200.f, 10.f)));
 	m_vecUI.push_back(m_pBossHPUI);
+
+	pUI = CHpBar::Create(XMLoadFloat2(&XMFLOAT2(WINSIZEX * 0.12f, WINSIZEY * 0.25f)), XMLoadFloat2(&XMFLOAT2(60.f, 5.f)));
+	m_vecUI.push_back(pUI);
+
+	pUI = CHpBar::Create(XMLoadFloat2(&XMFLOAT2(WINSIZEX * 0.12f, WINSIZEY * 0.3f)), XMLoadFloat2(&XMFLOAT2(60.f, 5.f)));
+	m_vecUI.push_back(pUI);
+
+	pUI = CHpBar::Create(XMLoadFloat2(&XMFLOAT2(WINSIZEX * 0.12f, WINSIZEY * 0.35f)), XMLoadFloat2(&XMFLOAT2(60.f, 5.f)));
+	m_vecUI.push_back(pUI);
+
+	
+
 
 	string sCharSelect;
 	string sSkill1;
@@ -753,29 +778,28 @@ void CSCOriTown::CreateUI()
 	}
 
 	//player icon
-	CUIObject* pUI = CImageUI::Create(XMLoadFloat2(&XMFLOAT2(132.f, WINSIZEY * 0.8f)), XMLoadFloat2(&XMFLOAT2(40.f, 50.f)), sCharSelect, 10.f);
+	pUI = CImageUI::Create(XMLoadFloat2(&XMFLOAT2(140.f, 787.f)), XMLoadFloat2(&XMFLOAT2(40.f, 50.f)), sCharSelect, 10.f);
 	m_vecUI.push_back(pUI);
 
 	//skill back
-	string sSkillBack;
-	sSkillBack = "SkillBack";
-	pUI = CImageUI::Create(XMLoadFloat2(&XMFLOAT2(217.f, WINSIZEY * 0.82f)), XMLoadFloat2(&XMFLOAT2(20.f, 30.f)), sSkillBack, 9.f);
+	string sSkillBack = "SkillBack_tr";
+	pUI = CImageUI::Create(XMLoadFloat2(&XMFLOAT2(202.f, 786.f)), XMLoadFloat2(&XMFLOAT2(22.f, 30.f)), sSkillBack, 9.f);
 	m_vecUI.push_back(pUI);
-	pUI = CImageUI::Create(XMLoadFloat2(&XMFLOAT2(277.f, WINSIZEY * 0.82f)), XMLoadFloat2(&XMFLOAT2(20.f, 30.f)), sSkillBack, 9.f);
+	pUI = CImageUI::Create(XMLoadFloat2(&XMFLOAT2(246.f, 786.f)), XMLoadFloat2(&XMFLOAT2(22.f, 30.f)), sSkillBack, 9.f);
 	m_vecUI.push_back(pUI);
-	pUI = CImageUI::Create(XMLoadFloat2(&XMFLOAT2(337.f, WINSIZEY * 0.82f)), XMLoadFloat2(&XMFLOAT2(20.f, 30.f)), sSkillBack, 9.f);
+	pUI = CImageUI::Create(XMLoadFloat2(&XMFLOAT2(290.f, 786.f)), XMLoadFloat2(&XMFLOAT2(22.f, 30.f)), sSkillBack, 9.f);
 	m_vecUI.push_back(pUI);
-	pUI = CImageUI::Create(XMLoadFloat2(&XMFLOAT2(397.f, WINSIZEY * 0.82f)), XMLoadFloat2(&XMFLOAT2(20.f, 30.f)), sSkillBack, 9.f);
+	pUI = CImageUI::Create(XMLoadFloat2(&XMFLOAT2(334.f, 786.f)), XMLoadFloat2(&XMFLOAT2(22.f, 30.f)), sSkillBack, 9.f);
 	m_vecUI.push_back(pUI);
 
 	//skill icon
-	pUI = CImageUI::Create(XMLoadFloat2(&XMFLOAT2(217.f, WINSIZEY * 0.82f)), XMLoadFloat2(&XMFLOAT2(23.f, 23.f)), sSkill1, 9.5f);
+	pUI = CImageUI::Create(XMLoadFloat2(&XMFLOAT2(202.f, 786.f)), XMLoadFloat2(&XMFLOAT2(20.f, 28.f)), sSkill1, 9.5f);
 	m_vecUI.push_back(pUI);
-	pUI = CImageUI::Create(XMLoadFloat2(&XMFLOAT2(277.f, WINSIZEY * 0.82f)), XMLoadFloat2(&XMFLOAT2(23.f, 23.f)), sSkill2, 9.5f);
+	pUI = CImageUI::Create(XMLoadFloat2(&XMFLOAT2(246.f, 786.f)), XMLoadFloat2(&XMFLOAT2(20.f, 28.f)), sSkill2, 9.5f);
 	m_vecUI.push_back(pUI);
-	pUI = CImageUI::Create(XMLoadFloat2(&XMFLOAT2(337.f, WINSIZEY * 0.82f)), XMLoadFloat2(&XMFLOAT2(23.f, 23.f)), sSkill3, 9.5f);
+	pUI = CImageUI::Create(XMLoadFloat2(&XMFLOAT2(290.f, 786.f)), XMLoadFloat2(&XMFLOAT2(20.f, 28.f)), sSkill3, 9.5f);
 	m_vecUI.push_back(pUI);
-	pUI = CImageUI::Create(XMLoadFloat2(&XMFLOAT2(397.f, WINSIZEY * 0.82f)), XMLoadFloat2(&XMFLOAT2(23.f, 23.f)), sSkill4, 9.5f);
+	pUI = CImageUI::Create(XMLoadFloat2(&XMFLOAT2(334.f, 786.f)), XMLoadFloat2(&XMFLOAT2(20.f, 28.f)), sSkill4, 9.5f);
 	m_vecUI.push_back(pUI);
 }
 

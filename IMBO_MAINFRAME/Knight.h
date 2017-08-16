@@ -27,6 +27,8 @@ private:
 	float	m_fJumpTime{ 0.f };
 
 	bool	m_bDamaged{ false };
+
+	float	m_fWalkEffectTime{ 0.f };
 private:
 	//skill º¯¼ö
 	float m_fSkillTime{ 0.f };

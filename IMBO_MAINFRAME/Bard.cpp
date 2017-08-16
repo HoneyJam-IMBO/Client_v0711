@@ -16,6 +16,9 @@ void CBard::Animate(float fTimeElapsed)
 	}
 	else	GetServerData(fTimeElapsed);
 
+	//점프
+	if (true == m_bJump)	Jumping(fTimeElapsed);
+
 	// 애니메이션 업데이트함수
 	if (m_pAnimater) m_pAnimater->Update(TIMEMGR->GetTimeElapsed());
 
@@ -178,6 +181,16 @@ void CBard::KeyInput(float fDeltaTime)
 		Move(XMVector3Normalize(m_xmvShift), (m_fSpeed * fSpdX) * fDeltaTime);
 
 		m_bIdle = false;
+
+		//walk effect
+		if (!m_bJump) {
+			m_fWalkEffectTime += fDeltaTime;
+			if (m_fWalkEffectTime > 0.15f) {
+				CEffectMgr::GetInstance()->Play_Effect(L"walk_dust", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y + 0.5f, m_xmf3Position.z, 1.f),
+					XMVectorSet(0.f, 0.f, 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
+				m_fWalkEffectTime = 0.f;
+			}
+		}
 	}
 	else {
 		if (false == m_bJump) {
@@ -187,8 +200,8 @@ void CBard::KeyInput(float fDeltaTime)
 			}
 		}
 	}
-	//점프
-	if (true == m_bJump)	Jumping(fDeltaTime);
+	////점프
+	//if (true == m_bJump)	Jumping(fDeltaTime);
 
 #ifdef NO_SERVER
 	return;

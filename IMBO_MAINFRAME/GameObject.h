@@ -4,6 +4,7 @@
 #include "Camera.h"
 #include "Object.h"
 #include "PositionInfoManager.h"
+#include "EffectMgr.h"
 
 class CTerrainContainer;
 class CAnimater;
@@ -248,6 +249,9 @@ public:
 	void	SetRimLight(){
 		m_fRimAccTime = 0.f;
 		m_bRimSwitch = true;
+
+		CEffectMgr::GetInstance()->Play_Effect(L"blood2", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y + 3.f, m_xmf3Position.z, 1.f),
+			XMVectorSet(0.f, 0.f, 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
 	}
 
 
