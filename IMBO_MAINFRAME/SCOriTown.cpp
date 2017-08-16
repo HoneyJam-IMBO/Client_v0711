@@ -214,7 +214,8 @@ void CSCOriTown::Animate(float fTimeElapsed) {
 	if (m_bStartBossCam) {
 		if (false == m_pCamera->m_bActionCam) {
 			int boss_fight_start = 0;
-//			m_pBoss->SetFirstAction(false); 
+			m_bStartBossCam = false;
+			m_pBoss->SetFirstAction(false); 
 		}
 	}
 	if (m_bFinalProc) {
@@ -557,8 +558,8 @@ void CSCOriTown::CreateBoss1()
 	m_pBoss->SetNaviMeshIndex();
 	m_pBoss->SetScale(XMVectorSet(1, 1, 1, 1));
 	UPDATER->GetSpaceContainer()->AddObject(m_pBoss);
-	//m_pBoss->SetFirstAction(true);
-	//m_pBoss->SetAnimNum(BOSS1_ANI_SKILL2);
+	m_pBoss->SetFirstAction(true);
+	m_pBoss->SetAnimNum(BOSS1_ANI_SKILL2);
 	m_pBoss->GetAnimater()->SetCurAnimationIndex(BOSS1_ANI_SKILL2);
 }
 
@@ -676,8 +677,8 @@ VOID CSCOriTown::PROC_PT_FTOWN_NPC2_READY_COMP_SC(DWORD dwProtocol, BYTE * Packe
 
 void CSCOriTown::ReadMapData()
 {
-	//IMPORTER->Begin("../../Assets/SceneResource/test/test.scn");
-	IMPORTER->Begin("../../Assets/SceneResource/FirstTown/FirstTown.scn");
+	IMPORTER->Begin("../../Assets/SceneResource/test/test.scn");
+	//IMPORTER->Begin("../../Assets/SceneResource/FirstTown/FirstTown.scn");
 	//IMPORTER->Begin("../../Assets/SceneResource/Aldenard/Aldenard.scn");
 	//IMPORTER->Begin("../../Assets/SceneResource/Sarasen/Sarasen.scn");
 	//output path

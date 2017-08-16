@@ -7,7 +7,7 @@
 class CLesserGiant;
 class CSCOriTown;
 class CHpBar;
-class CRoisa;
+
 class CSCOriTown :public CScene{
 
 public:
@@ -61,8 +61,8 @@ private:
 	//float m_fCurBossHPLength{ 190.f };
 	//XMFLOAT2 m_xmf2BossHPBarLength{ XMFLOAT2(190.f, 6.f) };
 
-	//CLesserGiant*	m_pBoss{ nullptr };
-	CGameObject*	m_pBoss{ nullptr };
+	CLesserGiant*	m_pBoss{ nullptr };
+	//CGameObject*	m_pBoss{ nullptr };
 
 
 	void StartBoss1ActionCam();

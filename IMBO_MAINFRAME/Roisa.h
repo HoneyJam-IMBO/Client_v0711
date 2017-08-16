@@ -5,7 +5,12 @@ class CRoisa :
 {
 public:
 	CGameObject*	m_pTempPlayer{ nullptr };
+
+	//void SetFirstAction(bool b) { m_bFirstAction = b; }
+	//bool GetFirstAction() { return m_bFirstAction; }
 private:
+	//bool m_bFirstAction{ false };
+
 	float		m_fSpeed{ 0.f };
 	UINT		m_nAnimNum{ 0 };
 	XMFLOAT3	m_f3Diraction;
