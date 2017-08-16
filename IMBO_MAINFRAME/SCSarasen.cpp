@@ -522,7 +522,7 @@ void CSCSarasen::HPBarProc()
 	//m_pTeamNo1HPUI
 	int iSize = NETWORKMGR->GetServerPlayerInfos().size();
 	int iCheckAlldie = 0;
-	for (int i = 0, int j = 0; i < iSize; ++i)
+	for (int i = 0, j = 0; i < iSize; ++i)
 	{
 		if (m_ppPawn[i]->GetCurHp() <= 0.f)
 		{
