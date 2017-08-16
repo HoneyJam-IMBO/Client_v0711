@@ -571,8 +571,13 @@ void CSister::PhisicsLogic(map<utag, list<CGameObject*>>& mlpObject, float fDelt
 			break;
 		case SISTER_ANIM_ATTACK:
 			if (SkillCollision(pBoss, false)) {//
+#ifdef NO_SERVER
+				pBoss->GetDemaged(m_iCurAttack);
+#else
 				TransferCollisioinData(5, 0);
-				//pBoss->GetDemaged(m_iCurAttack);
+#endif
+				
+				
 				pBoss->SetRimLight();
 				m_bCollision = true;
 			}

@@ -138,7 +138,7 @@ void CDirectXFramework::InitSingleton(HINSTANCE hInstance, HWND hWnd)
 	CSoundManager::Begin();
 
 #ifdef NO_SERVER
-	NETWORKMGR->GetServerPlayerInfos()[NETWORKMGR->GetSLOT_ID()].CHARACTER = 2;
+	NETWORKMGR->GetServerPlayerInfos()[NETWORKMGR->GetSLOT_ID()].CHARACTER = 3;
 	SCENEMGR->ChangeScene(SCN_ORITOWN);
 	//SCENEMGR->ChangeScene(SCN_ALDENAD);
 	//SCENEMGR->ChangeScene(SCN_BOSS);

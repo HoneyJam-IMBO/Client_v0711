@@ -64,22 +64,6 @@ void CLesserGiant::Animate(float fTimeElapsed)
 	}
 
 
-	if (m_pAnimater) m_pAnimater->Update(TIMEMGR->GetTimeElapsed());
-	ActionMoveProc();
-
-	//모든 컴포넌트를 돌면서 Update실행
-	for (auto i : m_mapComponents) {
-		i.second->Update(fTimeElapsed);
-	}
-
-	if (NETWORKMGR->GetSLOT_ID() == 0) {
-
-
-		BYTE Packet[MAX_BUFFER_LENGTH] = { 0, };
-		NETWORKMGR->WritePacket(PT_BOSS_FREQUENCY_MOVE_CS, Packet, WRITE_PT_BOSS_FREQUENCY_MOVE_CS(Packet, m_xmf3Position.x, m_xmf3Position.y, m_xmf3Position.z, m_fAngleY, m_pAnimater->GetCurAnimationIndex()));
-	}
-
-
 	else {
 		BOSS_FREQUENCY_DATA data = NETWORKMGR->GetBossInfo();
 		DEBUGER->AddGameText(25, 10, 350, YT_Color(0, 0, 200), L"%f %f %f %f %f", data.fPosX, data.fPosY, data.fPosZ, data.fAngleY, data.iAnimNum);
@@ -117,6 +101,23 @@ void CLesserGiant::Animate(float fTimeElapsed)
 			}
 		}
 	}
+	if (m_pAnimater) m_pAnimater->Update(TIMEMGR->GetTimeElapsed());
+	ActionMoveProc();
+
+	//모든 컴포넌트를 돌면서 Update실행
+	for (auto i : m_mapComponents) {
+		i.second->Update(fTimeElapsed);
+	}
+
+	if (NETWORKMGR->GetSLOT_ID() == 0) {
+
+
+		BYTE Packet[MAX_BUFFER_LENGTH] = { 0, };
+		NETWORKMGR->WritePacket(PT_BOSS_FREQUENCY_MOVE_CS, Packet, WRITE_PT_BOSS_FREQUENCY_MOVE_CS(Packet, m_xmf3Position.x, m_xmf3Position.y, m_xmf3Position.z, m_fAngleY, m_pAnimater->GetCurAnimationIndex()));
+	}
+
+
+	
 
 #endif
 	DEBUGER->RegistCoordinateSys(GetWorldMtx());

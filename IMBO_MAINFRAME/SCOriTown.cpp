@@ -452,6 +452,8 @@ VOID CSCOriTown::PROC_PT_BOSS_CLEAR_SC(DWORD dwProtocol, BYTE * Packet, DWORD dw
 	//if(NETWORKMGR->GetSLOT_ID() == 0)
 	m_pBoss->GetDemaged(0);
 
+	m_ppPawn[NETWORKMGR->GetSLOT_ID()]->GetAnimater()->SetCurAnimationIndex(0);
+
 	return VOID();
 }
 
