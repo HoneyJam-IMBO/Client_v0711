@@ -504,6 +504,7 @@ void CSister::PhisicsLogic(map<utag, list<CGameObject*>>& mlpObject, float fDelt
 	for (auto pArrow : mlpObject[utag::UTAG_BOSS2]) {
 		//내가쏜 화살만 데미지를 입음
 		if (false == pArrow->GetActive()) continue;
+		if (m_bCollision) break;//내가 맞은 상태면
 		if (true == IsCollision(pArrow))
 		{
 #ifdef NO_SERVER
@@ -515,7 +516,7 @@ void CSister::PhisicsLogic(map<utag, list<CGameObject*>>& mlpObject, float fDelt
 			SetRimLight();
 			pArrow->DisappearSkill();
 #endif
-
+			m_bCollision = true;
 
 			break;
 		}
