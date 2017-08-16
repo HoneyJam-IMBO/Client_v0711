@@ -173,6 +173,8 @@ void CWizard::KeyInput(float fDeltaTime)
 		return;
 	}
 
+	if (m_bStay) return;
+
 	DWORD dwDirection = 0;
 	m_xmvShift = XMVectorSet(0.0f, 0.0f, 0.0f, 0.f);
 

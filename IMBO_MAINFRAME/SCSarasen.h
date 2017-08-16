@@ -2,6 +2,8 @@
 #include "Scene.h"
 #include "FreeCamera.h"
 
+class CImageUI;
+class CHpBar;
 class CRoisa;
 class CHpBar;
 class CImageUI;

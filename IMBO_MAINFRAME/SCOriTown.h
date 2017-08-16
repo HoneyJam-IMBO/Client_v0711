@@ -7,6 +7,7 @@
 class CLesserGiant;
 class CSCOriTown;
 class CHpBar;
+class CImageUI;
 
 class CSCOriTown :public CScene{
 

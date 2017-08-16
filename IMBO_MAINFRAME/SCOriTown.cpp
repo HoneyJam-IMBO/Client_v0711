@@ -162,7 +162,7 @@ void CSCOriTown::HPBarProc(){
 
 	//m_pTeamNo1HPUI
 	int iSize = NETWORKMGR->GetServerPlayerInfos().size();
-	for (int i = 0, int j = 0; i < iSize; ++i)
+	for (int i = 0, j = 0; i < iSize; ++i)
 	{
 		if (i == slot_id) continue;
 

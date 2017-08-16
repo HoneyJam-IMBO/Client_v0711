@@ -2,7 +2,7 @@
 #include "Scene.h"
 #include "FreeCamera.h"
 
-
+class CHpBar;
 class CSCAldenard :
 	public CScene
 {
