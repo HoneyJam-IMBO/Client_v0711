@@ -312,8 +312,8 @@ void CLoading::LoadScene_ORITOWN()
 	LoadScene("../../Assets/SceneResource/FirstTown/FirstTown.scn");
 	//LoadScene("../../Assets/SceneResource/Aldenard/Aldenard.scn");	
 
-	RESOURCEMGR->CreateTexture("UI_Game_Clear", _T("../../Assets/Game_UI/UI_Game_Clear.tga"), PS_TEXTURE, BIND_PS);
-	RESOURCEMGR->CreateTexture("UI_Game_Over", _T("../../Assets/Game_UI/UI_Game_Over.tga"), PS_TEXTURE, BIND_PS);
+	RESOURCEMGR->CreateTexture("UI_Game_Clear", _T("../../Assets/Game_UI/UI_Game_Clear.png"), PS_TEXTURE, BIND_PS);
+	RESOURCEMGR->CreateTexture("UI_Game_Over", _T("../../Assets/Game_UI/UI_Game_Over.png"), PS_TEXTURE, BIND_PS);
 }
 
 void CLoading::LoadScene_REPAIRTOWN()
@@ -377,8 +377,8 @@ void CLoading::LoadScene_BOSS()
 
 	LoadScene("../../Assets/SceneResource/Sarasen/Sarasen.scn");
 
-	RESOURCEMGR->CreateTexture("UI_Game_Clear", _T("../../Assets/Game_UI/UI_Game_Clear.tga"), PS_TEXTURE, BIND_PS);
-	RESOURCEMGR->CreateTexture("UI_Game_Over", _T("../../Assets/Game_UI/UI_Game_Over.tga"), PS_TEXTURE, BIND_PS);
+	RESOURCEMGR->CreateTexture("UI_Game_Clear", _T("../../Assets/Game_UI/UI_Game_Clear.png"), PS_TEXTURE, BIND_PS);
+	RESOURCEMGR->CreateTexture("UI_Game_Over", _T("../../Assets/Game_UI/UI_Game_Over.png"), PS_TEXTURE, BIND_PS);
 }
 
 void CLoading::LoadUI_Skill(int cn1, int cn2, int cn3, int cn4)
