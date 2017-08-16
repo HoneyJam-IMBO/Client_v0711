@@ -165,10 +165,10 @@ void CSCOriTown::HPBarProc(){
 	int iCheckAlldie = 0;
 	for (int i = 0, j = 0; i < iSize; ++i, ++j)
 	{
-		if (m_ppPawn[i]->GetCurHp() <= 0.f)
+		/*if (m_ppPawn[i]->GetCurHp() <= 0.f)
 		{
 			++iCheckAlldie;
-		}
+		}*/
 		if (i == slot_id) continue;
 
 		int iCurHP = m_ppPawn[j]->GetCurHp();
@@ -198,27 +198,27 @@ void CSCOriTown::HPBarProc(){
 		//보스 죽고 cur hp가 0이면 그리면 안되는데..
 		m_pBossHPUI->SetCurHPRate(0);
 	}
-	if (m_bResult == false && iCheckAlldie == iSize)
+	/*if (m_bResult == false && iCheckAlldie == iSize)
 	{
 		m_bResult = true;
 		m_strResultName = "UI_Game_Over";
 		m_pResult->SetImageName(m_strResultName);
 		m_pResult->SetRender(true);
-	}
+	}*/
 }
 void CSCOriTown::Animate(float fTimeElapsed) {
 	//hp bar proc
 	HPBarProc();
-	if (true == m_bResult)
-	{
-		m_fResultAccTime += fTimeElapsed;
-		if (m_fResultAccTime > 3.f)
-		{
-			//NETWORKMGR->End();
-			//CSceneMgr::GetInstance()->ChangeScene(SCN_TITLE);
-			//return;
-		}
-	}
+	//if (true == m_bResult)
+	//{
+	//	m_fResultAccTime += fTimeElapsed;
+	//	if (m_fResultAccTime > 3.f)
+	//	{
+	//		//NETWORKMGR->End();
+	//		//CSceneMgr::GetInstance()->ChangeScene(SCN_TITLE);
+	//		//return;
+	//	}
+	//}
 
 	XMFLOAT3 xmf3Pos;
 	int slot_id = NETWORKMGR->GetSLOT_ID();

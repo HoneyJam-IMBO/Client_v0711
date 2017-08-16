@@ -524,10 +524,10 @@ void CSCSarasen::HPBarProc()
 	int iCheckAlldie = 0;
 	for (int i = 0, j = 0; i < iSize; ++i, ++j)
 	{
-		if (m_ppPawn[i]->GetCurHp() <= 0.f)
-		{
-			++iCheckAlldie;
-		}
+		//if (m_ppPawn[i]->GetCurHp() <= 0.f)
+		//{
+		//	++iCheckAlldie;
+		//}
 		if (i == slot_id) continue;
 
 		int iCurHP = m_ppPawn[j]->GetCurHp();
@@ -558,20 +558,20 @@ void CSCSarasen::HPBarProc()
 		m_pBossHPUI->SetCurHPRate(0);
 	}
 
-	if (m_bResult ==false && m_pBossHPUI->GetCurHPRate() <= 0.f)
-	{
-		m_bResult = true;
-		m_strResultName = "UI_Game_Clear";
-		m_pResult->SetImageName(m_strResultName);
-		m_pResult->SetRender(true);
-	}
-	if (m_bResult == false && iCheckAlldie == iSize)
-	{
-		m_bResult = true;
-		m_strResultName = "UI_Game_Over";
-		m_pResult->SetImageName(m_strResultName);
-		m_pResult->SetRender(true);
-	}
+	//if (m_bResult ==false && m_pBossHPUI->GetCurHPRate() <= 0.f)
+	//{
+	//	m_bResult = true;
+	//	m_strResultName = "UI_Game_Clear";
+	//	m_pResult->SetImageName(m_strResultName);
+	//	m_pResult->SetRender(true);
+	//}
+	//if (m_bResult == false && iCheckAlldie == iSize)
+	//{
+	//	m_bResult = true;
+	//	m_strResultName = "UI_Game_Over";
+	//	m_pResult->SetImageName(m_strResultName);
+	//	m_pResult->SetRender(true);
+	//}
 }
 
 void CSCSarasen::ReadMapData()
