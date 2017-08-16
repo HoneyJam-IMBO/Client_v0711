@@ -522,7 +522,7 @@ void CSCSarasen::HPBarProc()
 	//m_pTeamNo1HPUI
 	int iSize = NETWORKMGR->GetServerPlayerInfos().size();
 	int iCheckAlldie = 0;
-	for (int i = 0, j = 0; i < iSize; ++i)
+	for (int i = 0, j = 0; i < iSize; ++i, ++j)
 	{
 		if (m_ppPawn[i]->GetCurHp() <= 0.f)
 		{
@@ -532,7 +532,7 @@ void CSCSarasen::HPBarProc()
 
 		int iCurHP = m_ppPawn[j]->GetCurHp();
 		int iMaxHP = m_ppPawn[j]->GetMaxHp();
-		m_pTeamNoHPUI[j++]->SetCurHPRate((float)iCurHP / (float)iMaxHP);
+		m_pTeamNoHPUI[j]->SetCurHPRate((float)iCurHP / (float)iMaxHP);
 	}
 
 

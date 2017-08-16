@@ -65,6 +65,8 @@ HRESULT CHpBar::Initialize()
 
 int CHpBar::Update(float fTimeElapsed)
 {
+	if (false == m_bRender) return;
+
 	float m_fGoalHPBarLength = m_fMaxHPLength * m_fCurHPRate;
 
 	float fResuceHP = m_fCurHPLength - m_fGoalHPBarLength;

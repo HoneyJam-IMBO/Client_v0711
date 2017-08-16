@@ -58,10 +58,13 @@ private:
 	CImageUI* m_pBossHPacc;
 
 	CHpBar* m_pTeamNoHPUI[2];
-	//CHpBar* m_pTeamNo2HPUI;
 
 	CLesserGiant*	m_pBoss{ nullptr };
-	//CGameObject*	m_pBoss{ nullptr };
+
+	CImageUI*	m_pResult{ nullptr };
+	bool		m_bResult{ false };
+	float		m_fResultAccTime{ 0.f };
+	string		m_strResultName{};
 
 
 	void StartBoss1ActionCam();

@@ -162,13 +162,14 @@ void CSCOriTown::HPBarProc(){
 
 	//m_pTeamNo1HPUI
 	int iSize = NETWORKMGR->GetServerPlayerInfos().size();
-	for (int i = 0, j = 0; i < iSize; ++i)
+	int iCheckAlldie = 0;
+	for (int i = 0, j = 0; i < iSize; ++i, ++j)
 	{
 		if (i == slot_id) continue;
 
 		int iCurHP = m_ppPawn[j]->GetCurHp();
 		int iMaxHP = m_ppPawn[j]->GetMaxHp();
-		m_pTeamNoHPUI[j++]->SetCurHPRate((float)iCurHP / (float)iMaxHP);
+		m_pTeamNoHPUI[j]->SetCurHPRate((float)iCurHP / (float)iMaxHP);
 	}
 	
 
@@ -193,10 +194,27 @@ void CSCOriTown::HPBarProc(){
 		//보스 죽고 cur hp가 0이면 그리면 안되는데..
 		m_pBossHPUI->SetCurHPRate(0);
 	}
+	if (m_bResult == false && iCheckAlldie == iSize)
+	{
+		m_bResult = true;
+		m_strResultName = "UI_Game_Over";
+		m_pResult->SetImageName(m_strResultName);
+		m_pResult->SetRender(true);
+	}
 }
 void CSCOriTown::Animate(float fTimeElapsed) {
 	//hp bar proc
 	HPBarProc();
+	if (true == m_bResult)
+	{
+		m_fResultAccTime += fTimeElapsed;
+		if (m_fResultAccTime > 3.f)
+		{
+			NETWORKMGR->End();
+			CSceneMgr::GetInstance()->ChangeScene(SCN_TITLE);
+			return;
+		}
+	}
 
 	XMFLOAT3 xmf3Pos;
 	int slot_id = NETWORKMGR->GetSLOT_ID();
@@ -737,13 +755,14 @@ void CSCOriTown::CreateUI()
 	//RCSELLER->TestingRCAdd();
 	CUIObject* pUI;
 	m_pBossHPacc = CImageUI::Create(XMLoadFloat2(&XMFLOAT2(WINSIZEX * 0.5f, WINSIZEY * 0.1f)), XMLoadFloat2(&XMFLOAT2(45.f, 65.f)), "Boss_Icon", 9.f);
+	m_pBossHPacc->SetRender(false);
 	m_vecUI.push_back(m_pBossHPacc);
 
 	m_pPlayerHPUI = CHpBar::Create(XMLoadFloat2(&XMFLOAT2(312.f, 745.f)), XMLoadFloat2(&XMFLOAT2(132.f, 8.f)));
 	m_vecUI.push_back(m_pPlayerHPUI);
 	m_pBossHPUI = CHpBar::Create(XMLoadFloat2(&XMFLOAT2(WINSIZEX * 0.5f, WINSIZEY * 0.1f)), XMLoadFloat2(&XMFLOAT2(200.f, 10.f)));
-	m_vecUI.push_back(m_pBossHPUI);
 	m_pBossHPUI->SetRender(false);
+	m_vecUI.push_back(m_pBossHPUI);
 
 	m_pTeamNoHPUI[0] = CHpBar::Create(XMLoadFloat2(&XMFLOAT2(WINSIZEX * 0.12f, WINSIZEY * 0.25f)), XMLoadFloat2(&XMFLOAT2(60.f, 5.f)));
 	m_vecUI.push_back(m_pTeamNoHPUI[0]);
@@ -831,6 +850,11 @@ void CSCOriTown::CreateUI()
 	m_vecUI.push_back(pUI);
 	pUI = CImageUI::Create(XMLoadFloat2(&XMFLOAT2(334.f, 786.f)), XMLoadFloat2(&XMFLOAT2(20.f, 28.f)), sSkill4, 9.5f);
 	m_vecUI.push_back(pUI);
+
+	m_strResultName = "UI_Game_Clear";
+	m_pResult = CImageUI::Create(XMLoadFloat2(&XMFLOAT2(WINSIZEX * 0.5f, WINSIZEY * 0.5f)), XMLoadFloat2(&XMFLOAT2(450.f, 350.f)), m_strResultName, 11.f);
+	m_pResult->SetRender(false);
+	m_vecUI.push_back(m_pResult);
 }
 
 CSCOriTown::CSCOriTown(SCENE_ID eID, CDirectXFramework* pFrameWork) : CScene(eID) {
