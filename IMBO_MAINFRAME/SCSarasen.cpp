@@ -197,6 +197,17 @@ void CSCSarasen::Animate(float fTimeElapsed)
 			//m_pBoss->SetFirstAction(false);
 		}
 	}
+
+	if (INPUTMGR->KeyBoardDown(VK_K)) {
+		//KillBoss1();
+		NETWORKMGR->WritePacket(PT_SKILL_COLLISION_TO_TARGET_CS, Packet, WRITE_PT_SKILL_COLLISION_TO_TARGET_CS(Packet,
+			NETWORKMGR->GetROOM_ID(),
+			NETWORKMGR->GetSLOT_ID(),
+			9,
+			NETWORKMGR->GetServerPlayerInfo(NETWORKMGR->GetSLOT_ID()).CHARACTER,
+			99));
+
+	}
 #endif
 	for (int i = 0; i < 20; ++i)
 		NetworkProc();
@@ -219,6 +230,9 @@ void CSCSarasen::Animate(float fTimeElapsed)
 		sprintf(action_move_file_name, "Sarasen_Boss2", action_move_id);
 		float fSpeed = CPositionInfoManager::GetActionSpeed(action_move_file_name);
 		CPositionInfoManager::SetActoionSpeed(action_move_file_name, fSpeed + 1.f);
+	}
+	else if (INPUTMGR->KeyBoardDown(VK_K)) {
+		KillBoss2();
 	}
 }
 

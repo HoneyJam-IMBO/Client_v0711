@@ -374,6 +374,7 @@ void CRanger::GetServerData(float fTimeElapsed) {
 			CSoundManager::Play_3Dsound("ranger_attack", 1, &m_xmf3Position, 5.f, 5.f, 500.f);
 			CEffectMgr::GetInstance()->Play_Effect(L"Arrow_Skill1Shot", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y + 2.f, m_xmf3Position.z, 1.f),
 				XMVectorSet(0.f, XMConvertToDegrees(m_fAngleY), 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
+			ShootArrow(true);
 			break;
 		case ANIM_SKILL1_FIRE:
 			CSoundManager::Play_3Dsound("ranger_skill1", 1, &m_xmf3Position, 5.f, 5.f, 500.f);
@@ -384,6 +385,9 @@ void CRanger::GetServerData(float fTimeElapsed) {
 			CSoundManager::Play_3Dsound("ranger_skill2", 1, &m_xmf3Position, 5.f, 5.f, 500.f);
 			CEffectMgr::GetInstance()->Play_Effect(L"Ranger_sk2_con", XMVectorSet(m_xmf3Position.x, m_xmf3Position.y + 2.f, m_xmf3Position.z, 1.f),
 				XMVectorSet(0.f, 0.f, 0.f, 0.f), XMVectorSet(1.f, 1.f, 0.f, 1.f));
+			break;
+		case ANIM_SKILL2_FIRE:
+			ShootArrow(true);
 			break;
 		case ANIM_SKILL3_FIRE:
 			CSoundManager::Play_3Dsound("ranger_skill3", 1, &m_xmf3Position, 5.f, 5.f, 500.f);
