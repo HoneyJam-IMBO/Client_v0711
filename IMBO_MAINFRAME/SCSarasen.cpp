@@ -532,7 +532,7 @@ void CSCSarasen::HPBarProc()
 
 		int iCurHP = m_ppPawn[j]->GetCurHp();
 		int iMaxHP = m_ppPawn[j]->GetMaxHp();
-		m_pTeamNoHPUI[++j]->SetCurHPRate((float)iCurHP / (float)iMaxHP);
+		m_pTeamNoHPUI[j++]->SetCurHPRate((float)iCurHP / (float)iMaxHP);
 	}
 
 
