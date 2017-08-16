@@ -13,7 +13,7 @@
 #include "Sister.h"
 #include "Wizard.h"
 #include "Bard.h"
-
+#include "GameObject.h"
 
 
 

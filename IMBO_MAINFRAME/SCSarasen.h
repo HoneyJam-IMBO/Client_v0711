@@ -5,6 +5,10 @@
 class CImageUI;
 class CHpBar;
 class CRoisa;
+class CHpBar;
+class CImageUI;
+class CGameObject;
+
 class CSCSarasen :
 	public CScene
 {
