@@ -9,6 +9,7 @@ public:
 	virtual void Animate(float fTimeElapsed);
 	virtual bool End();
 
+
 private:
 	void	KeyInput(float fDeltaTime);
 	void	PushServerData(float x, float y, float z, float fAngleY, int nAnimNum);
@@ -27,7 +28,6 @@ private:
 	bool	m_bSprit{ false };
 	float	m_fJumpTime{ 0.f };
 
-	bool	m_bDamaged{ false };
 
 	float	m_fWalkEffectTime{ 0.f };
 private:

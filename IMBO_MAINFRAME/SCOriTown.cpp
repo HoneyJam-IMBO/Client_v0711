@@ -509,7 +509,8 @@ VOID CSCOriTown::PROC_PT_BOSS_CLEAR_SC(DWORD dwProtocol, BYTE * Packet, DWORD dw
 	m_pBoss->GetDemaged(0);
 
 	m_ppPawn[NETWORKMGR->GetSLOT_ID()]->GetAnimater()->SetCurAnimationIndex(0);
-
+	m_ppPawn[NETWORKMGR->GetSLOT_ID()]->SetCurHP(m_ppPawn[NETWORKMGR->GetSLOT_ID()]->GetMaxHp());
+	m_ppPawn[NETWORKMGR->GetSLOT_ID()]->m_bDamaged = false;
 	return VOID();
 }
 

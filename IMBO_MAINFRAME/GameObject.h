@@ -28,6 +28,9 @@ struct StructLoadTextureFile {
 
 class CGameObject : public CObject {
 public:
+
+	bool	m_bDamaged{ false };
+
 	//action move
 	void ActionMoveStart(string sName);
 	void ActionMoveEnd();

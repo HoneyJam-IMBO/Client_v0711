@@ -29,8 +29,6 @@ private:
 	bool	m_bSprit{ false };
 	float	m_fJumpTime{ 0.f };
 
-	bool	m_bDamaged{ false };
-
 	float	m_fWalkEffectTime{ 0.f };
 private:
 
