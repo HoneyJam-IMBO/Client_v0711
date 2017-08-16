@@ -1,4 +1,4 @@
-s#include "stdafx.h"
+#include "stdafx.h"
 #include "Wizard.h"
 #include "WizardSkillArrow.h"
 
