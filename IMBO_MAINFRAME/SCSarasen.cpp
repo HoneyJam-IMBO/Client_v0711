@@ -208,7 +208,7 @@ void CSCSarasen::Animate(float fTimeElapsed)
 			m_ppPawn[slot_id]->SetbStay(false);//나 stay 해제!
 			int boss_fight_start = 0; //보스 처음 움직임 무한루프 해제
 			//싸움 시작
-			m_pBoss->SetFirstAction(false);
+			//m_pBoss->SetFirstAction(false);
 		}
 	}
 
