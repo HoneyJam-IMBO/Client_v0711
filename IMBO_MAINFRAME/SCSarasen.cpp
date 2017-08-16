@@ -613,10 +613,10 @@ void CSCSarasen::CreateUI()
 	m_vecUI.push_back(m_pBossHPUI);
 
 	m_pTeamNoHPUI[0] = CHpBar::Create(XMLoadFloat2(&XMFLOAT2(WINSIZEX * 0.12f, WINSIZEY * 0.25f)), XMLoadFloat2(&XMFLOAT2(60.f, 5.f)));
-	m_vecUI.push_back(pUI);
+	m_vecUI.push_back(m_pTeamNoHPUI[0]);
 
 	m_pTeamNoHPUI[1] = CHpBar::Create(XMLoadFloat2(&XMFLOAT2(WINSIZEX * 0.12f, WINSIZEY * 0.3f)), XMLoadFloat2(&XMFLOAT2(60.f, 5.f)));
-	m_vecUI.push_back(pUI);
+	m_vecUI.push_back(m_pTeamNoHPUI[1]);
 
 
 	string sCharSelect;

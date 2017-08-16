@@ -1,4 +1,4 @@
-#include "stdafx.h"
+s#include "stdafx.h"
 #include "Wizard.h"
 #include "WizardSkillArrow.h"
 
@@ -173,7 +173,14 @@ void CWizard::KeyInput(float fDeltaTime)
 		return;
 	}
 
-	if (m_bStay) return;
+	if (m_bStay) {
+		m_fTranslateTime += fDeltaTime;
+		if (m_fTranslateTime > FREQUENCY_TRANSFER_TIME) {
+			m_fTranslateTime = 0;
+			PushServerData(m_xmf3Position.x, m_xmf3Position.y, m_xmf3Position.z, m_fAngleY, m_pAnimater->GetCurAnimationIndex());
+		}
+		return;
+	}
 
 	DWORD dwDirection = 0;
 	m_xmvShift = XMVectorSet(0.0f, 0.0f, 0.0f, 0.f);
