@@ -7,7 +7,7 @@
 class CLesserGiant;
 class CSCOriTown;
 class CHpBar;
-class CRoisa;
+
 class CSCOriTown :public CScene{
 
 public:
@@ -58,8 +58,8 @@ private:
 	CHpBar* m_pTeamNoHPUI[2];
 	//CHpBar* m_pTeamNo2HPUI;
 
-	//CLesserGiant*	m_pBoss{ nullptr };
-	CGameObject*	m_pBoss{ nullptr };
+	CLesserGiant*	m_pBoss{ nullptr };
+	//CGameObject*	m_pBoss{ nullptr };
 
 
 	void StartBoss1ActionCam();

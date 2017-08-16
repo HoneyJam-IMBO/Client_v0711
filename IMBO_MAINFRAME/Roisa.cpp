@@ -241,7 +241,7 @@ bool CRoisa::GetDemaged(int iDemege) {
 			m_pAnimater->SetCurAnimationIndex(BOSS2_ANI_DEADBODY);
 		}
 		m_bCollision = true;
-		return;
+		return false;
 	}
 #ifdef NO_SERVER
 	CGameObject::GetDemaged(iDemege);//내 hp 날리고!

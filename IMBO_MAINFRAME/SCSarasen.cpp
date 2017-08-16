@@ -14,6 +14,9 @@
 #include "Wizard.h"
 #include "Bard.h"
 
+
+
+
 bool CSCSarasen::Begin()
 {
 	CSoundManager::Play_bgm("bgm_boss2_balcony");
@@ -174,6 +177,7 @@ void CSCSarasen::Animate(float fTimeElapsed)
 	//보스캠 처리
 	if (m_bStartBossCam) {
 		if (false == m_pCamera->m_bActionCam) {
+			m_bStartBossCam = false;
 			m_ppPawn[slot_id]->SetbStay(false);//나 stay 해제!
 			int boss_fight_start = 0; //보스 처음 움직임 무한루프 해제
 			//싸움 시작
@@ -199,10 +203,11 @@ void CSCSarasen::Animate(float fTimeElapsed)
 	//보스캠 처리
 	if (m_bStartBossCam) {
 		if (false == m_pCamera->m_bActionCam) {
+			m_bStartBossCam = false;
 			m_ppPawn[slot_id]->SetbStay(false);//나 stay 해제!
 			int boss_fight_start = 0; //보스 처음 움직임 무한루프 해제
 			//싸움 시작
-			//m_pBoss->SetFirstAction(false);
+			m_pBoss->SetFirstAction(false);
 		}
 	}
 
@@ -702,7 +707,8 @@ void CSCSarasen::CreateBoss2()
 	m_pBoss->SetNaviMeshIndex();
 	m_pBoss->SetScale(XMVectorSet(3, 3, 3, 1));
 	UPDATER->GetSpaceContainer()->AddObject(m_pBoss);
-	m_pBoss->GetAnimater()->SetCurAnimationIndex(0);
+	m_pBoss->GetAnimater()->SetCurAnimationIndex(BOSS2_ANI_SKILL1);
+	//m_pBoss->SetFirstAction(true);
 
 	m_pBossHPacc->SetRender(true);
 	m_pBossHPUI->SetRender(true);
