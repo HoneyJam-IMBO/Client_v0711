@@ -308,8 +308,8 @@ void CLoading::LoadScene_ORITOWN()
 	
 	
 
-	//LoadScene("../../Assets/SceneResource/test/test.scn");
-	LoadScene("../../Assets/SceneResource/FirstTown/FirstTown.scn");
+	LoadScene("../../Assets/SceneResource/test/test.scn");
+	//LoadScene("../../Assets/SceneResource/FirstTown/FirstTown.scn");
 	//LoadScene("../../Assets/SceneResource/Aldenard/Aldenard.scn");	
 
 	RESOURCEMGR->CreateTexture("UI_Game_Clear", _T("../../Assets/Game_UI/UI_Game_Clear.png"), PS_TEXTURE, BIND_PS);

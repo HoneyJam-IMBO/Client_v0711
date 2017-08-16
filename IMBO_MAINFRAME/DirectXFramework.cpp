@@ -140,8 +140,8 @@ void CDirectXFramework::InitSingleton(HINSTANCE hInstance, HWND hWnd)
 
 #ifdef NO_SERVER
 	NETWORKMGR->GetServerPlayerInfos()[NETWORKMGR->GetSLOT_ID()].CHARACTER = 0;
-	//SCENEMGR->ChangeScene(SCN_ORITOWN);	//SCENEMGR->ChangeScene(SCN_ALDENAD);
-	SCENEMGR->ChangeScene(SCN_BOSS);
+	SCENEMGR->ChangeScene(SCN_ORITOWN);	//SCENEMGR->ChangeScene(SCN_ALDENAD);
+	//SCENEMGR->ChangeScene(SCN_BOSS);
 	//SCENEMGR->ChangeScene(SCN_TITLE);
 	return;
 #endif
