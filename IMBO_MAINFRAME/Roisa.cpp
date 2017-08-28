@@ -34,13 +34,13 @@ void CRoisa::ShootExplosion()
 		xmDir = XMVector3TransformNormal(xmDir, XMMatrixRotationY((XM_2PI / iArraySize) * i));
 		XMFLOAT3	xmPos;
 		XMStoreFloat3(&xmPos, XMLoadFloat3(&m_xmf3Position) + xmDir * (rand() % 50 + 20));
-		int randPosY = (rand() % 50 + 150);
+		int randPosY = (rand() % 70 + 50);
 		m_mapSkill["Explosion"][i]->SetPosition(XMVectorSet(xmPos.x, xmPos.y + randPosY, xmPos.z, 1.f));
 		m_mapSkill["Explosion"][i]->Rotate(XMMatrixRotationY(XMConvertToRadians(rand() %360)));
 		m_mapSkill["Explosion"][i]->SetScale(XMVectorSet(4.f, 4.f, 4.f, 1.f));
 		m_mapSkill["Explosion"][i]->SetActive(true);
 
-		CEffectMgr::GetInstance()->Play_Effect(L"boss2_sk2_efc", XMVectorSet(xmPos.x, 0.5f, xmPos.z, 1.f),
+		CEffectMgr::GetInstance()->Play_Effect(L"boss2_sk2_efc", XMVectorSet(xmPos.x, xmPos.y + 0.5f, xmPos.z, 1.f),
 			XMVectorSet(0.f, 0.f, 0.f, 0.f), XMVectorSet(2.f, 2.f, 0.f, 1.f));
 
 		//((CElfSkillArrow*)m_mapSkill["Arrow1"][i])->GetTrail()->SetPosition(XMVectorSet(m_xmf3Position.x, m_xmf3Position.y + 3.f, m_xmf3Position.z, 1.f));
@@ -242,7 +242,7 @@ bool CRoisa::GetDemaged(int iDemege) {
 			m_pAnimater->SetCurAnimationIndex(BOSS2_ANI_DEADBODY);
 		}
 		m_bCollision = true;
-		return false;
+		return m_bCollision;
 	}
 #ifdef NO_SERVER
 	CGameObject::GetDemaged(iDemege);//내 hp 날리고!

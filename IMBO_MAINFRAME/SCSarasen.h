@@ -1,6 +1,8 @@
 #pragma once
 #include "Scene.h"
 #include "FreeCamera.h"
+#include "ImageUI.h"
+#include "HpBar.h"
 
 class CImageUI;
 class CHpBar;
