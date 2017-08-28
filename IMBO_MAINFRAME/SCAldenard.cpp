@@ -172,9 +172,7 @@ void CSCAldenard::Animate(float fTimeElapsed)
 		XMFLOAT3 xmf3Pos = XMFLOAT3(192, 30, 304);
 		CSoundManager::Play_3Dsound("bgm_gate_loop", 1, &xmf3Pos, 1.f, 10.f, 200.f);
 	}
-	BYTE Packet[MAX_BUFFER_LENGTH] = { 0, };
-	for (int i = 0; i < 20; ++i)
-		NetworkProc();
+
 	CScene::Animate(fTimeElapsed);
 
 
@@ -185,6 +183,7 @@ void CSCAldenard::Animate(float fTimeElapsed)
 	}
 	//int slot_id = NETWORKMGR->GetSLOT_ID();
 //flag인 부분 충돌 처리
+	BYTE Packet[MAX_BUFFER_LENGTH] = { 0, };
 	if (FlagCollision(m_ppPawn[slot_id])) {
 		//flag인 부분과 충돌했다면!
 		m_ppPawn[slot_id]->SetbStay(true);//나 stay!
@@ -210,6 +209,9 @@ void CSCAldenard::Animate(float fTimeElapsed)
 	{
 		SCENEMGR->ChangeScene(SCN_BOSS);
 	}
+
+	for (int i = 0; i < 20; ++i)
+		NetworkProc();
 }
 
 void CSCAldenard::OnProcessingMouseMessage(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lParam)

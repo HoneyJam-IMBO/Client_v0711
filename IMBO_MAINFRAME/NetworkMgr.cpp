@@ -7,7 +7,7 @@ void clienterror()
 	exit(-1);
 }
 
-//#define USE_LOCAL_IP
+#define USE_LOCAL_IP
 
 bool CNetworkManager::Begin() {
 #ifdef NO_SERVER
@@ -26,7 +26,7 @@ bool CNetworkManager::Begin() {
 
 #ifdef USE_LOCAL_IP
 	//로컬 아이피 모드 적용
-	if (!m_pClientSession->BeginTcp("192.168.10.100", DEFAULT_PORT)) {
+	if (!m_pClientSession->BeginTcp("127.0.0.1", DEFAULT_PORT)) {
 		m_pClientSession->End();
 		return FALSE;
 	}

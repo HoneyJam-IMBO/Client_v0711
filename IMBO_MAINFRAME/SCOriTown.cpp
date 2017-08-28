@@ -242,8 +242,6 @@ void CSCOriTown::Animate(float fTimeElapsed) {
 
 	DEBUGER->AddGameText(50, 700, 30, YT_Color(255, 1, 1), L"%d", NETWORKMGR->GetBossHP());
 	
-	for (int i = 0; i < 20; ++i)
-		NetworkProc();
 	CScene::Animate(fTimeElapsed);
 	if (m_bStartBossCam) {
 		if (false == m_pCamera->m_bActionCam) {
@@ -328,6 +326,9 @@ void CSCOriTown::Animate(float fTimeElapsed) {
 		
 		//
 	}
+
+	for (int i = 0; i < 20; ++i)
+		NetworkProc();
 }
 
 void CSCOriTown::OnProcessingMouseMessage(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lParam) {
