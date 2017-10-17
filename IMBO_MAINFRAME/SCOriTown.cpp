@@ -165,6 +165,10 @@ void CSCOriTown::HPBarProc(){
 	int iCheckAlldie = 0;
 	for (int i = 0, j = 0; i < iSize; ++i, ++j)
 	{
+		/*if (m_ppPawn[i]->GetCurHp() <= 0.f)
+		{
+			++iCheckAlldie;
+		}*/
 		if (i == slot_id) continue;
 
 		int iCurHP = m_ppPawn[j]->GetCurHp();
@@ -194,27 +198,27 @@ void CSCOriTown::HPBarProc(){
 		//보스 죽고 cur hp가 0이면 그리면 안되는데..
 		m_pBossHPUI->SetCurHPRate(0);
 	}
-	if (m_bResult == false && iCheckAlldie == iSize)
+	/*if (m_bResult == false && iCheckAlldie == iSize)
 	{
 		m_bResult = true;
 		m_strResultName = "UI_Game_Over";
 		m_pResult->SetImageName(m_strResultName);
 		m_pResult->SetRender(true);
-	}
+	}*/
 }
 void CSCOriTown::Animate(float fTimeElapsed) {
 	//hp bar proc
 	HPBarProc();
-	if (true == m_bResult)
-	{
-		m_fResultAccTime += fTimeElapsed;
-		if (m_fResultAccTime > 3.f)
-		{
-			NETWORKMGR->End();
-			CSceneMgr::GetInstance()->ChangeScene(SCN_TITLE);
-			return;
-		}
-	}
+	//if (true == m_bResult)
+	//{
+	//	m_fResultAccTime += fTimeElapsed;
+	//	if (m_fResultAccTime > 3.f)
+	//	{
+	//		//NETWORKMGR->End();
+	//		//CSceneMgr::GetInstance()->ChangeScene(SCN_TITLE);
+	//		//return;
+	//	}
+	//}
 
 	XMFLOAT3 xmf3Pos;
 	int slot_id = NETWORKMGR->GetSLOT_ID();
@@ -238,8 +242,6 @@ void CSCOriTown::Animate(float fTimeElapsed) {
 
 	DEBUGER->AddGameText(50, 700, 30, YT_Color(255, 1, 1), L"%d", NETWORKMGR->GetBossHP());
 	
-	for (int i = 0; i < 20; ++i)
-		NetworkProc();
 	CScene::Animate(fTimeElapsed);
 	if (m_bStartBossCam) {
 		if (false == m_pCamera->m_bActionCam) {
@@ -324,6 +326,9 @@ void CSCOriTown::Animate(float fTimeElapsed) {
 		
 		//
 	}
+
+	for (int i = 0; i < 20; ++i)
+		NetworkProc();
 }
 
 void CSCOriTown::OnProcessingMouseMessage(HWND hWnd, UINT nMessageID, WPARAM wParam, LPARAM lParam) {

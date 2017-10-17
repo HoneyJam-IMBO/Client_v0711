@@ -54,6 +54,7 @@ HRESULT CImageUI::Initialize()
 
 int CImageUI::Update(float fTimeElapsed)
 {
+	if (false == m_bRender) return 0;
 	if (m_pUIRenderCont) {
 		if(m_fRenderLayer< 0)
 			m_pUIRenderCont->SetRenderContainer(m_fRenderLayer, this, 1);

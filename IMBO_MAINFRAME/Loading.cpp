@@ -335,7 +335,7 @@ void CLoading::LoadScene_ALDENAD()
 
 	LoadUI_Skill(CHARACTER[0], CHARACTER[1], CHARACTER[2], CHARACTER[3]);
 #endif
-
+	CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/Heal.dat", L"Heal");
 	CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/TestBlood.dat", L"TestBlood");
 	CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/SparkTest.dat", L"SparkTest");
 
@@ -360,6 +360,8 @@ void CLoading::LoadScene_BOSS()
 
 	CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/TestBlood.dat", L"TestBlood");
 	CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/SparkTest.dat", L"SparkTest");
+	CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/blood2.dat", L"blood2");
+	CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/Heal.dat", L"Heal");
 
 	RESOURCEMGR->CreateMultiMesh("../../Assets/SceneResource/GJM/Roisa.gjm", "Boss02R");
 	//RESOURCEMGR->CreateMultiMesh("../../Assets/SceneResource/GJM/Roisa.gjm", "Boss02R");
@@ -374,7 +376,7 @@ void CLoading::LoadScene_BOSS()
 	CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/boss2_sk2_expefc.dat", L"boss2_sk2_expefc", 40);
 	CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/boss2_sk2_efc.dat", L"boss2_sk2_efc", 40);
 	CEffectMgr::GetInstance()->Load_EffectData(L"../../Assets/EffectData/Boss2_sk3_iceSmoke.dat", L"Boss2_sk3_iceSmoke", 40);
-
+	
 	LoadScene("../../Assets/SceneResource/Sarasen/Sarasen.scn");
 
 	RESOURCEMGR->CreateTexture("UI_Game_Clear", _T("../../Assets/Game_UI/UI_Game_Clear.png"), PS_TEXTURE, BIND_PS);
@@ -406,6 +408,7 @@ void CLoading::LoadUI_Skill(int cn1, int cn2, int cn3, int cn4)
 
 			RESOURCEMGR->CreateMultiMesh("../../Assets/SceneResource/GJM/Elf01F.gjm", "Elf01F");
 
+			//RESOURCEMGR->CreateMultiMesh("../../Assets/SceneResource/GJM/Bow1.gjm", "Bow1");
 			RESOURCEMGR->CreateMultiMesh("../../Assets/SceneResource/GJM/Arrow1.gjm", "Arrow1");
 			RESOURCEMGR->CreateMultiMesh("../../Assets/SceneResource/GJM/Rskill/sk1.gjm", "RangerSK1");
 
